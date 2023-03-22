@@ -15,6 +15,7 @@ public class MemberReservationResponseDto {
     @Getter
     public static class MemberReservationDto {
         private Long storeId;
+        private Long reservationId;
         private String kakao;
         private String storeImg;
         private String storeName;
