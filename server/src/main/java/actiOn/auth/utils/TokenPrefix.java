@@ -7,7 +7,7 @@ public enum TokenPrefix {
 
     private final String type;
 
-    private TokenPrefix(String type) {
+    TokenPrefix(String type) {
         this.type = type;
     }
 
