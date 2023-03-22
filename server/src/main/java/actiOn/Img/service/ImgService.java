@@ -11,6 +11,7 @@ import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ImgService {
@@ -28,7 +32,6 @@ public class ImgService {
     @Value("${cloud.aws.region.static}")
     private String REGION;
 
-    //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
 
@@ -54,9 +57,8 @@ public class ImgService {
             updateProfileImageStatusDeleted(member);
         }
 
-
         // S3에 이미지 파일 업로드
-        String imageName = generateRandomName();
+        String imageName = generateRandomName(file, 1);
         String fileUrl = uploadImage(file, imageName);
 
         // 새로운 프로필 이미지 생성
@@ -95,7 +97,6 @@ public class ImgService {
             files = files.subList(0, remainingSize);
         }
 
-        String randomStringForImageName = generateRandomName();
         List<StoreImg> storeImgs = new ArrayList<>();
 
         int index = 1;
@@ -104,8 +105,8 @@ public class ImgService {
                 continue;
             }
 
-            String imageName = store.getStoreId() + randomStringForImageName + index;
-            String fileUrl = uploadImage(file, imageName);
+            String fileName = generateRandomName(file, index);
+            String fileUrl = uploadImage(file, fileName);
             StoreImg storeImg = new StoreImg(fileUrl, store);
 
             if (file.equals(thumbnailImage)) {
@@ -150,26 +151,22 @@ public class ImgService {
                 .withRegion(REGION)
                 .build();
 
+        // 메타데이터 추가
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getInputStream().available());
+
         s3Client.putObject(new PutObjectRequest(
-                BUCKET_NAME, imageName, file.getInputStream(), null)
+                BUCKET_NAME, imageName, file.getInputStream(), metadata)
         );
 
-        String fileUrl = s3Client.getUrl(BUCKET_NAME, imageName).toString();
-        return fileUrl;
+        return s3Client.getUrl(BUCKET_NAME, imageName).toString();
     }
 
-    private String generateRandomName() {
+    private String generateRandomName(MultipartFile file, int index) {
         String uuid = UUID.randomUUID().toString();
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 25;
 
-        Random random = new Random();
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        return uuid + generatedString;
+        return uuid + index + "-" + file.getOriginalFilename();
     }
 
     private StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg) {
