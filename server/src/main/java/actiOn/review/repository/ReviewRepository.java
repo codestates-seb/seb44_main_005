@@ -1,4 +1,4 @@
-package actiOn.review;
+package actiOn.review.repository;
 
 public interface ReviewRepository {
 }
