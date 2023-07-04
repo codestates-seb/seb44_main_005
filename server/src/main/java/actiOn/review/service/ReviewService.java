@@ -1,4 +1,4 @@
 package actiOn.review.service;
 
-public class ReservationService {
+public class ReviewService {
 }
