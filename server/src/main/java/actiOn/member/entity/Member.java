@@ -1,6 +1,7 @@
 package actiOn.member.entity;
 
 import actiOn.business.entity.Business;
+import actiOn.wish.entity.Wish;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

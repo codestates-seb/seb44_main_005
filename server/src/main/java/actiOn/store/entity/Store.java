@@ -1,5 +1,6 @@
 package actiOn.store.entity;
 
+import actiOn.audit.BaseEntity;
 import actiOn.business.entity.Business;
 import actiOn.item.entity.Item;
 import actiOn.reservation.entity.Reservation;
@@ -7,6 +8,7 @@ import actiOn.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Auditable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Store extends Auditable {
+public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;

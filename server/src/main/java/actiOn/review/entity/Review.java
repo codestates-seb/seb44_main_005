@@ -1,5 +1,6 @@
 package actiOn.review.entity;
 
+import actiOn.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 @Getter @Setter
 @Entity
-public class Review extends BaseEntity{
+public class Review extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
