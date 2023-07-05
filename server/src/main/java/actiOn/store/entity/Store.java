@@ -60,28 +60,5 @@ public class Store extends Auditable {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
-    public void setBusinesses(Business business) {
 
-    }
-
-    public void setReservations(Reservation reservation) {
-        this.reservations.add(reservation);
-        if (reservation.getStore() != this) {
-            reservation.setStore(this);
-        }
-    }
-
-    public void setItems(Item item) {
-        this.items.add(item);
-        if (item.getStore() != this) {
-            item.setStore(this);
-        }
-    }
-
-    public void setReviews(Review review) {
-        this.reviews.add(review);
-        if (review.getStore() != this) {
-            review.setStore(this);
-        }
-    }
 }
