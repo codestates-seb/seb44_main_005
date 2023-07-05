@@ -1,5 +1,6 @@
 package actiOn.member.entity;
 
+import actiOn.audit.BaseEntity;
 import actiOn.business.entity.Business;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Member implements Principal {
+public class Member extends BaseEntity implements Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -50,5 +51,10 @@ public class Member implements Principal {
         if (wish.getMember() != this) {
             wish.setMember(this);
         }
+    }
+
+    @Override
+    public String getName() {
+        return getEmail();
     }
 }
