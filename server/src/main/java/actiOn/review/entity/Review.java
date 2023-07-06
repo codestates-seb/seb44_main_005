@@ -35,4 +35,9 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
+
+    public Review(String content, Integer rating){
+        this.content = content;
+        this.rating = rating;
+    }
 }
