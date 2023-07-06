@@ -1,7 +1,6 @@
 package actiOn.store.controller;
 
 import actiOn.store.dto.StoreDto;
-import actiOn.store.mapper.StoreMapper;
 import actiOn.store.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +56,12 @@ public class StoreController {
     @GetMapping("/stores")
     public ResponseEntity getCategoryPage(@RequestParam(name = "category") String category,
                                           @RequestParam(name = "sort_field") String sortField) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 검색 기능
+    @GetMapping("/search")
+    public ResponseEntity getSearchResults(@RequestParam(name = "keyword") String keyword) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
