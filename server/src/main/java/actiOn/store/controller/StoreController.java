@@ -16,11 +16,11 @@ import javax.validation.constraints.Positive;
 @Validated
 public class StoreController {
     private final StoreService storeService;
-    private final StoreMapper mapper;
+    //private final StoreMapper mapper;
 
-    public StoreController(StoreService storeService, StoreMapper mapper) {
+    public StoreController(StoreService storeService) {
         this.storeService = storeService;
-        this.mapper = mapper;
+//        this.mapper = mapper;
     }
 
     // 업체 등록
