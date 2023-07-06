@@ -5,7 +5,6 @@ import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -22,9 +21,9 @@ public class StoreImg {
     private String link;
 
     @Column(nullable = false)
-    private Boolean isThumbnail;
+    private Boolean isThumbnail = false;
 
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "STORE_ID")
     private Store store;
 }

@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 public class Item {
 
@@ -17,7 +18,7 @@ public class Item {
     @Column(name = "ITEM_ID")
     private Long itemId;
 
-    @Column(name = "ITEM_NAME",nullable = false)
+    @Column(name = "ITEM_NAME", nullable = false)
     private String itemName;
 
     @Column(name = "PRICE", nullable = false)
@@ -29,5 +30,4 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
-
 }

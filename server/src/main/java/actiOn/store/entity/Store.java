@@ -1,14 +1,14 @@
 package actiOn.store.entity;
 
+import actiOn.Img.storeImg.StoreImg;
 import actiOn.audit.BaseEntity;
-import actiOn.business.entity.Business;
 import actiOn.item.entity.Item;
+import actiOn.member.entity.Member;
 import actiOn.reservation.entity.Reservation;
 import actiOn.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Auditable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,17 +50,19 @@ public class Store extends BaseEntity {
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int likeCount;
 
-    @OneToOne(mappedBy = "store", cascade = CascadeType.REFRESH)
-    private List<Business> businesses = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     @OneToMany(mappedBy = "store")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Item> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private List<StoreImg> storeImgList = new ArrayList<>();
 }

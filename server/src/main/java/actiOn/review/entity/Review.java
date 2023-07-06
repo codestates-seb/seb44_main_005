@@ -6,6 +6,7 @@ import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -18,14 +19,13 @@ public class Review extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "REVIEW_ID")
     private Long reviewId;
 
-    @Column(name = "CONTENT",nullable = false)
+    @Column(nullable = false)
     private String content;
 
-    @Min(0) @Max(5)
-    @Column(name = "RATING",nullable = false)
+    @Range(min = 0, max = 5)
+    @Column(nullable = false)
     private Integer rating;
 
     @ManyToOne

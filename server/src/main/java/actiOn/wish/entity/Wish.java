@@ -9,13 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter @Setter
-@Entity(name = "WISH")
+@Getter
+@Setter
+@Entity
 public class Wish {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "WISH_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishId;
 
     @ManyToOne

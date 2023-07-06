@@ -4,6 +4,7 @@ package actiOn.reservation.entity;
 import actiOn.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import actiOn.payment.entity.Payment;
+import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,18 +35,23 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private Date reservationDate;
 
-    @Column
+    // @Enumerated(EnumType.STRING) // enum 추가
     private String reservationStatus;
 
-    @OneToOne
+    // payment 아직 없으니 일단 주석처리
+ /*   @OneToOne
     @JoinColumn(name = "PAYMENT_ID")
-    private Payment payment;
+    private Payment payment;*/
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "STORE_ID")
+    private Store store;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
     // 다대다 관계를 위한 편의 메서드

@@ -1,5 +1,6 @@
 package actiOn.business.entity;
 
+import actiOn.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,22 +9,21 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter @Setter
-@Entity(name = "BUSINESS")
-public class Business extends BaseEntity{
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Getter
+@Setter
+@Entity
+public class Business extends BaseEntity {
     @Id
-    @Column(name = "BUSINESS_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long businessId;
 
-    @Column(name = "BUSINESS_NAME", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String businessName;
 
-    @Column(name = "REGISTRATION_NUMBER",nullable = false)
+    @Column(nullable = false, unique = true)
     private String registrationNumber;
 
-    @Column(name = "BUSINESS_CATEGORY", nullable = false)
+    @Column(nullable = false)
     private String businessCategory;
 
     @OneToOne

@@ -1,7 +1,9 @@
 package actiOn.member.entity;
 
+import actiOn.Img.profileImg.ProfileImg;
 import actiOn.audit.BaseEntity;
 import actiOn.business.entity.Business;
+import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,25 +35,17 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Business> businesses = new ArrayList<>();
+    @OneToOne(mappedBy = "member")
+    private Business business;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Wish> wishList = new ArrayList<>();
 
-    public void addBusinesses(Business business) {
-        this.businesses.add(business);
-        if (business.getMember() != this) {
-            business.setMember(this);
-        }
-    }
+    @OneToMany(mappedBy = "member")
+    private List<Store> stores = new ArrayList<>();
 
-    public void addWishList(Wish wish) {
-        this.wishList.add(wish);
-        if (wish.getMember() != this) {
-            wish.setMember(this);
-        }
-    }
+    @OneToOne(mappedBy = "member")
+    private ProfileImg profileImg;
 
     @Override
     public String getName() {

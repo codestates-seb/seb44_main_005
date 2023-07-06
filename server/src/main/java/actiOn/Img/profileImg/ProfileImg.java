@@ -19,4 +19,7 @@ public class ProfileImg {
     @Column(nullable = false, unique = true)
     private String link;
 
+    @OneToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 }
