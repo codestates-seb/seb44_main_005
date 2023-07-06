@@ -2,7 +2,7 @@ package actiOn.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 
 import javax.validation.ConstraintViolation;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class ErrorResponse {
+
     private int status;
     private String message;
     private List<FieldError> fieldErrors;
@@ -27,8 +28,8 @@ public class ErrorResponse {
         this.violationErrors = violationErrors;
     }
 
-    public static ErrorResponse of(BindException bindException) {
-        return new ErrorResponse(FieldError.of(bindException), null);
+    public static ErrorResponse of(BindingResult bindingResult) {
+        return new ErrorResponse(FieldError.of(bindingResult), null);
     }
 
     public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
@@ -47,45 +48,35 @@ public class ErrorResponse {
         return new ErrorResponse(httpStatus.value(), message);
     }
 
+    // 필드(DTO 클래스의 멤버 변수)의 유효성 검증에서 발생하는 에러 정보를 생성
     @Getter
-    private static class FieldError {
-        private FieldSource source;
+    public static class FieldError {
         private String field;
         private Object rejectedValue;
         private String reason;
 
-        public enum FieldSource {
-            QUERY_PARAMETER("Query Parameter"),
-            REQUEST_BODY("Request Body");
-            @Getter
-            private String source;
-
-            FieldSource(String source) {
-                this.source = source;
-            }
-        }
-
-        public FieldError(FieldSource source, String field, Object rejectedValue, String reason) {
-            this.source = source;
+        public FieldError(String field, Object rejectedValue, String reason) {
             this.field = field;
             this.rejectedValue = rejectedValue;
             this.reason = reason;
         }
 
-        public static List<FieldError> of(BindException bindException) {
+        public static List<FieldError> of(BindingResult bindingResult) {
             final List<org.springframework.validation.FieldError> fieldErrors =
-                    bindException.getFieldErrors();
+                    bindingResult.getFieldErrors();
+
             return fieldErrors.stream()
-                    .map(e -> new FieldError(
-                            FieldSource.REQUEST_BODY,
-                            e.getField(),
-                            e.getRejectedValue() == null ? "" : e.getRejectedValue().toString(),
-                            e.getDefaultMessage()))
+                    .map(error -> new FieldError(
+                            error.getField(),
+                            error.getRejectedValue() == null ?
+                                    "" : error.getRejectedValue().toString(),
+                            error.getDefaultMessage()))
                     .collect(Collectors.toList());
         }
     }
 
 
+    // URI 변수 값에 대한 에러 정보 생성
     @Getter
     public static class ConstraintViolationError {
         private String propertyPath;
@@ -100,12 +91,13 @@ public class ErrorResponse {
 
         public static List<ConstraintViolationError> of(
                 Set<ConstraintViolation<?>> constraintViolations) {
+
             return constraintViolations.stream()
                     .map(constraintViolation -> new ConstraintViolationError(
                             constraintViolation.getPropertyPath().toString(),
                             constraintViolation.getInvalidValue().toString(),
-                            constraintViolation.getMessage()
-                    )).collect(Collectors.toList());
+                            constraintViolation.getMessage()))
+                    .collect(Collectors.toList());
         }
     }
 }

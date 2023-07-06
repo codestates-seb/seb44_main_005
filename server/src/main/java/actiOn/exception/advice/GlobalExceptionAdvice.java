@@ -7,22 +7,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
-import java.net.BindException;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
-    // 포트 중복 사용 등
+    // 요청 인자의 유효성 검증 실패 시
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBindException(BindException e) {
-        final ErrorResponse response = ErrorResponse.of(e);
+    public ErrorResponse handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
+        final ErrorResponse response = ErrorResponse.of(e.getBindingResult());
 
         return response;
     }
@@ -41,7 +42,8 @@ public class GlobalExceptionAdvice {
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
 
-        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+        return new ResponseEntity<>(response,
+                HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 
     // 특정 URL에 HTTP 메서드 요청이 잘못된 경우 등
