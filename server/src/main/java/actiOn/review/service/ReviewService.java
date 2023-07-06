@@ -36,8 +36,8 @@ public class ReviewService {
                                Authentication authentication) {
         //Todo 로그인한 회원의 정보 가져오기
         String loginUserEmail = authentication.getName();
-        Member loginMember = memberRepository.findByEmail(loginUserEmail).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.MEMBER_EXISTS));
+//        Member loginMember = memberRepository.findByEmail(loginUserEmail).orElseThrow(
+//                () -> new BusinessLogicException(ExceptionCode.MEMBER_EXISTS));
 
         //Todo 업체 존재 여부 확인 -> 리팩토링 필요
         Store store = storeRepository.findById(storeId).orElseThrow(
@@ -48,7 +48,7 @@ public class ReviewService {
         boolean hasReservationEmail = reservationList.stream()
                 .anyMatch(reservation -> reservation.getReservationEmail().equals(loginUserEmail));
         if (hasReservationEmail) {
-            review.setMember(loginMember);
+//            review.setMember(loginMember);
             review.setStore(store);
         } else {
             throw new IllegalArgumentException("예약한 회원만 리뷰를 작성할 수 있습니다.");
