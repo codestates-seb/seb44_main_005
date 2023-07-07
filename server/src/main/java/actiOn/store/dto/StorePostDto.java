@@ -32,10 +32,10 @@ public class StorePostDto {
     @NotBlank(message = "카테고리를 선택해주세요")
     private String category;
 
-//    @NotEmpty(message = "상품목록을 작성해주세요")
+    @NotEmpty(message = "상품목록을 작성해주세요")
     private List<Item> items;
 
-//    @NotEmpty(message = "이미지를 업로드 해주세요")
+    @NotEmpty(message = "이미지를 업로드 해주세요")
     private List<MultipartFile> storeImage;
 
 
