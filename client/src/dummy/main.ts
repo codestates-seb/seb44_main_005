@@ -17,7 +17,7 @@ export const recommend = {
       body: `깨끗하게 공사된 새로운 공간에서 스쿠버다이빙을 즐기세요!^^
         편안한 주차와, 따듯한 온수로 샤워, 수건도 제공해 드립니다.
         즐거운 마음과 수영복만 있으면 물속 여행 준비 끝!!`,
-      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMzA2MTRfMjg1%2FMDAxNjg2NzI2MjAxNDc1.jgFZdKXsbmeJKdHeUEiXMEV2Y-02oGZGtkgJ9yC5cIsg.ZMtJmn3pa3jf6culNQdOIbmZvANwnQh2qa_MvDrW9c8g.JPEG%2F20230614_115806.jpg'
+      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMzA2MTRfMjg1%2FMDAxNjg2NzI2MjAxNDc1.jgFZdKXsbmeJKdHeUEiXMEV2Y-02oGZGtkgJ9yC5cIsg.ZMtJmn3pa3jf6culNQdOIbmZvANwnQh2qa_MvDrW9c8g.JPEG%2F20230614_115806.jpg',
     },
     {
       store_id: 3,
@@ -28,7 +28,7 @@ export const recommend = {
         체계적이고 전문적인 교육과정을 제공 합니다.
         바다와 당신곁에 언제나 제주 빡빡이가 함께 하겠습니다.
         제주 바다로 놀러 오세요.`,
-      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220607_145%2F1654568404296bivBz_JPEG%2F%25C4%25B3%25B8%25AF.jpeg'
+      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220607_145%2F1654568404296bivBz_JPEG%2F%25C4%25B3%25B8%25AF.jpeg',
     },
     {
       store_id: 4,
@@ -38,8 +38,8 @@ export const recommend = {
         * 프리다이빙 체험부터~강사자격증까지 교육이 가능합니다.
         * 스쿠버다이빙 체험부터 ~ 강사자격증까지 교육이 가능합니다.
         * 스노클링 진행 가능합니다.`,
-      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230224_29%2F1677230196248C6VOW_PNG%2F1111111.png'
-    }
+      img: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230224_29%2F1677230196248C6VOW_PNG%2F1111111.png',
+    },
   ],
   data: [
     {
@@ -47,28 +47,28 @@ export const recommend = {
       store_name: '언더워터플레이 함덕점',
       latitude: 33.5515339,
       longitude: 126.6524772,
-      category: 'diving'
+      category: 'diving',
     },
     {
       store_id: 2,
       store_name: '언더더씨 스쿠버다이빙',
       latitude: 33.2442355,
       longitude: 126.5671146,
-      category: 'diving'
+      category: 'diving',
     },
     {
       store_id: 3,
       store_name: '제주빡빡이 스쿠버',
       latitude: 33.3786793,
       longitude: 126.2167702,
-      category: 'diving'
+      category: 'diving',
     },
     {
       store_id: 4,
       store_name: '블루웨일다이브',
       latitude: 33.2449582,
       longitude: 126.5694689,
-      category: 'diving'
+      category: 'diving',
     },
-  ]
-}
+  ],
+};
