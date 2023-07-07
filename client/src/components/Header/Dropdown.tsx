@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { StyledContainer, Menu } from '../../styles/header/Dropdown';
+import { StyledContainer, Menu } from '../../styles/Header/Dropdown';
 
 function Dropdown() {
   return (

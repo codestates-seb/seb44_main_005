@@ -4,7 +4,7 @@ import search from '../../assets/search.svg';
 import {
   SearchbarContainer,
   SearchbarInput,
-} from '../../styles/header/Searchbar';
+} from '../../styles/Header/Searchbar';
 
 function Searchbar() {
   return (
