@@ -2,7 +2,7 @@ import SelectBox from '../components/Partner/SelectBox';
 
 function Partner() {    
   return (
-    <div className="flex justify-center items-center h-[100%]">
+    <div className="flex justify-center items-center h-[80%]">
       <div className="p-10">
         <div className="flex flex-col justify-center w-[700px]">
           <p className="text-2xl font-semibold justify-start p-10">
