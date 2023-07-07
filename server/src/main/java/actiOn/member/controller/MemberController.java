@@ -1,6 +1,7 @@
 package actiOn.member.controller;
 
 import actiOn.Img.profileImg.ProfileImgDto;
+import actiOn.member.dto.MemberPatchDto;
 import actiOn.member.dto.MemberPostDto;
 import actiOn.member.entity.Member;
 import actiOn.member.mapper.MemberMapper;
@@ -8,6 +9,8 @@ import actiOn.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,26 +31,32 @@ public class MemberController {
     // 회원 가입
     @PostMapping("/signup")
     public ResponseEntity signupMember(@RequestBody @Valid MemberPostDto.Signup requestBody) {
-        Member member = mapper.memberPostSignupToMember(requestBody);
+        Member member = mapper.memberPostSignupDtoToMember(requestBody);
         memberService.createMember(member);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // 회원 프로필 사진 등록
+    // TODO 회원 프로필 사진 등록
     @PutMapping("/mypage/profile")
-    public ResponseEntity uploadProfileImage(
-            @RequestBody @Valid ProfileImgDto requestBody,
-            Authentication authentication) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PatchMapping("/mypage")
-    public ResponseEntity updateMember(Authentication authentication) {
+    public ResponseEntity uploadProfileImage(Authentication authentication,
+                                             @RequestBody @Valid ProfileImgDto requestBody) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // TODO 회원 프로필 사진 삭제
+
+    // 마이페이지 - 회원 정보 수정
+    @PatchMapping("/mypage")
+    public ResponseEntity updateMember(@AuthenticationPrincipal UserDetails userDetails,
+                                       @RequestBody @Valid MemberPatchDto requestBody) {
+        String email = userDetails.getUsername();
+        Member newInfoMember = mapper.memberPatchDtoToMember(requestBody);
+
+        memberService.updateMember(email, newInfoMember);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     // 마이페이지 - 회원 정보 조회
     @GetMapping("/mypage")

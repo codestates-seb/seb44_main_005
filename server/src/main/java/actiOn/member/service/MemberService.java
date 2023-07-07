@@ -6,6 +6,8 @@ import actiOn.member.entity.Member;
 import actiOn.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -36,6 +38,38 @@ public class MemberService {
         // TODO DB에 User Role 저장
 
         return memberRepository.save(member);
+    }
+
+    // 회원 정보 수정
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public void updateMember(String email, Member newInfomember) {
+        Member findMember = findMemberByEmail(email);
+
+        // 중복 확인 후 저장
+        Optional.ofNullable(newInfomember.getNickname())
+                .ifPresent(nickname -> {
+                    verifyExistsNickname(nickname);
+                    findMember.setNickname(nickname);
+                });
+
+        Optional.ofNullable(newInfomember.getPhoneNumber())
+                .ifPresent(number -> {
+                    verifyExistsPhoneNumber(number);
+                    findMember.setPhoneNumber(number);
+                });
+
+        memberRepository.save(findMember);
+    }
+
+    // 이메일로 회원 조회
+    private Member findMemberByEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        } else {
+            return member.get();
+        }
     }
 
     // 이미 등록된 이메일인지 검증
