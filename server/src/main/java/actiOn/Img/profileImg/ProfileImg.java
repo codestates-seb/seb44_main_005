@@ -23,3 +23,4 @@ public class ProfileImg {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 }
+//Todo 내 예약 조회는 memberController를 통해 요청을 받지만, 처리 로직은 reservationService에서 처리되어야 함
