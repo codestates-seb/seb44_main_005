@@ -45,3 +45,5 @@ jwt:                      # JWT 관련 정보
   refresh-token-expiration-minutes: 200
 #awsParameterStorePropertySource:
 #  enabled: true
+
+
