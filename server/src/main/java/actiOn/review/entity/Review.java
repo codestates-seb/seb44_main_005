@@ -1,6 +1,6 @@
 package actiOn.review.entity;
 
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @NoArgsConstructor
 @Getter @Setter
