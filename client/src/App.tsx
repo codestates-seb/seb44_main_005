@@ -1,14 +1,16 @@
-import tw from 'tailwind-styled-components';
 import React from 'react';
+import Header from './components/Header/Header';
+import MainRouter from './router/MainRouter';
+import CategoryRouter from './router/CategoryRouter';
 
 function App() {
-  return <Test>안녕하세요</Test>;
+  return (
+    <>
+      <Header />
+      <MainRouter />
+      <CategoryRouter />
+    </>
+  );
 }
 
 export default App;
-
-const Test = tw.section`
-  text-3xl
-  font-bold
-  underline
-`;
