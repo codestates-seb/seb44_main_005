@@ -6,6 +6,8 @@ public enum ExceptionCode {
     // MEMBER
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
+    NICKNAME_EXISTS(409, "member nickname exists"),
+    PHONE_NUMBER_EXISTS(409, "member phone number exists"),
     MEMBER_NOT_AUTHORIZED(403, "Member not authorized"),
 
     // STORE
