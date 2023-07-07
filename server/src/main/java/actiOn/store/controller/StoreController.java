@@ -1,6 +1,10 @@
 package actiOn.store.controller;
 
-import actiOn.store.dto.StoreDto;
+import actiOn.map.response.GeoLocation;
+import actiOn.map.service.KakaoMapService;
+import actiOn.store.dto.StorePostDto;
+import actiOn.store.entity.Store;
+import actiOn.store.mapper.StoreMapper;
 import actiOn.store.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +19,19 @@ import javax.validation.constraints.Positive;
 @Validated
 public class StoreController {
     private final StoreService storeService;
-    //private final StoreMapper mapper;
+    private final StoreMapper mapper;
 
-    public StoreController(StoreService storeService) {
+    public StoreController(StoreService storeService,StoreMapper mapper) {
         this.storeService = storeService;
-//        this.mapper = mapper;
+        this.mapper = mapper;
     }
 
     // 업체 등록
-    @PostMapping
-    public ResponseEntity postStore(@RequestBody @Valid StoreDto requestBody) {
+    @PostMapping("/stores")
+    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
+        Store store = mapper.storePostDtoToStore(storePostDto);
+        Store storeSaveResult = storeService.createStore(store);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -57,7 +57,7 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE})
     private List<Item> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
