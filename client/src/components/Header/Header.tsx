@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import headerlogo from '../../assets/headerlogo.svg';
 import profile from '../../assets/profile.svg';
 import Searchbar from './Searchbar';
 import tw from 'tailwind-styled-components';
-import { Link } from 'react-router-dom';
 import {
   HaederContainer,
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
-} from '../../styles/Header/Haeder';
+} from '../../styles/header/Haeder';
 import Dropdown from './Dropdown';
 
 function Header() {
@@ -22,7 +23,6 @@ function Header() {
 
   const handleClick = () => {
     setIsLogin(!isLogin);
-    console.log(isLogin);
   };
   const handlePartnerClick = () => {
     setIsPartner(!isPartner);
