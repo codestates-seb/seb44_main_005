@@ -1,14 +1,15 @@
-import tw from 'tailwind-styled-components';
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Partner from './components/Partner/Partner';
 
 function App() {
-  return <Test>안녕하세요</Test>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/partner" element={<Partner />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
-
-const Test = tw.section`
-  text-3xl
-  font-bold
-  underline
-`;
