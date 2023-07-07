@@ -1,7 +1,9 @@
-import Home from './pages/Home';
+import MainRouter from './router/MainRouter';
 
 function App() {
-  return <Home />;
+  return (
+    <MainRouter />
+  );
 }
 
 export default App;
