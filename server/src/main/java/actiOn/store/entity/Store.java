@@ -1,7 +1,7 @@
 package actiOn.store.entity;
 
 import actiOn.Img.storeImg.StoreImg;
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.item.entity.Item;
 import actiOn.member.entity.Member;
 import actiOn.reservation.entity.Reservation;
@@ -57,7 +57,7 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE})
     private List<Item> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)

@@ -1,7 +1,7 @@
 package actiOn.reservation.entity;
 
 
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.item.entity.Item;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

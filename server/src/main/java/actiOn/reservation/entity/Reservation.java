@@ -1,9 +1,8 @@
 package actiOn.reservation.entity;
 
 
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.member.entity.Member;
-import actiOn.payment.entity.Payment;
 import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -49,15 +49,15 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 
 	//aws s3 의존
-	implementation 'software.amazon.awssdk:s3:2.16.84'
+
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 
-tasks.named('test') {
-	exclude "**/*"
-}
-//#IlK7]}|
+	tasks.named('test') {
+		exclude "**/*"
+	}
+

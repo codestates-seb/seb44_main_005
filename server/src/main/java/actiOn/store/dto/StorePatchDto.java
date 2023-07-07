@@ -1,4 +1,4 @@
 package actiOn.store.dto;
 
-public class StoreDto {
+public class StorePatchDto {
 }
