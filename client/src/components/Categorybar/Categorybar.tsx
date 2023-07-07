@@ -27,7 +27,7 @@ function Categorybar() {
         </Item>
         <Item>
           <Link to="/c">
-            <img src={waterleisure} className="w-[25px] mb-2 text-center" />
+            <img src={waterleisure} className="w-[25px] mb-2 ml-[14px]" />
             <span>수상레저</span>
           </Link>
         </Item>
