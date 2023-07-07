@@ -1,14 +1,7 @@
-import tw from 'tailwind-styled-components';
-import React from 'react';
+import Home from './pages/Home';
 
 function App() {
-  return <Test>안녕하세요</Test>;
+  return <Home />;
 }
 
 export default App;
-
-const Test = tw.section`
-  text-3xl
-  font-bold
-  underline
-`;
