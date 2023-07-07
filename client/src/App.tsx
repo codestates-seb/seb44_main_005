@@ -1,15 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Partner from './components/Partner/Partner';
+
+import Header from './components/Header/Header';
+import MainRouter from './router/MainRouter';
+import CategoryRouter from './router/CategoryRouter';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/partner" element={<Partner />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    <>
+      <Header />
+      <MainRouter />
+      <CategoryRouter />
+    </>
+  );
 }
 
 export default App;
