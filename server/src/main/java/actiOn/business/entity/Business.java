@@ -1,6 +1,6 @@
 package actiOn.business.entity;
 
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
