@@ -1,7 +1,8 @@
 package actiOn.member.controller;
 
 import actiOn.Img.profileImg.ProfileImgDto;
-import actiOn.member.dto.MemberDto;
+import actiOn.member.dto.MemberPostDto;
+import actiOn.member.entity.Member;
 import actiOn.member.mapper.MemberMapper;
 import actiOn.member.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,18 @@ import javax.validation.Valid;
 @Validated
 public class MemberController {
     private final MemberService memberService;
-    //private final MemberMapper mapper;
+    private final MemberMapper mapper;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, MemberMapper mapper) {
         this.memberService = memberService;
-        //this.mapper = mapper;
+        this.mapper = mapper;
     }
 
     // 회원 가입
     @PostMapping("/signup")
-    public ResponseEntity signupMember(@RequestBody @Valid MemberDto.Post requestBody) {
+    public ResponseEntity signupMember(@RequestBody @Valid MemberPostDto.Signup requestBody) {
+        Member member = mapper.memberPostSignupToMember(requestBody);
+        memberService.createMember(member);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
