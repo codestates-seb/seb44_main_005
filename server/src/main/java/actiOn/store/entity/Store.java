@@ -1,7 +1,7 @@
 package actiOn.store.entity;
 
 import actiOn.Img.storeImg.StoreImg;
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.item.entity.Item;
 import actiOn.member.entity.Member;
 import actiOn.reservation.entity.Reservation;
