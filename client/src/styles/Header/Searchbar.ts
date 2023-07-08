@@ -1,7 +1,7 @@
 import tw from 'tailwind-styled-components';
 
 export const SearchbarContainer = tw.div`
-  flex
+  relative
 `;
 
 export const SearchbarInput = tw.input`
@@ -12,5 +12,4 @@ export const SearchbarInput = tw.input`
   h-[40px]
   pl-5
   text-sm
-  relative
 `;

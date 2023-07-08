@@ -1,3 +1,5 @@
+import React from 'react';
+
 import tw from 'tailwind-styled-components';
 
 function Carousel({ data }) {
@@ -7,7 +9,9 @@ function Carousel({ data }) {
       <div className="w-[420px]">
         <div className="carousel-title mb-[10px]">{data.store_name}</div>
         <div className="font-bold text-lg mb-[30px]">{data.body}</div>
-        <button className="bg-white px-[10px] py-[8px] font-bold rounded-[10px]">자세히 보기</button>
+        <button className="bg-white px-[10px] py-[8px] font-bold rounded-[10px]">
+          자세히 보기
+        </button>
       </div>
     </CarouselSection>
   );
