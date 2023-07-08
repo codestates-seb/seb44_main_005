@@ -34,8 +34,8 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private Date reservationDate;
 
-    // @Enumerated(EnumType.STRING) // enum 추가
-    private String reservationStatus;
+    @Enumerated(EnumType.STRING) // enum 추가
+    private ReservationStatus reservationStatus = ReservationStatus.RESERVATION_REQUEST;
 
     // payment 아직 없으니 일단 주석처리
  /*   @OneToOne
@@ -52,6 +52,24 @@ public class Reservation extends BaseEntity {
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
     private List<ReservationItem> reservationItems = new ArrayList<>();
+
+    public enum ReservationStatus {
+        RESERVATION_REQUEST(1, "예약 대기"),
+        RESERVATION_CONFIRM(2, "예약 확정"),
+        RESERVATION_CANCLE(4, "예약 취소");
+
+        @Getter
+        private int stepNumber;
+
+        @Getter
+        private String stepDescription;
+
+        ReservationStatus(int stepNumber, String stepDescription) {
+            this.stepNumber = stepNumber;
+            this.stepDescription = stepDescription;
+        }
+
+    }
 
     // 다대다 관계를 위한 편의 메서드
     public void addReservationItem(ReservationItem reservationItem) {

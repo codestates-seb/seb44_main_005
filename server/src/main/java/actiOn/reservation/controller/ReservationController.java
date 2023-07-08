@@ -3,6 +3,7 @@ package actiOn.reservation.controller;
 import actiOn.reservation.dto.ReservationDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,8 +29,10 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{store-id}") // 내 예약내역 조회
-    public ResponseEntity getReservations(@Positive @PathVariable("store-id") long storeId){
+    //Todo RS_001 예약 수정 페이지 렌더 -> 궁금한점 : 예약자 name과 로그인한 회원의 name은 다른거겠지?
+    @GetMapping("/{store-id}")
+    public ResponseEntity getReservations(@Positive @PathVariable("store-id") Long storeId,
+                                          Authentication authentication){
         //Todo Authentication authentication 을 시그니처에 추가
         //Todo 내용추가
         return new ResponseEntity<>(HttpStatus.OK);
