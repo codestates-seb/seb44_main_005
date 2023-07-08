@@ -5,20 +5,30 @@ spring:
       path: /h2
       settings:
         web-allow-others: true
-  datasource:
-    url: jdbc:h2:mem:test
+#  datasource:
+#      url: jdbc:h2:mem:test
   jpa:
     hibernate:
-      ddl-auto: create    # 스키마 자동 생성
+      ddl-auto: create  # 스키마 자동 생성 // 수정
     show-sql: true        # SQL 쿼리 출력
     properties:
       hibernate:
         format_sql: true  # SQL pretty print
         jdbc:
           time_zone: Asia/Seoul   # 서버 시간 서울로 변경
-  sql:
-    init:
-      data-locations: classpath*:db/h2/data.sql
+
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+   #  RDS mysql 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://action-db.cyevetwwms8b.ap-northeast-2.rds.amazonaws.com:13306/action_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: admin
+    password: action1008!
+#  sql:
+#    init:
+#      data-locations: classpath*:db/h2/data.sql
   security:
     oauth2:
       client:
@@ -45,6 +55,7 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: ERROR
+
 server:                   # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
   servlet:
     encoding:
