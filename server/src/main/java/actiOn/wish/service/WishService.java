@@ -47,7 +47,7 @@ public class WishService {
         wishRepository.save(wish);
 
         //Todo Store에 대한 찜 개수 +1 로직
-//        storeRepository.updateLikeCount(store, true);
+        storeRepository.addLikeCount(store);
     }
 
     @Transactional
@@ -68,7 +68,7 @@ public class WishService {
         wishRepository.delete(wish);
 
         //Todo Store에 대한 찜 개수 -1 로직
-//        storeRepository.updateLikeCount(store, true);
+        storeRepository.subLikeCount(store);
     }
 
 
