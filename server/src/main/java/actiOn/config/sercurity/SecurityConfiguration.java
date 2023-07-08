@@ -1,4 +1,4 @@
-package actiOn.config;
+package actiOn.config.sercurity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
