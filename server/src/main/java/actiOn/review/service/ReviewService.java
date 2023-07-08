@@ -64,13 +64,22 @@ public class ReviewService {
         //Todo Store 기준 모든 리뷰 조회
         List<Review> reviews = reviewRepository.findAllByStore(store);
 
-        //Todo 조회한 리뷰의 개수
+        //Todo 해당 store를 조회한 리뷰의 총 개수
         int reviewCount = reviews.size();
+
+        //Todo 해당 store의 평균값 구하기
+        double ratingAvg = reviews.stream()
+                .mapToInt(review -> review.getRating())
+                .average()
+                .orElse(0.0);
+        ratingAvg = Math.round(ratingAvg * 10) / 10.0; // 소수점 한자리까지 반올림
+
 
         //Todo 조회한 리뷰를 리뷰 DTO로 매핑
         List<ReviewResponseDto> reviewResponseDtos = reviewMapper.reviewsToReviewsResponseDto(reviews);
 
         ReviewsResponseDto reviewsResponseDtos = new ReviewsResponseDto();
+        reviewsResponseDtos.setRatingAvg(ratingAvg);
         reviewsResponseDtos.setReviewCount(reviewCount);
         reviewsResponseDtos.setReviewResponseDtoList(reviewResponseDtos);
 

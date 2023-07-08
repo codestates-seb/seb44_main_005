@@ -8,5 +8,6 @@ import java.util.List;
 @Getter @Setter
 public class ReviewsResponseDto {
     private int reviewCount;
+    private double ratingAvg;
     private List<ReviewResponseDto> reviewResponseDtoList;
 }
