@@ -24,7 +24,7 @@ public class WishController {
     }
 
     //TODO CP_002 찜 등록
-    @PostMapping("/store/favorites/{store-id}")
+    @PostMapping("/stores/favorites/{store-id}")
     public ResponseEntity registerWish(@Positive @PathVariable("store-id") Long storeId,
                                        Authentication authentication){
         wishService.registerWish(storeId, authentication);
@@ -32,8 +32,10 @@ public class WishController {
     }
 
     //TODO CP_002 찜 취소
-    @DeleteMapping("/store/favorites/{store-id}")
-    public ResponseEntity cancleWish(@Positive @PathVariable("store-id") Long storeId){
+    @DeleteMapping("/stores/favorites/{store-id}")
+    public ResponseEntity cancleWish(@Positive @PathVariable("store-id") Long storeId,
+                                     Authentication authentication){
+        wishService.deleteWish(storeId, authentication);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }
