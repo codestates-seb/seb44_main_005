@@ -1,54 +1,64 @@
-import React from 'react';
-import tw from 'tailwind-styled-components';
-import { AiOutlineStar } from 'react-icons/ai';
-import { recommend } from '../../dummy/main';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import {
+  CardContainer,
+  CardText,
+  CardPrice,
+  Text,
+} from '../../styles/Categorybar/CategoryCard';
+import { BsFillStarFill } from 'react-icons/bs';
+import { PiHeartFill } from 'react-icons/pi';
+import { PiHeart } from 'react-icons/pi';
+
 type CProps = {
   data: {
-    store_id: number;
-    store_name: string;
-    body: string;
+    storeId: number;
+    category: string;
+    title: string;
+    content: string;
+    address: string;
+    rating: number;
+    reviewCount: string;
+    price: number;
+    isLike: boolean;
     img: string;
   };
 };
 function CategoryCard({ data }: CProps) {
-  const { img, store_name } = data;
+  const { img, title, reviewCount, address, rating, price, isLike } = data;
+
+  const [isHeart, setIsHeart] = useState(isLike);
+
+  const onClickHeart = () => {
+    setIsHeart(!isHeart);
+  };
   return (
-    <CardContainer href="/[category]/:id">
-      <img className="w-[250px] h-[198px]" src={img} />
+    <CardContainer>
+      <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
-        <span className="font-semibold">{store_name}</span>
+        <Link to="/category/:id" className="font-semibold">
+          {title}
+        </Link>
         <Text>
-          <span className="w-[20px] mr-[5px]">
-            <AiOutlineStar size="24" color="#4771B7" />
+          <span className="w-[20px] mr-[5px] mt-[2px]">
+            <BsFillStarFill size="18" color="#4771B7" />
           </span>
-          <span>4.5</span>
-          <span className="mr-[15px]">(12)</span>
-          <span>제주특별자치도 제주시 조천읍 조함해안로 321-21</span>
+          <span className="mr-[2px]">{rating}</span>
+          <span className="mr-[12px]">({reviewCount})</span>
+          <span>{address}</span>
         </Text>
+        <CardPrice>
+          <span>{price.toLocaleString('ko-KR')}원 ~</span>
+          {isHeart ? (
+            <PiHeartFill onClick={onClickHeart} size="24" color="#4771B7" />
+          ) : (
+            <PiHeart onClick={onClickHeart} size="24" color="#4771B7" />
+          )}
+        </CardPrice>
       </CardText>
-      <CardPrice></CardPrice>
     </CardContainer>
   );
 }
-
-const CardContainer = tw.a`
-  flex
-  w-[800px]
-  h-[200px]
-  border
-  my-6
-  border-[#4771B7]
-`;
-const CardText = tw.div`
-  flex
-  flex-col
-  items-start
-  p-5
-`;
-const CardPrice = tw.div``;
-const Text = tw.div`
-  flex  
-  mt-[5px]
-`;
 
 export default CategoryCard;
