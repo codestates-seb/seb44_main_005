@@ -78,10 +78,11 @@ public class ReviewService {
         //Todo 조회한 리뷰를 리뷰 DTO로 매핑
         List<ReviewResponseDto> reviewResponseDtos = reviewMapper.reviewsToReviewsResponseDto(reviews);
 
-        ReviewsResponseDto reviewsResponseDtos = new ReviewsResponseDto();
-        reviewsResponseDtos.setRatingAvg(ratingAvg);
-        reviewsResponseDtos.setReviewCount(reviewCount);
-        reviewsResponseDtos.setReviewResponseDtoList(reviewResponseDtos);
+        ReviewsResponseDto reviewsResponseDtos = ReviewsResponseDto.builder()
+                .reviewCount(reviewCount)
+                .ratingAvg(ratingAvg)
+                .reviewResponseDtoList(reviewResponseDtos)
+                .build();
 
         return reviewsResponseDtos;
     }
