@@ -53,3 +53,11 @@ jobs:
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./action-deploy.zip s3://$S3_BUCKET_NAME/action-deploy.zip
+
+    # CodeDeploy에게 배포 명령을 내립니다.
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name ActiOn
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name ActiOn-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=action-deploy.zip
