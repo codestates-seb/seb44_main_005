@@ -1,7 +1,7 @@
 package actiOn.member.entity;
 
 import actiOn.Img.profileImg.ProfileImg;
-import actiOn.audit.BaseEntity;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.business.entity.Business;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;

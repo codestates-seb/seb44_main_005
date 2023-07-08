@@ -1,30 +1,44 @@
 package actiOn.store.controller;
 
-import actiOn.store.dto.StoreDto;
+import actiOn.Img.service.ImgService;
+import actiOn.map.response.GeoLocation;
+import actiOn.map.service.KakaoMapService;
+import actiOn.store.dto.StorePostDto;
+import actiOn.store.entity.Store;
+import actiOn.store.mapper.StoreMapper;
 import actiOn.store.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping
 @Validated
 public class StoreController {
     private final StoreService storeService;
-    //private final StoreMapper mapper;
+    private final StoreMapper mapper;
+    private final ImgService imgService;
 
-    public StoreController(StoreService storeService) {
+    public StoreController(StoreService storeService,StoreMapper mapper, ImgService imgService) {
         this.storeService = storeService;
-//        this.mapper = mapper;
+        this.mapper = mapper;
+        this.imgService = imgService;
     }
 
     // 업체 등록
-    @PostMapping
-    public ResponseEntity postStore(@RequestBody @Valid StoreDto requestBody) {
+    @PostMapping("/stores")
+    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
+        Store store = mapper.storePostDtoToStore(storePostDto);
+        List<MultipartFile> images = storePostDto.getStoreImage();
+        imgService.uploadStoreImage(images,store);
+        Store storeSaveResult = storeService.createStore(store);
+        //Todo
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
