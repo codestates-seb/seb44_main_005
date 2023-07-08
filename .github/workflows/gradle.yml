@@ -33,10 +33,9 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      uses: server/gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
-      working-directory: ./server
 
     # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
