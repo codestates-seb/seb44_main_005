@@ -20,7 +20,6 @@ function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [isPartner, setIsPartner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-
   const nevigate = useNavigate();
 
   const handleClick = () => {
