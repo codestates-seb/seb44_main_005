@@ -20,7 +20,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
-   #  RDS mysql 설정
+  # RDS mysql 설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #  sql:
@@ -68,7 +68,7 @@ jwt:                      # JWT 관련 정보
 cloud: # 이거 안하면 host down 에러 발생
   aws:
     s3:
-      bucket: test-main-005
+      bucket: action-project # 수정
 #    credentials:
 #      access-key: ${S3_ACCESS_KEY}
 #      secret-key: ${S3_SECRET_KEY}
