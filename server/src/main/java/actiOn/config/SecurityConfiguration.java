@@ -17,6 +17,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,8 +34,8 @@ public class SecurityConfiguration {
     private final MemberAuthorityUtil authorityUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
                 .headers().frameOptions().sameOrigin()
 
                 .and()
@@ -58,7 +60,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
                 );
-        return http.build();
+
+        return httpSecurity.build();
     }
 
     // JwtAuthenticationFilter 구성하는 클래스
@@ -79,7 +82,7 @@ public class SecurityConfiguration {
             // Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
                     // TODO oauth2 필터 추가
-                    .addFilterAfter(jwtVerificationFilter, JwtVerificationFilter.class);
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
     }
 
@@ -103,5 +106,10 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
