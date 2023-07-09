@@ -1,16 +1,16 @@
 package actiOn.member.controller;
 
 import actiOn.Img.profileImg.ProfileImgDto;
+import actiOn.auth.utils.AuthUtil;
 import actiOn.member.dto.MemberPatchDto;
 import actiOn.member.dto.MemberPostDto;
+import actiOn.member.dto.MemberResponseDto;
 import actiOn.member.entity.Member;
 import actiOn.member.mapper.MemberMapper;
 import actiOn.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,11 +48,10 @@ public class MemberController {
 
     // 마이페이지 - 회원 정보 수정
     @PatchMapping("/mypage")
-    public ResponseEntity updateMember(Authentication authentication,
-                                       @RequestBody @Valid MemberPatchDto requestBody) {
+    public ResponseEntity updateMember(@RequestBody @Valid MemberPatchDto requestBody) {
 
         Member member = mapper.memberPatchDtoToMember(requestBody);
-        member.setEmail(authentication.getPrincipal().toString());
+        member.setEmail(AuthUtil.getCurrentMemberEmail());
 
         memberService.updateMember(member);
 
@@ -61,8 +60,13 @@ public class MemberController {
 
     // 마이페이지 - 회원 정보 조회
     @GetMapping("/mypage")
-    public ResponseEntity getMemberInfo(Authentication authentication) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity getMemberInfo() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member member = memberService.findMemberByEmail(email);
+
+        MemberResponseDto response = mapper.memberToMemberResponseDto(member);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 마이페이지 - 사업자 정보 조히
