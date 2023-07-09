@@ -9,8 +9,8 @@ spring:
 #      url: jdbc:h2:mem:test
   jpa:
     hibernate:
-      ddl-auto: create  # 스키마 자동 생성 // 수정
-    show-sql: true        # SQL 쿼리 출력
+      ddl-auto: update  # 스키마 자동 생성 // 수정
+    show-sql: false        # SQL 쿼리 출력
     properties:
       hibernate:
         format_sql: true  # SQL pretty print
