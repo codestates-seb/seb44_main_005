@@ -25,7 +25,7 @@ public class TokenProvider {
     private String secretKey;
 
     @Getter
-    @Value("${jwt.access-token-expiration-minutes")
+    @Value("${jwt.access-token-expiration-minutes}")
     private int accessTokenExpirationMinutes;
 
     @Getter
