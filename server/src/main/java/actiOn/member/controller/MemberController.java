@@ -71,7 +71,7 @@ public class MemberController {
 
     // 마이페이지 - 사업자 정보 조히
     @GetMapping("/mypage/partner")
-    public ResponseEntity getPartnerInfo(Authentication authentication) {
+    public ResponseEntity getPartnerInfo() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
