@@ -33,6 +33,6 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
             message = exception.getMessage();
         }
 
-        log.warn("Unauthorized error happened: {}", message);
+        log.warn("# Unauthorized error happened: {}", message);
     }
 }
