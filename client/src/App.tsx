@@ -8,7 +8,6 @@ import Categorybar from './components/Categorybar/Categorybar';
 function App() {
   return (
     <>
-      <Header />
       <MainRouter />
       <CategoryRouter />
     </>
