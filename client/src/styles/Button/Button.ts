@@ -9,6 +9,7 @@ my-[4px]
 cursor-pointer
 text-[13px]
 py-[5px]
+my-[8px]
 rounded-[10px]
 font-semibold
 text-center
