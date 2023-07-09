@@ -53,10 +53,11 @@ public class Reservation extends BaseEntity {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
+
     public enum ReservationStatus {
         RESERVATION_REQUEST(1, "예약 대기"),
         RESERVATION_CONFIRM(2, "예약 확정"),
-        RESERVATION_CANCLE(4, "예약 취소");
+        RESERVATION_CANCLE(3, "예약 취소");
 
         @Getter
         private int stepNumber;
