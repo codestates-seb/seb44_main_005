@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import Rigister from '../pages/Register';
 import Partner from '../pages/Partner';
 import CategoryLayout from '../components/Layout/CategoryLayout';
+import MyPage from '../pages/MyPage';
 
 function MainRouter() {
   return (
@@ -17,6 +18,7 @@ function MainRouter() {
       </Route>
       <Route path="/" element={<Welcome />} />
       <Route path="/partner" element={<Partner />} />
+      <Route path="/my" element={<MyPage />} />
     </Routes>
   );
 }
