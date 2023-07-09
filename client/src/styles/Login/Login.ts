@@ -7,7 +7,7 @@ export const InputContainer = tw.div`
   mb-[40px]
 `;
 
-export const StyleContainer = tw.form`
+export const StyleContainer = tw.div`
   flex 
   justify-center 
   items-center

@@ -41,7 +41,7 @@ function Login() {
               type="text"
               value={id}
               onChange={onIdHandler}
-              className="border-[2px] h-[30px] w-[200px] ml-4 rounded-md mb-3 px-2"
+              className="border border-[#9A9A9A]  h-[30px] w-[200px] ml-4 rounded-md mb-3 px-2"
             />
           </div>
           <div>
@@ -50,7 +50,7 @@ function Login() {
               type="password"
               value={password}
               onChange={onPwHandler}
-              className="border-[2px] h-[30px] w-[200px] ml-3 rounded-md mr-3 px-2"
+              className="border border-[#9A9A9A] h-[30px] w-[200px] ml-3 rounded-md mr-3 px-2"
             />
           </div>
         </InputContainer>
