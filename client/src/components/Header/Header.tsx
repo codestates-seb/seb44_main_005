@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import headerlogo from '../../assets/headerlogo.svg';
 import profile from '../../assets/profile.svg';
@@ -20,9 +20,10 @@ function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [isPartner, setIsPartner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const nevigate = useNavigate();
 
   const handleClick = () => {
-    setIsLogin(!isLogin);
+    nevigate('/home');
   };
   const handlePartnerClick = () => {
     setIsPartner(!isPartner);
