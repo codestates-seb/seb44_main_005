@@ -31,8 +31,8 @@ spring:
       client:
         registration:
           google:
-            client-id: ${G_CLIENT_ID}
-            client-secret: ${G_CLIENT_SECRET}
+#            client-id: ${G_CLIENT_ID}
+#            client-secret: ${G_CLIENT_SECRET}
             scope:
               - profile
               - email
@@ -58,7 +58,7 @@ server:                   # 모든 response 에 대해 지정된 인코딩 적�
     encoding:
       force-response: true
 jwt:                      # JWT 관련 정보
-  key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
+#  key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
   access-token-expiration-minutes: 100
   refresh-token-expiration-minutes: 200
 #awsParameterStorePropertySource:
@@ -80,4 +80,4 @@ cloud: # 이거 안하면 host down 에러 발생
 
 kakao:
   url: https://dapi.kakao.com/v2/local/search/address.json
-  access-key: ${KAKAO_ACCESS_KEY}
+#  access-key: ${KAKAO_ACCESS_KEY}

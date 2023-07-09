@@ -27,9 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-
-
-    //
+    // 파라미터 스토어
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
@@ -55,8 +54,6 @@ dependencies {
 
     // aws s3 의존
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-    // 파라미터 스토어
-    //implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 }
 
 dependencyManagement { // 블록 추가
