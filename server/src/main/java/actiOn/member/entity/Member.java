@@ -35,6 +35,9 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     @OneToOne(mappedBy = "member")
     private Business business;
 
