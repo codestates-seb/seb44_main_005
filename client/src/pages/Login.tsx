@@ -54,13 +54,13 @@ function Login() {
             />
           </div>
         </InputContainer>
-        <Button bgColor="#FFFFFF" color="#000000" onClick={onClickHandler}>
+        <Button bgColor="#FFFFFF" color="#000000" clickHandler={onClickHandler}>
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
             <span className="font-medium">구글로 로그인하기</span>
           </div>
         </Button>
-        <Button bgColor="#4771B7" color="#FFFFFF" onClick={onClickHandler}>
+        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={onClickHandler}>
           <span className="font-medium">로그인</span>
         </Button>
       </LoginContainer>
