@@ -3,7 +3,9 @@ package actiOn.store.controller;
 import actiOn.Img.service.ImgService;
 import actiOn.map.response.GeoLocation;
 import actiOn.map.service.KakaoMapService;
+import actiOn.member.entity.Member;
 import actiOn.store.dto.StorePostDto;
+import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
 import actiOn.store.mapper.StoreMapper;
 import actiOn.store.service.StoreService;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -35,13 +38,22 @@ public class StoreController {
     @PostMapping("/stores")
     public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = mapper.storePostDtoToStore(storePostDto);
-        List<MultipartFile> images = storePostDto.getStoreImage();
-        imgService.uploadStoreImage(images,store);
         Store storeSaveResult = storeService.createStore(store);
-        //Todo
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        StoreResponseDto result = mapper.storeToStoreResponseDto(storeSaveResult);
+        return new ResponseEntity<>(result,HttpStatus.CREATED);
+    }
+    @PostMapping("/storeImages/{store-id}")
+    public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
+                                            @RequestPart("images") List<MultipartFile> images) {
+            imgService.uploadStoreImage(images,storeId);
+            return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/profileImages")
+    public ResponseEntity profileImgUpload(@RequestPart("image") MultipartFile image){
+        imgService.uploadProfileImage(image,new Member());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
     // 업체 수정
     @PatchMapping("/stores/{store-id}")
     public ResponseEntity patchStore(@PathVariable("store-id") @Positive long storeId) {

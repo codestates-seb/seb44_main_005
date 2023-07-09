@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface StoreImgRepository extends JpaRepository<StoreImg,Long> {
     Optional<StoreImg> findByStore(Store store);
+
+    Optional<StoreImg> findByLink(String link);
 }

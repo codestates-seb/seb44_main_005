@@ -51,6 +51,8 @@ dependencies {
 	//aws s3 의존
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	implementation 'commons-fileupload:commons-fileupload:1.4'
 }
 
 	tasks.named('test') {

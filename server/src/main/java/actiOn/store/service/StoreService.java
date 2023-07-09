@@ -1,5 +1,6 @@
 package actiOn.store.service;
 
+import actiOn.exception.BusinessLogicException;
 import actiOn.item.entity.Item;
 import actiOn.map.response.GeoLocation;
 import actiOn.map.service.KakaoMapService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,6 +30,10 @@ public class StoreService {
             item.setStore(store);
         }
         return storeRepository.save(store);
+    }
+
+    public Optional<Store> findStoreByStoreId(long storeId) throws BusinessLogicException {
+        return storeRepository.findById(storeId);
     }
 
 
