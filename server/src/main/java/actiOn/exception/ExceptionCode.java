@@ -8,6 +8,9 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_AUTHORIZED(403, "Member not authorized"),
 
+    // AUTH
+    USERNAME_NOT_FOUND(404, "Username not found"),
+
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
