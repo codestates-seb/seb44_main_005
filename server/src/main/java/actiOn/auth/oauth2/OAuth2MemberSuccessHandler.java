@@ -74,17 +74,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
         String accessToken = tokenProvider.delegateAccessToken(member);
-        String refreshToken = tokenProvider.delegateRefreshToken(member);
+//        String refreshToken = tokenProvider.delegateRefreshToken(member);
 
-        String uri = createURI(accessToken, refreshToken, member);
+        String uri = createURI(accessToken, member);
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    private String createURI(String accessToken, String refreshToken, Member member) {
+    private String createURI(String accessToken, Member member) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
-        queryParams.add("memberId", member.getMemberId().toString());
+//        queryParams.add("memberId", member.getMemberId().toString());
         queryParams.add("nickname", member.getNickname());
 
         // 컨트롤러로 보낸 후 프론트로 리다이렉트 시도
