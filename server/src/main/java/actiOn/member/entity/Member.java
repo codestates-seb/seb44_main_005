@@ -1,8 +1,8 @@
 package actiOn.member.entity;
 
 import actiOn.Img.profileImg.ProfileImg;
-import actiOn.helper.audit.BaseEntity;
 import actiOn.business.entity.Business;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
@@ -53,5 +53,10 @@ public class Member extends BaseEntity implements Principal {
     @Override
     public String getName() {
         return getEmail();
+    }
+
+    public enum MemberRole {
+        ROLE_USER,
+        ROLE_PARTNER
     }
 }
