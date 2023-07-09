@@ -63,7 +63,7 @@ public class MemberService {
     }
 
     // 이메일로 회원 조회
-    private Member findMemberByEmail(String email) {
+    public Member findMemberByEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
 
         if (member.isEmpty()) {
@@ -101,4 +101,9 @@ public class MemberService {
     }
 
 
+    public boolean isExistMember(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        return member.isPresent();
+    }
 }
