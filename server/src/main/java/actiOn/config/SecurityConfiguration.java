@@ -60,7 +60,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
 
                 .and()
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeRequests(authorize -> authorize
                         .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
                 )
                 .oauth2Login(oAuth2 -> oAuth2
