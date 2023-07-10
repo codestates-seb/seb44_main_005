@@ -1,10 +1,12 @@
-import tw from "tailwind-styled-components";
+import tw from 'tailwind-styled-components';
 
 function PaymentInfo({ data }) {
   return (
     <PaymentInfoBox>
       <div>
-        <div className="m-5 pb-3 text-lg border-b-[1px] border-black">결제정보</div>
+        <div className="m-5 pb-3 text-lg border-b-[1px] border-black">
+          결제정보
+        </div>
         <div className="m-7 flex justify-between">
           <div>주문금액</div>
           <div>20,000원</div>
@@ -17,7 +19,7 @@ function PaymentInfo({ data }) {
           <div className="font-semibold">예약취소 규정</div>
           <ul className="text-xs list-disc mt-3 pl-5">
             <li>체험일 4일전 18시이전 100% 환불가능</li>
-            <li>체험일 4일전 18시이후~당일 :  환불불가, 날짜 변경 불가</li>
+            <li>체험일 4일전 18시이후~당일 : 환불불가, 날짜 변경 불가</li>
             <li>부분 사용 및 부분 취소는 불가능합니다.</li>
           </ul>
         </RuleBox>

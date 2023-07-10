@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
@@ -49,7 +49,7 @@ function Home() {
       <section className="relative">
         <CarouselBox className={`${moveStyle[current]} carousel-container`}>
           {recommend.recommend.map((el) => {
-            return <Carousel data={el} key={el.storeId} />
+            return <Carousel data={el} key={el.storeId} />;
           })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>
