@@ -43,28 +43,4 @@ public class StoreService {
     public Store findStoreByStoreId(long storeId){
         return storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
-
-    public Map<Long,Integer> reservationTicketCount(Store store, LocalDate currentDate) throws BusinessLogicException{
-        //Todo 예약내역에서 1. 날짜,예약상태로 필터링 한 예약 정보들 // 그러면 조건에 맞는 예약들이 나옴 //
-        //선택한 업체와 날짜의 예약들을 가져옴
-        List<Reservation> currentDateReservations =
-                reservationRepository.findByReservationDateAndStore(currentDate, store);
-        Map<Long, Integer> remainingTicketInfo = new HashMap<>();
-        for (Reservation reservation : currentDateReservations) {
-            List<ReservationItem> reservationItems = reservation.getReservationItems();
-            for (ReservationItem reservationItem : reservationItems) {
-                long itemId = reservationItem.getItem().getItemId();
-                int ticketCount = reservationItem.getTicketCount();// 해당 아이템의 예약한 티켓 수
-                // 주석 부분 수정
-                if (remainingTicketInfo.containsKey(itemId)) {
-                    int existingTicketCount = remainingTicketInfo.get(itemId);
-                    remainingTicketInfo.put(itemId, existingTicketCount + ticketCount);
-                } else {
-                    remainingTicketInfo.put(itemId, ticketCount);
-                }
-            }
-        }
-        return remainingTicketInfo;
-        ///
-    }
 }

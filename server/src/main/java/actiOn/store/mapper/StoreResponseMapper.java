@@ -3,6 +3,7 @@ package actiOn.store.mapper;
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
+import actiOn.reservation.service.ReservationService;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
 import actiOn.store.service.StoreService;
@@ -14,15 +15,18 @@ import java.util.*;
 @Component
 public class StoreResponseMapper {
     private final StoreService storeService;
+    private final ReservationService reservationService;
 
-    public StoreResponseMapper(StoreService storeService){
+    public StoreResponseMapper(StoreService storeService, ReservationService reservationService) {
         this.storeService = storeService;
+        this.reservationService = reservationService;
     }
+
     public StoreResponseDto storeToStoreResponseDto(Store store) {
         List<Item> findItems = store.getItems();
         List<ItemDto> modifiedItems = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
-        Map<Long,Integer> reservationTicketCountInfo = storeService.reservationTicketCount(store, currentDate);
+        Map<Long,Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
         for (Item item : findItems){
             int maxCount = item.getMaxCount();
             int remainingTicketCount = maxCount;

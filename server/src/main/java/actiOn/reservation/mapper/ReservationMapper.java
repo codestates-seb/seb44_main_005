@@ -67,7 +67,7 @@ public class ReservationMapper {
         reservationRepDto.setTotalPrice(reservation.getTotalPrice());
         reservationRepDto.setReservationName(reservation.getReservationName());
         reservationRepDto.setReservationPhone(reservation.getReservationPhone());
-        reservationRepDto.setReservationEmail(reservationRepDto.getReservationEmail());
+        reservationRepDto.setReservationEmail(reservation.getReservationEmail());
         reservationRepDto.setReservationItemRepDtos(reservationItemRepDtos);
 
         return reservationRepDto;

@@ -44,6 +44,7 @@ public class StoreController {
         StorePostResponseDto storePostResponseDto = mapper.storeToStorePostResponseDto(storeSaveResult);
         return new ResponseEntity<>(storePostResponseDto,HttpStatus.CREATED);
     }
+
     @PostMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                             @RequestPart("images") List<MultipartFile> images) {
