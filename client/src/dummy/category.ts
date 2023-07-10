@@ -1,7 +1,7 @@
 export const category = {
   pageInfo: [
     {
-      storeCount: 30,
+      storeCount: 20,
     },
   ],
   data: [

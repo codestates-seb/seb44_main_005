@@ -19,7 +19,6 @@ function Register() {
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -76,7 +75,6 @@ function Register() {
   //비밀번호 확인 유효성
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
-    setPasswordConfirm(currentPasswordConfirm);
     if (password !== currentPasswordConfirm) {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
     } else {
@@ -170,13 +168,13 @@ function Register() {
               href="https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google"
               className="font-medium"
             > */}
-            구글로 회원가입하기
+            <span className="font-medium">구글로 회원가입하기</span>
             {/* </a> */}
           </div>
         </Button>
         <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleSubmit}>
-          {/* <span className="font-medium">가입 진행하기</span> */}
-          가입진행하기
+          <span className="font-medium">가입 진행하기</span>
+          {/* 가입진행하기 */}
         </Button>
       </RegisterContainer>
     </StyleContainer>
