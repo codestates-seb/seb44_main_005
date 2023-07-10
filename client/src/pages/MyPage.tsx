@@ -1,26 +1,13 @@
 import React from 'react';
 import dummyImg from '../dummy/mypagedummy.jpeg';
+import dummyBio from '../dummy/mypage';
+import SideBar from '../components/MyPage/SideBar';
 
 function MyPage() {
   return (
     <div>
         <div className='flex flex-row justify-center items-start py-24 space-x-8'>
-            <div className='border-[1px] border-[#4771B7] h-[100%] px-10 py-16 space-y-20'>
-                <div className='flex flex-col space-y-8'>
-                    <span className='text-xl font-semibold'>마이페이지</span>
-                    <div className='text-lg flex flex-col space-y-8 pl-5'>
-                        <a>내 정보 관리</a>
-                        <a>위시리스트</a>
-                        <a>예약 내역 조회</a>
-                    </div>
-                </div>
-                <div className='flex flex-col space-y-8'>
-                    <span className='text-xl font-semibold'>파트너쉽</span>
-                    <div className='text-lg pl-5'>
-                        <a>판매 서비스 관리</a>
-                    </div>
-                </div>
-            </div>
+            <SideBar />
             <div className='border-[1px] border-[#4771B7] space-y-32 p-20'>
                 <div className='space-y-7'>
                     <div className='grid justify-items-end'>
