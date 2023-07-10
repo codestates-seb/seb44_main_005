@@ -8,6 +8,7 @@ import actiOn.store.dto.StorePostDto;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
 import actiOn.store.mapper.StoreMapper;
+import actiOn.store.mapper.StoreResponseMapper;
 import actiOn.store.service.StoreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,14 @@ import java.util.Optional;
 public class StoreController {
     private final StoreService storeService;
     private final StoreMapper mapper;
+    private final StoreResponseMapper responseMapper;
     private final ImgService imgService;
 
-    public StoreController(StoreService storeService,StoreMapper mapper, ImgService imgService) {
+    public StoreController(StoreService storeService,StoreMapper mapper, ImgService imgService, StoreResponseMapper storeResponseMapper) {
         this.storeService = storeService;
         this.mapper = mapper;
         this.imgService = imgService;
+        this.responseMapper = storeResponseMapper;
     }
 
     // 업체 등록
@@ -39,8 +42,8 @@ public class StoreController {
     public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = mapper.storePostDtoToStore(storePostDto);
         Store storeSaveResult = storeService.createStore(store);
-        StoreResponseDto result = mapper.storeToStoreResponseDto(storeSaveResult);
-        return new ResponseEntity<>(result,HttpStatus.CREATED);
+//        StoreResponseDto result = mapper.storeToStoreResponseDto(storeSaveResult);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PostMapping("/storeImages/{store-id}")
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
@@ -63,7 +66,9 @@ public class StoreController {
     // 업체 상세 페이지 조회, 업체 수정 페이지 렌더링용
     @GetMapping("/stores/{store-id}")
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        Store findStore = storeService.findStoreByStoreId(storeId);
+        StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
     // 업체 삭제

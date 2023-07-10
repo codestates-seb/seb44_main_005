@@ -51,6 +51,7 @@ public class ImgService {
         return profileImg;
     }
 
+
     public static String generateRandomName(){
         String uuid = UUID.randomUUID().toString();
         int leftLimit = 97; // letter 'a'

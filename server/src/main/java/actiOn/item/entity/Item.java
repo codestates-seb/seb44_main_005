@@ -4,6 +4,7 @@ import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 

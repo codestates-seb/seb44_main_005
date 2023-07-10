@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Reservation extends BaseEntity {
     private String reservationEmail;
 
     @Column(nullable = false)
-    private Date reservationDate;
+    private LocalDate reservationDate;
 
     // @Enumerated(EnumType.STRING) // enum 추가
     private String reservationStatus;
