@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 

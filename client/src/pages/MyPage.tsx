@@ -1,4 +1,3 @@
-import React from 'react';
 import dummyImg from '../dummy/mypagedummy.jpeg';
 
 function MyPage() {

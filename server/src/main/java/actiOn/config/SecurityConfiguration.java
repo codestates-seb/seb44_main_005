@@ -100,8 +100,12 @@ public class SecurityConfiguration {
 
         configuration.setAllowedOrigins(
                 Arrays.asList(
-                        "http://localhost:3000")
-                // TODO S3 엔드포인트 추가 ""
+                        "http://localhost:3000",
+                        "https://acti-on.netlify.app",
+                        "https://daae-222-232-33-89.ngrok-free.app",
+                        "http://localhost:5173"
+                        // TODO S3 엔드포인트 추가 ""
+                )
         );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
 
