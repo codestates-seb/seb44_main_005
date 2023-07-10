@@ -20,18 +20,29 @@ import java.util.Optional;
 
 @Service
 public class ImgService {
+    @Value("${cloud.aws.s3.bucket}")
+    private String BUCKET_NAME;
 
-//    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
+    @Value("${cloud.aws.region.static}")
+    private String REGION;
+
+    //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository){
+
+    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository) {
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
     }
-    @Value("${cloud.aws.s3.bucket}")
-    private String BUCKET_NAME;
-    @Value("${cloud.aws.region.static}")
-    private String REGION;
+
+    // 기본 프로필 이미지 경로 저장하는 메서드
+    public ProfileImg createDefaultProfileImg(Member member) {
+        ProfileImg profileImg = new ProfileImg();
+        profileImg.setLink("default Link"); // TODO 변경 해주어야 함
+        profileImg.setMember(member);
+
+        return profileImg;
+    }
 
     public String uploadImage(MultipartFile file, String imageName) throws IOException {
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
@@ -43,10 +54,11 @@ public class ImgService {
         String fileUrl = s3Client.getUrl(BUCKET_NAME, imageName).toString();
         return fileUrl;
     }
-    public void uploadProfileImage(MultipartFile file,Member member) {
+
+    public void uploadProfileImage(MultipartFile file, Member member) {
         try {
             String imageName = "test";
-            String fileUrl = uploadImage(file,imageName);
+            String fileUrl = uploadImage(file, imageName);
 
             ProfileImg profileImg = new ProfileImg();
             profileImg.setLink(fileUrl);
@@ -59,10 +71,10 @@ public class ImgService {
 
     public void uploadStoreImage(List<MultipartFile> files, Store store) {
         try {
-            for (MultipartFile file : files){
+            for (MultipartFile file : files) {
                 String imageName = "storeTest";
 
-                String fileUrl = uploadImage(file,imageName);
+                String fileUrl = uploadImage(file, imageName);
                 StoreImg storeImg = new StoreImg();
                 storeImg.setLink(imageName);
                 storeImg.setStore(store);
@@ -75,20 +87,19 @@ public class ImgService {
         }
     }
 
-    public Optional<ProfileImg> findProfileImgByMember(Member member){
+    public Optional<ProfileImg> findProfileImgByMember(Member member) {
         return profileImgRepository.findByMember(member);
     }
 
-    public Optional<StoreImg> findStoreImgByStore(Store store){
+    public Optional<StoreImg> findStoreImgByStore(Store store) {
         return storeImgRepository.findByStore(store);
     }
 
-
-    public void deleteProfileImg(Member member){
+    public void deleteProfileImg(Member member) {
         //Todo 진짜 삭제하지 않고 기본 프로필로 바꾸는 작업
     }
 
-    public void deleteStoreImg(Store store){  // 스토어 이미지들 삭제
+    public void deleteStoreImg(Store store) {  // 스토어 이미지들 삭제
 
     }
 }

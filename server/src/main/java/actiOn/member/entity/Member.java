@@ -1,8 +1,8 @@
 package actiOn.member.entity;
 
 import actiOn.Img.profileImg.ProfileImg;
-import actiOn.helper.audit.BaseEntity;
 import actiOn.business.entity.Business;
+import actiOn.helper.audit.BaseEntity;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
@@ -32,8 +32,11 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column // nullable true로 임시 변경
     private String phoneNumber;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")
     private Business business;
@@ -44,11 +47,16 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Store> stores = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private ProfileImg profileImg;
 
     @Override
     public String getName() {
         return getEmail();
+    }
+
+    public enum MemberRole {
+        ROLE_USER,
+        ROLE_PARTNER
     }
 }
