@@ -7,18 +7,21 @@ import Partner from '../pages/Partner';
 import CategoryLayout from '../components/Layout/CategoryLayout';
 import MyPage from '../pages/MyPage';
 import FooterLayout from '../components/Layout/FooterLayout';
+import HeaderLayout from '../components/Layout/HeaderLayout';
 
 function MainRouter() {
   return (
     <Routes>
       <Route path="/" element={<Welcome />} />
-      <Route element={<FooterLayout />}>
-        <Route path="/my" element={<MyPage />} />
-        <Route path="/partner" element={<Partner />} />
-        <Route element={<CategoryLayout />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+      <Route element={<HeaderLayout />}>
+        <Route element={<FooterLayout />}>
+          <Route path="/my" element={<MyPage />} />
+          <Route path="/partner" element={<Partner />} />
+          <Route element={<CategoryLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

@@ -25,9 +25,9 @@ function Header() {
   const handleClick = () => {
     nevigate('/home');
   };
-  const handlePartnerClick = () => {
-    setIsPartner(!isPartner);
-  };
+  // const handlePartnerClick = () => {
+  //   setIsPartner(!isPartner);
+  // };
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };

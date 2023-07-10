@@ -49,7 +49,7 @@ function Home() {
       <section className="relative">
         <CarouselBox className={`${moveStyle[current]} carousel-container`}>
           {recommend.recommend.map((el) => {
-            return <Carousel data={el} key={el.storeId} />
+            return <Carousel data={el} key={el.storeId} />;
           })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>

@@ -13,7 +13,11 @@ function Button({ children, color, bgColor, clickHandler }: BProps) {
     backgroundColor: bgColor,
     color: color,
   };
-  return <StyleButton style={style} onClick={clickHandler}>{children}</StyleButton>;
+  return (
+    <StyleButton onClick={clickHandler} style={style}>
+      {children}
+    </StyleButton>
+  );
 }
 
 export default Button;
