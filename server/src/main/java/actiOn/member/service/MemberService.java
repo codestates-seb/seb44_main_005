@@ -1,5 +1,7 @@
 package actiOn.member.service;
 
+import actiOn.Img.profileImg.ProfileImg;
+import actiOn.Img.service.ImgService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
@@ -22,8 +24,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final MemberAuthorityUtil authorityUtil;
+    private final ImgService imgService;
 
     // 회원 등록
+    @Transactional(propagation = Propagation.REQUIRED)
     public Member createMember(Member member) {
         // 이메일, 닉네임, 휴대폰 번호 중복 검사
         verifyExistsEmail(member.getEmail());
@@ -37,6 +41,10 @@ public class MemberService {
         // TODO DB에 User Role 저장
         List<String> roles = authorityUtil.createRoles(member.getEmail());
         member.setRoles(roles);
+
+        // 프로필 기본 이미지 설정
+        ProfileImg defaultImage = imgService.createDefaultProfileImg(member);
+        member.setProfileImg(defaultImage);
 
         return memberRepository.save(member);
     }
