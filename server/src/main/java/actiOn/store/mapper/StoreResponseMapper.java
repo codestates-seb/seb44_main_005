@@ -9,7 +9,6 @@ import actiOn.store.service.StoreService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -19,13 +18,10 @@ public class StoreResponseMapper {
     public StoreResponseMapper(StoreService storeService){
         this.storeService = storeService;
     }
-    public StoreResponseDto storeToStoreResponseDto(Store store){
+    public StoreResponseDto storeToStoreResponseDto(Store store) {
         List<Item> findItems = store.getItems();
         List<ItemDto> modifiedItems = new ArrayList<>();
-
-
         LocalDate currentDate = LocalDate.now();
-
         Map<Long,Integer> reservationTicketCountInfo = storeService.reservationTicketCount(store, currentDate);
         for (Item item : findItems){
             int maxCount = item.getMaxCount();
@@ -34,7 +30,6 @@ public class StoreResponseMapper {
                 int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
                 remainingTicketCount = remainingTicketCount-reservationTicketCount;
             }
-
             if (remainingTicketCount < 0) {
                 remainingTicketCount = 0;
             }
@@ -43,7 +38,6 @@ public class StoreResponseMapper {
                     );
             modifiedItems.add(modifiedItem);
         }
-
         List<StoreImg> findImgs = store.getStoreImgList();
         List<String> modifiedStoreImgs = new ArrayList<>();
         for (StoreImg storeImg : findImgs){
@@ -54,7 +48,6 @@ public class StoreResponseMapper {
             else{
                 modifiedStoreImgs.add(link);
             }
-
         }
         StoreResponseDto storeResponseDto = new StoreResponseDto();
         storeResponseDto.setStoreName(store.getStoreName());
@@ -68,7 +61,7 @@ public class StoreResponseMapper {
         storeResponseDto.setCreatedAt(store.getCreatedAt());
         storeResponseDto.setItems(modifiedItems);
         storeResponseDto.setStoreImages(modifiedStoreImgs);
-
+        storeResponseDto.setProfileImg("21");
         return storeResponseDto;
     }
 
