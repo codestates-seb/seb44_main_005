@@ -32,7 +32,7 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column // nullable true로 임시 변경
     private String phoneNumber;
 
     @ElementCollection(fetch = FetchType.EAGER)

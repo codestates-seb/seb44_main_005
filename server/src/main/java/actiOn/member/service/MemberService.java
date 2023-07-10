@@ -109,4 +109,9 @@ public class MemberService {
     }
 
 
+    public boolean isExistMember(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        return member.isPresent();
+    }
 }
