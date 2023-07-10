@@ -1,61 +1,76 @@
 import { dummyBio } from "../../dummy/mypage";
 import dummyImg from "../../dummy/mypagedummy.jpeg";
+import { 
+    BusinessCategory,
+    BusinessSpace,
+    ButtonGrid,
+    ButtonStyle,
+    ImgStyle,
+    MiniButtonGrid,
+    MiniButtonStyle,
+    MySpace,
+    NicknameAccent,
+    TopSpace,
+    UserInfo,
+    UserInfoTitle,
+    BusinessCategoryTitle
+} from "../../styles/MyPage/My";
 
 function My() {
     return (
         <div>
-                <div className='space-y-7'>
-                    <div className='grid justify-items-end'>
-                      <button className='bg-[#4771B7] text-white px-4 py-1 rounded' type='button'>편집</button>
-                    </div>
-                    <div className='flex flex-col items-center space-y-2'>
-                        <img className='w-[100px]' src={dummyImg} alt="dummy bio img" />
-                        <div className='flex space-x-3'>
-                            <button className='text-[12px] bg-[#EDF1F8] border-[1px] border-[#4771B7] rounded' type='button'>사진 변경</button>
-                            <button className='text-[12px] bg-[#EDF1F8] border-[1px] border-[#4771B7] rounded' type='button'>사진 삭제</button>
-                        </div>
-                        <span className='font-medium text-xl'>Taewoo Kim</span>
-                    </div>
-                    <div className='space-y-7'>
-                        <div className='space-x-10 text-lg'>
-                            <span className='font-medium'>닉네임</span>
+                <MySpace>
+                    <ButtonGrid>
+                      <ButtonStyle type='button'>편집</ButtonStyle>
+                    </ButtonGrid>
+                    <TopSpace>
+                        <ImgStyle src={dummyImg} alt="dummy bio img" />
+                        <MiniButtonGrid>
+                            <MiniButtonStyle type='button'>사진 변경</MiniButtonStyle>
+                            <MiniButtonStyle type='button'>사진 삭제</MiniButtonStyle>
+                        </MiniButtonGrid>
+                        <NicknameAccent>Taewoo Kim</NicknameAccent>
+                    </TopSpace>
+                    <MySpace>
+                        <UserInfo>
+                            <UserInfoTitle>닉네임</UserInfoTitle>
                             <span>Taewoo Kim</span>
-                        </div>
-                        <div className='space-x-10 text-lg'>
-                            <span className='font-medium'>이메일</span>
+                        </UserInfo>
+                        <UserInfo>
+                            <UserInfoTitle>이메일</UserInfoTitle>
                             <span>abc123@naver.com</span>
-                        </div>
-                        <div className='space-x-10 text-lg'>
-                            <span className='font-medium'>연락처</span>
+                        </UserInfo>
+                        <UserInfo>
+                            <UserInfoTitle>연락처</UserInfoTitle>
                             <span>010-1234-5678</span>
-                        </div>
-                    </div>
-                </div>
-                <div className='space-y-7'>
-                    <div className='grid justify-items-end'>
-                        <button className='bg-[#4771B7] text-white px-4 py-1 rounded' type='button'>등록한 업체보기</button>
-                    </div>
-                    <div className='flex flex-row space-x-10 justify-center'>
-                        <div className='flex flex-col space-y-5 text-lg'>
-                            <span className='font-semibold'>업태</span>
+                        </UserInfo>
+                    </MySpace>
+                </MySpace>
+                <MySpace>
+                    <ButtonGrid>
+                        <ButtonStyle type='button'>등록한 업체보기</ButtonStyle>
+                    </ButtonGrid>
+                    <BusinessSpace>
+                        <BusinessCategory>
+                            <BusinessCategoryTitle>업태</BusinessCategoryTitle>
                             <span>스포츠 및 여가관련 서비스업</span>
                             <span>스포츠 및 여가관련 서비스업</span>
                             <span>스포츠 및 여가관련 서비스업</span>
-                        </div>
-                        <div className='flex flex-col space-y-5 text-lg'>
-                            <span className='font-semibold'>업종</span>
+                        </BusinessCategory>
+                        <BusinessCategory>
+                            <BusinessCategoryTitle>업종</BusinessCategoryTitle>
                             <span>레저 좋아</span>
                             <span>레저 화이팅</span>
                             <span>태우네 레저</span>
-                        </div>
-                        <div className='flex flex-col space-y-5 text-lg'>
-                            <span className='font-semibold'>업태</span>
+                        </BusinessCategory>
+                        <BusinessCategory>
+                            <BusinessCategoryTitle>업태</BusinessCategoryTitle>
                             <span>언더워터플레이 함덕점</span>
                             <span>언더워터플레이 애월점</span>
                             <span>언더워터플레이 김녕점</span>
-                        </div>
-                    </div>
-                </div>
+                        </BusinessCategory>
+                    </BusinessSpace>
+                </MySpace>
         </div>
     );
 };
