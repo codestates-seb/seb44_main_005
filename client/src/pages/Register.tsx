@@ -11,13 +11,17 @@ import {
 } from '../styles/Register/Register';
 import Button from '../components/Button/Button';
 import google from '../assets/google.svg';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+  const url = import.meta.env.VITE_APP_API_URL;
+  const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] =
@@ -80,6 +84,53 @@ function Register() {
     }
   };
 
+  const onChangePhone = (e) => {
+    const currentPhone = e.target.value;
+    setPhone(currentPhone);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log({
+      email: email,
+      password: password,
+      phoneNumber: phone,
+      nickname: name,
+    });
+    await fetch('https://daae-222-232-33-89.ngrok-free.app/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        phoneNumber: phone,
+        nickname: name,
+      }),
+    }).then(() => navigate('/home'));
+  };
+
+  // const handleOuathSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await fetch(
+  //     'https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google',
+  //     {
+  //       method: 'POST',
+  //     }
+  //   )
+  //     .then(() => {
+  //       window.location.href =
+  //         'http://localhost:5137/oauth2/authorization/google/success';
+  //     })
+  //     .then(() => navigate('/home'));
+  // };
+
+  const LoginRequestHandlerGoogle = (e) => {
+    e.preventDefault();
+    window.location.href = `${url}/oauth2/authorization/google`;
+  };
+
   return (
     <StyleContainer>
       <RegisterContainer>
@@ -118,18 +169,28 @@ function Register() {
         <div className="flex pt-2 pr-[15px] mb-[30px]">
           <Label htmlFor="phone">전화번호</Label>
           <InputContainer>
-            <Input id="phone" type="tel" />
-            <Message>전화번호는 - 를 빼고 입력해주세요.</Message>
+            <Input id="phone" type="tel" onChange={onChangePhone} />
+            <Message>전화번호는 - 를 넣고 입력해주세요.</Message>
           </InputContainer>
         </div>
-        <Button bgColor="#FFFFFF" color="#000000">
+        <Button
+          bgColor="#FFFFFF"
+          color="#000000"
+          clickHandler={LoginRequestHandlerGoogle}
+        >
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
-            <span className="font-medium">구글로 회원가입하기</span>
+            {/* <a
+              href="https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google"
+              className="font-medium"
+            > */}
+            구글로 회원가입하기
+            {/* </a> */}
           </div>
         </Button>
-        <Button bgColor="#4771B7" color="#FFFFFF">
-          <span className="font-medium">가입 진행하기</span>
+        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleSubmit}>
+          {/* <span className="font-medium">가입 진행하기</span> */}
+          가입진행하기
         </Button>
       </RegisterContainer>
     </StyleContainer>
