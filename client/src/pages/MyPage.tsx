@@ -6,14 +6,16 @@ import My from '../components/MyPage/My';
 import Wish from '../components/MyPage/Wish';
 import Order from '../components/MyPage/Order';
 import Stores from '../components/MyPage/Stores';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function MyPage() {
     const [selectedTab, setSelectedTab] = useState('info');
     const location = useLocation();
+    const navigate = useNavigate();
 
     const onTabSelect = (tab) => {
         setSelectedTab(tab);
+        navigate(`/my/${tab}`);
     };
 
     React.useEffect(() => {
