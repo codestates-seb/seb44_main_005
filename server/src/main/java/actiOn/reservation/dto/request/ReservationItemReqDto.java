@@ -1,4 +1,4 @@
-package actiOn.reservation.dto;
+package actiOn.reservation.dto.request;
 
 import lombok.Getter;
 

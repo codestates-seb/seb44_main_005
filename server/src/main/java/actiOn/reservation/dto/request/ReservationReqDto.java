@@ -1,12 +1,11 @@
-package actiOn.reservation.dto;
+package actiOn.reservation.dto.request;
 
-import actiOn.reservation.entity.ReservationItem;
+import actiOn.reservation.dto.request.ReservationItemReqDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -22,7 +21,7 @@ public class ReservationReqDto {
 
         private String reservationEmail;
 
-        private Date reservationDate;
+        private String reservationDate;
 
         @Positive
         private int totalPrice;

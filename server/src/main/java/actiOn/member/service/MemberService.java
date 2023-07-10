@@ -108,10 +108,16 @@ public class MemberService {
         }
     }
 
-
     public boolean isExistMember(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
 
         return member.isPresent();
+    }
+
+    //로그인한 멤버와 예약한 멤버의 ID 동일 여부 확인
+    public void loginMemberEqualReservaionMember(Long loginMemberId, Long reservationMemberId){
+        if (!loginMemberId.equals(reservationMemberId)){
+            throw new IllegalArgumentException("예약한 회원만 수정 할 수 있습니다.");
+        }
     }
 }
