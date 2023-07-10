@@ -28,19 +28,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
+    private final MemberService memberService;
 
-    public SecurityConfiguration(TokenProvider tokenProvider, MemberAuthorityUtil authorityUtil) {
+    public SecurityConfiguration(TokenProvider tokenProvider, MemberAuthorityUtil authorityUtil, MemberService memberService) {
         this.tokenProvider = tokenProvider;
         this.authorityUtil = authorityUtil;
+        this.memberService = memberService;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
