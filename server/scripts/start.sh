@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-
+BUILD_JAR=$(ls /home/ubuntu/action/build/libs/actiOn-0.0.1-SNAPSHOT.jar)
 PROJECT_ROOT="/home/ubuntu/action"
 JAR_FILE="$PROJECT_ROOT/build/libs/actiOn-0.0.1-SNAPSHOT.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
-DEPLOY_PATH="/home/ubuntu/action/"
+
 
 TIME_NOW=$(date +%c)
 
 # build 파일 복사
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
-cp $JAR_FILE $DEPLOY_PATH
+DEPLOY_PATH=/home/ubuntu/action/
+cp $BUILD_JAR $DEPLOY_PATH
 
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG

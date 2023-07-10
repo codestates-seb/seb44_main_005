@@ -10,7 +10,6 @@ import actiOn.auth.oauth2.OAuth2MemberSuccessHandler;
 import actiOn.auth.provider.TokenProvider;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,10 +30,14 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
+
+    public SecurityConfiguration(TokenProvider tokenProvider, MemberAuthorityUtil authorityUtil) {
+        this.tokenProvider = tokenProvider;
+        this.authorityUtil = authorityUtil;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService) throws Exception {
