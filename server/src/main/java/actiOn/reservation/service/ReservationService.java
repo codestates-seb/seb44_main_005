@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 public class ReservationService {
 
@@ -61,8 +60,6 @@ public class ReservationService {
 
         //예약 정보 저장
         reservationRepository.save(reqReservation);
-
-        //Todo 예약 성공 시 ticket 개수 줄여야함.
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

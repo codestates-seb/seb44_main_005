@@ -1,6 +1,5 @@
 package actiOn.reservation.dto.response;
 
-import actiOn.reservation.dto.response.ReservationItemRepDto;
 import lombok.Getter;
 import lombok.Setter;
 
