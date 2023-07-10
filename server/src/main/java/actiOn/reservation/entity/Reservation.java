@@ -34,6 +34,9 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private Date reservationDate;
 
+    @Column(nullable = false)
+    private int totalPrice;
+
     @Enumerated(EnumType.STRING) // enum 추가
     private ReservationStatus reservationStatus = ReservationStatus.RESERVATION_REQUEST;
 

@@ -20,6 +20,7 @@ public class ReservationMapper {
         reservation.setReservationPhone(reservationReqDto.getReservationPhone());
         reservation.setReservationEmail(reservationReqDto.getReservationEmail());
         reservation.setReservationDate(reservationReqDto.getReservationDate());
+        reservation.setTotalPrice(reservationReqDto.getTotalPrice());
 
         List<ReservationItemReqDto> itemReqDtos = reservationReqDto.getReservationItemReqDtos();
         List<ReservationItem> reservationItems = new ArrayList<>();
@@ -37,5 +38,7 @@ public class ReservationMapper {
         reservation.setReservationItems(reservationItems);
         return reservation;
     }
+
+//    public Reservation
 
 }
