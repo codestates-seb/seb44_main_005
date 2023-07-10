@@ -43,9 +43,7 @@ public class SecurityConfiguration {
 
                 .and()
                 .csrf().disable()
-//                .cors(Customizer.withDefaults())
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
+                .cors(Customizer.withDefaults())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -99,20 +97,18 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.setAllowedOrigins(
-//                Arrays.asList(
-//                        "http://localhost:3000")
-//                // TODO S3 엔드포인트 추가 ""
-//        );
+        configuration.setAllowedOrigins(
+                Arrays.asList(
+                        "http://localhost:3000")
+                // TODO S3 엔드포인트 추가 ""
+        );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
 
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(2000L);
-        //configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
         configuration.setExposedHeaders(Arrays.asList("authorization", "refresh"));
-        configuration.addAllowedHeader("*");//
-        configuration.addAllowedOrigin("*");//
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE","OPTIONS"));//
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
