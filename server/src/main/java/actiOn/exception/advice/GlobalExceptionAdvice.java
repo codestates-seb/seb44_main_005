@@ -1,7 +1,7 @@
 package actiOn.exception.advice;
 
 import actiOn.exception.BusinessLogicException;
-import actiOn.exception.ErrorResponse;
+import actiOn.exception.util.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

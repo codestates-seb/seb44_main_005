@@ -2,13 +2,18 @@ import tw from 'tailwind-styled-components';
 
 export const HaederContainer = tw.header`
   flex
-  m-5
+  mt-5
   justify-between
+  pb-[15px]
+  border-b-[0.5px]
+  border-[#4771B7]
+  w-full
 `;
 
 export const LogoContainer = tw.div`
   flex
   items-center
+  ml-5
 `;
 
 export const LoginContainer = tw.div`
