@@ -12,6 +12,7 @@ public enum ExceptionCode {
 
     // AUTH
     USERNAME_NOT_FOUND(404, "Username not found"),
+    UNAUTHORIZED_PRINCIPAL(404, "Unauthorized principal"),
 
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),

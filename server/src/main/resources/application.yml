@@ -50,7 +50,8 @@ server:                   # 모든 response 에 대해 지정된 인코딩 적�
     encoding:
       force-response: true
 jwt:                      # JWT 관련 정보
-  key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
+#  key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
+  key: fafdafadff1321312323213213132321823783789212827891789217389712893721893798123893721
   access-token-expiration-minutes: 100
   refresh-token-expiration-minutes: 200
 #awsParameterStorePropertySource:

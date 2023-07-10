@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 public class StoreResponseDto {
     private long storeId;
+
 }
