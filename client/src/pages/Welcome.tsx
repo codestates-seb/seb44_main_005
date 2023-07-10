@@ -1,5 +1,3 @@
-import React from 'react';
-import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/logo.svg';
