@@ -62,6 +62,10 @@ dependencyManagement { // 블록 추가
     }
 }
 
+jar {
+    enabled = false
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
