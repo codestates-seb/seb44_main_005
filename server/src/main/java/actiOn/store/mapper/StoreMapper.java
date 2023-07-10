@@ -4,6 +4,7 @@ package actiOn.store.mapper;
 import actiOn.item.entity.Item;
 import actiOn.store.dto.StorePatchDto;
 import actiOn.store.dto.StorePostDto;
+import actiOn.store.dto.StorePostResponseDto;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
 import org.mapstruct.Mapper;
@@ -16,5 +17,6 @@ public interface StoreMapper {
     Store storePatchDtoToStore(StorePatchDto storePatchDto);
     StoreResponseDto storeToStoreResponseDto(Store store);
 
+    StorePostResponseDto storeToStorePostResponseDto(Store store);
     List<Item> storePostDtoItemsToItemEntities(List<Item> itemList);
 }

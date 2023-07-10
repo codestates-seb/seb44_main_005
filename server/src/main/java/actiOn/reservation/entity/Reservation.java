@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -32,7 +32,7 @@ public class Reservation extends BaseEntity {
     private String reservationEmail;
 
     @Column(nullable = false)
-    private Date reservationDate;
+    private LocalDate reservationDate;
 
     // @Enumerated(EnumType.STRING) // enum 추가
     private String reservationStatus;
@@ -51,10 +51,10 @@ public class Reservation extends BaseEntity {
     private Store store;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
-    private List<ReservationItem> reservationItems = new ArrayList<>();
+    private List<actiOn.reservation.entity.ReservationItem> reservationItems = new ArrayList<>();
 
     // 다대다 관계를 위한 편의 메서드
-    public void addReservationItem(ReservationItem reservationItem) {
+    public void addReservationItem(actiOn.reservation.entity.ReservationItem reservationItem) {
         reservationItems.add(reservationItem);
         reservationItem.setReservation(this);
     }
