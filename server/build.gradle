@@ -50,7 +50,7 @@ dependencies {
 
 	//aws s3 의존
 
-	// implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 	tasks.named('test') {
