@@ -6,8 +6,10 @@ import actiOn.auth.handler.MemberAccessDeniedHandler;
 import actiOn.auth.handler.MemberAuthenticationEntryPoint;
 import actiOn.auth.handler.MemberAuthenticationFailureHandler;
 import actiOn.auth.handler.MemberAuthenticationSuccessHandler;
+import actiOn.auth.oauth2.OAuth2MemberSuccessHandler;
 import actiOn.auth.provider.TokenProvider;
 import actiOn.auth.utils.MemberAuthorityUtil;
+import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,7 +37,7 @@ public class SecurityConfiguration {
     private final MemberAuthorityUtil authorityUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
@@ -59,6 +62,10 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
+                )
+                .oauth2Login(oAuth2 -> oAuth2
+                        .loginPage("/oauth2/authorization/google")
+                        .successHandler(new OAuth2MemberSuccessHandler(authorityUtil, memberService, tokenProvider))
                 );
 
         return httpSecurity.build();
@@ -81,7 +88,7 @@ public class SecurityConfiguration {
 
             // Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
-                    // TODO oauth2 필터 추가
+                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
     }

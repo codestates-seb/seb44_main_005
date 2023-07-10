@@ -32,7 +32,7 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column // nullable true로 임시 변경
     private String phoneNumber;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -47,7 +47,7 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Store> stores = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private ProfileImg profileImg;
 
     @Override
