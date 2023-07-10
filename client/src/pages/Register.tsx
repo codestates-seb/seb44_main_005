@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 
 import {
@@ -14,7 +14,7 @@ import google from '../assets/google.svg';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  const url = import.meta.env.VITE_APP_API_URL;
+  // const url = import.meta.env.VITE_APP_API_URL;
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [name, setName] = useState('');
@@ -111,24 +111,10 @@ function Register() {
     }).then(() => navigate('/home'));
   };
 
-  // const handleOuathSubmit = async (e) => {
-  //   e.preventDefault();
-  //   await fetch(
-  //     'https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google',
-  //     {
-  //       method: 'POST',
-  //     }
-  //   )
-  //     .then(() => {
-  //       window.location.href =
-  //         'http://localhost:5137/oauth2/authorization/google/success';
-  //     })
-  //     .then(() => navigate('/home'));
-  // };
-
-  const LoginRequestHandlerGoogle = (e) => {
+  const LoginRequestHandlerGoogle = async (e) => {
     e.preventDefault();
-    window.location.href = `${url}/oauth2/authorization/google`;
+    window.location.href =
+      await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
   };
 
   return (

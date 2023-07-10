@@ -6,7 +6,7 @@ export const StyleContainer = tw.div`
   items-center
 `;
 
-export const RegisterContainer = tw.form`
+export const RegisterContainer = tw.div`
   flex 
   flex-col 
   items-center 
