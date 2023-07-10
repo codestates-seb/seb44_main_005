@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import headerlogo from '../../assets/headerlogo.svg';
@@ -25,9 +25,9 @@ function Header() {
   const handleClick = () => {
     nevigate('/home');
   };
-  const handlePartnerClick = () => {
-    setIsPartner(!isPartner);
-  };
+  // const handlePartnerClick = () => {
+  //   setIsPartner(!isPartner);
+  // };
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };

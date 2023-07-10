@@ -23,7 +23,7 @@ function Welcome() {
       }}
     >
       <header className="absolute">
-        <img src={logo} className="relative left-5 top-5"></img>
+        <img src={logo} className="relative left-5 top-5 w-[220px] h-[60px]" />
       </header>
       <div>
         <div className="absolute text-end">
