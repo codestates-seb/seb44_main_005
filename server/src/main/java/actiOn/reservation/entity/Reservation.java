@@ -12,9 +12,9 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SQLDelete(sql = "UPDATE RESERVATION SET deleted_at = CURRENT_TIMESTAMP where reservation_id = ?")

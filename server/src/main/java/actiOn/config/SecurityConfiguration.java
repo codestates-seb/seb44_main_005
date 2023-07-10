@@ -44,7 +44,6 @@ public class SecurityConfiguration {
                 .and()
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
-
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -113,6 +112,7 @@ public class SecurityConfiguration {
         configuration.setMaxAge(2000L);
         configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
         configuration.setExposedHeaders(Arrays.asList("authorization", "refresh"));
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
