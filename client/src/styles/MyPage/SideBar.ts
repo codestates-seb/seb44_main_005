@@ -27,3 +27,10 @@ export const SideList = tw.div`
     space-y-8
     pl-5
 `;
+
+export const SideLink = tw.a`
+  text-base
+  text-black
+  hover:text-[#3366BB]
+  cursor-pointer
+`;

@@ -18,7 +18,7 @@ function MainRouter() {
       </Route>
       <Route path="/" element={<Welcome />} />
       <Route path="/partner" element={<Partner />} />
-      <Route path="/my" element={<MyPage />} />
+      <Route path="/my/*" element={<MyPage />} />
     </Routes>
   );
 }

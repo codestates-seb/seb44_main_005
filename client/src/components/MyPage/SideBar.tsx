@@ -1,25 +1,42 @@
-import { 
-    SideContainer,
-    SideSpace,
-    SideTitle,
-    SideList
- } from '../../styles/MyPage/SideBar';
+import {
+  SideContainer,
+  SideSpace,
+  SideTitle,
+  SideList,
+  SideLink
+} from '../../styles/MyPage/SideBar';
 
-function SideBar() {
+function SideBar({ onTabSelect }) {
   return (
     <SideContainer>
       <SideSpace>
         <SideTitle>마이페이지</SideTitle>
         <SideList>
-          <a>내 정보 관리</a>
-          <a>위시리스트</a>
-          <a>예약 내역 조회</a>
+            <SideLink
+                onClick={() => onTabSelect('info')}
+            >
+                내 정보 관리
+            </SideLink>
+            <SideLink
+                onClick={() => onTabSelect('wish')}
+            >
+                위시리스트
+            </SideLink>
+            <SideLink
+                onClick={() => onTabSelect('order')}
+            >
+                예약 내역 조회
+            </SideLink>
         </SideList>
       </SideSpace>
       <SideSpace>
         <SideTitle>파트너쉽</SideTitle>
         <SideList>
-          <a>판매 서비스 관리</a>
+            <SideLink
+                onClick={() => onTabSelect('stores')}
+            >
+                판매 서비스 관리
+            </SideLink>
         </SideList>
       </SideSpace>
     </SideContainer>
