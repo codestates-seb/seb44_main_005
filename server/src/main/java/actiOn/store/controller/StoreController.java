@@ -90,6 +90,7 @@ public class StoreController {
     @GetMapping("/stores") // 카테고리 페이지
     public ResponseEntity getCategoryPage(@RequestParam(name = "category") String category,
                                           @RequestParam(name = "sort_field") String sortField) {
+        //Todo 로직 추가해야함
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
