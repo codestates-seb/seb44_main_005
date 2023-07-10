@@ -31,6 +31,7 @@ function Header() {
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
+  console.log(setIsLogin, handlePartnerClick);
   return (
     <HaederContainer>
       <LogoContainer>
