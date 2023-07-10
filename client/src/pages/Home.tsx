@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import tw from 'tailwind-styled-components';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 

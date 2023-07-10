@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import headerlogo from '../../assets/headerlogo.svg';
@@ -31,6 +31,7 @@ function Header() {
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
+  console.log(setIsLogin, handlePartnerClick);
   return (
     <HaederContainer>
       <LogoContainer>
