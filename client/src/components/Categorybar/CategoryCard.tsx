@@ -26,7 +26,8 @@ type CProps = {
   };
 };
 function CategoryCard({ data }: CProps) {
-  const { img, title, reviewCount, address, rating, price, isLike } = data;
+  const { storeId, img, title, reviewCount, address, rating, price, isLike } =
+    data;
 
   const [isHeart, setIsHeart] = useState(isLike);
 
@@ -37,7 +38,7 @@ function CategoryCard({ data }: CProps) {
     <CardContainer>
       <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
-        <Link to="/category/:id" className="font-semibold">
+        <Link to={`/category/${storeId}`} className="font-semibold">
           {title}
         </Link>
         <Text>

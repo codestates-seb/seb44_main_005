@@ -99,7 +99,7 @@ function Login() {
               type="text"
               value={email}
               onChange={onEmailHandler}
-              className="border border-[#9A9A9A]  h-[30px] w-[200px] ml-4 rounded-md mb-3 px-2"
+              className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-4 rounded-md mb-3 p-2"
             />
           </div>
           <div>
@@ -108,7 +108,7 @@ function Login() {
               type="password"
               value={password}
               onChange={onPwHandler}
-              className="border border-[#9A9A9A] h-[30px] w-[200px] ml-3 rounded-md mr-3 px-2"
+              className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-3 rounded-md mr-3 p-2"
             />
           </div>
         </InputContainer>
