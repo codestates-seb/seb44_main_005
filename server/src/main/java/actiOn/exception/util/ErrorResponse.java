@@ -1,5 +1,6 @@
-package actiOn.exception;
+package actiOn.exception.util;
 
+import actiOn.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

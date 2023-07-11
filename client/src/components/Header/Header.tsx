@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import headerlogo from '../../assets/headerlogo.svg';
@@ -20,23 +20,23 @@ function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [isPartner, setIsPartner] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-
   const nevigate = useNavigate();
 
   const handleClick = () => {
     nevigate('/home');
   };
-  const handlePartnerClick = () => {
-    setIsPartner(!isPartner);
-  };
+  // const handlePartnerClick = () => {
+  //   setIsPartner(!isPartner);
+  // };
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
+  console.log(setIsLogin, handlePartnerClick);
   return (
     <HaederContainer>
       <LogoContainer>
         <img
-          className="w-[140px] h-[40px] "
+          className="w-[140px] h-[40px] cursor-pointer"
           alt="logo"
           src={headerlogo}
           onClick={handleClick}
