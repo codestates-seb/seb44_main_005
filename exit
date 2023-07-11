@@ -1,0 +1,438 @@
+[33mcommit 544bb75038f3491c2872bab26c303913778993c3[m[33m ([m[1;36mHEAD -> [m[1;32mfeat/be/review[m[33m, [m[1;31morigin/dev[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdev[m[33m)[m
+Merge: 61319d3 85e2b65
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 18:08:16 2023 +0900
+
+    Merge pull request #30 from codestates-seb/feat/be/store
+    
+    [Backend] store 컨트롤러 구현
+
+[33mcommit 61319d3bb5be0798535a8c90d89ce75195afdee4[m
+Merge: 4dbb258 c380696
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 18:07:08 2023 +0900
+
+    Merge pull request #29 from codestates-seb/feat/be/member
+    
+    [Backend] 회원 컨트롤러 구현
+
+[33mcommit 4dbb258b15f2f22841ddd5796bcb1fa5be369155[m
+Merge: 343bc72 78279d1
+Author: Lee yongman <97423687+2yongman@users.noreply.github.com>
+Date:   Thu Jul 6 18:05:20 2023 +0900
+
+    Merge pull request #28 from codestates-seb/feat/be/review
+    
+    [feat] review controller 작성 (#9)
+
+[33mcommit 343bc72818374e124c90127fbdfc0801f8025943[m
+Merge: 377f6bd c133fa5
+Author: Lee yongman <97423687+2yongman@users.noreply.github.com>
+Date:   Thu Jul 6 18:03:31 2023 +0900
+
+    Merge pull request #27 from codestates-seb/feat/be/wish
+    
+    [feat] wish controller 작성 (#14)
+
+[33mcommit 377f6bd7b25e57973763f9564b94cf9c8b97615f[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Thu Jul 6 17:55:40 2023 +0900
+
+    [feat] controller (#5)
+
+[33mcommit 85e2b6519b96cfa918f5b17c25ee5c43c0e3d424[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 16:05:51 2023 +0900
+
+    [feat] 검색 엔드포인트 추가 (#13)
+
+[33mcommit c133fa5293554218a342860e11b00a3c75f3ee47[m[33m ([m[1;31morigin/feat/be/wish[m[33m, [m[1;32mfeat/be/wish[m[33m)[m
+Author: 이용만 <dydaks7878@gmail.com>
+Date:   Thu Jul 6 16:01:56 2023 +0900
+
+    [feat] wish controller 작성 (#14)
+
+[33mcommit 78279d180b3d97943139b8d011d58384da91ddca[m[33m ([m[1;31morigin/feat/be/review[m[33m)[m
+Author: 이용만 <dydaks7878@gmail.com>
+Date:   Thu Jul 6 15:55:06 2023 +0900
+
+    [feat] review controller 작성 (#9)
+
+[33mcommit beb27ca20542f7d5341d5017be54e598737a5a15[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:51:56 2023 +0900
+
+    [chore] mapper 임시 삭제 (#13)
+
+[33mcommit c3806961d39cac4e9668a3103bb80051e46d4e0d[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:50:31 2023 +0900
+
+    [chore] 기본 구성 (#3)
+
+[33mcommit 65be184a5fd24e47dd890bbd9ccd847e1f3a4b13[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:50:04 2023 +0900
+
+    [feat] 회원 컨트롤러 뼈대 추가 (#3)
+
+[33mcommit 781f20ca0ccc7a221494aba54140bc4a002203de[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:48:45 2023 +0900
+
+    [chore] .gitignore 추가
+
+[33mcommit c4db8eb82fa620deb201af201fa10c091408fc30[m[33m ([m[1;31morigin/feat/be/store[m[33m)[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:37:51 2023 +0900
+
+    [chore] 서비스 어노테이션 추가 (#13)
+
+[33mcommit 483b43c80d5d286b27218607bbe65f73b6524daf[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 15:37:35 2023 +0900
+
+    [feat] 컨트롤러 뼈대 구성 (#13)
+
+[33mcommit 2c8c1bb3d57b7dce4134c74573c10c2ed35f7a61[m
+Author: chen4023 <ads4023@naver.com>
+Date:   Thu Jul 6 15:14:04 2023 +0900
+
+    [init]:eslint작업
+
+[33mcommit 78f470c14266c88e6db45fe4adc55255b99d32bf[m[33m ([m[1;31morigin/feat/be/reservation[m[33m)[m
+Author: FE_Dev <124567984+zop1234@users.noreply.github.com>
+Date:   Thu Jul 6 13:24:23 2023 +0900
+
+    Add files via upload
+
+[33mcommit dd8af3d6e39bc35911543ce187e05270034bcacd[m
+Author: FE_Dev <124567984+zop1234@users.noreply.github.com>
+Date:   Thu Jul 6 13:24:13 2023 +0900
+
+    Delete client/styles directory
+
+[33mcommit fce4d61ba54ceb4615945dc53ae21d18519f1ac6[m
+Author: FE_Dev <124567984+zop1234@users.noreply.github.com>
+Date:   Thu Jul 6 13:24:00 2023 +0900
+
+    Add files via upload
+
+[33mcommit 804c4a57ff0b6faf2e6da42ba91b10684e792352[m[33m ([m[1;31morigin/feat/be/member[m[33m)[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 11:20:28 2023 +0900
+
+    [feat] config
+
+[33mcommit 358e42ff0d8cf9cd05ba32836adda015a9846a0d[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 10:41:35 2023 +0900
+
+    Add files via upload
+
+[33mcommit f9884e1f8300f07b9499e4a89bff8e992f411717[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 10:35:28 2023 +0900
+
+    Delete server directory
+
+[33mcommit b053219e808b145e6f9a64374750fa4e8224f913[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 10:11:45 2023 +0900
+
+    임시
+
+[33mcommit 74de4ff089cd0d69c73370c2cc47c0f8856f79c4[m
+Merge: c38810b ee2d3be
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 10:06:58 2023 +0900
+
+    Merge remote-tracking branch 'origin/dev' into dev
+
+[33mcommit c38810bf0e4699013374dd219ce2bda36972fe15[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 10:06:50 2023 +0900
+
+    [feat] 리포지토리 설정
+
+[33mcommit ee2d3be0db45fc88e1fe313254e1c32f843d1a75[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 09:43:43 2023 +0900
+
+    [feat] 리포지토리 설정
+
+[33mcommit ebef24645706eb38e65a31788968c11d1d55d758[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 09:43:00 2023 +0900
+
+    [feat] 엔티티 연관관계 매핑
+
+[33mcommit d679a1e4295044e7c3b9d9cb1cba7722185e5466[m
+Merge: 02fb88c 1fa0be6
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 00:36:48 2023 +0900
+
+    Merge remote-tracking branch 'origin/dev' into dev
+
+[33mcommit 02fb88cdcb94a7b08e428f3e1869b1d20d025293[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 00:36:40 2023 +0900
+
+    [init] gitignore 설정
+
+[33mcommit 1fa0be60d8a1662cb57a4813cf15a80d34da01fc[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:28:21 2023 +0900
+
+    Delete schema.sql
+
+[33mcommit 6da9cfde5d81852b705d6ba298ee77653aa82152[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Thu Jul 6 00:26:46 2023 +0900
+
+    [init] gitignore 설정
+
+[33mcommit 9b1194d57a8602ee0f02f2b277492007180d4138[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:23:47 2023 +0900
+
+    Delete .DS_Store
+
+[33mcommit 328848d5155b23796aa6ffdfbcb8962a0f66e6fa[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:23:31 2023 +0900
+
+    Delete .DS_Store
+
+[33mcommit 4a2cf0b13e2b25c2f6522b3ec8e49d2bc755e523[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:22:52 2023 +0900
+
+    Delete .DS_Store
+
+[33mcommit 3a93ad591321269dbec62d50946cbaf1ffa3ed65[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:22:36 2023 +0900
+
+    Delete .DS_Store
+
+[33mcommit 3ad31bc1623fcff393da2699e8eb7329943fb85f[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:22:06 2023 +0900
+
+    Delete server/build directory
+
+[33mcommit 0438f55bc548eec4c8acca82457fb0be2dc86a02[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Thu Jul 6 00:21:50 2023 +0900
+
+    Delete server/.gradle directory
+
+[33mcommit 81446a0a8ed9baa92143480df1f21aa51529d448[m
+Author: FE_Dev <124567984+zop1234@users.noreply.github.com>
+Date:   Wed Jul 5 22:26:25 2023 +0900
+
+    Add files via upload
+
+[33mcommit 6e15771ae454110affee51ec7654f172487fff0a[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 22:12:49 2023 +0900
+
+    [feat] Member 엔티티 설계 (#3)
+
+[33mcommit d7b0c226ec455469fbb24b791f7f41a484c22dfa[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Wed Jul 5 22:10:24 2023 +0900
+
+    [feat]entity develop (#2)
+
+[33mcommit c551d31fc4443e898d94e62f1b999159cbce864a[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 22:07:24 2023 +0900
+
+    [feat] Member 엔티티 설계 (#3)
+
+[33mcommit 26f0492deeeab803cbcef0d633b9e3dc250d26c7[m
+Merge: a97b784 05d5ae8
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Wed Jul 5 22:04:02 2023 +0900
+
+    Merge pull request #7 from codestates-seb/feat/be/login
+    
+    [Backend] 엔티티 수정
+
+[33mcommit a97b78487f324ac89e92fe7b74719f2ea209e26d[m
+Merge: 04c32e7 fafcfc9
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 21:59:30 2023 +0900
+
+    Merge remote-tracking branch 'origin/dev' into dev
+
+[33mcommit 04c32e705f1999eceb5733a6f639a550606d5294[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 21:59:20 2023 +0900
+
+    [feat] Member 엔티티 설계 (#3)
+
+[33mcommit 05d5ae80cc90ebf4b3b4d9be1b91c838b8aef9c2[m[33m ([m[1;31morigin/feat/be/login[m[33m)[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 21:57:59 2023 +0900
+
+    [fix] 오류
+
+[33mcommit fafcfc9a0b11a31635204e3d51e7cc26f78b4685[m
+Merge: e7f858f b57a211
+Author: 이용만 <dydaks7878@gmail.com>
+Date:   Wed Jul 5 21:54:09 2023 +0900
+
+    Merge branch 'dev' of https://github.com/codestates-seb/seb44_main_005 into dev
+
+[33mcommit e7f858f30f915d2c18f1fc24ab5c0e39e3cb417e[m
+Author: 이용만 <dydaks7878@gmail.com>
+Date:   Wed Jul 5 21:52:05 2023 +0900
+
+    [feat] Wish,Business,Review,Item 엔티티 설계 (#1)
+
+[33mcommit 8768c49b86ed3137df0ce843cafbc1fd8dddc1dc[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 21:49:48 2023 +0900
+
+    [feat] Member 엔티티 설계 (#3)
+
+[33mcommit b57a211c48efc7f9caeb0855987ea03666b5090d[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Wed Jul 5 20:03:19 2023 +0900
+
+    [fix] 이슈 템플릿 수정
+
+[33mcommit ca8388f48dd366e8d7484fb153bed08d166a9d0b[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Wed Jul 5 17:22:04 2023 +0900
+
+    [feat] issue templates
+
+[33mcommit 00d5e3b57be96867e0be5c407af77245fe41bce5[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 17:21:00 2023 +0900
+
+    [feat] DB 스키마 작성
+
+[33mcommit 17bebc4026b41dfa79061c5c61c19540c072af8e[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 17:20:33 2023 +0900
+
+    [feat] 풀리퀘 템플릿 추가
+
+[33mcommit 3ae01567664e0946d02465b8efe435f3a30f8f03[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Wed Jul 5 17:15:58 2023 +0900
+
+    [feat] issue templates
+
+[33mcommit c9b71a07f4e14be5e7401bebd5a9edc28e0a58a6[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Wed Jul 5 17:06:47 2023 +0900
+
+    Delete .DS_Store
+
+[33mcommit 754a124fdbd4cdbffbcacc1bb911ddfbae2acba0[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Wed Jul 5 17:05:08 2023 +0900
+
+    [init] 파일 세팅
+
+[33mcommit 318561a828690cfe11d34515182467b17a394252[m
+Merge: 0f7988b 3325ae2
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 17:02:51 2023 +0900
+
+    Merge branch 'dev' of https://github.com/codestates-seb/seb44_main_005 into dev
+
+[33mcommit 0f7988b2c31c6fc02b253149e0c262ac690f7adc[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 17:01:00 2023 +0900
+
+    [init] 파일 세팅
+
+[33mcommit 3325ae20b9dbd5123b00af3d55c5174b04c17ed6[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 17:00:30 2023 +0900
+
+    3th
+
+[33mcommit 8a807fc50d4a3bb941d871c9d461809ddde1eced[m
+Merge: 84474cf 1a45f76
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 16:59:14 2023 +0900
+
+    Merge remote-tracking branch 'origin/dev' into dev
+
+[33mcommit 84474cf4d8ab60b203003b5bd7f3ae081b7f0f8c[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 16:59:00 2023 +0900
+
+    [init] 파일 세팅
+
+[33mcommit 1a45f760564af9d1e24f3eebd28b250101185403[m
+Merge: b19f5a4 2becd1f
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 16:58:12 2023 +0900
+
+    second
+
+[33mcommit b19f5a41a183a473d3a7c429a3dd85e490ec79d2[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 16:56:56 2023 +0900
+
+    first
+
+[33mcommit 2becd1f4fbe379d75f032031e97d841f2ec1594b[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 16:37:25 2023 +0900
+
+    [init] 파일 초기 세팅
+
+[33mcommit 187f771a022e5e60972b975244efdd4c5842d215[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Tue Jul 4 16:30:52 2023 +0900
+
+    Delete server/.gradle directory
+
+[33mcommit ddbc69923d7693ab3a6ff98fe92949ef4d307f3f[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 16:27:22 2023 +0900
+
+    first
+
+[33mcommit 215a31d54befc79f41c4018c6b6a2d6d66792f56[m
+Merge: 9c12880 5566df1
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 16:25:22 2023 +0900
+
+    W
+    
+    Merge branch 'dev' of https://github.com/codestates-seb/seb44_main_005 into dev
+
+[33mcommit 9c12880811c0c73f6b327869246affaa5b75c4b7[m
+Author: developer-DongWoo <ehddn8547@gmail.com>
+Date:   Tue Jul 4 16:21:56 2023 +0900
+
+    first
+
+[33mcommit 5566df170a5d47c07e93279402a5906e74740b7b[m
+Author: isu-nice <isu010614@naver.com>
+Date:   Tue Jul 4 16:21:29 2023 +0900
+
+    [init] 파일 초기 세팅
+
+[33mcommit 935a85822afc0ea888bfa001150bdce7b1bdb268[m
+Author: Isu Shin <111070569+isu-nice@users.noreply.github.com>
+Date:   Mon Jul 3 20:38:49 2023 +0900
+
+    [init] 파일 세팅
+
+[33mcommit 05f4cd9ed9aa23c7f77583af2ca906ab842fb57b[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: FE_Dev <124567984+zop1234@users.noreply.github.com>
+Date:   Mon Jul 3 10:06:36 2023 +0900
+
+    Create README.md
