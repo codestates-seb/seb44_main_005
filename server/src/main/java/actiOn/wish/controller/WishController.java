@@ -4,6 +4,7 @@ import actiOn.wish.mapper.WishMapper;
 import actiOn.wish.service.WishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +24,16 @@ public class WishController {
     }
 
     //TODO CP_002 찜 등록
-    @PostMapping("/store/favorites/{store-id}")
+    @PostMapping("/stores/favorites/{store-id}")
     public ResponseEntity registerWish(@Positive @PathVariable("store-id") Long storeId){
+        wishService.registerWish(storeId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //TODO CP_002 찜 취소
-    @DeleteMapping("/store/favorites/{store-id}")
+    @DeleteMapping("/stores/favorites/{store-id}")
     public ResponseEntity cancleWish(@Positive @PathVariable("store-id") Long storeId){
+        wishService.deleteWish(storeId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }
