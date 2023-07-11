@@ -50,6 +50,14 @@ public class Store extends BaseEntity {
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int likeCount;
 
+    //리뷰 개수
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int reviewCount;
+
+    //평점
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int rating;
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;

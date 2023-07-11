@@ -1,8 +1,10 @@
 package actiOn.review.service;
 
+import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
+import actiOn.member.service.MemberService;
 import actiOn.reservation.entity.Reservation;
 import actiOn.review.dto.ReviewResponseDto;
 import actiOn.review.dto.ReviewsResponseDto;
@@ -24,22 +26,21 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
     private final ReviewMapper reviewMapper;
+    private final MemberService memberService;
 
-    public ReviewService(ReviewRepository reviewRepository, StoreRepository storeRepository, ReviewMapper reviewMapper) {
+    public ReviewService(ReviewRepository reviewRepository, StoreRepository storeRepository, ReviewMapper reviewMapper, MemberService memberService) {
         this.reviewRepository = reviewRepository;
         this.storeRepository = storeRepository;
         this.reviewMapper = reviewMapper;
+        this.memberService = memberService;
     }
 
-    public Review createReview(Long storeId,
-                               Review review,
-                               Authentication authentication) {
+    public Review createReview(Long storeId, Review review) {
         //Todo 로그인한 회원의 정보 가져오기
-        String loginUserEmail = authentication.getName();
-//        Member loginMember = memberRepository.findByEmail(loginUserEmail).orElseThrow(
-//                () -> new BusinessLogicException(ExceptionCode.MEMBER_EXISTS));
+        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
+        Member findMember = memberService.findMemberByEmail(loginUserEmail);
 
-        //Todo 업체 존재 여부 확인 -> 리팩토링 필요
+        //Todo 업체 존재 여부 확인
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
@@ -48,12 +49,17 @@ public class ReviewService {
         boolean hasReservationEmail = reservationList.stream()
                 .anyMatch(reservation -> reservation.getReservationEmail().equals(loginUserEmail));
         if (hasReservationEmail) {
-//            review.setMember(loginMember);
+            review.setMember(findMember);
             review.setStore(store);
         } else {
             throw new IllegalArgumentException("예약한 회원만 리뷰를 작성할 수 있습니다.");
         }
-        return review;
+        return reviewRepository.save(review);
+
+        //Todo review 전체 평점의 평균
+
+       //Todo store에 있는 review 개수 추가
+
     }
 
     public ReviewsResponseDto getAllReviews(Long storeId) {
@@ -86,5 +92,4 @@ public class ReviewService {
 
         return reviewsResponseDtos;
     }
-    //
 }

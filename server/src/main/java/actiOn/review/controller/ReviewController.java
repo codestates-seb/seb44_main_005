@@ -28,10 +28,9 @@ public class ReviewController {
     //TODO RV_001 리뷰 작성
     @PostMapping("/reviews/{store-id}")
     public ResponseEntity createReview(@Positive @PathVariable("store-id") Long storeId,
-                                       @Valid @RequestBody ReviewDto reviewDto,
-                                       Authentication authentication){
+                                       @Valid @RequestBody ReviewDto reviewDto){
         Review review = reviewMapper.reviewDtoToReview(reviewDto);
-        reviewService.createReview(storeId,review,authentication);
+        reviewService.createReview(storeId,review);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
