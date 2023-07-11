@@ -58,6 +58,10 @@ public class Store extends BaseEntity {
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int rating;
 
+
+    //가격
+    @Column(nullable = false)
+    private int rowPrice;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
