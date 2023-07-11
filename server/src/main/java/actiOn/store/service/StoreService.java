@@ -43,4 +43,27 @@ public class StoreService {
     public Store findStoreByStoreId(long storeId){
         return storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
+
+    public List<Store> findStoreByCategory(String category, String sortFiled) {
+        List<Store> findStores;
+        if (category == "all"){
+            category = null;
+        }
+        switch (sortFiled) {
+            case "rating" :
+                findStores = storeRepository.findByCategoryOrderByRatingDesc(category);break;
+            case "lowPrice" :
+                findStores = storeRepository.findByCategoryOrderByLowPriceAsc(category);break;
+            case "review" :
+                findStores = storeRepository.findByCategoryOrderByReviewCountDesc(category);break;
+            case "like" :
+                findStores = storeRepository.findByCategoryOrderByLikeCount(category);break;
+            default:
+                findStores = storeRepository.findByCategoryOrderByLikeCount(null);break;
+                // 카테고리나 정렬기준이 이상하게 들어오면 관심순 전체 카테고리 출력
+
+        }
+        // 혹시 가져온 데이터를 건드릴 수 있으니, case에서 바로 리턴 하지 않고, 최후에 return
+        return findStores;
+    }
 }

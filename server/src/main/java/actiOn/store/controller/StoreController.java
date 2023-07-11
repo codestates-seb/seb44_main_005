@@ -89,6 +89,7 @@ public class StoreController {
     public ResponseEntity getCategoryPage(@RequestParam(name = "category") String category,
                                           @RequestParam(name = "sort_field") String sortField) {
         //Todo 로직 추가해야함
+        List<Store> findStoreByCategory = storeService.findStoreByCategory(category,sortField);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
