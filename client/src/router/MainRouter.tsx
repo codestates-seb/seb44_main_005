@@ -5,7 +5,6 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Partner from '../pages/Partner';
 import CategoryLayout from '../components/Layout/CategoryLayout';
-import MyPage from '../pages/MyPage';
 import FooterLayout from '../components/Layout/FooterLayout';
 import HeaderLayout from '../components/Layout/HeaderLayout';
 
@@ -15,7 +14,6 @@ function MainRouter() {
       <Route path="/" element={<Welcome />} />
       <Route element={<HeaderLayout />}>
         <Route element={<FooterLayout />}>
-          <Route path="/my" element={<MyPage />} />
           <Route path="/partner" element={<Partner />} />
           <Route element={<CategoryLayout />}>
             <Route path="/home" element={<Home />} />
