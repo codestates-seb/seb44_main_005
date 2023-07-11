@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import MainRouter from './router/MainRouter';
 import CategoryRouter from './router/CategoryRouter';
 import MyRouter from './router/MyRouter';
