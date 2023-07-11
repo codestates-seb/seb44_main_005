@@ -14,9 +14,9 @@ import {
     UserInfo,
     UserInfoTitle,
     BusinessCategoryTitle
-} from "../styles/MyPage/My";
+} from "../../styles/MyPage/My";
 
-function MyPage() {
+function My() {
     return (
         <div>
                 <MySpace>
@@ -75,4 +75,4 @@ function MyPage() {
     );
 };
 
-export default MyPage;
+export default My;

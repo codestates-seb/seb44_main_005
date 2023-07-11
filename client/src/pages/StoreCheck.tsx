@@ -1,5 +1,3 @@
-import React from 'react';
-
 function StoreCheck() {
   return <div>StoreCheck</div>;
 }
