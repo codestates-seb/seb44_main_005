@@ -1,5 +1,3 @@
-import React from 'react';
-
 function WishList() {
   return <div>위시리스트 페이지입니다.</div>;
 }

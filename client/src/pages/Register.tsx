@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import tw from 'tailwind-styled-components';
+import { useState } from 'react';
 
 import {
   StyleContainer,
@@ -19,7 +18,6 @@ function Register() {
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -76,7 +74,6 @@ function Register() {
   //비밀번호 확인 유효성
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
-    setPasswordConfirm(currentPasswordConfirm);
     if (password !== currentPasswordConfirm) {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
     } else {
