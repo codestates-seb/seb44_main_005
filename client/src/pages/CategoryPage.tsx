@@ -37,17 +37,35 @@ function CategoryPage() {
           전체상품 {category.pageInfo[0].storeCount}
         </span>
         <Option>
-          <Link to={`/category?category_name=${categoryName}&sort=recommend`}>
+          <Link
+            to={`/category?category_name=${categoryName}&sort=recommend`}
+            className="mr-[25px]"
+          >
             • 관심순
           </Link>
-          <Link to={`/category?category_name=${categoryName}&sort=high_rate`}>
+          <Link
+            to={`/category?category_name=${categoryName}&sort=high_rate`}
+            className="mr-[25px]"
+          >
             • 높은 평점순
           </Link>
-          <Link to={`/category?category_name=${categoryName}&sort=low_price`}>
+          <Link
+            to={`/category?category_name=${categoryName}&sort=low_price`}
+            className="mr-[25px]"
+          >
             • 낮은 가격순
           </Link>
-          <Link to={`/category?category_name=${categoryName}&sort=high_price`}>
+          <Link
+            to={`/category?category_name=${categoryName}&sort=high_price`}
+            className="mr-[25px]"
+          >
             • 높은 가격순
+          </Link>
+          <Link
+            to={`/category?category_name=${categoryName}&sort=high_price`}
+            className="mr-[25px]"
+          >
+            • 리뷰 많은순
           </Link>
         </Option>
       </CategoryContainer>
