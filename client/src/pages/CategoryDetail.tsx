@@ -1,10 +1,10 @@
-import DetailContent from "../components/CategoryDetail/DetailContent";
-import LocationInfo from "../components/CategoryDetail/LocationInfo";
-import PaymentInfo from "../components/CategoryDetail/PaymentInfo";
-import ReservationInfo from "../components/CategoryDetail/ReservationInfo";
-import Review from "../components/CategoryDetail/Review";
-import TicketSelect from "../components/CategoryDetail/TicketSelect";
-import { categorydetail, userInfo, review } from "../dummy/categorydetail";
+import DetailContent from '../components/CategoryDetail/DetailContent';
+import LocationInfo from '../components/CategoryDetail/LocationInfo';
+import PaymentInfo from '../components/CategoryDetail/PaymentInfo';
+import ReservationInfo from '../components/CategoryDetail/ReservationInfo';
+import Review from '../components/CategoryDetail/Review';
+import TicketSelect from '../components/CategoryDetail/TicketSelect';
+import { categorydetail, userInfo, review } from '../dummy/categorydetail';
 
 function CategoryDetail() {
   return (

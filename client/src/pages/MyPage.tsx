@@ -1,13 +1,13 @@
-import SideBar from "../components/MyPage/SideBar";
+import SideBar from '../components/MyPage/SideBar';
 
 function MyPage() {
-    return (
-        <div className="flex flex-row">
-            <SideBar />
-            <div>마이페이지입니다.</div>
-        </div>
-    );
-};
+  return (
+    <div className="flex flex-row">
+      <SideBar />
+      <div>마이페이지입니다.</div>
+    </div>
+  );
+}
 
 export default MyPage;
 
