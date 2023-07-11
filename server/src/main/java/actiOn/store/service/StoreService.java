@@ -68,29 +68,6 @@ public class StoreService {
         return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
     }
 
-    public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
-        try{
-            List<ItemDto> itemDtos = new ArrayList<>();
-            Store findStore = findStoreByStoreId(storeId);
-            List<Item> findItems = findStore.getItems();
-            Map<Long,Integer> reservationTickets = reservationService.reservationTicketCount(findStore,date);
-            for (Item item : findItems) {
-                int remainingTicketCount = item.getMaxCount()-reservationTickets.get(item.getItemId());
-                if (remainingTicketCount <0) remainingTicketCount=0;
-                ItemDto itemDto = new ItemDto(
-                        item.getItemName(),
-                        item.getMaxCount(),
-                        item.getPrice(),
-                        remainingTicketCount
-                );
-                itemDtos.add(itemDto);
-            }
-            return itemDtos;
-        }catch (Exception e) {
-            return null;
-        }
-    }
-
 
     public List<Store> searchEnginOnStoreNameByKeyword(String keyword){
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
