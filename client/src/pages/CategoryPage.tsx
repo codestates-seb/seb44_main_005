@@ -1,8 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { CategoryData } from '../recoil/atom';
+import { CategoryData } from '../store/categoryAtom';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -15,7 +14,7 @@ import {
 function CategoryPage() {
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');
-  const sort = searchParams.get('sort_filed');
+  const sort = searchParams.get('sort');
 
   const [category, setCategory] = useRecoilState(CategoryData);
 
