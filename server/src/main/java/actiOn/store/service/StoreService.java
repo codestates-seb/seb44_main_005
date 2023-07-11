@@ -90,4 +90,9 @@ public class StoreService {
             return null;
         }
     }
+
+
+    public List<Store> searchEnginOnStoreNameByKeyword(String keyword){
+        return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
+    }
 }

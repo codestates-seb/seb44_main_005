@@ -121,7 +121,9 @@ public class StoreController {
     // 검색 기능
     @GetMapping("/search") //검색
     public ResponseEntity getSearchResults(@RequestParam(name = "keyword") String keyword) {
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Store> searchResult = storeService.searchEnginOnStoreNameByKeyword(keyword);
+        CategoryResponseDto searchResultTransformDto =
+                categoryResponseMapper.CategoryStoreToCategoryResponseDto(searchResult); // response form이 같아서 재활용
+        return new ResponseEntity<>(searchResultTransformDto,HttpStatus.OK);
     }
 }
