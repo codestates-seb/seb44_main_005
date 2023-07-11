@@ -50,3 +50,13 @@ html, body, #root {
   font-weight: 700;
   -webkit-text-stroke: 0.5px white;
 }
+
+.star {
+  width: 150px;
+  max-width: initial;
+}
+
+.card-star {
+  width: 100px;
+  max-width: initial;
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import SelectBox from '../components/Partner/SelectBox';
 
 function Partner() {

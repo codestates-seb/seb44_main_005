@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { Link } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
 function KakaoMap({ marker }) {
@@ -19,7 +20,8 @@ function KakaoMap({ marker }) {
           return (
             <EventMarkerContainer
               position={{ lat: el.latitude, lng: el.longitude }}
-              content={el.store_name}
+              content={el}
+              key={el.storeId}
             />
           );
         })
@@ -43,7 +45,7 @@ const EventMarkerContainer = ({ position, content }) => {
         <CustomOverlayMap position={position} yAnchor={1}>
           <OverlaySection>
             <button className="w-full text-right font-bold" onClick={() => setIsVisible(false)}>X</button>
-            <div className="font-bold">{content}</div>
+            <Link to={`/category/${content.storeId}`} className="font-bold">{content.storeName}</Link>
           </OverlaySection>
         </CustomOverlayMap>
       )}
@@ -57,4 +59,5 @@ const OverlaySection = tw.section`
   rounded-[10px]
   border-2
   border-black
+  flex flex-col
 `;
