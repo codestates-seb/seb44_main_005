@@ -10,6 +10,7 @@ import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +35,13 @@ public class StoreService {
         store.setLatitude(Double.parseDouble(location.getLatitude()));
         store.setLongitude(Double.parseDouble(location.getLongitude()));
         List<Item> items = store.getItems();
+        int lowPrice = 0;
         for (Item item : items){
             item.setStore(store);
+            int itemPrice = item.getPrice();
+            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice=itemPrice;
         }
+        store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
         return storeRepository.save(store);
     }
 
@@ -45,24 +50,19 @@ public class StoreService {
     }
 
     public List<Store> findStoreByCategory(String category, String sortFiled) {
-        List<Store> findStores;
-        if (category == "all"){
-            category = null;
+        if (sortFiled.isEmpty()){
+            sortFiled = "rating";
         }
-        switch (sortFiled) {
-            case "rating" :
-                findStores = storeRepository.findByCategoryOrderByRatingDesc(category);break;
-            case "lowPrice" :
-                findStores = storeRepository.findByCategoryOrderByLowPriceAsc(category);break;
-            case "review" :
-                findStores = storeRepository.findByCategoryOrderByReviewCountDesc(category);break;
-            case "like" :
-                findStores = storeRepository.findByCategoryOrderByLikeCount(category);break;
-            default:
-                findStores = storeRepository.findByCategoryOrderByLikeCount(null);break;
-                // 카테고리나 정렬기준이 이상하게 들어오면 관심순 전체 카테고리 출력
+
+        if (category.equals("all") || category.isEmpty()){
+            return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
         }
-        // 혹시 가져온 데이터를 건드릴 수 있으니, case에서 바로 리턴 하지 않고, 최후에 return
-        return findStores;
+        if (sortFiled.equals("lowPrice")){
+            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, sortFiled)); // 오름차순
+        }
+
+        return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
+
+
     }
 }

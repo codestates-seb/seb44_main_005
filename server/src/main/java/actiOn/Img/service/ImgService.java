@@ -97,7 +97,10 @@ public class ImgService {
 
                 String imageName = String.valueOf(storeId) +  randomString + String.valueOf(index);
                 StoreImg storeImg = new StoreImg();
-                storeImg.setStore(storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND)));
+                Store findStore = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+                if (findStore == null) {
+                    return null;
+                }
                 String fileUrl = uploadImage(file, imageName);
                 storeImg.setLink(fileUrl);
                 if (file.equals(files.get(0))){

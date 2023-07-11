@@ -2,10 +2,12 @@ package actiOn.store.controller;
 
 import actiOn.Img.service.ImgService;
 import actiOn.member.entity.Member;
+import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.StorePostDto;
 import actiOn.store.dto.StorePostResponseDto;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
+import actiOn.store.mapper.CategoryResponseMapper;
 import actiOn.store.mapper.StoreMapper;
 import actiOn.store.mapper.StoreResponseMapper;
 import actiOn.store.service.StoreService;
@@ -26,13 +28,17 @@ public class StoreController {
     private final StoreService storeService;
     private final StoreMapper mapper;
     private final StoreResponseMapper responseMapper;
+    private final CategoryResponseMapper categoryResponseMapper;
     private final ImgService imgService;
 
-    public StoreController(StoreService storeService,StoreMapper mapper, ImgService imgService, StoreResponseMapper storeResponseMapper) {
+    public StoreController(StoreService storeService,StoreMapper mapper,
+                           ImgService imgService, StoreResponseMapper storeResponseMapper,
+                           CategoryResponseMapper categoryResponseMapper) {
         this.storeService = storeService;
         this.mapper = mapper;
         this.imgService = imgService;
         this.responseMapper = storeResponseMapper;
+        this.categoryResponseMapper = categoryResponseMapper;
     }
 
     // 업체 등록
@@ -48,8 +54,9 @@ public class StoreController {
     @PostMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                             @RequestPart("images") List<MultipartFile> images) {
-            imgService.uploadStoreImage(images,storeId);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            if (imgService.uploadStoreImage(images,storeId) != null){
+                return new ResponseEntity<>(HttpStatus.CREATED);}
+            return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/profileImages") // 프로필 이미지 업로드
@@ -90,8 +97,10 @@ public class StoreController {
                                           @RequestParam(name = "sort_field") String sortField) {
         //Todo 로직 추가해야함
         List<Store> findStoreByCategory = storeService.findStoreByCategory(category,sortField);
+        CategoryResponseDto categoryResponseDto =
+                categoryResponseMapper.CategoryStoreToCategoryResponseDto(findStoreByCategory);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
     }
 
     // 검색 기능

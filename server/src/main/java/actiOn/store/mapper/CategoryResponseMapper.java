@@ -2,6 +2,8 @@ package actiOn.store.mapper;
 
 
 import actiOn.Img.storeImg.StoreImg;
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.CategoryStoreDto;
 import actiOn.store.entity.Store;
@@ -26,13 +28,20 @@ public class CategoryResponseMapper {
             CategoryStoreDto categoryStoreDto = new CategoryStoreDto();
 
             //여기서부터 이미지 관련
-            categoryStoreDto.setImg(originStore.getStoreImgList().get(0).getLink());  // 카테고리가 없는 경우 기본 값->0번째 사진
-
-            for (StoreImg storeImg : originStore.getStoreImgList()){
-                if (storeImg.getIsThumbnail()){
-                    categoryStoreDto.setImg(storeImg.getLink());
+            try {
+                String img = originStore.getStoreImgList().isEmpty() ? null : originStore.getStoreImgList().get(0).getLink();
+                for (StoreImg storeImg : originStore.getStoreImgList()) {
+                    if (storeImg.getIsThumbnail()) {
+                        img = storeImg.getLink();
+                        break;
+                    }
                 }
-            }
+                if (img == null) {
+                    throw new IllegalArgumentException("스토어의 이미지가 존재하지 않습니다.");
+                }
+                categoryStoreDto.setImg(img);
+            } catch (IllegalArgumentException e){}
+
             //위에까지가 이미지 관련
 
             categoryStoreDto.setStoreId(originStore.getStoreId());
