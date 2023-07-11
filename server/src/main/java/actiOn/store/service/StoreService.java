@@ -61,7 +61,6 @@ public class StoreService {
             default:
                 findStores = storeRepository.findByCategoryOrderByLikeCount(null);break;
                 // 카테고리나 정렬기준이 이상하게 들어오면 관심순 전체 카테고리 출력
-
         }
         // 혹시 가져온 데이터를 건드릴 수 있으니, case에서 바로 리턴 하지 않고, 최후에 return
         return findStores;
