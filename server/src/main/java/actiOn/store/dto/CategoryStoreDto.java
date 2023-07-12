@@ -14,7 +14,7 @@ public class CategoryStoreDto {
     private double rating;
     private int reviewCount;
     private int price;
-    private Boolean isLike;
+    private Boolean isLike = false;
     private String img;
 
 }

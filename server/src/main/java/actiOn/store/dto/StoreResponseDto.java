@@ -19,7 +19,7 @@ public class StoreResponseDto {
     private String kakao;
     private String contact;
     private String address;
-    private boolean isLike;
+    private boolean isLike = false;
     private String profileImg;
     private LocalDateTime createdAt;
     private List<ItemDto> items;
