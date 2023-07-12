@@ -79,7 +79,7 @@ function Header() {
               <DropdownContainer>
                 <img
                   src={profile}
-                  className="w-[28px]"
+                  className="w-[28px] fixed"
                   onClick={handleDropdownClick}
                 />
                 {isOpen && <Dropdown />}
@@ -104,6 +104,6 @@ function Header() {
   );
 }
 
-const DropdownContainer = tw.article`
+const DropdownContainer = tw.div`
 `;
 export default Header;
