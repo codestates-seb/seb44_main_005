@@ -1,12 +1,35 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { CategoryData } from '../store/categoryAtom';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
-import { category } from '../dummy/category';
+import {
+  Style,
+  CategoryContainer,
+  Option,
+  Category,
+} from '../styles/Category/CategoryPage';
 
 function CategoryPage() {
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');
+  const sort = searchParams.get('sort');
+
+  const [category, setCategory] = useRecoilState(CategoryData);
+
+  const storesFetch = async () => {
+    const res = await fetch(
+      `/stores?category=${categoryName}&sort_field=${sort}`
+    );
+    const data = await res.json();
+    setCategory(data);
+  };
+
+  useEffect(() => {
+    storesFetch();
+  }, [categoryName, sort]);
+
   return (
     <Style>
       <CategoryContainer>
@@ -36,33 +59,5 @@ function CategoryPage() {
     </Style>
   );
 }
-
-const Style = tw.div`
-  flex
-  flex-col
-`;
-const CategoryContainer = tw.section`
-  flex
-  justify-between
-  items-start
-  justify-evenly
-  my-[20px]
-  mx-[100px]
-`;
-
-const Option = tw.div`
-  flex
-  w-[435px]
-  mt-[10px]
-  justify-around
-  text-sm
-`;
-
-const Category = tw.div`
-  flex
-  flex-col
-  items-center
-  relative
-`;
 
 export default CategoryPage;

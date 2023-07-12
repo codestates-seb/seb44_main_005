@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
+import { isLoginState } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
 import profile from '../../assets/profile.svg';
 import Searchbar from './Searchbar';
 import tw from 'tailwind-styled-components';
+
 import {
   HaederContainer,
   LogoContainer,
@@ -17,8 +20,8 @@ function Header() {
   //비로그인 상태일때
   //로그인 된 상태일때 -> 1. 파트너 로그인을 한 상태일때 2. 파트너 로그인을 하지 않은 상태일 때
   //UseContainer 안 요소를 다르게 설정해줄 것
-  const [isLogin, setIsLogin] = useState(false);
-  const [isPartner, setIsPartner] = useState(true);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  const [isPartner, setIsPartner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const nevigate = useNavigate();
 
@@ -31,7 +34,8 @@ function Header() {
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
-  console.log(setIsLogin, handlePartnerClick);
+  console.log(setIsLogin);
+  console.log(setIsPartner);
   return (
     <HaederContainer>
       <LogoContainer>
@@ -58,7 +62,7 @@ function Header() {
         <LoginContainer>
           {isPartner ? (
             <>
-              <Link to="/partner" className="mt-1.5">
+              <Link to="/partner" className="mt-1">
                 업체 등록
               </Link>
               <DropdownContainer>
@@ -72,7 +76,7 @@ function Header() {
             </>
           ) : (
             <>
-              <Link to="/partner" className="mt-1.5">
+              <Link to="/partner" className="mt-1">
                 파트너 등록
               </Link>
               <img
