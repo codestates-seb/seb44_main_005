@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { CategoryData } from '../store/categoryAtom';
+// import { CategoryData } from '../store/categoryAtom';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import search from '../assets/search.svg';

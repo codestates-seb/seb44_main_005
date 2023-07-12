@@ -94,7 +94,8 @@ export const ResButtonsContainer = tw.div`
 
 export const ButtonStyle = tw.button`
     bg-[#F3F5F7]
-    p-2 rounded-lg
+    p-2
+    rounded-lg
 `;
 
 export const NoButtons = tw.p`
