@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
+@Transactional
 @Service
 public class ReservationService {
 
@@ -82,9 +84,8 @@ public class ReservationService {
                     findReservation.setReservationEmail(reservationEmail);
                 });
 
+        findReservation.setModifiedAt(LocalDateTime.now());
         reservationRepository.save(findReservation);
-
-
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -134,7 +135,7 @@ public class ReservationService {
             Long itemId = reservationItem.getItem().getItemId();
             //itemId로 해당 상품을 찾았음
             Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
-            //Todo 티켓 valid 검사 -> 잔여수 컬럼이 필요할 듯
+            //티켓 valid 검사
             item.validateTicketCount(reservationItem.getTicketCount());
 
             //ReservationItem 저장
@@ -185,6 +186,5 @@ public class ReservationService {
             }
         }
         return remainingTicketInfo;
-        ///
     }
 }

@@ -1,6 +1,7 @@
 package actiOn.store.service;
 
 import actiOn.Img.storeImg.StoreImg;
+import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.item.dto.ItemDto;
@@ -8,6 +9,7 @@ import actiOn.item.entity.Item;
 import actiOn.map.response.GeoLocation;
 import actiOn.map.service.KakaoMapService;
 import actiOn.member.entity.Member;
+import actiOn.member.service.MemberService;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationRepository;
@@ -36,15 +38,16 @@ public class StoreService {
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
 
+    private final MemberService memberService;
+
     private final WishService wishService;
 
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService,
-                        ReservationRepository reservationRepository, ReservationService reservationService,
-                        WishService wishService) {
+    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService) {
         this.storeRepository = storeRepository;
         this.kakaoMapService = kakaoMapService;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
+        this.memberService = memberService;
         this.wishService = wishService;
     }
 
@@ -61,6 +64,23 @@ public class StoreService {
         }
         store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
         return storeRepository.save(store);
+    }
+
+    public void deleteStore(Long storeId){
+        Store findStore = this.findStoreByStoreId(storeId);
+
+        //Todo member가 올린 스토어인지 확인 필요
+        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
+        Member findMember = memberService.findMemberByEmail(loginUserEmail);
+
+        if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())){
+            throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
+        }
+
+        //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
+
+        storeRepository.delete(findStore);
+
     }
 
     public Store findStoreByStoreId(long storeId) {

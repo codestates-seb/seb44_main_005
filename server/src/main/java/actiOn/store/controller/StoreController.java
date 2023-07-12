@@ -83,9 +83,10 @@ public class StoreController {
 
 
 
-    // 업체 삭제
+    // 업체 삭제 PP_003
     @DeleteMapping("/stores/{store-id}") //스토어 삭제
-    public ResponseEntity deleteStore(@PathVariable("store-id") @Positive long storeId) {
+    public ResponseEntity deleteStore(@PathVariable("store-id") @Positive Long storeId) {
+        storeService.deleteStore(storeId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
