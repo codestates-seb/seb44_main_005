@@ -1,66 +1,57 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
 
-import {
-  AddBtn,
-  Input,
-  InputTitle,
-  IntroContent,
-  StoreAddSection,
-  Ticket,
-} from '../styles/StoreAdd/StoreAdd';
-import Address from '../components/StoreAdd/Address';
-import SelectCategory from '../components/StoreAdd/SelectCategory';
-import AddProduct from '../components/StoreAdd/AddProduct';
-import AddImages from '../components/StoreAdd/AddImages';
+import { AddBtn, StoreAddSection } from "../styles/StoreAdd/StoreAdd";
+import AddProduct from "../components/StoreAdd/AddProduct";
+import AddImages from "../components/StoreAdd/AddImages";
+import StoreAddTop from "../components/StoreAdd/StoreAddTop";
+import { useLocation } from 'react-router-dom';
+
+export const formState = atom({
+  key: 'formState',
+  default: {}
+})
+
+export const pageTitleState = atom({
+  key: 'pageTitleState',
+  default: '업체 등록하기'
+})
 
 function StoreAdd() {
-  const [products, setProducts] = useState([]);
-  const [product, setProduct] = useState({});
+  const setPageTitle = useSetRecoilState(pageTitleState);
+  const [form, setForm] = useRecoilState(formState);
+  const location = useLocation();
 
-  const productChangeHandler = (e) => {
-    if (e.target.name === 'itemName') {
-      setProduct({ ...product, itemName: e.target.value });
-    } else if (e.target.name === 'price') {
-      setProduct({ ...product, price: Number(e.target.value) });
-    } else if (e.target.name === 'totalTicket') {
-      setProduct({ ...product, totalTicket: Number(e.target.value) });
+  const formChangeHandler = (e) => {
+    if (e.target.name === "storeName") {
+      setForm({...form, storeName: e.target.value});
     }
-  };
+    else if (e.target.name === "content") {
+      setForm({...form, content: e.target.value});
+    }
+    else if (e.target.name === "kakao") {
+      setForm({...form, kakao: e.target.value});
+    }
+    else if (e.target.name === "contact") {
+      setForm({...form, contact: e.target.value});
+    }
+    else if (e.target.name === "category") {
+      setForm({...form, category: e.target.value});
+    }
+  }
 
-  const productAddHandler = () => {
-    setProducts([...products, { ...product }]);
-  };
+  useEffect(() => {
+    console.log(location);
+    const path = location.pathname.substring(6);
+    if (path === "/edit") {
+      setPageTitle("업체 수정하기");
+    }
+  }, [])
 
   return (
     <StoreAddSection>
-      <div className="text-2xl font-semibold mb-10 ml-10">업체등록하기</div>
-      <div className="flex mb-6 items-center">
-        <InputTitle>업체명</InputTitle>
-        <Input type="text" />
-      </div>
-      <div className="flex mb-6">
-        <InputTitle className="pt-3">소개글</InputTitle>
-        <IntroContent />
-      </div>
-      <Address />
-      <div className="flex mb-6 items-center">
-        <InputTitle>카카오톡 ID</InputTitle>
-        <Input type="text" />
-      </div>
-      <div className="flex mb-6 items-center">
-        <InputTitle>업체 전화번호</InputTitle>
-        <Input type="text" />
-      </div>
-      <SelectCategory />
-      <AddProduct
-        productChangeHandler={productChangeHandler}
-        productAddHandler={productAddHandler}
-      />
-      {products.map((el) => (
-        <Ticket>
-          {el.itemName} {el.price.toLocaleString('ko-KR')} X {el.totalTicket}
-        </Ticket>
-      ))}
+      <StoreAddTop formChangeHandler={formChangeHandler} />
+      <AddProduct />
       <AddImages />
       <AddBtn type="button">등록하기</AddBtn>
     </StoreAddSection>
