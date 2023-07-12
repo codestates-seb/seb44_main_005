@@ -1,8 +1,20 @@
-import { FaExplosion } from 'react-icons/fa6';
 import tw from 'tailwind-styled-components';
+
+export const MyPageContainer = tw.div`
+    flex
+    flex-row
+    justify-center
+    space-x-10
+`;
+
+export const MyBioContainer = tw.div`
+    border-[1px]
+    border-[#4771B7]
+`;
 
 export const MySpace = tw.div`
     space-y-7
+    p-10
 `;
 
 export const ButtonGrid = tw.div`

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 
 import {
   StyleContainer,
@@ -13,7 +14,7 @@ import google from '../assets/google.svg';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  // const url = import.meta.env.VITE_APP_API_URL;
+  const url = import.meta.env.VITE_APP_API_URL;
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   const [name, setName] = useState('');
@@ -94,7 +95,7 @@ function Register() {
       phoneNumber: phone,
       nickname: name,
     });
-    await fetch('https://daae-222-232-33-89.ngrok-free.app/signup', {
+    await fetch(`${url}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -105,10 +106,10 @@ function Register() {
         phoneNumber: phone,
         nickname: name,
       }),
-    }).then(() => navigate('/home'));
+    }).then(() => navigate('/login'));
   };
 
-  const LoginRequestHandlerGoogle = async (e) => {
+  const handleGoogleLogin = async (e) => {
     e.preventDefault();
     window.location.href =
       await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
@@ -159,7 +160,7 @@ function Register() {
         <Button
           bgColor="#FFFFFF"
           color="#000000"
-          clickHandler={LoginRequestHandlerGoogle}
+          clickHandler={handleGoogleLogin}
         >
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
@@ -167,13 +168,13 @@ function Register() {
               href="https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google"
               className="font-medium"
             > */}
-            구글로 회원가입하기
+            <span className="font-medium">구글로 회원가입하기</span>
             {/* </a> */}
           </div>
         </Button>
         <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleSubmit}>
-          {/* <span className="font-medium">가입 진행하기</span> */}
-          가입진행하기
+          <span className="font-medium">가입 진행하기</span>
+          {/* 가입진행하기 */}
         </Button>
       </RegisterContainer>
     </StyleContainer>

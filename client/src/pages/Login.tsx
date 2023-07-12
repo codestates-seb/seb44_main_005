@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { isLoginState, userNameState } from '../store/userInfoAtom';
 
 import {
   InputContainer,
@@ -9,21 +11,77 @@ import {
 import headerlogo from '../assets/headerlogo.svg';
 import Button from '../components/Button/Button';
 import google from '../assets/google.svg';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const [id, setId] = useState('');
+  const navigate = useNavigate();
+  const url = import.meta.env.VITE_APP_API_URL;
+
+  const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
 
-  const onIdHandler = (event) => {
-    setId(event.currentTarget.value);
+  //recoil 전역상태
+  const [memberId, setMemberId] = useRecoilState(userNameState);
+  const isLogin = useRecoilValue(isLoginState);
+  const setIsLoginState = useSetRecoilState(isLoginState);
+
+  const onEmailHandler = (event) => {
+    setEmail(event.currentTarget.value);
   };
 
   const onPwHandler = (event) => {
     setPassWord(event.currentTarget.value);
   };
-  const onClickHandler = () => {
-    console.log('Hi');
+
+  //구글로그인
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    window.location.href =
+      await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
   };
+
+  //일반로그인
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${url}/auth/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
+      });
+      const result1 = await res.json();
+      if (res.status !== 200) throw res;
+
+      //헤더에서 멤버아이디와 닉네임을 받아옴
+      const Authorization = res.headers.get('access_token');
+      const userId = result1.memberId;
+      const name = result1.nickname;
+      // 로컬 스토리지에 memberId,토큰 저장
+      localStorage.setItem('memberId', userId);
+      localStorage.setItem('Authorization', Authorization);
+      //전역 memberId 상태 변경
+      setMemberId(userId);
+      setIsLoginState(true);
+      // 아이디를 받았으면 리다이렉트
+      if (userId) {
+        alert(`${name}님 반갑습니다 !`);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('로그인 요청 중 오류가 발생했습니다', error);
+    }
+    console.log(memberId);
+    console.log(isLogin);
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      // 로그인 상태인 경우 새로고침
+      window.location.reload();
+    }
+  }, [isLogin]);
 
   return (
     <StyleContainer>
@@ -36,11 +94,11 @@ function Login() {
         </IntroText>
         <InputContainer>
           <div>
-            <label className="font-medium">아이디</label>
+            <label className="font-medium">이메일</label>
             <input
               type="text"
-              value={id}
-              onChange={onIdHandler}
+              value={email}
+              onChange={onEmailHandler}
               className="border border-[#9A9A9A]  h-[30px] w-[200px] ml-4 rounded-md mb-3 px-2"
             />
           </div>
@@ -54,13 +112,17 @@ function Login() {
             />
           </div>
         </InputContainer>
-        <Button bgColor="#FFFFFF" color="#000000" clickHandler={onClickHandler}>
+        <Button
+          bgColor="#FFFFFF"
+          color="#000000"
+          clickHandler={handleGoogleLogin}
+        >
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
             <span className="font-medium">구글로 로그인하기</span>
           </div>
         </Button>
-        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={onClickHandler}>
+        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleLogin}>
           <span className="font-medium">로그인</span>
         </Button>
       </LoginContainer>
