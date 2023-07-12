@@ -5,7 +5,7 @@ function ReservationCheck() {
   
   return (
     <div className="border-[1px] border-[#4771B7] px-[50px] py-16 space-y-5">
-      <p className="font-normal text-2xl pl-4">예약 내역 조회</p>
+      <p className="font-medium text-2xl pl-4">예약 내역 조회</p>
       {data.map((reservation) => (
         <div 
           key={reservation.storeId} 
@@ -40,7 +40,7 @@ function ReservationCheck() {
                 <span>{reservation.reservationStatus}</span>
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="flex flex-col w-[100%] space-y-2">
               <div>
                 <span className="text-[16px]">{reservation.reservationDate}</span>
               </div>
@@ -52,10 +52,22 @@ function ReservationCheck() {
                 <span className="text-[15px] font-semibold">결제금액: {reservation.totalPrice}원</span>
               </div>
             </div>
-            <div className="flex justify-end space-x-3 font-medium text-[15px]">
-              <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 수정</button>
-              <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 삭제</button>
-            </div>
+            {reservation.reservationStatus === "예약 취소" && (
+              <div className="flex justify-end space-x-3 font-medium text-[15px]">
+                <p className="h-[38.5px]"></p>
+              </div>
+            )}
+            {reservation.reservationStatus === "이용 완료" && (
+              <div className="flex justify-end space-x-3 font-medium text-[15px]">
+                <p className="h-[38.5px]"></p>
+              </div>
+            )}
+            {reservation.reservationStatus === "예약 완료" && (
+              <div className="flex justify-end space-x-3 font-medium text-[15px]">
+                <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 수정</button>
+                <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 삭제</button>
+              </div>
+            )}
           </div>
         </div>
       ))}
