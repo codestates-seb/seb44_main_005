@@ -16,4 +16,5 @@ export const StyledContainer = tw.ul`
 export const Menu = tw.li`
   px-[25px]
   py-[10px]
+  cursor-pointer
 `;

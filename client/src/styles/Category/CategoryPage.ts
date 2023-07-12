@@ -6,18 +6,18 @@ export const Style = tw.div`
 `;
 export const CategoryContainer = tw.section`
   flex
-  justify-between
   items-start
-  justify-evenly
+  justify-center
   my-[20px]
   mx-[100px]
 `;
 
 export const Option = tw.div`
   flex
-  w-[435px]
+  w-[500px]
   mt-[10px]
-  justify-around
+  ml-[200px]
+  justify-center
   text-sm
 `;
 

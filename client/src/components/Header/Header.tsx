@@ -23,10 +23,19 @@ function Header() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const [isPartner, setIsPartner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const nevigate = useNavigate();
+
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    nevigate('/home');
+    navigate('/home');
+  };
+  const onClickPartner = () => {
+    if (!isLogin) {
+      alert(`로그인 상태에서 이용할 수 있는 서비스입니다.`);
+      navigate('/login');
+    } else {
+      navigate('/partner');
+    }
   };
   // const handlePartnerClick = () => {
   //   setIsPartner(!isPartner);
@@ -49,7 +58,9 @@ function Header() {
       </LogoContainer>
       {!isLogin ? (
         <UnLoginContainer>
-          <Link to="/partner">파트너 등록</Link>
+          <div className="cursor-pointer" onClick={onClickPartner}>
+            파트너 등록
+          </div>
           <Link to="/login">로그인</Link>
           <Link
             to="/register"
