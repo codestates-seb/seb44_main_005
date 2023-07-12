@@ -1,12 +1,10 @@
-import { FaExplosion } from 'react-icons/fa6';
 import tw from 'tailwind-styled-components';
 
 export const MyPageContainer = tw.div`
     flex
     flex-row
     justify-center
-    space-x-5
-    pt-20
+    space-x-10
 `;
 
 export const MyBioContainer = tw.div`
@@ -86,4 +84,56 @@ export const BusinessCategory = tw.div`
 
 export const BusinessCategoryTitle = tw.span`
     font-semibold
+`;
+
+export const WishContainer = tw.div`
+    flex
+    flex-col
+    justify-center
+    items-center
+    space-y-5
+    border-[1px]
+    border-[#4771B7]
+    p-16
+`;
+
+export const WishCount = tw.div`
+    w-[100%]
+    font-semibold
+    text-2xl
+`;
+
+export const EachWishCard = tw.div`
+    flex
+    flex-row
+    border-[1px]
+    border-[#4771B7]/[.44]
+    w-[680px]
+`;
+
+export const CardImgSize = tw.img`
+    w-[250px]
+    h-[200px]
+    object-cover
+`;
+
+export const NoWishList = tw.div`
+    flex
+    flex-col
+    justify-center
+    items-center
+    space-y-5
+    border-[1px]
+    border-[#4771B7]
+    p-20
+`;
+
+export const NoWishImgSize = tw.img`
+    w-[100px]
+`;
+
+export const NoWishTitle = tw.p`
+    text-2xl
+    font-semibold
+    pt-12
 `;

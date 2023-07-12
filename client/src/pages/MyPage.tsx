@@ -1,5 +1,4 @@
 // import { dummyBio } from "../../dummy/mypage";
-import SideBar from '../components/MyPage/SideBar';
 import dummyImg from '../dummy/mypagedummy.jpeg';
 import {
   BusinessCategory,
@@ -17,12 +16,11 @@ import {
   BusinessCategoryTitle,
   MyPageContainer,
   MyBioContainer,
-} from '../styles/MyPage/My';
+} from '../styles/MyPage/MyPage';
 
 function MyPage() {
   return (
     <MyPageContainer>
-        <SideBar />
         <MyBioContainer>
             <MySpace>
                 <ButtonGrid>
