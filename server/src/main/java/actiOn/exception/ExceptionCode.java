@@ -13,6 +13,11 @@ public enum ExceptionCode {
     // AUTH
     USERNAME_NOT_FOUND(404, "Username not found"),
     UNAUTHORIZED_PRINCIPAL(404, "Unauthorized principal"),
+    ROLE_NOT_FOUND(404, "Role not found"),
+
+    // BUSINESS
+    BUSINESS_EXISTS(409, "Registration number exists."),
+    INVALID_REGISTRATION_NUMBER(400,"Invalid registration number format" ),
 
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
