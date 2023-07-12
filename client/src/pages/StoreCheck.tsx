@@ -1,4 +1,8 @@
 function StoreCheck() {
+  const handleDeleteClick = () => {
+    alert('정말 삭제하시겠습니가?');
+  };
+
   return (
     <div className="border-[1px] border-[#4771B7] px-[50px] py-16 space-y-5">
       <span className="font-medium text-2xl pl-4">판매 서비스 관리</span>
@@ -14,7 +18,7 @@ function StoreCheck() {
           </div>
           <div className="flex justify-end space-x-3 font-medium text-[15px]">
             <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">업체 수정</button>
-            <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">업체 삭제</button>
+            <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button" onClick={handleDeleteClick}>업체 삭제</button>
           </div>
         </div>
       </div>
