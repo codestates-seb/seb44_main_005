@@ -8,7 +8,7 @@ import java.util.List;
 @Getter @Setter
 public class MainPageResponseDto {
 
-    private List<RecommendDto> recommendDtos;
+    private List<RecommendDto> recommend;
 
-    private List<DataDto> dataDtos;
+    private List<DataDto> data;
 }

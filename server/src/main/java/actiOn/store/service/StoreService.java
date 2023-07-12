@@ -7,15 +7,19 @@ import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.map.response.GeoLocation;
 import actiOn.map.service.KakaoMapService;
+import actiOn.member.entity.Member;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationRepository;
+import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.dto.mainrep.DataDto;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
 import actiOn.store.dto.mainrep.RecommendDto;
 import actiOn.reservation.service.ReservationService;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
+import actiOn.wish.entity.Wish;
+import actiOn.wish.service.WishService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +36,16 @@ public class StoreService {
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
 
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService) {
+    private final WishService wishService;
+
+    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService,
+                        ReservationRepository reservationRepository, ReservationService reservationService,
+                        WishService wishService) {
         this.storeRepository = storeRepository;
         this.kakaoMapService = kakaoMapService;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
+        this.wishService = wishService;
     }
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
@@ -114,13 +123,33 @@ public class StoreService {
             dataDto.setStoreId(store.getStoreId());
             dataDto.setStoreName(store.getStoreName());
             dataDto.setLatitude(store.getLatitude());
-            dataDto.setLongtitude(store.getLongitude());
+            dataDto.setLongitude(store.getLongitude());
             dataDto.setCategory(store.getCategory());
             dataDtos.add(dataDto);
         }
 
-        mainPageResponseDto.setRecommendDtos(recommendDtos);
-        mainPageResponseDto.setDataDtos(dataDtos);
+        mainPageResponseDto.setRecommend(recommendDtos);
+        mainPageResponseDto.setData(dataDtos);
         return mainPageResponseDto;
     }
+
+    public List<Long> getWishStoreIdList(Member member){
+        List<Wish> wishList = wishService.getWishListByMember(member);
+        List<Long> wishStoreIdList = new ArrayList<>();
+        for (Wish wish : wishList) {
+            wishStoreIdList.add(wish.getStore().getStoreId());
+        }
+        return wishStoreIdList;
+    }
+
+    public StoreResponseDto insertWishAtStoreResponseDto(Member member, StoreResponseDto store) {
+        List<Long> wishStoreIdList = getWishStoreIdList(member);
+        long storeId = store.getStoreId();
+
+        if (wishStoreIdList.contains(storeId)){
+            store.setIsLike(true);
+        }
+        return store;
+    }
+
 }

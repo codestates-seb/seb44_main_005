@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class WishService {
 
@@ -68,6 +70,12 @@ public class WishService {
 
         //Todo Store에 대한 찜 개수 -1 로직
         storeRepository.subLikeCount(store);
+    }
+
+
+    public List<Wish> getWishListByMember(Member member) {
+        List<Wish> wishList = wishRepository.findByMember(member);
+        return wishList;
     }
 
 

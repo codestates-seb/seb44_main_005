@@ -9,6 +9,6 @@ public class DataDto {
     private Long storeId;
     private String storeName;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private String category;
 }

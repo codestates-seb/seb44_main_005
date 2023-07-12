@@ -17,6 +17,7 @@ import actiOn.store.service.StoreService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,10 +49,12 @@ public class StoreController {
 
     // 업체 등록
     @PostMapping("/stores") // 스토어 생성
-    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
+    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto,
+                                    Authentication authentication) {
         Store store = mapper.storePostDtoToStore(storePostDto);
         Store storeSaveResult = storeService.createStore(store);
         //Todo 등록하는 사장님 정보를 받아서 Member 객체 매핑
+
         StorePostResponseDto storePostResponseDto = mapper.storeToStorePostResponseDto(storeSaveResult);
         return new ResponseEntity<>(storePostResponseDto,HttpStatus.CREATED);
     }
