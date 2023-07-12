@@ -13,4 +13,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> , StoreCusto
     List<Store> findByCategory(String category, Sort sort);
 
     List<Store> findTop4ByOrderByLikeCountDesc();
+    List<Store> findByStoreNameContainingOrderByRatingDesc(String keyword);//
 }

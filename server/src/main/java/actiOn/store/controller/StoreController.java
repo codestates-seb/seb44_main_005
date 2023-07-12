@@ -1,6 +1,8 @@
 package actiOn.store.controller;
 
 import actiOn.Img.service.ImgService;
+import actiOn.item.dto.ItemDto;
+import actiOn.item.entity.Item;
 import actiOn.member.entity.Member;
 import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.StorePostDto;
@@ -12,6 +14,7 @@ import actiOn.store.mapper.CategoryResponseMapper;
 import actiOn.store.mapper.StoreMapper;
 import actiOn.store.mapper.StoreResponseMapper;
 import actiOn.store.service.StoreService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -59,12 +63,6 @@ public class StoreController {
                 return new ResponseEntity<>(HttpStatus.CREATED);}
             return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
-
-    @PostMapping("/profileImages") // 프로필 이미지 업로드
-    public ResponseEntity profileImgUpload(@RequestPart("image") MultipartFile image){
-        imgService.uploadProfileImage(image,new Member());
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
     public ResponseEntity patchStore(@PathVariable("store-id") @Positive long storeId) {
@@ -79,6 +77,8 @@ public class StoreController {
         //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
+
+
 
     // 업체 삭제
     @DeleteMapping("/stores/{store-id}") //스토어 삭제
@@ -108,6 +108,9 @@ public class StoreController {
     // 검색 기능
     @GetMapping("/search") //검색
     public ResponseEntity getSearchResults(@RequestParam(name = "keyword") String keyword) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Store> searchResult = storeService.searchEnginOnStoreNameByKeyword(keyword);
+        CategoryResponseDto searchResultTransformDto =
+                categoryResponseMapper.CategoryStoreToCategoryResponseDto(searchResult); // response form이 같아서 재활용
+        return new ResponseEntity<>(searchResultTransformDto,HttpStatus.OK);
     }
 }

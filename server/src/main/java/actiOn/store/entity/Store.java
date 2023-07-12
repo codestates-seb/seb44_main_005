@@ -62,10 +62,6 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private int lowPrice;
 
-
-    //가격
-    @Column(nullable = false)
-    private int lowPrice;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;

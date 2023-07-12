@@ -25,71 +25,6 @@ public class StubDataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //이미지
-        List<StoreImg> storeImgList1 = new ArrayList<>();
-        StoreImg storeImg1 = new StoreImg();
-        storeImg1.setImgId(1L);
-        storeImg1.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg1.setIsThumbnail(true);
-        storeImgRepository.save(storeImg1);
-
-        StoreImg storeImg2 = new StoreImg();
-        storeImg2.setImgId(2L);
-        storeImg2.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg2.setIsThumbnail(false);
-        storeImgRepository.save(storeImg2);
-
-        storeImgList1.add(storeImg1);
-        storeImgList1.add(storeImg2);
-
-        List<StoreImg> storeImgList2 = new ArrayList<>();
-        StoreImg storeImg3 = new StoreImg();
-        storeImg3.setImgId(3L);
-        storeImg3.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg3.setIsThumbnail(true);
-        storeImgRepository.save(storeImg3);
-
-        StoreImg storeImg4 = new StoreImg();
-        storeImg4.setImgId(4L);
-        storeImg4.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg4.setIsThumbnail(false);
-        storeImgRepository.save(storeImg4);
-
-        storeImgList2.add(storeImg3);
-        storeImgList2.add(storeImg4);
-
-        List<StoreImg> storeImgList3 = new ArrayList<>();
-        StoreImg storeImg5 = new StoreImg();
-        storeImg5.setImgId(5L);
-        storeImg5.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg5.setIsThumbnail(true);
-        storeImgRepository.save(storeImg5);
-
-        StoreImg storeImg6 = new StoreImg();
-        storeImg6.setImgId(6L);
-        storeImg6.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq1vCXhZqkqMlvMFGFxnSDrscf61Eap4-hcQ&usqp=CAU");
-        storeImg6.setIsThumbnail(false);
-        storeImgRepository.save(storeImg6);
-
-        storeImgList3.add(storeImg5);
-        storeImgList3.add(storeImg6);
-
-        List<StoreImg> storeImgList4 = new ArrayList<>();
-        StoreImg storeImg7 = new StoreImg();
-        storeImg7.setImgId(7L);
-        storeImg7.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKqa0LnyJtfOOgfZeZdgcwm5sQDGi371NTpw&usqp=CAU");
-        storeImg7.setIsThumbnail(true);
-        storeImgRepository.save(storeImg7);
-
-        StoreImg storeImg8 = new StoreImg();
-        storeImg8.setImgId(8L);
-        storeImg8.setLink("https://www.job-post.co.kr/news/photo/202106/25358_23433_2551.jpg");
-        storeImg8.setIsThumbnail(false);
-        storeImgRepository.save(storeImg8);
-
-        storeImgList4.add(storeImg7);
-        storeImgList4.add(storeImg8);
-
         Store bestStore1 = new Store();
         bestStore1.setStoreId(1L);
         bestStore1.setStoreName("언더워터플레이 함덕점");
@@ -104,8 +39,9 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore1.setReviewCount(100);
         bestStore1.setRating(4.9);
         bestStore1.setLowPrice(10000);
-        bestStore1.setStoreImgList(storeImgList1);
         storeRepository.save(bestStore1);
+
+        //-----------------------------------------------------------//
 
         Store bestStore2 = new Store();
         bestStore2.setStoreId(2L);
@@ -121,8 +57,9 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore2.setReviewCount(100);
         bestStore2.setRating(4.6);
         bestStore2.setLowPrice(90000);
-        bestStore2.setStoreImgList(storeImgList2);
         storeRepository.save(bestStore2);
+
+        //------------------------------------------//
 
         Store bestStore3 = new Store();
         bestStore3.setStoreId(3L);
@@ -138,7 +75,6 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore3.setReviewCount(94);
         bestStore3.setRating(3.6);
         bestStore3.setLowPrice(1000900);
-        bestStore3.setStoreImgList(storeImgList3);
         storeRepository.save(bestStore3);
 
         Store bestStore4 = new Store();
@@ -155,7 +91,100 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore4.setReviewCount(91);
         bestStore4.setRating(3.2);
         bestStore4.setLowPrice(104300);
-        bestStore4.setStoreImgList(storeImgList4);
         storeRepository.save(bestStore4);
+
+
+        //이미지 set
+        List<StoreImg> storeImgList1 = new ArrayList<>();
+        StoreImg storeImg1 = new StoreImg();
+        storeImg1.setImgId(1L);
+        storeImg1.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV0IlkaymZEgDAQfVmTTMIrm4nRqawHOwMWA&usqp=CAU");
+        storeImg1.setIsThumbnail(true);
+        storeImg1.setStore(bestStore1);
+
+        StoreImg storeImg2 = new StoreImg();
+        storeImg2.setImgId(2L);
+        storeImg2.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvTWeJ4zfReFrDCHaMnjZBGEmM-pLFNgd7oQ&usqp=CAU");
+        storeImg2.setIsThumbnail(false);
+        storeImg2.setStore(bestStore1);
+
+        storeImgRepository.save(storeImg1);
+        storeImgRepository.save(storeImg2);
+
+        storeImgList1.add(storeImg1);
+        storeImgList1.add(storeImg2);
+        bestStore1.setStoreImgList(storeImgList1);
+        storeRepository.save(bestStore1);
+
+        //--------------------------------------------------------------//
+
+        List<StoreImg> storeImgList2 = new ArrayList<>();
+        StoreImg storeImg3 = new StoreImg();
+        storeImg3.setImgId(3L);
+        storeImg3.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2MU1T_daMAj_TCOxxS_WUMmLnYy57FBM8mw&usqp=CAU");
+        storeImg3.setIsThumbnail(true);
+        storeImg3.setStore(bestStore2);
+
+        StoreImg storeImg4 = new StoreImg();
+        storeImg4.setImgId(4L);
+        storeImg4.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi4Bo1grekwpSHrA7-IB0PZBIiCdTQTZlJWA&usqp=CAU");
+        storeImg4.setIsThumbnail(false);
+        storeImg4.setStore(bestStore2);
+
+        storeImgRepository.save(storeImg3);
+        storeImgRepository.save(storeImg4);
+
+        storeImgList2.add(storeImg3);
+        storeImgList2.add(storeImg4);
+        bestStore2.setStoreImgList(storeImgList2);
+        storeRepository.save(bestStore2);
+
+        //------------------------------------------------------------//
+
+        List<StoreImg> storeImgList3 = new ArrayList<>();
+        StoreImg storeImg5 = new StoreImg();
+        storeImg5.setImgId(5L);
+        storeImg5.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZYGC_IVAshC3is3qyNX8EmXvm5hX2f2T-UA&usqp=CAU");
+        storeImg5.setIsThumbnail(true);
+        storeImg5.setStore(bestStore3);
+
+        StoreImg storeImg6 = new StoreImg();
+        storeImg6.setImgId(6L);
+        storeImg6.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhNpcNEK2AnEQfGDDydlRg5tw-7bvd4XewNQ&usqp=CAU");
+        storeImg6.setIsThumbnail(false);
+        storeImg6.setStore(bestStore3);
+
+        storeImgRepository.save(storeImg5);
+        storeImgRepository.save(storeImg6);
+
+        storeImgList3.add(storeImg5);
+        storeImgList3.add(storeImg6);
+        bestStore3.setStoreImgList(storeImgList3);
+        storeRepository.save(bestStore3);
+
+        //--------------------------------------------------------//
+
+        List<StoreImg> storeImgList4 = new ArrayList<>();
+        StoreImg storeImg7 = new StoreImg();
+        storeImg7.setImgId(7L);
+        storeImg7.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTddjByXIAlIRGnr12e5EhH54T6_yUYvmrh-w&usqp=CAU");
+        storeImg7.setIsThumbnail(true);
+        storeImg7.setStore(bestStore4);
+
+        StoreImg storeImg8 = new StoreImg();
+        storeImg8.setImgId(8L);
+        storeImg8.setLink("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG3Q1-tfq7cV873Y4fvoppMrSMlUo1vG4Gwg&usqp=CAU");
+        storeImg8.setIsThumbnail(false);
+        storeImg8.setStore(bestStore4);
+
+        storeImgRepository.save(storeImg7);
+        storeImgRepository.save(storeImg8);
+
+        storeImgList4.add(storeImg7);
+        storeImgList4.add(storeImg8);
+        bestStore3.setStoreImgList(storeImgList4);
+        storeRepository.save(bestStore3);
     }
+
+
 }
