@@ -9,6 +9,8 @@ import {
   NoWishList,
   NoWishImgSize,
   NoWishTitle,
+  WishContainer,
+  WishCountTitle,
 } from '../styles/MyPage/WishList';
 
 function WishList() {
@@ -35,7 +37,7 @@ function WishList() {
   }, [categoryName, sort]);
 
   return (
-    <div className='border-[1px] border-[#4771B7] p-10 max-h-[800px] overflow-y-auto'>
+    <WishContainer>
       {getLikedCards().length === 0 ? (
         <NoWishList>
           <NoWishImgSize src={search} alt="search" />
@@ -47,9 +49,9 @@ function WishList() {
       ) : (
         <div>
           <div>
-            <span className='font-semibold text-2xl'>
+            <WishCountTitle>
               위시 상품 {getLikedCards().length}개
-            </span>
+            </WishCountTitle>
           </div>
           <div>
             {getLikedCards().map((el) => {
@@ -58,7 +60,7 @@ function WishList() {
           </div>
         </div>
       )}
-    </div>
+    </WishContainer>
   );
 }
 
