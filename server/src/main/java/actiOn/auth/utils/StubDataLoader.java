@@ -2,6 +2,8 @@ package actiOn.auth.utils;
 
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.Img.storeImg.StoreImgRepository;
+import actiOn.item.entity.Item;
+import actiOn.item.repository.ItemRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ public class StubDataLoader implements CommandLineRunner {
 
     private final StoreRepository storeRepository;
     private final StoreImgRepository storeImgRepository;
+    private final ItemRepository itemRepository;
 
-    public StubDataLoader(StoreRepository storeRepository, StoreImgRepository storeImgRepository) {
+    public StubDataLoader(StoreRepository storeRepository, StoreImgRepository storeImgRepository, ItemRepository itemRepository) {
         this.storeRepository = storeRepository;
         this.storeImgRepository = storeImgRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -184,7 +188,111 @@ public class StubDataLoader implements CommandLineRunner {
         storeImgList4.add(storeImg8);
         bestStore3.setStoreImgList(storeImgList4);
         storeRepository.save(bestStore3);
+
+        //Item을 만들자
+        List<Item> items1 = new ArrayList<>();
+
+        Item item1 = new Item();
+        item1.setItemId(1L);
+        item1.setItemName("새우깡");
+        item1.setMaxCount(10);
+        item1.setPrice(100);
+        item1.setStore(bestStore1);
+
+        Item item2 = new Item();
+        item2.setItemId(2L);
+        item2.setItemName("감자깡");
+        item2.setMaxCount(10);
+        item2.setPrice(99);
+        item2.setStore(bestStore1);
+
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+
+        items1.add(item1);
+        items1.add(item2);
+
+        bestStore1.setItems(items1);
+        storeRepository.save(bestStore1);
+        //----------------------------------//
+
+        List<Item> items2 = new ArrayList<>();
+
+        Item item3 = new Item();
+        item3.setItemId(3L);
+        item3.setItemName("인디언밥");
+        item3.setMaxCount(10);
+        item3.setPrice(1200);
+        item3.setStore(bestStore2);
+
+        Item item4 = new Item();
+        item4.setItemId(4L);
+        item4.setItemName("빈츠");
+        item4.setMaxCount(10);
+        item4.setPrice(1500);
+        item4.setStore(bestStore2);
+
+        itemRepository.save(item3);
+        itemRepository.save(item4);
+
+        items1.add(item3);
+        items1.add(item4);
+
+        bestStore2.setItems(items2);
+        storeRepository.save(bestStore2);
+        //----------------------------------//
+
+        List<Item> items3 = new ArrayList<>();
+
+        Item item5 = new Item();
+        item5.setItemId(5L);
+        item5.setItemName("허니버터칩");
+        item5.setMaxCount(10);
+        item5.setPrice(1300);
+        item5.setStore(bestStore3);
+
+        Item item6 = new Item();
+        item6.setItemId(6L);
+        item6.setItemName("다이제");
+        item6.setMaxCount(10);
+        item6.setPrice(2000);
+        item6.setStore(bestStore3);
+
+        itemRepository.save(item5);
+        itemRepository.save(item6);
+
+        items1.add(item1);
+        items1.add(item2);
+
+        bestStore3.setItems(items3);
+        storeRepository.save(bestStore3);
+        //----------------------------------//
+
+        List<Item> items4 = new ArrayList<>();
+
+        Item item7 = new Item();
+        item7.setItemId(7L);
+        item7.setItemName("맛동산");
+        item7.setMaxCount(10);
+        item7.setPrice(1800);
+        item7.setStore(bestStore4);
+
+        Item item8 = new Item();
+        item8.setItemId(8L);
+        item8.setItemName("계란과자");
+        item8.setMaxCount(10);
+        item8.setPrice(1100);
+        item8.setStore(bestStore4);
+
+        itemRepository.save(item7);
+        itemRepository.save(item8);
+
+        items1.add(item7);
+        items1.add(item8);
+
+        bestStore1.setItems(items4);
+        storeRepository.save(bestStore4);
+        //----------------------------------//
     }
-
-
 }
+
