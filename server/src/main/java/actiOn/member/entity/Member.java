@@ -1,6 +1,7 @@
 package actiOn.member.entity;
 
 import actiOn.Img.profileImg.ProfileImg;
+import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
 import actiOn.store.entity.Store;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -32,11 +34,12 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String nickname;
 
-    @Column // nullable true로 임시 변경
+    @Column
     private String phoneNumber;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<MemberRole> memberRoles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")
     private Business business;
@@ -55,8 +58,10 @@ public class Member extends BaseEntity implements Principal {
         return getEmail();
     }
 
-    public enum MemberRole {
-        ROLE_USER,
-        ROLE_PARTNER
+    public List<String> getRoles() {
+        return this.getMemberRoles()
+                .stream()
+                .map(memberRole -> memberRole.getRole().getName())
+                .collect(Collectors.toList());
     }
 }
