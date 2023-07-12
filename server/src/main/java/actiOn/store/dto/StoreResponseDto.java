@@ -2,7 +2,6 @@ package actiOn.store.dto;
 
 
 import actiOn.item.dto.ItemDto;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 public class StoreResponseDto {
     private String storeName;
     private String category;
@@ -21,7 +19,7 @@ public class StoreResponseDto {
     private String kakao;
     private String contact;
     private String address;
-    private boolean isLike = false;
+    private boolean isLike;
     private String profileImg;
     private LocalDateTime createdAt;
     private List<ItemDto> items;

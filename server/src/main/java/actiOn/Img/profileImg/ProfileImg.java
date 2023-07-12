@@ -16,7 +16,7 @@ public class ProfileImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imgId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String link;
 
     @OneToOne
