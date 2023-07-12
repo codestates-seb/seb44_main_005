@@ -9,6 +9,7 @@ import actiOn.business.service.BusinessService;
 import actiOn.member.dto.MemberPatchDto;
 import actiOn.member.dto.MemberPostDto;
 import actiOn.member.dto.MemberResponseDto;
+import actiOn.member.dto.PartnerResponseDto;
 import actiOn.member.entity.Member;
 import actiOn.member.mapper.MemberMapper;
 import actiOn.member.service.MemberService;
@@ -101,14 +102,15 @@ public class MemberController {
         return new ResponseEntity<>(registrationNumber, HttpStatus.OK);
     }
 
-    // TODO 마이페이지 - 사업자 정보 조히¬
+    // 마이페이지 - 사업자 정보 조회
     @GetMapping("/mypage/partner")
     public ResponseEntity getPartnerInfo() {
         String email = AuthUtil.getCurrentMemberEmail();
-//        Member member = memberService.findMemberByEmail(email);
-//
-//        PartnerResponseDto response = mapper.
-        return new ResponseEntity<>(HttpStatus.OK);
+//        List<Store> partnerStores = memberService.findPartnerStores(email);
+        Member partner = memberService.findMemberByEmail(email);
+
+        PartnerResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // TODO 마이페이지 - 위시리스트 조회
