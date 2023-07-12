@@ -17,12 +17,22 @@ public enum ExceptionCode {
 
     // BUSINESS
     BUSINESS_EXISTS(409, "Registration number exists."),
-    INVALID_REGISTRATION_NUMBER(400,"Invalid registration number format" ),
+    INVALID_REGISTRATION_NUMBER(400, "Invalid registration number format"),
 
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
-    INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'");
+    INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
+    NULL_STORE_IMAGE(404, "Store image is null"),
+    THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
+
+    // RESERVATION
+    RESERVATION_NOT_FOUND(404, "Reservation not found"),
+
+    //WISH
+    WISH_EXIST(409, "Wish exists"),
+
+    WISH_NOT_FOUND(404, "Wish not found");
 
     @Getter
     private int status;
