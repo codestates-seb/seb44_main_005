@@ -3,7 +3,8 @@ import tw from 'tailwind-styled-components';
 export const SideContainer = tw.div`
     border-[1px]
     border-[#4771B7]
-    h-[100%]
+    h-[500px]
+    w-[270px]
     px-10
     py-16
     space-y-20

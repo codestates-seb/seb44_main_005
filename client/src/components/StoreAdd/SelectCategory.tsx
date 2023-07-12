@@ -1,10 +1,10 @@
 import { CategorySelect, InputTitle } from "../../styles/StoreAdd/StoreAdd";
 
-function SelectCategory() {
+function SelectCategory({ formChangeHandler }) {
   return (
     <div className="flex mb-6 items-center">
       <InputTitle>카테고리</InputTitle>
-      <CategorySelect>
+      <CategorySelect onChange={formChangeHandler} name="category">
         <option>선택해주세요</option>
         <option>스노클링/다이빙</option>
         <option>수상레저</option>
