@@ -2,9 +2,11 @@ function ReservationCheck() {
   return (
     <div className="border-[1px] border-[#4771B7] p-5 space-y-5">
       <p className="font-normal text-2xl p-4">예약 내역 조회</p>
-      <div className="border-[1.5px] border-[#4771B7] w-[800px] h-[200px] rounded-lg p-5 flex flex-row justify-center items-center space-x-4">
-        <div className="w-[146px] h-[127px] overflow-hidden relative rounded-md">
-          <img className="absolute w-[100%]" src="https://i.pinimg.com/564x/50/26/9b/50269b9f5568fe624274a54e141c0bdb.jpg" alt="reservation image" />
+      <div className="border-[1.5px] border-[#4771B7] w-[800px] h-[200px] rounded-lg p-5 flex flex-row justify-center items-center space-x-12">
+        <div className="relative w-[146px] h-[127px]">
+          <div className="absolute inset-0 w-[146px] h-[127px]">
+            <img className="w-full h-full object-cover rounded-md" src="https://i.pinimg.com/564x/50/26/9b/50269b9f5568fe624274a54e141c0bdb.jpg" alt="reservation image" />
+          </div>
         </div>
         <div className="flex flex-col w-[100%] space-y-2">
           <div className="flex justify-end w-[100%]">
