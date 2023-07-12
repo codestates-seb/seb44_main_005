@@ -9,7 +9,7 @@ import KakaoMap from '../components/Home/KakaoMap';
 function Home() {
   const [current, setCurrent] = useState(0);
   const moveStyle = {
-    0: 'translate-x-0 bg-[#67C2E4]',
+    0: 'translate-x-0 bg-[#4770b755]',
     1: 'translate-x-[-100vw] bg-[#879fa8]',
     2: 'translate-x-[-200vw] bg-[#e4c767]',
     3: 'translate-x-[-300vw] bg-[#678fe4]',

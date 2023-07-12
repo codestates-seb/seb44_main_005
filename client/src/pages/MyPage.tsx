@@ -1,5 +1,5 @@
 import { dummyBio } from "../../dummy/mypage";
-import dummyImg from "../../dummy/mypagedummy.jpeg";
+import dummyImg from "../dummy/mypagedummy.jpeg";
 import { 
     BusinessCategory,
     BusinessSpace,
