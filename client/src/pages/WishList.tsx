@@ -9,7 +9,7 @@ import {
   NoWishList,
   NoWishImgSize,
   NoWishTitle,
-} from '../styles/MyPage/MyPage';
+} from '../styles/MyPage/WishList';
 
 function WishList() {
   const [searchParams] = useSearchParams();
