@@ -13,6 +13,8 @@ import actiOn.member.service.MemberService;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationRepository;
+import actiOn.store.dto.CategoryResponseDto;
+import actiOn.store.dto.CategoryStoreDto;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.dto.mainrep.DataDto;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
@@ -89,14 +91,17 @@ public class StoreService {
 
     public List<Store> findStoreByCategory(String category, String sortFiled) {
         if (sortFiled.isEmpty()) {
-            sortFiled = "rating";
+            sortFiled = "likeCount";
         }
-
         if (category.equals("all") || category.isEmpty()) {
-            return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
+            if (sortFiled.equals("lowPrice")){
+                return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
+            }
+            if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
+                return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
         }
-        if (sortFiled.equals("lowPrice")) {
-            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, sortFiled)); // 오름차순
+        if (sortFiled.equals("highPrice")){
+            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, "lowPrice")); // 오름차순
         }
 
         return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
@@ -170,6 +175,20 @@ public class StoreService {
             store.setIsLike(true);
         }
         return store;
+    }
+
+    public CategoryResponseDto insertWishAtCategoryResponseDto(Member member, CategoryResponseDto categoryResponseDto) {
+        List<Long> wishStoreIdList = getWishStoreIdList(member);
+        List<CategoryStoreDto> categoryStoreDtoList = categoryResponseDto.getData();
+        for (CategoryStoreDto store : categoryStoreDtoList) {
+            long storeId = store.getStoreId();
+
+            if (wishStoreIdList.contains(storeId)){
+                store.setIsLike(true);
+            }
+        }
+        categoryResponseDto.setData(categoryStoreDtoList);
+        return categoryResponseDto;
     }
 
 }

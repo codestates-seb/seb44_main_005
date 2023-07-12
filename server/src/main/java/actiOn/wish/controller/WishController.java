@@ -31,7 +31,7 @@ public class WishController {
 
     //TODO CP_002 찜 취소
     @DeleteMapping("/stores/favorites/{store-id}")
-    public ResponseEntity cancleWish(@Positive @PathVariable("store-id") Long storeId){
+    public ResponseEntity cancelWish(@Positive @PathVariable("store-id") Long storeId){
         wishService.deleteWish(storeId);
         return new ResponseEntity(HttpStatus.CREATED);
     }

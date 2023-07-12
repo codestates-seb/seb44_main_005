@@ -66,7 +66,6 @@ public class StoreResponseMapper {
         storeResponseDto.setItems(modifiedItems);
         storeResponseDto.setStoreImages(modifiedStoreImgs);
         storeResponseDto.setProfileImg("21");
-//        storeService.insertWishAtStoreResponseDto(storeResponseDto)
         return storeResponseDto;
         //
     }

@@ -4,6 +4,7 @@ import actiOn.Img.service.ImgService;
 import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.member.entity.Member;
+import actiOn.member.service.MemberService;
 import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.StorePostDto;
 import actiOn.store.dto.StorePostResponseDto;
@@ -36,21 +37,23 @@ public class StoreController {
     private final StoreResponseMapper responseMapper;
     private final CategoryResponseMapper categoryResponseMapper;
     private final ImgService imgService;
+    private final MemberService memberService;
 
     public StoreController(StoreService storeService,StoreMapper mapper,
                            ImgService imgService, StoreResponseMapper storeResponseMapper,
-                           CategoryResponseMapper categoryResponseMapper) {
+                           CategoryResponseMapper categoryResponseMapper,
+                           MemberService memberService) {
         this.storeService = storeService;
         this.mapper = mapper;
         this.imgService = imgService;
         this.responseMapper = storeResponseMapper;
         this.categoryResponseMapper = categoryResponseMapper;
+        this.memberService = memberService;
     }
 
     // 업체 등록
     @PostMapping("/stores") // 스토어 생성
-    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto,
-                                    Authentication authentication) {
+    public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = mapper.storePostDtoToStore(storePostDto);
         Store storeSaveResult = storeService.createStore(store);
         //Todo 등록하는 사장님 정보를 받아서 Member 객체 매핑
@@ -78,6 +81,8 @@ public class StoreController {
         Store findStore = storeService.findStoreByStoreId(storeId);
         StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
         //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
+//         Member requester =
+//        StoreResponseDto insertedWishResponseDto = storeService.insertWishAtStoreResponseDto()
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
