@@ -111,6 +111,7 @@ public class StoreService {
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
     }
 
+    //
     //메인페이지
     public MainPageResponseDto getMainPage() {
 
