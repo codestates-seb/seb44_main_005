@@ -6,13 +6,13 @@ import actiOn.business.dto.BusinessDto;
 import actiOn.business.entity.Business;
 import actiOn.business.mapper.BusinessMapper;
 import actiOn.business.service.BusinessService;
-import actiOn.member.dto.MemberPatchDto;
-import actiOn.member.dto.MemberPostDto;
-import actiOn.member.dto.MemberResponseDto;
-import actiOn.member.dto.PartnerResponseDto;
+import actiOn.member.dto.*;
 import actiOn.member.entity.Member;
 import actiOn.member.mapper.MemberMapper;
 import actiOn.member.service.MemberService;
+import actiOn.wish.dto.WishlistResponseDto;
+import actiOn.wish.mapper.WishMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,19 +24,13 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping
 @Validated
+@AllArgsConstructor
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper memberMapper;
     private final BusinessService businessService;
     private final BusinessMapper businessMapper;
-
-    public MemberController(MemberService memberService, MemberMapper memberMapper,
-                            BusinessService businessService, BusinessMapper businessMapper) {
-        this.memberService = memberService;
-        this.memberMapper = memberMapper;
-        this.businessService = businessService;
-        this.businessMapper = businessMapper;
-    }
+    private final WishMapper wishMapper;
 
     // 회원 가입
     @PostMapping("/signup")
@@ -106,17 +100,20 @@ public class MemberController {
     @GetMapping("/mypage/partner")
     public ResponseEntity getPartnerInfo() {
         String email = AuthUtil.getCurrentMemberEmail();
-//        List<Store> partnerStores = memberService.findPartnerStores(email);
         Member partner = memberService.findMemberByEmail(email);
 
-        PartnerResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
+        PartnerResponseDto response = memberMapper.partnerToPartnerResponseDto(partner);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // TODO 마이페이지 - 위시리스트 조회
+    // 위시리스트 조회
     @GetMapping("/mypage/wishlist")
-    public ResponseEntity getMemberWishlist(Authentication authentication) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity getMemberWishlist() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member member = memberService.findMemberByEmail(email);
+
+        WishlistResponseDto response = wishMapper.memberToWishlistResponseDto(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // TODO 마이페이지 - 예약 정보 조회
@@ -125,10 +122,13 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-    // TODO 마이페이지 - 판매 서비스 관리
+    // 마이페이지 - 판매 서비스 관리
     @GetMapping("/mystores")
-    public ResponseEntity getPartnerStores(Authentication authentication) {
+    public ResponseEntity getPartnerStores() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member partner = memberService.findMemberByEmail(email);
+
+        PartnerStoreResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
