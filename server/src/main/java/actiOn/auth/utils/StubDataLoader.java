@@ -32,11 +32,11 @@ public class StubDataLoader implements CommandLineRunner {
         Store bestStore1 = new Store();
         bestStore1.setStoreId(1L);
         bestStore1.setStoreName("언더워터플레이 함덕점");
-        bestStore1.setCategory("수상스키");
+        bestStore1.setCategory("스노클링/다이빙");
         bestStore1.setBody("제주도 시원한 바닷속에서 다양한 물고기들을...");
         bestStore1.setAddress("제주도 제주읍 제주시");
-        bestStore1.setLatitude(25.111111111);
-        bestStore1.setLongitude(24.111111111);
+        bestStore1.setLatitude(33.509565870437);
+        bestStore1.setLongitude(126.479180622209);
         bestStore1.setKakao("kakaoHello");
         bestStore1.setContact("010-1111-1111");
         bestStore1.setLikeCount(100);
@@ -53,8 +53,8 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore2.setCategory("수상레저");
         bestStore2.setBody("수상레저로 한여름의 더위 날려...");
         bestStore2.setAddress("제주도 제주읍 제주시");
-        bestStore2.setLatitude(25.1111116111);
-        bestStore2.setLongitude(24.1111311111);
+        bestStore2.setLatitude(33.509665870437);
+        bestStore2.setLongitude(126.479180622209);
         bestStore2.setKakao("kakaoTalk");
         bestStore2.setContact("010-1112-1112");
         bestStore2.setLikeCount(99);
@@ -71,8 +71,8 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore3.setCategory("서핑");
         bestStore3.setBody("에메랄드 빛 해변에서 이루어지는 전문 서핑 강습...");
         bestStore3.setAddress("제주도 제주읍 함덕시");
-        bestStore3.setLatitude(25.1111111112);
-        bestStore3.setLongitude(24.1111111311);
+        bestStore3.setLatitude(33.509535870437);
+        bestStore3.setLongitude(126.479180622209);
         bestStore3.setKakao("kakaoSearch");
         bestStore3.setContact("010-1321-1211");
         bestStore3.setLikeCount(98);
@@ -87,8 +87,8 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore4.setCategory("ATV");
         bestStore4.setBody("제주도에서 많이 즐기는 액티비티의 꽃 ATV...");
         bestStore4.setAddress("제주도 제주읍 제주시");
-        bestStore4.setLatitude(25.1611111111);
-        bestStore4.setLongitude(24.2111111111);
+        bestStore4.setLatitude(33.509525870437);
+        bestStore4.setLongitude(126.479180622209);
         bestStore4.setKakao("kakaoMap");
         bestStore4.setContact("010-1321-1211");
         bestStore4.setLikeCount(93);

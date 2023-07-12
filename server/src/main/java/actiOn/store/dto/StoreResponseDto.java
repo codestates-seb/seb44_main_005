@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StoreResponseDto {
+    private long StoreId;
     private String storeName;
     private String category;
     private String body;
