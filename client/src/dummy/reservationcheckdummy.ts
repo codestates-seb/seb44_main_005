@@ -3,7 +3,7 @@ export const reservationCheckdummy = {
           [
                {
                   "storeId": 1,
-                  "storeImg": "https://i.pinimg.com/564x/50/26/9b/50269b9f5568fe624274a54e141c0bdb.jpg",
+                  "storeImage": "https://i.pinimg.com/564x/50/26/9b/50269b9f5568fe624274a54e141c0bdb.jpg",
                   "storeName":"카약샵",
                   "reservationDate":"2023-08-01",
                   "totalPrice": 40000,
@@ -12,7 +12,7 @@ export const reservationCheckdummy = {
                 },    
                {
                   "storeId": 2,
-                  "storeImg": "https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+                  "storeImage": "https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
                   "storeName":"카약샵",
                   "reservationDate":"2023-07-12",
                   "totalPrice": 70000,
@@ -21,7 +21,7 @@ export const reservationCheckdummy = {
                 },
                 {
                   "storeId": 3,
-                  "storeImg": "https://i.pinimg.com/564x/b3/56/4e/b3564e50bc57d84e82c3d30d8eeb2c04.jpg",
+                  "storeImage": "https://i.pinimg.com/564x/b3/56/4e/b3564e50bc57d84e82c3d30d8eeb2c04.jpg",
                   "storeName":"카약샵",
                   "reservationDate":"2023-07-10",
                   "totalPrice": 30000,
