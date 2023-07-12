@@ -2,7 +2,11 @@ package actiOn.member.service;
 
 import actiOn.Img.profileImg.ProfileImg;
 import actiOn.Img.service.ImgService;
+import actiOn.auth.role.MemberRole;
+import actiOn.auth.role.Role;
+import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
+import actiOn.business.entity.Business;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
@@ -25,9 +29,10 @@ public class MemberService {
     private final PasswordEncoder encoder;
     private final MemberAuthorityUtil authorityUtil;
     private final ImgService imgService;
+    private final RoleService roleService;
 
     // 회원 등록
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public Member createMember(Member member) {
         // 이메일, 닉네임, 휴대폰 번호 중복 검사
         verifyExistsEmail(member.getEmail());
@@ -38,13 +43,14 @@ public class MemberService {
         String encryptedPW = encoder.encode(member.getPassword());
         member.setPassword(encryptedPW);
 
-        // TODO DB에 User Role 저장
-        List<String> roles = authorityUtil.createRoles(member.getEmail());
-        member.setRoles(roles);
-
         // 프로필 기본 이미지 설정
         ProfileImg defaultImage = imgService.createDefaultProfileImg(member);
         member.setProfileImg(defaultImage);
+
+        // DB에 User Role 저장
+        Role userRole = roleService.findUserRole();
+        List<MemberRole> memberRoles = addedMemberRole(member, userRole);
+        member.setMemberRoles(memberRoles);
 
         return memberRepository.save(member);
     }
@@ -68,6 +74,34 @@ public class MemberService {
                 });
 
         memberRepository.save(findMember);
+    }
+
+    // 파트너 등록
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public Member registerPartnership(Business business, String email) {
+        Member member = findMemberByEmail(email);
+
+        member.setBusiness(business);
+
+        // DB에 Partner Role 저장
+        Role partnerRole = roleService.findPartnerRole();
+        List<MemberRole> memberRoles = addedMemberRole(member, partnerRole);
+
+        member.setMemberRoles(memberRoles);
+
+        return memberRepository.save(member);
+    }
+
+    // Role 저장
+    public List<MemberRole> addedMemberRole(Member member, Role role) {
+        MemberRole memberRole = new MemberRole();
+        memberRole.setMember(member);
+        memberRole.setRole(role);
+
+        List<MemberRole> memberRoles = member.getMemberRoles();
+        memberRoles.add(memberRole);
+
+        return memberRoles;
     }
 
     // 이메일로 회원 조회
@@ -107,7 +141,6 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
     }
-
 
     public boolean isExistMember(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
