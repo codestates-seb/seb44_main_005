@@ -52,22 +52,19 @@ function ReservationCheck() {
                 <span className="text-[15px] font-semibold">결제금액: {reservation.totalPrice}원</span>
               </div>
             </div>
-            {reservation.reservationStatus === "예약 취소" && (
-              <div className="flex justify-end space-x-3 font-medium text-[15px]">
-                <p className="h-[38.5px]"></p>
-              </div>
-            )}
-            {reservation.reservationStatus === "이용 완료" && (
-              <div className="flex justify-end space-x-3 font-medium text-[15px]">
-                <p className="h-[38.5px]"></p>
-              </div>
-            )}
-            {reservation.reservationStatus === "예약 완료" && (
-              <div className="flex justify-end space-x-3 font-medium text-[15px]">
-                <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 수정</button>
-                <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 삭제</button>
-              </div>
-            )}
+            <div className="flex justify-end space-x-3 font-medium text-[15px]">
+              {reservation.reservationStatus === "예약 완료" && (
+                <div>
+                  <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 수정</button>
+                  <button className="bg-[#F3F5F7] p-2 rounded-lg" type="button">예약 삭제</button>
+                </div>
+              )}
+              {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (
+                <div>
+                  <p className="h-[38.5px]"></p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ))}
