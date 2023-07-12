@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { isLoginState, userNameState } from '../store/userInfoAtom';
+import { useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isLoginState } from '../store/userInfoAtom';
 
 import {
   InputContainer,
@@ -21,7 +21,6 @@ function Login() {
   const [password, setPassWord] = useState('');
 
   //recoil 전역상태
-  const [memberId, setMemberId] = useRecoilState(userNameState);
   const isLogin = useRecoilValue(isLoginState);
   const setIsLoginState = useSetRecoilState(isLoginState);
 
@@ -40,7 +39,7 @@ function Login() {
       await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
   };
 
-  //일반로그인
+  //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -55,33 +54,28 @@ function Login() {
       if (res.status !== 200) throw res;
 
       //헤더에서 멤버아이디와 닉네임을 받아옴
-      const Authorization = res.headers.get('access_token');
-      const userId = result1.memberId;
+      const Authorization = res.headers.get('Authorization');
       const name = result1.nickname;
       // 로컬 스토리지에 memberId,토큰 저장
-      localStorage.setItem('memberId', userId);
-      localStorage.setItem('Authorization', Authorization);
-      //전역 memberId 상태 변경
-      setMemberId(userId);
+      sessionStorage.setItem('Authorization', Authorization);
       setIsLoginState(true);
-      // 아이디를 받았으면 리다이렉트
-      if (userId) {
+
+      // 헤더에서 데이터를 받았으면 리다이렉트
+      if (name) {
         alert(`${name}님 반갑습니다 !`);
         navigate('/home');
       }
     } catch (error) {
       console.error('로그인 요청 중 오류가 발생했습니다', error);
     }
-    console.log(memberId);
     console.log(isLogin);
   };
 
-  useEffect(() => {
-    if (isLogin) {
-      // 로그인 상태인 경우 새로고침
-      window.location.reload();
-    }
-  }, [isLogin]);
+  // useEffect(() => {
+  //   if (isLogin) {
+  //     // 로그인 상태인 경우 새로고침
+  //   }
+  // }, [isLogin]);
 
   return (
     <StyleContainer>
