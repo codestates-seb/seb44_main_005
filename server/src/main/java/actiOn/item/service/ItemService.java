@@ -30,11 +30,11 @@ public class ItemService {
             List<Item> findItems = findStore.getItems();
             Map<Long,Integer> reservationTickets = reservationService.reservationTicketCount(findStore,date);
             for (Item item : findItems) {
-                System.out.println("maxcount");
-                System.out.println(item.getMaxCount());
-                System.out.println("reservation");
-                System.out.println(reservationTickets.get(item.getItemId()));
-                int remainingTicketCount = item.getMaxCount()-reservationTickets.get(item.getItemId());
+                int reservationTicketCount = // 예약된 티켓이 없다면 null로 나오므로, null과 int는 연산이 불가능하므로, int로 변환
+                        reservationTickets.containsKey(item.getItemId())
+                                ? reservationTickets.get(item.getItemId()) : 0;
+
+                int remainingTicketCount = item.getMaxCount()-reservationTicketCount;
                 if (remainingTicketCount <0) remainingTicketCount=0;
                 ItemDto itemDto = new ItemDto(
                         item.getItemName(),
@@ -46,7 +46,6 @@ public class ItemService {
             }
             return itemDtos;
         }catch (Exception e) {
-            System.out.println(e);
             return null;
         }
     }
