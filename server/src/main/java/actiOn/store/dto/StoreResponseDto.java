@@ -20,17 +20,17 @@ public class StoreResponseDto {
     private String kakao;
     private String contact;
     private String address;
-    private boolean isLike = false;
+    private Boolean isLike = false;
     private String profileImg;
     private LocalDateTime createdAt;
     private List<ItemDto> items;
     private List<String> storeImages;
 
-    public boolean getIsLike() {
-        return isLike;
-    }
-
-    public void setIsLike(boolean isLike) {
-        isLike = isLike;
-    }
+//    public boolean getIsLike() {
+//        return isLike;
+//    }
+//
+//    public void setIsLike(boolean isLike) {
+//        isLike = isLike;
+//    }
 }

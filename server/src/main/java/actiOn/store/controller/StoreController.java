@@ -1,6 +1,7 @@
 package actiOn.store.controller;
 
 import actiOn.Img.service.ImgService;
+import actiOn.auth.utils.AuthUtil;
 import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.member.entity.Member;
@@ -57,7 +58,12 @@ public class StoreController {
         Store store = mapper.storePostDtoToStore(storePostDto);
         Store storeSaveResult = storeService.createStore(store);
         //Todo 등록하는 사장님 정보를 받아서 Member 객체 매핑
-
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (memberEmail.equals("anonymousUser")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Member partner = memberService.findMemberByEmail(memberEmail);
+        //파트너인지 확인해야함
         StorePostResponseDto storePostResponseDto = mapper.storeToStorePostResponseDto(storeSaveResult);
         return new ResponseEntity<>(storePostResponseDto,HttpStatus.CREATED);
     }
@@ -65,13 +71,23 @@ public class StoreController {
     @PostMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                             @RequestPart("images") List<MultipartFile> images) {
-            if (imgService.uploadStoreImage(images,storeId) != null){
-                return new ResponseEntity<>(HttpStatus.CREATED);}
-            return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (memberEmail.equals("anonymousUser")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        if (imgService.uploadStoreImage(images,storeId) != null){
+            return new ResponseEntity<>(HttpStatus.CREATED);}
+        return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
     public ResponseEntity patchStore(@PathVariable("store-id") @Positive long storeId) {
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (memberEmail.equals("anonymousUser")){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -81,11 +97,14 @@ public class StoreController {
         Store findStore = storeService.findStoreByStoreId(storeId);
         StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
         //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
-//         Member requester =
-//        StoreResponseDto insertedWishResponseDto = storeService.insertWishAtStoreResponseDto()
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (!memberEmail.equals("anonymousUser")){
+            Member member = memberService.findMemberByEmail(memberEmail);
+            StoreResponseDto storeResponseDto = storeService.insertWishAtStoreResponseDto(member, responseDto, findStore.getStoreId());
+            return new ResponseEntity<>(storeResponseDto,HttpStatus.OK);
+        }
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
-
 
 
     // 업체 삭제 PP_003
@@ -110,7 +129,15 @@ public class StoreController {
         List<Store> findStoreByCategory = storeService.findStoreByCategory(category,sortField);
         CategoryResponseDto categoryResponseDto =
                 categoryResponseMapper.CategoryStoreToCategoryResponseDto(findStoreByCategory);
-
+        if (categoryResponseDto == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (!memberEmail.equals("anonymousUser")){
+            Member member = memberService.findMemberByEmail(memberEmail);
+            CategoryResponseDto categoryResponseDtoWithLike =
+                    storeService.insertWishAtCategoryResponseDto(member, categoryResponseDto);
+            return new ResponseEntity<>(categoryResponseDtoWithLike,HttpStatus.OK);
+        }
         return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
     }
 
@@ -120,6 +147,13 @@ public class StoreController {
         List<Store> searchResult = storeService.searchEnginOnStoreNameByKeyword(keyword);
         CategoryResponseDto searchResultTransformDto =
                 categoryResponseMapper.CategoryStoreToCategoryResponseDto(searchResult); // response form이 같아서 재활용
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        if (!memberEmail.equals("anonymousUser")){
+            Member member = memberService.findMemberByEmail(memberEmail);
+            CategoryResponseDto searchResponseDtoWithLike =
+                    storeService.insertWishAtCategoryResponseDto(member, searchResultTransformDto);
+            return new ResponseEntity<>(searchResponseDtoWithLike,HttpStatus.OK);
+        }
         return new ResponseEntity<>(searchResultTransformDto,HttpStatus.OK);
     }
 }

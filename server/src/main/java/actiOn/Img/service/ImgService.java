@@ -113,6 +113,8 @@ public class ImgService {
             //Todo url / 디비에 저장
         } catch (Exception e) {
             e.printStackTrace();
+            Store findStore = storeRepository.findById(storeId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+            storeRepository.delete(findStore);
             return null;
         }
     }

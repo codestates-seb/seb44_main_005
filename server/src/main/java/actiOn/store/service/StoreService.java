@@ -25,6 +25,7 @@ import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,21 +91,26 @@ public class StoreService {
     }
 
     public List<Store> findStoreByCategory(String category, String sortFiled) {
-        if (sortFiled.isEmpty()) {
-            sortFiled = "likeCount";
-        }
-        if (category.equals("all") || category.isEmpty()) {
-            if (sortFiled.equals("lowPrice")){
-                return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
+        try{
+            if (sortFiled.isEmpty()) {
+                sortFiled = "likeCount";
             }
-            if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
+            if (category.equals("all") || category.isEmpty()) {
+                if (sortFiled.equals("lowPrice")){
+                    return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
+                }
+                if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
                 return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
-        }
-        if (sortFiled.equals("highPrice")){
-            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, "lowPrice")); // 오름차순
+            }
+            if (sortFiled.equals("highPrice")){
+                return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, "lowPrice")); // 오름차순
+            }
+
+            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
+        }catch (Exception e){
+            return null;
         }
 
-        return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
     }
 
     public List<Store> searchEnginOnStoreNameByKeyword(String keyword) {
@@ -168,14 +174,12 @@ public class StoreService {
         return wishStoreIdList;
     }
 
-    public StoreResponseDto insertWishAtStoreResponseDto(Member member, StoreResponseDto store) {
+    public StoreResponseDto insertWishAtStoreResponseDto(Member member, StoreResponseDto storeResponseDto, long storeId) {
         List<Long> wishStoreIdList = getWishStoreIdList(member);
-        long storeId = store.getStoreId();
-
         if (wishStoreIdList.contains(storeId)){
-            store.setIsLike(true);
+            storeResponseDto.setIsLike(true);
         }
-        return store;
+        return storeResponseDto;
     }
 
     public CategoryResponseDto insertWishAtCategoryResponseDto(Member member, CategoryResponseDto categoryResponseDto) {
