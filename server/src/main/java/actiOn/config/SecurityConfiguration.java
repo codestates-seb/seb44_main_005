@@ -8,6 +8,7 @@ import actiOn.auth.handler.MemberAuthenticationFailureHandler;
 import actiOn.auth.handler.MemberAuthenticationSuccessHandler;
 import actiOn.auth.oauth2.OAuth2MemberSuccessHandler;
 import actiOn.auth.provider.TokenProvider;
+import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class SecurityConfiguration {
     private final MemberAuthorityUtil authorityUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
@@ -65,7 +66,7 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(oAuth2 -> oAuth2
                         .loginPage("/oauth2/authorization/google")
-                        .successHandler(new OAuth2MemberSuccessHandler(authorityUtil, memberService, tokenProvider))
+                        .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
                 );
 
         return httpSecurity.build();
@@ -102,7 +103,7 @@ public class SecurityConfiguration {
                 Arrays.asList(
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
-                        "https://daae-222-232-33-89.ngrok-free.app",
+                        "https://2e4f-222-232-33-89.ngrok-free.app",
                         "http://localhost:5173"
                         // TODO S3 엔드포인트 추가 ""
                 )
