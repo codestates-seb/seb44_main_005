@@ -51,7 +51,7 @@ public class ReservationService {
         Member member = memberService.findMemberByEmail(loginUserEmail);
         reqReservation.setMember(member);
 
-       //reqReservation에 있는 상품 id가 존재하는지 확인 후 reservationItem 저장
+        //reqReservation에 있는 상품 id가 존재하는지 확인 후 reservationItem 저장
         List<ReservationItem> saveReservationItems = createReservationItem(reqReservation);
         reqReservation.setReservationItems(saveReservationItems);
 

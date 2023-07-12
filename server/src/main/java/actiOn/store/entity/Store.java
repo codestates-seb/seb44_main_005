@@ -55,8 +55,12 @@ public class Store extends BaseEntity {
     private int reviewCount;
 
     //평점
-    @Column(nullable = false, columnDefinition = "integer default 0")
-    private int rating;
+    @Column(nullable = false)
+    private double rating;
+
+    //가격
+    @Column(nullable = false)
+    private int lowPrice;
 
 
     //가격

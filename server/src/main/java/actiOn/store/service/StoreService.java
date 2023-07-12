@@ -1,5 +1,6 @@
 package actiOn.store.service;
 
+import actiOn.Img.storeImg.StoreImg;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.item.entity.Item;
@@ -8,6 +9,9 @@ import actiOn.map.service.KakaoMapService;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationRepository;
+import actiOn.store.dto.mainrep.DataDto;
+import actiOn.store.dto.mainrep.MainPageResponseDto;
+import actiOn.store.dto.mainrep.RecommendDto;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import org.springframework.data.domain.Sort;
@@ -63,6 +67,52 @@ public class StoreService {
 
         return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
 
+    }
 
+    //메인페이지
+    public MainPageResponseDto getMainPage(){
+
+        MainPageResponseDto mainPageResponseDto = new MainPageResponseDto();
+
+        List<RecommendDto> recommendDtos = new ArrayList<>();
+
+        //Todo 좋아요 4개만 가져오기
+        List<Store> wishTop4Stores = storeRepository.findTop4ByOrderByLikeCountDesc();
+
+        for (Store store : wishTop4Stores){
+
+            String thumbnailImgLink = "";
+            List<StoreImg> storeImgList = store.getStoreImgList();
+            for (StoreImg storeImg : storeImgList){
+                if (storeImg.getIsThumbnail()) {
+                    thumbnailImgLink = storeImg.getLink();
+                }
+            }
+
+            RecommendDto recommendDto = new RecommendDto();
+            recommendDto.setStoreId(store.getStoreId());
+            recommendDto.setStoreName(store.getStoreName());
+            recommendDto.setBody(store.getBody());
+            recommendDto.setImg(thumbnailImgLink);
+            recommendDtos.add(recommendDto);
+        }
+
+        //전체 업체 리스트 가져오기
+        List<DataDto> dataDtos = new ArrayList<>();
+
+        List<Store> getAllStores = storeRepository.findAll();
+        for (Store store : getAllStores){
+            DataDto dataDto = new DataDto();
+            dataDto.setStoreId(store.getStoreId());
+            dataDto.setStoreName(store.getStoreName());
+            dataDto.setLatitude(store.getLatitude());
+            dataDto.setLongtitude(store.getLongitude());
+            dataDto.setCategory(store.getCategory());
+            dataDtos.add(dataDto);
+        }
+
+        mainPageResponseDto.setRecommendDtos(recommendDtos);
+        mainPageResponseDto.setDataDtos(dataDtos);
+        return mainPageResponseDto;
     }
 }

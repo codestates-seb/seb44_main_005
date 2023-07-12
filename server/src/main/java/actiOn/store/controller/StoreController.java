@@ -6,6 +6,7 @@ import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.StorePostDto;
 import actiOn.store.dto.StorePostResponseDto;
 import actiOn.store.dto.StoreResponseDto;
+import actiOn.store.dto.mainrep.MainPageResponseDto;
 import actiOn.store.entity.Store;
 import actiOn.store.mapper.CategoryResponseMapper;
 import actiOn.store.mapper.StoreMapper;
@@ -88,7 +89,8 @@ public class StoreController {
     // 메인 페이지
     @GetMapping("/main") // 메인페이지
     public ResponseEntity getMainPage() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        MainPageResponseDto mainPageResponseDto = storeService.getMainPage();
+        return new ResponseEntity<>(mainPageResponseDto,HttpStatus.OK);
     }
 
     // 전체 카테고리 페이지 조회

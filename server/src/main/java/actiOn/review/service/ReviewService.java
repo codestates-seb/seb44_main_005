@@ -13,7 +13,6 @@ import actiOn.review.mapper.ReviewMapper;
 import actiOn.review.repository.ReviewRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,22 +43,27 @@ public class ReviewService {
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
-        //Todo 로그인한 회원의 정보가 해당 업체를 예약했는지의 여부 확인
+        //Todo 로그인한 회원의 정보가 해당 업체를 예약했는지의 여부 확인 -> 리팩토링 필수
         List<Reservation> reservationList = store.getReservations();
         boolean hasReservationEmail = reservationList.stream()
-                .anyMatch(reservation -> reservation.getReservationEmail().equals(loginUserEmail));
+                .anyMatch(reservation -> reservation.getReservationId() == (findMember.getMemberId()));
         if (hasReservationEmail) {
             review.setMember(findMember);
             review.setStore(store);
         } else {
             throw new IllegalArgumentException("예약한 회원만 리뷰를 작성할 수 있습니다.");
         }
-        return reviewRepository.save(review);
+        Review saveReview = reviewRepository.save(review);
 
         //Todo review 전체 평점의 평균
+        Double avgRating = reviewRepository.avgStoreRating(store);
+        store.setRating(avgRating);
+        storeRepository.save(store);
 
-       //Todo store에 있는 review 개수 추가
+        //Todo store에 있는 review 개수 추가
+        storeRepository.addReviewCount(store);
 
+        return saveReview;
     }
 
     public ReviewsResponseDto getAllReviews(Long storeId) {
@@ -70,23 +74,12 @@ public class ReviewService {
         //Todo Store 기준 모든 리뷰 조회
         List<Review> reviews = reviewRepository.findAllByStore(store);
 
-        //Todo 해당 store를 조회한 리뷰의 총 개수
-        int reviewCount = reviews.size();
-
-        //Todo 해당 store의 평균값 구하기
-        double ratingAvg = reviews.stream()
-                .mapToInt(review -> review.getRating())
-                .average()
-                .orElse(0.0);
-        ratingAvg = Math.round(ratingAvg * 10) / 10.0; // 소수점 한자리까지 반올림
-
-
         //Todo 조회한 리뷰를 리뷰 DTO로 매핑
         List<ReviewResponseDto> reviewResponseDtos = reviewMapper.reviewsToReviewsResponseDto(reviews);
 
         ReviewsResponseDto reviewsResponseDtos = ReviewsResponseDto.builder()
-                .reviewCount(reviewCount)
-                .ratingAvg(ratingAvg)
+                .reviewCount(store.getReviewCount())
+                .ratingAvg(store.getRating())
                 .reviewResponseDtoList(reviewResponseDtos)
                 .build();
 

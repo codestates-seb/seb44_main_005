@@ -32,4 +32,23 @@ public class StoreRepositoryImpl implements StoreCustomRepository{
                 .where(st.eq(selectStore))
                 .execute();
     }
+
+    @Override
+    public void addReviewCount(Store selectStore) {
+        QStore st = QStore.store;
+        queryFactory.update(st)
+                .set(st.reviewCount, st.reviewCount.add(1))
+                .where(st.eq(selectStore))
+                .execute();
+
+    }
+
+    @Override
+    public void setRating(Store store,double avgRating) {
+        QStore st = QStore.store;
+        queryFactory.update(st)
+                .set(st.rating, avgRating)
+                .where(st.eq(store))
+                .execute();
+    }
 }
