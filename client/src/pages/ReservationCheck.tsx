@@ -2,12 +2,15 @@ import { reservationCheckdummy } from "../dummy/reservationcheckdummy";
 
 function ReservationCheck() {
   const { data } = reservationCheckdummy;
-
+  
   return (
-    <div className="border-[1px] border-[#4771B7] p-5 space-y-5">
-      <p className="font-normal text-2xl p-4">예약 내역 조회</p>
+    <div className="border-[1px] border-[#4771B7] px-[50px] py-16 space-y-5">
+      <p className="font-normal text-2xl pl-4">예약 내역 조회</p>
       {data.map((reservation) => (
-        <div key={reservation.storeId} className="border-[1.5px] border-[#4771B7] w-[800px] h-[200px] rounded-lg p-5 flex flex-row justify-center items-center space-x-12">
+        <div 
+          key={reservation.storeId} 
+          className="border-[1.5px] border-[#4771B7] w-[700px] h-[200px] rounded-lg p-5 flex flex-row justify-center items-center space-x-12"
+        >
           <div className="relative w-[146px] h-[127px]">
             <div className="absolute inset-0 w-[146px] h-[127px]">
               <img className="w-full h-full object-cover rounded-md" src={reservation.storeImage} alt="reservation image" />
@@ -15,7 +18,25 @@ function ReservationCheck() {
           </div>
           <div className="flex flex-col w-[100%] space-y-2">
             <div className="flex justify-end w-[100%]">
-              <div className="font-medium text-white text-[15px] bg-[#4771B7] w-[77px] h-[27px] flex justify-center items-center">
+              <div 
+                className={
+                  `
+                    font-medium
+                    text-[15px]
+                    ${reservation.reservationStatus === "예약 완료" 
+                      ? "bg-[#4771B7] text-white"
+                      : reservation.reservationStatus === "이용 완료"
+                      ? "bg-white text-[#4771B7] border-[1px] border-[#4771B7]"
+                      : "bg-[#DD3535] text-white"
+                    } 
+                    w-[77px]
+                    h-[27px]
+                    flex
+                    justify-center
+                    items-center
+                  `
+                }
+              >
                 <span>{reservation.reservationStatus}</span>
               </div>
             </div>

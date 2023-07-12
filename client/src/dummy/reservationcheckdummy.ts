@@ -26,7 +26,7 @@ export const reservationCheckdummy = {
                   "reservationDate":"2023-07-10",
                   "totalPrice": 30000,
                   "itemCount": 3,
-                  "reservationStatus" : "이용 완료"
+                  "reservationStatus" : "예약 취소"
                 },
              ]
     }
