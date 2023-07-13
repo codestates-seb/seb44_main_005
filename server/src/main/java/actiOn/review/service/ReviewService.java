@@ -39,7 +39,7 @@ public class ReviewService {
         //review 내용 욕설 검증
         BadWordFiltering badWordFiltering = new BadWordFiltering();
         if (badWordFiltering.blankCheck(review.getContent())){
-            throw new IllegalArgumentException("리뷰에 욕설이 포함되어 있습니다.");
+            throw new BusinessLogicException(ExceptionCode.REVIEW_CONTENT_NOT_ABUSIVE);
         }
 
         //Todo 로그인한 회원의 정보 가져오기
@@ -58,7 +58,7 @@ public class ReviewService {
             review.setMember(findMember);
             review.setStore(store);
         } else {
-            throw new IllegalArgumentException("예약한 회원만 리뷰를 작성할 수 있습니다.");
+            throw new BusinessLogicException(ExceptionCode.REVIEW_ONLY_RESERVED_MEMBER);
         }
         Review saveReview = reviewRepository.save(review);
 
@@ -74,16 +74,20 @@ public class ReviewService {
     }
 
     public ReviewsResponseDto getAllReviews(Long storeId) {
+        System.out.println(storeId);
         //Todo 업체 존재 여부 확인 -> 리팩토링 필요
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+        System.out.println(store.getStoreId());
+        System.out.println(store.getStoreName());
 
         //Todo Store 기준 모든 리뷰 조회
-        List<Review> reviews = reviewRepository.findAllByStore(store);
+        List<Review> reviews = store.getReviews();
+        System.out.println(reviews.get(0).getContent());
 
         //Todo 조회한 리뷰를 리뷰 DTO로 매핑
         List<ReviewResponseDto> reviewResponseDtos = reviewMapper.reviewsToReviewsResponseDto(reviews);
-
+        System.out.println("fngeklrnlkrenklfnrwelnfwkwenflwfenk");
         ReviewsResponseDto reviewsResponseDtos = ReviewsResponseDto.builder()
                 .reviewCount(store.getReviewCount())
                 .ratingAvg(store.getRating())
