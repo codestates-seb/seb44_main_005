@@ -25,6 +25,7 @@ import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
+import com.nimbusds.openid.connect.sdk.assurance.IdentityVerification;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class StoreService {
         this.storeImgRepository = storeImgRepository;
     }
 
-    public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
+    private Store shapingStore(Store store) {
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
         store.setLatitude(Double.parseDouble(location.getLatitude()));
         store.setLongitude(Double.parseDouble(location.getLongitude()));
@@ -69,9 +70,18 @@ public class StoreService {
             if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
         }
         store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
-        return storeRepository.save(store);
+        return store;
+    }
+    public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
+        return storeRepository.save(shapingStore(store));
     }
 
+    public Store updateStore(Store store, long storeId) {
+        Store shapedStore = shapingStore(store);
+        shapedStore.setStoreId(storeId);
+        storeRepository.save(store);
+        return store;
+    }
     @Transactional
     public void deleteStore(Long storeId){
         Store findStore = this.findStoreByStoreId(storeId);
@@ -204,6 +214,14 @@ public class StoreService {
     public void deleteStoreImgByLinks(List<String> links){
         for (String link : links){
             storeImgRepository.deleteByLink(link.replace(" ",""));
+        }
+    }
+
+    public void verifyIdentityToStore(long storeId, String memberEmail){
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+        if (!store.getMember().equals(memberService.findMemberByEmail(memberEmail))) {
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
 }

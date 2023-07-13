@@ -26,6 +26,7 @@ public enum ExceptionCode {
     INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
     NULL_STORE_IMAGE(404, "Store image is null"),
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
+    UNAUTHORIZED(401, "Unauthorized to update store"),
 
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
