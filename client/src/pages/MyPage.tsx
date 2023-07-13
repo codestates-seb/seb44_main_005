@@ -1,4 +1,6 @@
-import dummyImg from '../dummy/mypagedummy.jpeg';
+import dummyImg from '../dummy/mypagedummy.jpeg'; 
+import { dummyBio } from '../dummy/mypagedummy';
+
 import {
   BusinessCategory,
   BusinessSpace,
@@ -18,6 +20,10 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
+  const user = dummyBio[0];
+  const businessCategory = user.stores[0].businessCategory;
+  const businessRegi = `스포츠 및 여가관련 서비스업`;
+
   return (
     <MyPageContainer>
       <MyBioContainer>
@@ -26,25 +32,25 @@ function MyPage() {
             <ButtonStyle type="button">편집</ButtonStyle>
           </ButtonGrid>
           <TopSpace>
-            <ImgStyle src={dummyImg} alt="dummy bio img" />
+            <ImgStyle src={user.profileImg} alt="dummy bio img" />
             <MiniButtonGrid>
               <MiniButtonStyle type="button">사진 변경</MiniButtonStyle>
               <MiniButtonStyle type="button">사진 삭제</MiniButtonStyle>
             </MiniButtonGrid>
-            <NicknameAccent>Taewoo Kim</NicknameAccent>
+            <NicknameAccent>{user.nickname}</NicknameAccent>
           </TopSpace>
           <MySpace>
             <UserInfo>
               <UserInfoTitle>닉네임</UserInfoTitle>
-              <span>Taewoo Kim</span>
+              <span>{user.nickname}</span>
             </UserInfo>
             <UserInfo>
               <UserInfoTitle>이메일</UserInfoTitle>
-              <span>abc123@naver.com</span>
+              <span>{user.email}</span>
             </UserInfo>
             <UserInfo>
               <UserInfoTitle>연락처</UserInfoTitle>
-              <span>010-1234-5678</span>
+              <span>{user.phoneNumber}</span>
             </UserInfo>
           </MySpace>
         </MySpace>
@@ -55,21 +61,21 @@ function MyPage() {
           <BusinessSpace>
             <BusinessCategory>
               <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-              <span>스포츠 및 여가관련 서비스업</span>
-              <span>스포츠 및 여가관련 서비스업</span>
-              <span>스포츠 및 여가관련 서비스업</span>
+              {user.stores.map((store, index) => (
+                <span key={index}>{businessRegi}</span>
+              ))}
             </BusinessCategory>
             <BusinessCategory>
               <BusinessCategoryTitle>업종</BusinessCategoryTitle>
-              <span>레저 좋아</span>
-              <span>레저 화이팅</span>
-              <span>태우네 레저</span>
+              {user.stores.map((store, index) => (
+                <span key={index}>{businessCategory}</span>
+              ))}
             </BusinessCategory>
             <BusinessCategory>
-              <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-              <span>언더워터플레이 함덕점</span>
-              <span>언더워터플레이 애월점</span>
-              <span>언더워터플레이 김녕점</span>
+              <BusinessCategoryTitle>업체명</BusinessCategoryTitle>
+              {user.stores.map((store, index) => (
+                <span key={index}>{store.storeName}</span>
+              ))}
             </BusinessCategory>
           </BusinessSpace>
         </MySpace>

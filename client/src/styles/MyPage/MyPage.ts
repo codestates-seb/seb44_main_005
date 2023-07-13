@@ -10,10 +10,11 @@ export const MyPageContainer = tw.div`
 export const MyBioContainer = tw.div`
     border-[1px]
     border-[#4771B7]
+    w-[800px]
 `;
 
 export const MySpace = tw.div`
-    space-y-7
+    space-y-8
     p-10
 `;
 
