@@ -3,6 +3,8 @@ import SelectBox from '../components/Partner/SelectBox';
 
 function Partner() {
   const [regiNumber, setRegiNumber] = useState('');
+  const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
+  const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -13,6 +15,23 @@ function Partner() {
 
   const isRegiNumberValid = regiNumber.length === 12;
   const isRegiNumberIncomplete = regiNumber.length > 0 && regiNumber.length <12;
+
+  const handleDuplicateCheck = async () => {
+    setIsCheckingDuplicate(true);
+
+    // 비동기 요청 지연 시뮬레이션
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // 사업자 등록번호 중복 확인용 시뮬레이션
+    const isDuplicate = regiNumber === '123-45-67890'; //실제 유효성 검사 로직으로 대체
+
+    setIsDuplicateRegiNumber(isDuplicate);
+    setIsCheckingDuplicate(false);
+
+    if (isDuplicate) {
+      alert('이미 등록된 사업자등록번호입니다.');
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-[80%]">
@@ -51,7 +70,8 @@ function Partner() {
                     isRegiNumberValid ? 'cursor-pointer' : 'cursor-default'
                   }`}
                   type="button"
-                  disabled={!isRegiNumberValid}
+                  disabled={!isRegiNumberValid || isCheckingDuplicate}
+                  onClick={handleDuplicateCheck}
                 >
                   중복확인
                 </button>
