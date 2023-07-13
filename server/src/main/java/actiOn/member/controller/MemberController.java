@@ -1,6 +1,5 @@
 package actiOn.member.controller;
 
-import actiOn.Img.profileImg.ProfileImgDto;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.business.dto.BusinessDto;
 import actiOn.business.entity.Business;
@@ -15,11 +14,12 @@ import actiOn.wish.mapper.WishMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping
@@ -41,14 +41,23 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // TODO 회원 프로필 사진 등록
+    // 회원 프로필 사진 등록
     @PutMapping("/mypage/profile")
-    public ResponseEntity uploadProfileImage(Authentication authentication,
-                                             @RequestBody @Valid ProfileImgDto requestBody) {
+    public ResponseEntity uploadProfileImage(@RequestBody @Valid MultipartFile requestBody) throws IOException {
+        String email = AuthUtil.getCurrentMemberEmail();
+        memberService.registerProfileImage(requestBody, email);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // TODO 회원 프로필 사진 삭제
+    // 회원 프로필 사진 삭제
+    @DeleteMapping("/mypage/profile")
+    public ResponseEntity deleteProfileImage() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        memberService.deleteProfileImage(email);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     // 마이페이지 - 회원 정보 수정
     @PatchMapping("/mypage")
@@ -106,7 +115,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 위시리스트 조회
+    // 마이페이지 - 위시리스트 조회
     @GetMapping("/mypage/wishlist")
     public ResponseEntity getMemberWishlist() {
         String email = AuthUtil.getCurrentMemberEmail();
@@ -116,10 +125,15 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // TODO 마이페이지 - 예약 정보 조회
+    // 마이페이지 - 예약 정보 조회
     @GetMapping("/mypage/reservations")
-    public ResponseEntity getMemberReservations(Authentication authentication) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity getMemberReservations() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member member = memberService.findMemberByEmail(email);
+
+        MemberReservationResponseDto response = memberMapper.memberToMemberReservationsDto(member);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 마이페이지 - 판매 서비스 관리
