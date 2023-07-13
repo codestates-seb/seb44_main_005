@@ -1,6 +1,18 @@
+import { useState } from 'react';
 import SelectBox from '../components/Partner/SelectBox';
 
 function Partner() {
+  const [regiNumber, setRegiNumber] = useState('');
+
+  const handleRegiNumberChange = (e) => {
+    const input = e.target.value.replace(/\D/g, '');
+    const formattedInput = input.slice(0, 10);
+    const formattedRegiNumber = formattedInput.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+    setRegiNumber(formattedRegiNumber);
+  };
+
+  const isRegiNumberValid = regiNumber.length === 12;
+
   return (
     <div className="flex justify-center items-center h-[80%]">
       <div className="p-10">
@@ -25,14 +37,20 @@ function Partner() {
                     className="border-[1px] border-[#9A9A9A] rounded-md w-[100%]  px-2 py-[2px]"
                     placeholder="ex. 123-45-67890"
                     type="text"
+                    value={regiNumber}
+                    onChange={handleRegiNumberChange}
+                    maxLength={12}
                   />
                   <p className="pt-1 text-red-500">
                     사업자 등록번호는 10자리로 입력되어야 합니다.
                   </p>
                 </div>
                 <button
-                  className="rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white"
+                  className={`rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white ${
+                    isRegiNumberValid ? 'cursor-pointer' : 'cursor-default'
+                  }`}
                   type="button"
+                  disabled={!isRegiNumberValid}
                 >
                   중복확인
                 </button>
@@ -63,6 +81,8 @@ function Partner() {
                   name="business"
                   value="스포츠 및 여가관련 서비스업"
                   readOnly
+                  onClick={(e) => e.preventDefault()}
+                  style={{ pointerEvents: 'none' }}
                 />
               </div>
               <div className="flex space-x-5 justify-end w-[45%]">
