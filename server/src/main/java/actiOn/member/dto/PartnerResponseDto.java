@@ -10,12 +10,12 @@ import java.util.List;
 @Setter
 @Builder
 public class PartnerResponseDto {
-    private List<PartnerStoreDto> stores;
+    private List<StoreDto> stores;
 
     @Builder
     @Getter
     @Setter
-    public static class PartnerStoreDto {
+    public static class StoreDto {
         private String category;
         private String storeName;
     }
