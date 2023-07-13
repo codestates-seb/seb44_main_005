@@ -2,18 +2,17 @@ import tw from 'tailwind-styled-components';
 
 export const StyledContainer = tw.ul`
   absolute
-  top-[65px]
-  right-[28px]
+  w-[120px]
+  top-[25px]
+  right-[10px]
   text-center
   border
   border-[#4771B7]
   rounded-[5px]
-  bg-[#D6DFEF]
-  duration-1000 
-  ease-out
+  bg-[#D6DFEF] 
 `;
 
-export const Menu = tw.li`
+export const Menu = tw.li`s
   px-[25px]
   py-[10px]
   cursor-pointer
