@@ -46,10 +46,10 @@ public class WishService {
         Wish wish = new Wish();
         wish.setMember(findMember);
         wish.setStore(store);
-        wishRepository.save(wish);
+        wishRepository.save(wish); //Wish가 insert 되는 순간 store 데이터에 s-Lock이 걸린다.
 
         //Todo Store에 대한 찜 개수 +1 로직
-        storeRepository.addLikeCount(store);
+        storeRepository.addLikeCount(store); //store에서 update 쿼리 발생 시 Exclusive lock 발생
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

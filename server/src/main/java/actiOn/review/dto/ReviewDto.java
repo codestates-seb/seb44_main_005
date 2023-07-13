@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 public class ReviewDto {
 
     @NotBlank
-    @Pattern(regexp = "\\S+", message = "공백은 허용되지 않습니다.")
     private String content;
 
     @Range(min = 0, max = 5)

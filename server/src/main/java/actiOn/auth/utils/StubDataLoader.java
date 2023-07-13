@@ -91,7 +91,7 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore4.setLongitude(126.479180622209);
         bestStore4.setKakao("kakaoMap");
         bestStore4.setContact("010-1321-1211");
-        bestStore4.setLikeCount(93);
+        bestStore4.setLikeCount(0);
         bestStore4.setReviewCount(91);
         bestStore4.setRating(3.2);
         bestStore4.setLowPrice(104300);
