@@ -18,18 +18,21 @@ export const categorydetail = {
   createdAt: '2022-11-11',
   items: [
     {
+      itemId: 1,
       itemName: '[제주함덕]체험권 씨워커 씨워킹',
       price: 50000,
       totalTicket: 10,
       remainingTicket: 8,
     },
     {
+      itemId: 2,
       itemName: '[제주함덕] 보트 체험 스쿠버다이빙 이용권',
       price: 80000,
       totalTicket: 10,
       remainingTicket: 4,
     },
     {
+      itemId: 3,
       itemName: '[제주함덕] 체험 스쿠버다이빙 이용권',
       price: 100000,
       totalTicket: 10,

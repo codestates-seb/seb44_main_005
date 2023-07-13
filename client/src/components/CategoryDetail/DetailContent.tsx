@@ -1,16 +1,56 @@
-import tw from 'tailwind-styled-components';
+import { useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { RiMapPinLine } from 'react-icons/ri';
 import { FiClock, FiPhone } from 'react-icons/fi';
 
-function DetailContent({ data }) {
+import {
+  DetailCategoryName,
+  DetailTitle,
+  ImgBox,
+  StoreInfoBox,
+} from '../../styles/CategoryDetail/DetailContent';
+import { useRecoilValue } from 'recoil';
+import { CategoryDetailState } from '../../store/categoryDetailAtom';
+
+function DetailContent() {
+  const [current, setCurrent] = useState(0);
+  const data = useRecoilValue(CategoryDetailState);
+
+  const arrowLeftHandler = () => {
+    if (current === 0) {
+      setCurrent(data.storeImages.length - 1);
+    } else {
+      setCurrent(current - 1);
+    }
+  };
+
+  const arrowRightHandler = () => {
+    if (current === data.storeImages.length - 1) {
+      setCurrent(0);
+    } else {
+      setCurrent(current + 1);
+    }
+  };
+
   return (
     <section className="w-[600px] mb-14">
       <DetailCategoryName>{data.category}</DetailCategoryName>
       <DetailTitle>{data.storeName}</DetailTitle>
       <ImgBox>
-        <ThumbnailImg src={data.storeImages[0]} alt="업체사진" />
-        <DetailImgs src={data.storeImages[1]} alt="업체사진" />
-        <DetailImgs src={data.storeImages[2]} alt="업체사진" />
+        <div className="cursor-pointer my-auto" onClick={arrowLeftHandler}>
+          <FaChevronLeft size="50" color="#4771B7" />
+        </div>
+        <div className='w-[400px] h-[320px]'>
+          {data.storeImages && (
+            <>
+              <img className="w-[400px] h-[300px] object-cover" src={data.storeImages[current]} alt="업체사진" />
+              <div className="mt-3 text-center font-bold text-[#4771B7]">{current + 1} / {data.storeImages.length}</div>
+            </>
+          )}
+        </div>
+        <div className="cursor-pointer my-auto" onClick={arrowRightHandler}>
+          <FaChevronRight size="50" color="#4771B7" />
+        </div>
       </ImgBox>
       <StoreInfoBox>
         <div className="flex mb-2">
@@ -32,39 +72,3 @@ function DetailContent({ data }) {
 }
 
 export default DetailContent;
-
-const DetailCategoryName = tw.div`
-  text-xl text-[#787878] font-medium
-  mb-1
-`;
-
-const DetailTitle = tw.div`
-  text-3xl font-bold
-  border-b-[1px] border-[#4771B7]
-  pb-3 mb-10
-`;
-
-const ImgBox = tw.div`
-  flex flex-wrap justify-between
-  w-[570px]
-  mx-auto
-`;
-
-const ThumbnailImg = tw.img`
-  w-[570px] h-[400px]
-  mb-2
-  mx-auto
-  object-cover
-`;
-
-const DetailImgs = tw.img`
-  w-[280px] h-[200px]
-  object-cover
-`;
-
-const StoreInfoBox = tw.div`
-  mt-10 p-5
-  font-medium
-  border-[1px] border-[#4771B7]
-  rounded-[5px]
-`;

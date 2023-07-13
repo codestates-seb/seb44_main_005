@@ -11,7 +11,6 @@ const recoilPersistConfig = {
 };
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
     <BrowserRouter>
       <React.Suspense fallback={<div>Loading...</div>}>
         <RecoilRoot {...recoilPersistConfig}>
@@ -19,5 +18,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </RecoilRoot>
       </React.Suspense>
     </BrowserRouter>
-  </React.StrictMode>
 );
