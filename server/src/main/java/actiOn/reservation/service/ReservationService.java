@@ -138,8 +138,8 @@ public class ReservationService {
     private List<ReservationItem> createReservationItem(Reservation reservation, Store store) {
         List<ReservationItem> saveReservationItemList = new ArrayList<>();
         List<ReservationItem> reservationItemList = reservation.getReservationItems();
-
         for (ReservationItem reservationItem : reservationItemList) {
+            //예약한 업체의 아이템 ID
             Long itemId = reservationItem.getItem().getItemId();
 
             //store의 item이 예약한 상품의 item과 맞는지 점검

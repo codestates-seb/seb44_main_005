@@ -39,6 +39,7 @@ logging:
         util:
           EC2MetadataUtils: ERROR
 server:                   # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
+  port: 8081
   servlet:
     encoding:
       force-response: true

@@ -26,11 +26,20 @@ public enum ExceptionCode {
     INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
     NULL_STORE_IMAGE(404, "Store image is null"),
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
-    PARTNER_ONLY_CAN_DELETE(403,"Only partners who have registered a store can delete the store"),
+    PARTNER_INVALID(403, "Only Partner can delete the company."),
+    PARTNER_ONLY_CAN_DELETE(403, "Partner Only Can Delete"),
 
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
-    STORE_ITEM_INVALID(422,"The Item doesn't exist in the Store"),
+    RESERVATION_DATE_ERROR(400, "Reservation Date Not Invalid"),
+    STORE_ITEM_INVALID(400,"Items That Don't Exist In The Store"),
+    RESERVED_AMOUNT_INVALID(400, "Reserved Amount Not Invalid Item Total price"),
+    ONLY_MEMBER_RESERVATION_MODIFY(403,"Only members who have made a reservation can modify it"),
+    TICKET_OVER(400,"Number of tickets exceeded the maximum allowed"),
+
+    // REVIEW
+    CURSE_WORD_IN_REVIEW(400,"Curse Word In The Review."),
+    MEMBER_RESERVATION_CAN_REVIEW(400,"Only members who have made a reservation can write a review"),
     TOTAL_PRICE_INVALID(400,"The total amount you reserved does not match the total amount of each ticket price"),
     RESERVATION_DATE_INVALID(400,"Reservation date is not applicable to previous date"),
     RESERVATION_CHANGE_ONLY_MEMBER(403,"Only members who made a reservation can modify the reservation"),

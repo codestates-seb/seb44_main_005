@@ -1,5 +1,7 @@
 package actiOn.item.entity;
 
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.store.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +35,7 @@ public class Item {
 
     public void validateTicketCount(int ticketCount){
         if (ticketCount > this.maxCount){
-            throw new IllegalArgumentException("티켓 수가 최대 허용량을 초과했습니다.");
+            throw new BusinessLogicException(ExceptionCode.TICKET_OVER);
         }
     }
 }

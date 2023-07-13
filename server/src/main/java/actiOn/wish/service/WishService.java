@@ -34,7 +34,7 @@ public class WishService {
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
 
-        //Todo Store 존재 여부 확인
+        //Todo Store 존재 여부 확인 -> 단일책임원칙 위반, storeRepository 보다 service
         Store store = storeRepository.findById(storeId).orElseThrow(
                 (() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND)));
 
