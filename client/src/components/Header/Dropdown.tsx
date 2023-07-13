@@ -9,6 +9,7 @@ function Dropdown() {
 
   const handleLogout = () => {
     setIsLoginState(false);
+
     sessionStorage.removeItem('Authorization');
     sessionStorage.removeItem('memberId');
     window.location.href = '/home';
@@ -24,6 +25,7 @@ function Dropdown() {
         </Menu>
       </StyledContainer>
     </div>
+
   );
 }
 

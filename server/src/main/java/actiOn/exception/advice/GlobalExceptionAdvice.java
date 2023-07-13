@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 
 @Slf4j
 @RestControllerAdvice
@@ -52,7 +53,8 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
 
-        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
+        log.error("# handle exception: {}", e.getMessage());
 
         return response;
     }
@@ -65,6 +67,7 @@ public class GlobalExceptionAdvice {
 
         final ErrorResponse response = ErrorResponse
                 .of(HttpStatus.BAD_REQUEST, "요청/응답 body의 형식이 잘못되었습니다.");
+        log.error("# handle exception: {}", e.getMessage());
 
         return response;
     }
@@ -78,6 +81,15 @@ public class GlobalExceptionAdvice {
         final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
 
         return response;
+    }
+
+    // 입출력 오류(이미지 업로드 등)
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorResponse handleIOException(IOException e) {
+        log.error("# handle IO Exception: {}", e.getMessage());
+
+        return ErrorResponse.of(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
     }
 
     // 핸들되지 않는 나머지 예외처리

@@ -8,6 +8,7 @@ import {
   Option,
   Category,
 } from '../styles/Category/CategoryPage';
+
 import { useRecoilState } from 'recoil';
 import { categoryData } from '../store/categoryAtom';
 import { searchKeyword } from '../store/searchbarAtom';

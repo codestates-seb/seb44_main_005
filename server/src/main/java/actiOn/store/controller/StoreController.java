@@ -80,6 +80,7 @@ public class StoreController {
 //        storeService.deleteStore(storeId);
         return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
+
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
     public ResponseEntity patchStore(@PathVariable("store-id") @Positive long storeId,
@@ -127,7 +128,6 @@ public class StoreController {
         }
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
-
 
     // 업체 삭제 PP_003
     @DeleteMapping("/stores/{store-id}") //스토어 삭제

@@ -10,4 +10,5 @@ export const categoryData = atom<CategoryData>({
     pageInfo: [{ storeCount: 0 }],
     data: [],
   },
+
 });

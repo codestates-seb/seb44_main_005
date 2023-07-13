@@ -10,14 +10,14 @@ import java.io.IOException;
 // ErrorResponse를 출력 스트림으로 생성하는 클래스
 public class ErrorResponder {
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {
-        actiOn.exception.util.ErrorResponse errorResponse = actiOn.exception.util.ErrorResponse.of(status);
+        ErrorResponse errorResponse = ErrorResponse.of(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(status.value());
-        response.getWriter().write(JsonUtil.toJson(errorResponse, actiOn.exception.util.ErrorResponse.class));
+        response.getWriter().write(JsonUtil.toJson(errorResponse, ErrorResponse.class));
     }
 
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status, Exception exception) throws IOException {
-        actiOn.exception.util.ErrorResponse errorResponse = actiOn.exception.util.ErrorResponse.of(status, exception.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.of(status, exception.getMessage());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(status.value());
         response.getWriter().write(JsonUtil.toJson(errorResponse, ErrorResponse.class));

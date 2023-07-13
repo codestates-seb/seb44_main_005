@@ -2,14 +2,11 @@ package actiOn.store.mapper;
 
 
 import actiOn.Img.storeImg.StoreImg;
-import actiOn.exception.BusinessLogicException;
-import actiOn.exception.ExceptionCode;
 import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.CategoryStoreDto;
 import actiOn.store.entity.Store;
 import org.springframework.stereotype.Component;
 
-import javax.xml.catalog.Catalog;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +15,7 @@ import java.util.Map;
 @Component
 public class CategoryResponseMapper {
 
-    public CategoryResponseDto CategoryStoreToCategoryResponseDto (List<Store> categoryStores) {
+    public CategoryResponseDto CategoryStoreToCategoryResponseDto(List<Store> categoryStores) {
         //categoryStores는 이미 정렬되어 있음에 주의
         CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
         List<CategoryStoreDto> categoryStoreDtos = new ArrayList<>();
@@ -40,7 +37,8 @@ public class CategoryResponseMapper {
                     throw new IllegalArgumentException("스토어의 이미지가 존재하지 않습니다.");
                 }
                 categoryStoreDto.setImg(img);
-            } catch (IllegalArgumentException e){}
+            } catch (IllegalArgumentException e) {
+            }
 
             //위에까지가 이미지 관련
 
