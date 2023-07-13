@@ -67,7 +67,7 @@ public class StoreController {
         storeService.verifyIdentityToStore(storeId, AuthUtil.getCurrentMemberEmail()); // 본인 자격 검증
         Store patchStore = storeService.updateStore(store,storeId); // 스토어 생성
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
-        return new ResponseEntity<>(storeIdResponseDto,HttpStatus.OK);
+        return new ResponseEntity<>(storeIdResponseDto,HttpStatus.OK);//
     }
 
     @PatchMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
