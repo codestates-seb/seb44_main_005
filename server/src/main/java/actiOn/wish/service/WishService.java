@@ -43,7 +43,7 @@ public class WishService {
         if (wishRepository.findByMemberAndStore(findMember,store).isPresent()){
             throw new BusinessLogicException(ExceptionCode.WISH_EXIST);
         }
-        //
+        ////
 
         Wish wish = new Wish();
         wish.setMember(findMember);
