@@ -12,8 +12,10 @@ const recoilPersistConfig = {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
-      <RecoilRoot {...recoilPersistConfig}>
-        <App />
-      </RecoilRoot>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <RecoilRoot {...recoilPersistConfig}>
+          <App />
+        </RecoilRoot>
+      </React.Suspense>
     </BrowserRouter>
 );

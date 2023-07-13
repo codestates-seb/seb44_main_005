@@ -9,19 +9,23 @@ function Dropdown() {
 
   const handleLogout = () => {
     setIsLoginState(false);
-    localStorage.removeItem('Authorization');
-    localStorage.removeItem('memberId');
+
+    sessionStorage.removeItem('Authorization');
+    sessionStorage.removeItem('memberId');
     window.location.href = '/home';
   };
   return (
-    <StyledContainer>
-      <Menu className="border-b-[1px] border-[#4771B7]">
-        <Link to="/mypage">마이페이지</Link>
-      </Menu>
-      <Menu>
-        <div onClick={handleLogout}>로그아웃</div>
-      </Menu>
-    </StyledContainer>
+    <div className="relative">
+      <StyledContainer>
+        <Menu className="border-b-[1px] border-[#4771B7]">
+          <Link to="/my">마이페이지</Link>
+        </Menu>
+        <Menu>
+          <div onClick={handleLogout}>로그아웃</div>
+        </Menu>
+      </StyledContainer>
+    </div>
+
   );
 }
 

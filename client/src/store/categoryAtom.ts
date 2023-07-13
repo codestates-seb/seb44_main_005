@@ -1,8 +1,14 @@
 import { atom } from 'recoil';
 
-import { category } from '../dummy/category';
+export interface CategoryData {
+  pageInfo: { storeCount: number }[];
+  data: any[];
+}
+export const categoryData = atom<CategoryData>({
+  key: 'categoryData',
+  default: {
+    pageInfo: [{ storeCount: 0 }],
+    data: [],
+  },
 
-export const CategoryData = atom({
-  key: 'CategoryData',
-  default: category,
 });

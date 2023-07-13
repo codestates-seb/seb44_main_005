@@ -17,6 +17,7 @@ function Register() {
   const url = import.meta.env.VITE_APP_API_URL;
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
+  //useRef ->객체관리....
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');

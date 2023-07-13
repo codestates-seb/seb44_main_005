@@ -1,7 +1,9 @@
 package actiOn.auth.oauth2;
 
 import actiOn.auth.provider.TokenProvider;
-import actiOn.auth.utils.MemberAuthorityUtil;
+import actiOn.auth.role.MemberRole;
+import actiOn.auth.role.Role;
+import actiOn.auth.role.RoleService;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -17,11 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.List;
 
 @AllArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final MemberAuthorityUtil authorityUtil;
     private final MemberService memberService;
+    private final RoleService roleService;
     private final TokenProvider tokenProvider;
 
     @Override
@@ -46,8 +49,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         member.setEmail(email);
         member.setPassword(generateRandomPassword());
         member.setNickname(generateNicknameFromEmail(email));
-//        member.setPhoneNumber("010-1111-4444");
-        member.setRoles(authorityUtil.createRoles(email));
+        Role userRole = roleService.findUserRole();
+        List<MemberRole> memberRole = memberService.addedMemberRole(member, userRole);
+        member.setMemberRoles(memberRole);
 
         return member;
     }
