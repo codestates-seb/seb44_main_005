@@ -81,7 +81,7 @@ public class StoreService {
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
 
         if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())){
-            throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
+            throw new BusinessLogicException(ExceptionCode.PARTNER_INVALID);
         }
 
         //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
