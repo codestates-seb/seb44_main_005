@@ -7,6 +7,7 @@ import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
+import actiOn.store.service.StoreService;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.repository.WishRepository;
 import org.springframework.stereotype.Service;

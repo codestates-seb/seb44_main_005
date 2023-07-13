@@ -2,11 +2,14 @@ package actiOn.review.dto;
 
 import actiOn.review.entity.Review;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
+@Getter @Setter
+@NoArgsConstructor
 public class ReviewResponseDto {
     private String profileImg;
     private String nickname;
