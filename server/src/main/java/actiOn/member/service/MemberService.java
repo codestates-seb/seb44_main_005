@@ -5,7 +5,6 @@ import actiOn.Img.service.ImgService;
 import actiOn.auth.role.MemberRole;
 import actiOn.auth.role.Role;
 import actiOn.auth.role.RoleService;
-import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.business.entity.Business;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
@@ -17,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,6 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
-    private final MemberAuthorityUtil authorityUtil;
     private final ImgService imgService;
     private final RoleService roleService;
 
@@ -43,9 +43,9 @@ public class MemberService {
         String encryptedPW = encoder.encode(member.getPassword());
         member.setPassword(encryptedPW);
 
-        // 프로필 기본 이미지 설정
-        ProfileImg defaultImage = imgService.createDefaultProfileImg(member);
-        member.setProfileImg(defaultImage);
+        // TODO 프로필 기본 이미지 설정
+        /*ProfileImg defaultImage = imgService.setDefaultProfileImg(member);
+        member.setProfileImg(defaultImage);*/
 
         // DB에 User Role 저장
         Role userRole = roleService.findUserRole();
@@ -90,6 +90,36 @@ public class MemberService {
         member.setMemberRoles(memberRoles);
 
         return memberRepository.save(member);
+    }
+
+    // 프로필 이미지 등록
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void registerProfileImage(MultipartFile file, String email) throws IOException {
+        Member member = findMemberByEmail(email);
+        ProfileImg profileImg = member.getProfileImg();
+
+        // 기존 프로필 이미지가 존재하는 경우
+        if (profileImg == null) {
+            // 기존 프로필 이미지는 DELETED로 변경
+            imgService.updateCurrentProfileImageStatus(member);
+        }
+
+        // 프로필 이미지 업로드
+        profileImg = imgService.uploadProfileImage(file, member);
+        member.setProfileImg(profileImg);
+
+        memberRepository.save(member);
+    }
+
+    // 기본 프로필 이미지로 변경 (프로필 이미지 삭제)
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteProfileImage(String email) {
+        Member member = findMemberByEmail(email);
+        imgService.updateCurrentProfileImageStatus(member);
+
+        // TODO 기본 프로필 이미지로 변경
+        member.setProfileImg(null);
+        memberRepository.save(member);
     }
 
     // Role 저장
@@ -149,8 +179,9 @@ public class MemberService {
     }
 
     //로그인한 멤버와 예약한 멤버의 ID 동일 여부 확인
-    public void loginMemberEqualReservaionMember(Long loginMemberId, Long reservationMemberId){
-        if (!loginMemberId.equals(reservationMemberId)){
+    public void loginMemberEqualReservationMember(Long loginMemberId, Long reservationMemberId) {
+        if (!loginMemberId.equals(reservationMemberId)) {
+            // TODO ExceptionCode 추가
             throw new IllegalArgumentException("예약한 회원만 수정 할 수 있습니다.");
         }
     }
