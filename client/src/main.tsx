@@ -11,11 +11,9 @@ const recoilPersistConfig = {
 };
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
     <BrowserRouter>
       <RecoilRoot {...recoilPersistConfig}>
         <App />
       </RecoilRoot>
     </BrowserRouter>
-  </React.StrictMode>
 );
