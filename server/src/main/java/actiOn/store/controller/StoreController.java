@@ -85,7 +85,8 @@ public class StoreController {
     //Todo store에 member 주입
         return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
-    // 업체 상세 페이지 조회, 업체 수정 페이지 렌더링용
+    // 업체 상세 페이지 조회, 업체 수정 페이지 렌더링용//
+    //
     @GetMapping("/stores/{store-id}") // 스토어 상세페이지, 수정페이지 랜더링을 위해 필요한 리소스 응답
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
         Store findStore = storeService.findStoreByStoreId(storeId);
