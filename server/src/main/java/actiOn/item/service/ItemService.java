@@ -25,6 +25,7 @@ public class ItemService {
 
     public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
         try{
+            //Todo 예외처리하기
             List<ItemDto> itemDtos = new ArrayList<>();
             Store findStore = storeService.findStoreByStoreId(storeId);
             List<Item> findItems = findStore.getItems();

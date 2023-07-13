@@ -78,6 +78,7 @@ public class StoreController {
             return new ResponseEntity<>(HttpStatus.CREATED);}
 
 //        storeService.deleteStore(storeId);
+        //Todo store에 member 주입
         return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
 
@@ -111,7 +112,7 @@ public class StoreController {
         if (imgService.uploadStoreImage(images,storeId,thumbnailImage) != null){
             storeService.deleteStoreImgByLinks(deleteImages);
             return new ResponseEntity<>(HttpStatus.OK);}
-
+    //Todo store에 member 주입
         return new ResponseEntity<>("이미지 업로드 실패",HttpStatus.BAD_REQUEST);
     }
     // 업체 상세 페이지 조회, 업체 수정 페이지 렌더링용
@@ -166,6 +167,7 @@ public class StoreController {
     // 검색 기능
     @GetMapping("/search") //검색
     public ResponseEntity getSearchResults(@RequestParam(name = "keyword") String keyword) {
+        //Todo 공백 검색불가하게 하자
         List<Store> searchResult = storeService.searchEnginOnStoreNameByKeyword(keyword);
         CategoryResponseDto searchResultTransformDto =
                 categoryResponseMapper.CategoryStoreToCategoryResponseDto(searchResult); // response form이 같아서 재활용
