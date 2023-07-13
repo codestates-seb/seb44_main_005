@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { isLoginState } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
@@ -13,8 +13,10 @@ import {
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
+  DropdownContainer,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
+import { searchKeyword } from '../../store/searchbarAtom';
 
 function Header() {
   //비로그인 상태일때
@@ -23,11 +25,13 @@ function Header() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const [isPartner, setIsPartner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const setKeyword = useSetRecoilState(searchKeyword);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate('/home');
+    setKeyword('');
   };
   const onClickPartner = () => {
     if (!isLogin) {
@@ -58,10 +62,12 @@ function Header() {
       </LogoContainer>
       {!isLogin ? (
         <UnLoginContainer>
-          <div className="cursor-pointer" onClick={onClickPartner}>
+          <div className="cursor-pointer mr-[50px]" onClick={onClickPartner}>
             파트너 등록
           </div>
-          <Link to="/login">로그인</Link>
+          <Link to="/login" className="mr-[50px]">
+            로그인
+          </Link>
           <Link
             to="/register"
             className="border border-[#4771B7] text-[#4771B7] px-[30px] py-2"
@@ -79,7 +85,7 @@ function Header() {
               <DropdownContainer>
                 <img
                   src={profile}
-                  className="w-[28px] fixed"
+                  className="w-[28px] ml-[20px]"
                   onClick={handleDropdownClick}
                 />
                 {isOpen && <Dropdown />}
@@ -92,7 +98,7 @@ function Header() {
               </Link>
               <img
                 src={profile}
-                className="w-[28px]"
+                className="w-[28px] ml-[50px]"
                 onClick={handleDropdownClick}
               />
               {isOpen && <Dropdown />}
@@ -104,6 +110,4 @@ function Header() {
   );
 }
 
-const DropdownContainer = tw.div`
-`;
 export default Header;

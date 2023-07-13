@@ -3,7 +3,6 @@ export interface recommendDataType {
   storeName: string;
   body: string;
   img: string;
-
 }
 
 export interface homeMapDataType {
@@ -20,5 +19,5 @@ export interface homeDataType {
 }
 
 export interface homeMapPropsType {
-  marker: homeMapDataType[]
+  marker: homeMapDataType[];
 }

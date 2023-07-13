@@ -18,7 +18,7 @@ export const LogoContainer = tw.div`
 
 export const LoginContainer = tw.div`
   flex
-  justify-around
+  justify-center
   items-center
   w-[200px]
   text-sm
@@ -26,9 +26,12 @@ export const LoginContainer = tw.div`
 
 export const UnLoginContainer = tw.div`
   flex
-  justify-around
+  justify-center
   w-[400px]
   text-sm
   leading-0
   items-center
+`;
+export const DropdownContainer = tw.div`
+  relative
 `;

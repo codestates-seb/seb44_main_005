@@ -4,7 +4,7 @@ export const StyledContainer = tw.ul`
   absolute
   w-[120px]
   top-[25px]
-  right-[25px]
+  right-[10px]
   text-center
   border
   border-[#4771B7]
