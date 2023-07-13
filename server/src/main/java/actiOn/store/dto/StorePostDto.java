@@ -35,8 +35,4 @@ public class StorePostDto {
     @NotEmpty(message = "상품목록을 작성해주세요")
     private List<Item> items;
 
-//    @NotEmpty(message = "이미지를 업로드 해주세요")
-//    private List<MultipartFile> storeImage;
-
-
 }

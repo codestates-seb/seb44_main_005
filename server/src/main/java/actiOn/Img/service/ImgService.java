@@ -15,12 +15,14 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
 
 @Service
+
 public class ImgService {
     @Value("${cloud.aws.s3.bucket}")
     private String BUCKET_NAME;
@@ -68,31 +70,46 @@ public class ImgService {
         return profileImgRepository.save(profileImg);
     }
 
-    public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId) {
+    public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
         String randomString = generateRandomName();
         try {
-            int index = 1;
             List<StoreImg> storeImgs = new ArrayList<>();
-            for (MultipartFile file : files) {
-
-                String imageName = String.valueOf(storeId) + randomString + String.valueOf(index);
-                StoreImg storeImg = new StoreImg();
-                Store findStore = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-                if (findStore == null) {
-                    return null;
-                }
-                String fileUrl = uploadImage(file, imageName);
-                storeImg.setLink(fileUrl);
-                if (file.equals(files.get(0))) {
-                    storeImg.setIsThumbnail(true);
-                }
-                storeImgs.add(storeImgRepository.save(storeImg));
-                index++;
+            if (thumbnailImage != null) { //thumbnailImage가 null이 아니면 파일리스트 0번째 넣어서 썸네일로 만들기
+                files.add(0,thumbnailImage);
             }
+            else{
+                files.add(0,null);
+            }
+
+            Store findStore = storeRepository.findById(storeId).orElseThrow(()->new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+            if (findStore == null) {
+                return null;
+            }
+            int index=1;
+            for (MultipartFile file : files) {
+                if (file != null){
+                    String imageName = String.valueOf(storeId) +  randomString + String.valueOf(index);
+                    StoreImg storeImg = new StoreImg();
+                    String fileUrl = uploadImage(file, imageName);
+                    storeImg.setLink(fileUrl);
+                    if (file.equals(files.get(0))){
+                        storeImg.setIsThumbnail(true);
+                        StoreImg findThumbnail = storeImgRepository.findByStoreAndIsThumbnail(findStore, true);
+                        if (findThumbnail != null) {
+                            storeImg.setImgId(findThumbnail.getImgId());
+                        }
+                    }
+                    storeImg.setStore(findStore);
+                    storeImgs.add(storeImgRepository.save(storeImg));
+                    index++;
+                }
+            }
+
             return storeImgs;
             //Todo url / 디비에 저장
         } catch (Exception e) {
             e.printStackTrace();
+
             return null;
         }
     }

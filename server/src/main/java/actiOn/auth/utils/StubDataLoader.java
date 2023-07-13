@@ -32,11 +32,11 @@ public class StubDataLoader implements CommandLineRunner {
         Store bestStore1 = new Store();
         bestStore1.setStoreId(1L);
         bestStore1.setStoreName("언더워터플레이 함덕점");
-        bestStore1.setCategory("수상스키");
+        bestStore1.setCategory("스노클링/다이빙");
         bestStore1.setBody("제주도 시원한 바닷속에서 다양한 물고기들을...");
         bestStore1.setAddress("제주도 제주읍 제주시");
-        bestStore1.setLatitude(25.111111111);
-        bestStore1.setLongitude(24.111111111);
+        bestStore1.setLatitude(33.509565870437);
+        bestStore1.setLongitude(126.479180622209);
         bestStore1.setKakao("kakaoHello");
         bestStore1.setContact("010-1111-1111");
         bestStore1.setLikeCount(100);
@@ -53,8 +53,8 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore2.setCategory("수상레저");
         bestStore2.setBody("수상레저로 한여름의 더위 날려...");
         bestStore2.setAddress("제주도 제주읍 제주시");
-        bestStore2.setLatitude(25.1111116111);
-        bestStore2.setLongitude(24.1111311111);
+        bestStore2.setLatitude(33.509665870437);
+        bestStore2.setLongitude(126.479180622209);
         bestStore2.setKakao("kakaoTalk");
         bestStore2.setContact("010-1112-1112");
         bestStore2.setLikeCount(99);
@@ -71,8 +71,8 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore3.setCategory("서핑");
         bestStore3.setBody("에메랄드 빛 해변에서 이루어지는 전문 서핑 강습...");
         bestStore3.setAddress("제주도 제주읍 함덕시");
-        bestStore3.setLatitude(25.1111111112);
-        bestStore3.setLongitude(24.1111111311);
+        bestStore3.setLatitude(33.509535870437);
+        bestStore3.setLongitude(126.479180622209);
         bestStore3.setKakao("kakaoSearch");
         bestStore3.setContact("010-1321-1211");
         bestStore3.setLikeCount(98);
@@ -87,11 +87,11 @@ public class StubDataLoader implements CommandLineRunner {
         bestStore4.setCategory("ATV");
         bestStore4.setBody("제주도에서 많이 즐기는 액티비티의 꽃 ATV...");
         bestStore4.setAddress("제주도 제주읍 제주시");
-        bestStore4.setLatitude(25.1611111111);
-        bestStore4.setLongitude(24.2111111111);
+        bestStore4.setLatitude(33.509525870437);
+        bestStore4.setLongitude(126.479180622209);
         bestStore4.setKakao("kakaoMap");
         bestStore4.setContact("010-1321-1211");
-        bestStore4.setLikeCount(93);
+        bestStore4.setLikeCount(0);
         bestStore4.setReviewCount(91);
         bestStore4.setRating(3.2);
         bestStore4.setLowPrice(104300);
@@ -194,16 +194,16 @@ public class StubDataLoader implements CommandLineRunner {
 
         Item item1 = new Item();
         item1.setItemId(1L);
-        item1.setItemName("새우깡");
+        item1.setItemName("제주 서귀포 잠수함");
         item1.setMaxCount(10);
-        item1.setPrice(100);
+        item1.setPrice(36270);
         item1.setStore(bestStore1);
 
         Item item2 = new Item();
         item2.setItemId(2L);
-        item2.setItemName("감자깡");
+        item2.setItemName("가디언다이브 체험 스쿠버 다이빙");
         item2.setMaxCount(10);
-        item2.setPrice(99);
+        item2.setPrice(95000);
         item2.setStore(bestStore1);
 
         itemRepository.save(item1);
@@ -220,16 +220,16 @@ public class StubDataLoader implements CommandLineRunner {
 
         Item item3 = new Item();
         item3.setItemId(3L);
-        item3.setItemName("인디언밥");
+        item3.setItemName("돌고래 에코투어 선셋(요트투어)");
         item3.setMaxCount(10);
-        item3.setPrice(1200);
+        item3.setPrice(39060);
         item3.setStore(bestStore2);
 
         Item item4 = new Item();
         item4.setItemId(4L);
-        item4.setItemName("빈츠");
+        item4.setItemName("제주도 서귀포 그랑블루요트 선셋");
         item4.setMaxCount(10);
-        item4.setPrice(1500);
+        item4.setPrice(26040);
         item4.setStore(bestStore2);
 
         itemRepository.save(item3);
@@ -246,16 +246,16 @@ public class StubDataLoader implements CommandLineRunner {
 
         Item item5 = new Item();
         item5.setItemId(5L);
-        item5.setItemName("허니버터칩");
+        item5.setItemName("중문색달해변 서핑 강습");
         item5.setMaxCount(10);
-        item5.setPrice(1300);
+        item5.setPrice(60000);
         item5.setStore(bestStore3);
 
         Item item6 = new Item();
         item6.setItemId(6L);
-        item6.setItemName("다이제");
+        item6.setItemName("누디다이브 범섬 체험 다이빙");
         item6.setMaxCount(10);
-        item6.setPrice(2000);
+        item6.setPrice(79000);
         item6.setStore(bestStore3);
 
         itemRepository.save(item5);
@@ -272,16 +272,16 @@ public class StubDataLoader implements CommandLineRunner {
 
         Item item7 = new Item();
         item7.setItemId(7L);
-        item7.setItemName("맛동산");
+        item7.setItemName("율랜드 스쿠버 다이빙 체험");
         item7.setMaxCount(10);
-        item7.setPrice(1800);
+        item7.setPrice(100000);
         item7.setStore(bestStore4);
 
         Item item8 = new Item();
         item8.setItemId(8L);
-        item8.setItemName("계란과자");
+        item8.setItemName("제주 투명카약/바다카약/스노클링 체험");
         item8.setMaxCount(10);
-        item8.setPrice(1100);
+        item8.setPrice(10000);
         item8.setStore(bestStore4);
 
         itemRepository.save(item7);

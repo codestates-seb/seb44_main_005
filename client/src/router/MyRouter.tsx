@@ -6,7 +6,6 @@ import ReservationCheck from '../pages/ReservationCheck';
 import WishList from '../pages/WishList';
 import StoreCheck from '../pages/StoreCheck';
 import StoreAdd from '../pages/StoreAdd';
-import StoreModify from '../pages/StoreModify';
 import HeaderLayout from '../components/Layout/HeaderLayout';
 import FooterLayout from '../components/Layout/FooterLayout';
 import SideBarLayout from '../components/Layout/SideBarLayout';
@@ -24,7 +23,7 @@ function MyRouter() {
           </Route>
           <Route path="/my/order/:id/edit" element={<ReservationModify />} />
           <Route path="/store/add" element={<StoreAdd />} />
-          <Route path="/store/edit" element={<StoreModify />} />
+          <Route path="/store/edit" element={<StoreAdd />} />
         </Route>
       </Route>
     </Routes>

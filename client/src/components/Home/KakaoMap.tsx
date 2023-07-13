@@ -3,7 +3,9 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { Link } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
-function KakaoMap({ marker }) {
+import { homeMapPropsType } from '../../intefaces/Home';
+
+function KakaoMap({ marker }: homeMapPropsType) {
   return (
     <Map
       center={{ lat: 33.35910359999967, lng: 126.53439149999889 }}
