@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SelectBox from '../components/Partner/SelectBox';
 
 function Partner() {
   const [regiNumber, setRegiNumber] = useState('');
+  const [isInputTouched, setIsInputTouched] = useState(false);
   const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
   const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
 
@@ -15,6 +16,10 @@ function Partner() {
 
   const isRegiNumberValid = regiNumber.length === 12;
   const isRegiNumberIncomplete = regiNumber.length > 0 && regiNumber.length <12;
+
+  useEffect(() => {
+    setIsInputTouched(true);
+  }, []);
 
   const handleDuplicateCheck = async () => {
     setIsCheckingDuplicate(true);
@@ -60,9 +65,18 @@ function Partner() {
                     value={regiNumber}
                     onChange={handleRegiNumberChange}
                     maxLength={12}
+                    onBlur={() => setIsInputTouched(true)}
                   />
+                  {isInputTouched && !regiNumber && (
+                    <p className="pt-1 text-gray-950">숫자만 입력해주세요.</p>
+                  )}
+                  {isRegiNumberValid && (
+                    <p className="pt-1 text-green-500">올바른 입력입니다.</p>
+                  )}
                   {isRegiNumberIncomplete && (
-                    <p className='pt-1 text-red-500'>사업자 등록번호는 10자리로 입력되어야 합니다.</p>
+                    <p className="pt-1 text-red-500">
+                      사업자 등록번호는 10자리로 입력되어야 합니다.
+                    </p>
                   )}
                 </div>
                 <button
