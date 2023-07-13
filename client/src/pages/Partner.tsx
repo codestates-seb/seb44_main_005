@@ -13,7 +13,7 @@ function Partner() {
               <label className="">대표자 명</label>
               <input
                 className="border-[1px] border-[#9A9A9A] rounded-md w-[78%] px-2 py-[2px]"
-                placeholder="ex.홍길동"
+                placeholder="ex. 홍길동"
                 type="text"
               />
             </div>
@@ -23,7 +23,7 @@ function Partner() {
                 <div className="pr-4 w-[100%]">
                   <input
                     className="border-[1px] border-[#9A9A9A] rounded-md w-[100%]  px-2 py-[2px]"
-                    placeholder="123-45-67890"
+                    placeholder="ex. 123-45-67890"
                     type="text"
                   />
                   <p className="pt-1 text-red-500">
@@ -42,7 +42,7 @@ function Partner() {
               <label className="">업체명</label>
               <input
                 className="border-[1px] border-[#9A9A9A] rounded-md w-[78%]  px-2 py-[2px]"
-                placeholder="ex.OO레저"
+                placeholder="ex. OO레저"
                 type="text"
               />
             </div>
