@@ -30,7 +30,7 @@ public class ReservationMapper {
         for (ReservationItemReqDto itemReqDto : itemReqDtos) {
             ReservationItem reservationItem = new ReservationItem();
             reservationItem.setTicketCount(itemReqDto.getTicketCount());
-
+//
             //Item 객체 매핑
             Item item = new Item();
             item.setItemId(itemReqDto.getItemId());
