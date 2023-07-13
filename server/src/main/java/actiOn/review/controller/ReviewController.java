@@ -35,7 +35,7 @@ public class ReviewController {
     }
 
     //TODO RV_001 리뷰 페이지
-    @GetMapping("/review/{store-id}")
+    @GetMapping("/reviews/{store-id}")
     public ResponseEntity getAllReviews(@Positive @PathVariable("store-id") Long storeId){
         ReviewsResponseDto reviewsResponseDto = reviewService.getAllReviews(storeId);
         return new ResponseEntity(reviewsResponseDto,HttpStatus.OK);

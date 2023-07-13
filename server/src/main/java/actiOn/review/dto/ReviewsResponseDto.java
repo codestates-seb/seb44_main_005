@@ -10,5 +10,5 @@ import java.util.List;
 public class ReviewsResponseDto {
     private int reviewCount;
     private double ratingAvg;
-    private List<ReviewResponseDto> reviewResponseDtoList;
+    private List<ReviewResponseDto> reviews;
 }

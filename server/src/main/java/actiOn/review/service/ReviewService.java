@@ -87,7 +87,7 @@ public class ReviewService {
         ReviewsResponseDto reviewsResponseDtos = ReviewsResponseDto.builder()
                 .reviewCount(store.getReviewCount())
                 .ratingAvg(store.getRating())
-                .reviewResponseDtoList(reviewResponseDtos)
+                .reviews(reviewResponseDtos)
                 .build();
 
         return reviewsResponseDtos;
