@@ -70,7 +70,7 @@ public class WishService {
 
         //Todo Store에 대한 찜 개수 -1 로직
         storeRepository.subLikeCount(store);
-    }
+    }//
 
 
     public List<Wish> getWishListByMember(Member member) {
