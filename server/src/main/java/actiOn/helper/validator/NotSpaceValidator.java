@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class NotSpaceValidator implements ConstraintValidator<NotSpace, String> {
+public class NotSpaceValidator implements ConstraintValidator<actiOn.helper.validator.NotSpace, String> {
 
     @Override
     public void initialize(NotSpace constraintAnnotation) {

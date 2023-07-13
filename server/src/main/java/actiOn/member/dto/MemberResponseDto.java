@@ -1,6 +1,5 @@
 package actiOn.member.dto;
 
-import actiOn.Img.profileImg.ProfileImg;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

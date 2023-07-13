@@ -17,7 +17,14 @@ public enum ExceptionCode {
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
-    INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'");
+    INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
+
+    // RESERVATION
+    RESERVATION_NOT_FOUND(404, "Reservation not found"),
+
+    //WISH
+    WISH_EXIST(409,"Wish exists"),
+    WISH_NOT_FOUND(404, "Wish not found");
 
     @Getter
     private int status;
