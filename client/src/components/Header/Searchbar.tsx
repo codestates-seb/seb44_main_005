@@ -30,6 +30,11 @@ function Searchbar() {
       console.error(error);
     }
   };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      searchFetch();
+    }
+  };
 
   return (
     <SearchbarContainer>
@@ -38,6 +43,7 @@ function Searchbar() {
         id="keyword"
         value={keyword}
         onChange={(e) => setKeyword(e.currentTarget.value)}
+        onKeyDown={handleKeyDown}
         placeholder="상품을 검색해보세요"
       />
       <img
