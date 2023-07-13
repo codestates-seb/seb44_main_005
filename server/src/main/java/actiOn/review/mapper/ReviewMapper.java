@@ -19,13 +19,18 @@ public class ReviewMapper {
     }
 
     public ReviewResponseDto reviewToReviewResponseDto(Review review){
-        return new ReviewResponseDto(
-                review.getMember().getProfileImg().getLink(),
-                review.getMember().getNickname(),
-                review.getContent(),
-                review.getRating(),
-                review.getCreatedAt()
-        );
+        ReviewResponseDto reviewResponseDto = new ReviewResponseDto();
+        try {
+            reviewResponseDto.setProfileImg(review.getMember().getProfileImg().getLink());
+        }catch (NullPointerException e){
+            reviewResponseDto.setProfileImg("현재 프로필 이미지 없음");
+        }
+        reviewResponseDto.setNickname(review.getMember().getNickname());
+        reviewResponseDto.setContent(review.getContent());
+        reviewResponseDto.setRating(review.getRating());
+        reviewResponseDto.setCreatedAt(review.getCreatedAt());
+
+        return reviewResponseDto;
     }
 
     public List<ReviewResponseDto> reviewsToReviewsResponseDto(List<Review> reviews){

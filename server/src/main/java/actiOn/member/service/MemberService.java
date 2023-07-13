@@ -182,7 +182,7 @@ public class MemberService {
     public void loginMemberEqualReservationMember(Long loginMemberId, Long reservationMemberId) {
         if (!loginMemberId.equals(reservationMemberId)) {
             // TODO ExceptionCode 추가
-            throw new IllegalArgumentException("예약한 회원만 수정 할 수 있습니다.");
+            throw new BusinessLogicException(ExceptionCode.RESERVATION_CHANGE_ONLY_MEMBER);
         }
     }
 }

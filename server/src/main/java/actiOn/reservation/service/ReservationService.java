@@ -54,8 +54,12 @@ public class ReservationService {
         reqReservation.setMember(member);
 
         //reqReservation에 있는 상품 id가 존재하는지 확인 후 reservationItem 저장
-        List<ReservationItem> saveReservationItems = createReservationItem(reqReservation);
+        List<ReservationItem> saveReservationItems = createReservationItem(reqReservation,store);
         reqReservation.setReservationItems(saveReservationItems);
+
+        //todo 하루에 예약은 한번만
+
+        //todo 예약이 계속 가능, remaining 티켓값 연구 필요
 
         //예약 정보 저장
         reservationRepository.save(reqReservation);
@@ -106,7 +110,11 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public Reservation getReservations(Long reservationId) {
+        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
+        memberService.findMemberByEmail(loginUserEmail);
+
         Reservation reservation = this.findByReservation(reservationId);
+
         return reservation;
     }
 
@@ -121,20 +129,32 @@ public class ReservationService {
         if (reservationDate != null) {
             LocalDate today = LocalDate.now();
             if (reservationDate.isBefore(today)) {
-                throw new IllegalArgumentException("예약 날짜는 이전 날짜에 적용할 수 없습니다.");
+                throw new BusinessLogicException(ExceptionCode.RESERVATION_DATE_INVALID);
             }
         }
     }
 
     //예약 상품 생성 및 저장 메서드
-    private List<ReservationItem> createReservationItem(Reservation reservation) {
+    private List<ReservationItem> createReservationItem(Reservation reservation, Store store) {
         List<ReservationItem> saveReservationItemList = new ArrayList<>();
         List<ReservationItem> reservationItemList = reservation.getReservationItems();
-
         for (ReservationItem reservationItem : reservationItemList) {
+            //예약한 업체의 아이템 ID
             Long itemId = reservationItem.getItem().getItemId();
+
+            //store의 item이 예약한 상품의 item과 맞는지 점검
+            List<Item> storeItems = store.getItems();
+            boolean itemfound = false;
+            for (Item item : storeItems){
+                if (item.getItemId().equals(itemId)){
+                    itemfound = true;
+                    break;
+                }
+            }
+            if (!itemfound) throw new BusinessLogicException(ExceptionCode.STORE_ITEM_INVALID);
+
             //itemId로 해당 상품을 찾았음
-            Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+            Item item = itemRepository.findById(itemId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
             //티켓 valid 검사
             item.validateTicketCount(reservationItem.getTicketCount());
 
@@ -161,7 +181,7 @@ public class ReservationService {
             sumTicketCount += reservationItem.getTicketCount() * reservationItem.getItem().getPrice();
         }
         if (totalPrice != sumTicketCount) {
-            throw new IllegalArgumentException("예약하신 총 금액과 각 티켓 값의 총 금액이 일치하지 않습니다.");
+            throw new BusinessLogicException(ExceptionCode.TOTAL_PRICE_INVALID);
         }
     }
 
