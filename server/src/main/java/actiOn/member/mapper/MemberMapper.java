@@ -1,7 +1,11 @@
 package actiOn.member.mapper;
 
+import actiOn.Img.storeImg.StoreImg;
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.member.dto.*;
 import actiOn.member.entity.Member;
+import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -36,8 +40,8 @@ public interface MemberMapper {
         return builder.build();
     }
 
-    default List<PartnerResponseDto.PartnerStoreDto> storesToPartnerResponseDtos(List<Store> stores) {
-        List<PartnerResponseDto.PartnerStoreDto> partnerDtos = new ArrayList<>();
+    default List<PartnerResponseDto.StoreDto> storesToPartnerResponseDtos(List<Store> stores) {
+        List<PartnerResponseDto.StoreDto> partnerDtos = new ArrayList<>();
 
         for (Store store : stores) {
             partnerDtos.add(storeToPartnerResponseDto(store));
@@ -46,7 +50,7 @@ public interface MemberMapper {
         return partnerDtos;
     }
 
-    PartnerResponseDto.PartnerStoreDto storeToPartnerResponseDto(Store store);
+    PartnerResponseDto.StoreDto storeToPartnerResponseDto(Store store);
 
 
     // 파트너 업체 DTO
@@ -72,4 +76,62 @@ public interface MemberMapper {
 
     PartnerStoreResponseDto.PartnerStoreDto storeToPartnerStoreResponseDto(Store store);
 
+    // 예약 내역 조회 DTO
+    default MemberReservationResponseDto memberToMemberReservationsDto(Member member) {
+        MemberReservationResponseDto.MemberReservationResponseDtoBuilder builder =
+                MemberReservationResponseDto.builder();
+
+        builder.data(
+                reservationsToMemberReservationResponseDtos(member.getReservations())
+        );
+
+        return builder.build();
+    }
+
+    default List<MemberReservationResponseDto.MemberReservationDto> reservationsToMemberReservationResponseDtos(
+            List<Reservation> reservations) {
+
+        List<MemberReservationResponseDto.MemberReservationDto> memberReservationDtos = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            memberReservationDtos.add(reservationToMemberReservationResponseDto(reservation));
+        }
+
+        return memberReservationDtos;
+    }
+
+    default MemberReservationResponseDto.MemberReservationDto reservationToMemberReservationResponseDto(Reservation reservation) {
+        MemberReservationResponseDto.MemberReservationDto
+                .MemberReservationDtoBuilder builder =
+                MemberReservationResponseDto.MemberReservationDto.builder();
+
+        Store store = reservation.getStore();
+        List<StoreImg> storeImgList = reservation.getStore().getStoreImgList();
+
+        // store 사진 null인 경우 예외처리
+        if (storeImgList.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.NULL_STORE_IMAGE);
+        }
+
+        builder.storeId(store.getStoreId());
+        builder.kakao(store.getKakao());
+
+        String thumbnailLink = findThumbnailImage(storeImgList).getLink();
+        builder.storeImg(thumbnailLink);
+        builder.storeName(store.getStoreName());
+        builder.reservationDate(reservation.getReservationDate());
+        builder.totalPrice(reservation.getTotalPrice());
+        builder.itemCount(reservation.getReservationItems().size());
+        builder.reservationStatus(reservation.getReservationStatus().getStepDescription());
+
+        return builder.build();
+    }
+
+    // 썸네일 사진 탐색
+    default StoreImg findThumbnailImage(List<StoreImg> storeImgList) {
+        return storeImgList.stream()
+                .filter(StoreImg::getIsThumbnail)
+                .findAny()
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.THUMBNAIL_NOT_FOUND));
+    }
 }
