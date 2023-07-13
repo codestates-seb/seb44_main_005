@@ -26,6 +26,7 @@ import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
 import com.nimbusds.openid.connect.sdk.assurance.IdentityVerification;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,27 +37,28 @@ import java.util.*;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
     private final KakaoMapService kakaoMapService;
 
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
+//    private final ReservationRepository reservationRepository;
+//    private final ReservationService reservationService;
 
     private final MemberService memberService;
 
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
 
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
-        this.storeRepository = storeRepository;
-        this.kakaoMapService = kakaoMapService;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
-        this.memberService = memberService;
-        this.wishService = wishService;
-        this.storeImgRepository = storeImgRepository;
-    }
+//    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
+//        this.storeRepository = storeRepository;
+//        this.kakaoMapService = kakaoMapService;
+//        this.reservationRepository = reservationRepository;
+//        this.reservationService = reservationService;
+//        this.memberService = memberService;
+//        this.wishService = wishService;
+//        this.storeImgRepository = storeImgRepository;
+//    }
 
     private Store shapingStore(Store store) {
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
@@ -97,9 +99,7 @@ public class StoreService {
         //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
 
         storeRepository.delete(findStore);
-
     }
-
     public Store findStoreByStoreId(long storeId) {
         return storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
@@ -126,11 +126,9 @@ public class StoreService {
         }
 
     }
-
     public List<Store> searchEnginOnStoreNameByKeyword(String keyword) {
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
     }
-
     //
     //메인페이지
     public MainPageResponseDto getMainPage() {
