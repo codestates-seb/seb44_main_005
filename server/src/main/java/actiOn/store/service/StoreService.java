@@ -1,6 +1,7 @@
 package actiOn.store.service;
 
 import actiOn.Img.storeImg.StoreImg;
+import actiOn.Img.storeImg.StoreImgRepository;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
@@ -44,14 +45,16 @@ public class StoreService {
     private final MemberService memberService;
 
     private final WishService wishService;
+    private final StoreImgRepository storeImgRepository;
 
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService) {
+    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
         this.storeRepository = storeRepository;
         this.kakaoMapService = kakaoMapService;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
         this.memberService = memberService;
         this.wishService = wishService;
+        this.storeImgRepository = storeImgRepository;
     }
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
@@ -69,6 +72,7 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
+    @Transactional
     public void deleteStore(Long storeId){
         Store findStore = this.findStoreByStoreId(storeId);
 
@@ -196,4 +200,10 @@ public class StoreService {
         return categoryResponseDto;
     }
 
+    @Transactional
+    public void deleteStoreImgByLinks(List<String> links){
+        for (String link : links){
+            storeImgRepository.deleteByLink(link.replace(" ",""));
+        }
+    }
 }
