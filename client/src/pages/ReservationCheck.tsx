@@ -68,7 +68,7 @@ function ReservationCheck() {
             </ResInformation>
             <ResButtonsContainer>
               {reservation.reservationStatus === "예약 완료" && (
-                <div>
+                <div className="space-x-3">
                   <ButtonStyle type="button">예약 수정</ButtonStyle>
                   <ButtonStyle type="button">예약 삭제</ButtonStyle>
                 </div>
