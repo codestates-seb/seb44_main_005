@@ -60,14 +60,14 @@ public class ReservationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateReservation(Long reservationId, Reservation updateReservation){
+    public void updateReservation(Long reservationId, Reservation updateReservation) {
         //수정할 예약 정보 조회 찾기
         Reservation findReservation = this.findByReservation(reservationId);
 
         //로그인한 회원 정보와 reservation의 member와 동일한지 검증
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member member = memberService.findMemberByEmail(loginUserEmail);
-        memberService.loginMemberEqualReservaionMember(member.getMemberId(),findReservation.getMember().getMemberId());
+        memberService.loginMemberEqualReservationMember(member.getMemberId(), findReservation.getMember().getMemberId());
 
         Optional.ofNullable(updateReservation.getReservationName())
                 .ifPresent(reservationName -> {
@@ -87,13 +87,13 @@ public class ReservationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void cancelReservation(Long reservationId){
+    public void cancelReservation(Long reservationId) {
         Reservation findReservation = this.findByReservation(reservationId);
 
         //로그인한 회원 정보와 reservation의 member와 동일한지 검증
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member member = memberService.findMemberByEmail(loginUserEmail);
-        memberService.loginMemberEqualReservaionMember(member.getMemberId(),findReservation.getMember().getMemberId());
+        memberService.loginMemberEqualReservationMember(member.getMemberId(), findReservation.getMember().getMemberId());
 
         //예약 대기 -> 예약 취소
         findReservation.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CANCLE);
@@ -103,13 +103,13 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Reservation getReservations(Long reservationId){
+    public Reservation getReservations(Long reservationId) {
         Reservation reservation = this.findByReservation(reservationId);
         return reservation;
     }
 
     //예약 찾기
-    private Reservation findByReservation(Long reservationId){
+    private Reservation findByReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.RESERVATION_NOT_FOUND));
     }
@@ -153,17 +153,17 @@ public class ReservationService {
     }
 
     //예약 금액 검증 메서드
-    private void validateTotalPrice(List<ReservationItem> reservationItems, int totalPrice){
+    private void validateTotalPrice(List<ReservationItem> reservationItems, int totalPrice) {
         int sumTicketCount = 0;
-        for(ReservationItem reservationItem : reservationItems){
+        for (ReservationItem reservationItem : reservationItems) {
             sumTicketCount += reservationItem.getTicketCount() * reservationItem.getItem().getPrice();
         }
-        if (totalPrice != sumTicketCount){
+        if (totalPrice != sumTicketCount) {
             throw new IllegalArgumentException("예약하신 총 금액과 각 티켓 값의 총 금액이 일치하지 않습니다.");
         }
     }
 
-    public Map<Long,Integer> reservationTicketCount(Store store, LocalDate currentDate) throws BusinessLogicException{
+    public Map<Long, Integer> reservationTicketCount(Store store, LocalDate currentDate) throws BusinessLogicException {
         //Todo 예약내역에서 1. 날짜,예약상태로 필터링 한 예약 정보들 // 그러면 조건에 맞는 예약들이 나옴 //
         //선택한 업체와 날짜의 예약들을 가져옴
         List<Reservation> currentDateReservations =
