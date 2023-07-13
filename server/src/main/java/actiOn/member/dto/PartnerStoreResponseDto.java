@@ -16,6 +16,7 @@ public class PartnerStoreResponseDto {
     @Getter
     @Setter
     public static class PartnerStoreDto {
+        private Long storeId;
         private String storeImage;
         private String storeName;
     }
