@@ -4,6 +4,7 @@ import actiOn.Img.profileImg.ProfileImg;
 import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
+import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
@@ -49,6 +50,9 @@ public class Member extends BaseEntity implements Principal {
 
     @OneToMany(mappedBy = "member")
     private List<Store> stores = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private ProfileImg profileImg;
