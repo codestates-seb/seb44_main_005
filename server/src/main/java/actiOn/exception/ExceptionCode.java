@@ -9,6 +9,7 @@ public enum ExceptionCode {
     NICKNAME_EXISTS(409, "member nickname exists"),
     PHONE_NUMBER_EXISTS(409, "member phone number exists"),
     MEMBER_NOT_AUTHORIZED(403, "Member not authorized"),
+    PROFILE_IMAGE_NOT_FOUND(404, "Profile image not found"),
 
     // AUTH
     USERNAME_NOT_FOUND(404, "Username not found"),
@@ -31,7 +32,6 @@ public enum ExceptionCode {
 
     //WISH
     WISH_EXIST(409, "Wish exists"),
-
     WISH_NOT_FOUND(404, "Wish not found");
 
     @Getter
