@@ -12,6 +12,7 @@ function Partner() {
   };
 
   const isRegiNumberValid = regiNumber.length === 12;
+  const isRegiNumberIncomplete = regiNumber.length > 0 && regiNumber.length <12;
 
   return (
     <div className="flex justify-center items-center h-[80%]">
@@ -41,9 +42,9 @@ function Partner() {
                     onChange={handleRegiNumberChange}
                     maxLength={12}
                   />
-                  <p className="pt-1 text-red-500">
-                    사업자 등록번호는 10자리로 입력되어야 합니다.
-                  </p>
+                  {isRegiNumberIncomplete && (
+                    <p className='pt-1 text-red-500'>사업자 등록번호는 10자리로 입력되어야 합니다.</p>
+                  )}
                 </div>
                 <button
                   className={`rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white ${
