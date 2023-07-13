@@ -9,7 +9,7 @@ export const CategoryContainer = tw.section`
   items-start
   justify-center
   my-[20px]
-  mt-[20px]
+  mt-[50px]
   mx-[100px]
 `;
 

@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -8,20 +8,21 @@ import {
   Option,
   Category,
 } from '../styles/Category/CategoryPage';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoryData } from '../store/categoryAtom';
-import { searchKeyword } from '../store/searchbarAtom';
+import { search, searchKeyword } from '../store/searchbarAtom';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
-  const [isSearch, setIsSearch] = useState(false);
-  const [keyword] = useRecoilState(searchKeyword);
-
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
 
+  //전역상태변수
+  const keyword = useRecoilValue(searchKeyword);
+  const [isSearch, setIsSearch] = useRecoilState(search);
   const [category, setCategory] = useRecoilState(categoryData);
+  // 어떤 데이터를 보여줄 것인가 ?
   const isSearchResult = !!keyword;
 
   useEffect(() => {
