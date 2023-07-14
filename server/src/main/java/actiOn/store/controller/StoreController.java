@@ -51,12 +51,11 @@ public class StoreController {
                                          @RequestPart("images") List<MultipartFile> images,
                                          @RequestParam("thumbnailImage") MultipartFile thumbnailImage) throws IOException {
 
-
         System.out.println("체크포인트 1");
         System.out.println(images.size());
 
         storeService.storeImageUpload(images, storeId, thumbnailImage);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);//
     }
 
 
