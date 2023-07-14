@@ -30,4 +30,10 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
+
+    public void validateTicketCount(int ticketCount){
+        if (ticketCount > this.maxCount){
+            throw new IllegalArgumentException("티켓 수가 최대 허용량을 초과했습니다.");
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -9,20 +9,23 @@ import {
   Category,
 } from '../styles/Category/CategoryPage';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { categoryData } from '../store/categoryAtom';
-import { search, searchKeyword } from '../store/searchbarAtom';
+import { loading, search, searchKeyword } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
+import NoResult from '../components/NoResult/NoResult';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
 
   // 전역 상태 변수
   const keyword = useRecoilValue(searchKeyword);
   const [isSearch, setIsSearch] = useRecoilState(search);
+  const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
 
   useEffect(() => {
@@ -101,12 +104,14 @@ function CategoryPage() {
       </CategoryContainer>
       {isLoading ? (
         <Loading />
-      ) : (
+      ) : category.data.length > 0 ? (
         <Category>
           {category.data.map((el) => (
             <CategoryCard data={el} key={el.storeId} />
           ))}
         </Category>
+      ) : (
+        <NoResult />
       )}
     </Style>
   );

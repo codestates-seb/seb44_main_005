@@ -1,9 +1,12 @@
 function Loading() {
   return (
-    <div role="status" className="w-[100vw] h-[100vh]">
+    <div
+      role="status"
+      className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center"
+    >
       <svg
         aria-hidden="true"
-        className="w-[60px] h-[60px] justify-center items-center ml-[630px] mt-[200px] text-gray-200 animate-spin dark:text-gray-600 fill-[#4771B7]"
+        className="w-12 h-12 text-gray-200 dark:text-gray-600 animate-spin fill-[#4771B7]"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

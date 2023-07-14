@@ -11,17 +11,17 @@ import java.util.Collection;
 public class MemberDetails extends Member implements UserDetails {
     private final MemberAuthorityUtil authorityUtil;
 
-    public MemberDetails(Member member, MemberAuthorityUtil authorityUtil){
+    public MemberDetails(Member member, MemberAuthorityUtil authorityUtil) {
         this.authorityUtil = authorityUtil;
         setMemberId(member.getMemberId());
         setEmail(member.getEmail());
         setPassword(member.getPassword());
         setNickname(member.getNickname());
         setPhoneNumber(member.getPhoneNumber());
-        setRoles(member.getRoles());
+        setMemberRoles(member.getMemberRoles());
     }
 
-    // DB에서 조회한 회원의 이메일 정보를 이용해 Role 기반의 권한 정보 컬렉션을 생성
+    // DB에서 조회한 회원의 정보를 이용해 Role 기반의 권한 정보 컬렉션을 생성
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorityUtil.createAuthorities(this.getRoles());

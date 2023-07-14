@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isLoginState } from '../store/userInfoAtom';
@@ -93,7 +94,10 @@ function Login() {
               type="text"
               value={email}
               onChange={onEmailHandler}
+
+
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-4 rounded-md mb-3 p-2"
+
             />
           </div>
           <div>
