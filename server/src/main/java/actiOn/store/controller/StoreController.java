@@ -50,12 +50,8 @@ public class StoreController {
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                          @RequestPart("images") List<MultipartFile> images,
                                          @RequestParam("thumbnailImage") MultipartFile thumbnailImage) throws IOException {
-
-        System.out.println("체크포인트 1");
-        System.out.println(images.size());
-
         storeService.storeImageUpload(images, storeId, thumbnailImage);
-        return new ResponseEntity<>(HttpStatus.CREATED);//
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
@@ -74,25 +70,24 @@ public class StoreController {
     @PatchMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgPatch(@PathVariable("store-id") long storeId,
                                         @RequestPart(value = "images", required = false) List<MultipartFile> images,
-                                        @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage,
-                                        @RequestParam(value = "deleteImages", required = false) List<String> deleteImages) throws IOException {
+                                        @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage) throws IOException {
+
         storeService.storeImageUpload(images, storeId, thumbnailImage);
-        storeService.deleteStoreImgByLinks(deleteImages);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/storeImages/{store-id}")
+    public void storeImagesDelete(@PathVariable("store-id") long storeId,
+                                  @RequestParam("link") String link){
+        storeService.deleteStoreImgLink(link, storeId, true);
     }
 
     @GetMapping("/stores/{store-id}") // 스토어 상세페이지, 수정페이지 랜더링을 위해 필요한 리소스 응답
     public ResponseEntity getStore(@PathVariable("store-id") @Positive long storeId) {
         Store findStore = storeService.findStoreByStoreId(storeId);
         StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
-        //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
-        String memberEmail = AuthUtil.getCurrentMemberEmail();
-        if (!memberEmail.equals("anonymousUser")) {
-            Member member = memberService.findMemberByEmail(memberEmail);
-            StoreResponseDto storeResponseDto = storeService.insertWishAtStoreResponseDto(member, responseDto, findStore.getStoreId());
-            return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        StoreResponseDto storeResponseDto = storeService.insertWishAtStoreResponseDto(responseDto, findStore.getStoreId());
+        return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
     }
 
     // 업체 삭제 PP_003
@@ -113,20 +108,13 @@ public class StoreController {
     @GetMapping("/stores") // 카테고리 페이지
     public ResponseEntity getCategoryPage(@RequestParam(name = "category") String category,
                                           @RequestParam(name = "sort_field") String sortField) {
-        //Todo 로직 추가해야함
         List<Store> findStoreByCategory = storeService.findStoreByCategory(category, sortField);
         CategoryResponseDto categoryResponseDto =
                 categoryResponseMapper.CategoryStoreToCategoryResponseDto(findStoreByCategory);
         if (categoryResponseDto == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        //Todo member 인증정보를 가져와서 isLike 속성 반영해줘야 함.
-        String memberEmail = AuthUtil.getCurrentMemberEmail();
-        if (!memberEmail.equals("anonymousUser")) {
-            Member member = memberService.findMemberByEmail(memberEmail);
-            CategoryResponseDto categoryResponseDtoWithLike =
-                    storeService.insertWishAtCategoryResponseDto(member, categoryResponseDto);
-            return new ResponseEntity<>(categoryResponseDtoWithLike, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
+        CategoryResponseDto categoryResponseDtoWithLike =
+                storeService.insertWishAtCategoryResponseDto(categoryResponseDto);
+        return new ResponseEntity<>(categoryResponseDtoWithLike, HttpStatus.OK);
     }
 
     // 검색 기능
@@ -136,13 +124,10 @@ public class StoreController {
         List<Store> searchResult = storeService.searchEnginOnStoreNameByKeyword(keyword);
         CategoryResponseDto searchResultTransformDto =
                 categoryResponseMapper.CategoryStoreToCategoryResponseDto(searchResult); // response form이 같아서 재활용
-        String memberEmail = AuthUtil.getCurrentMemberEmail();
-        if (!memberEmail.equals("anonymousUser")) {
-            Member member = memberService.findMemberByEmail(memberEmail);
-            CategoryResponseDto searchResponseDtoWithLike =
-                    storeService.insertWishAtCategoryResponseDto(member, searchResultTransformDto);
-            return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(searchResultTransformDto, HttpStatus.OK);
+        CategoryResponseDto searchResponseDtoWithLike =
+                storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
+        return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
+
+
     }
 }

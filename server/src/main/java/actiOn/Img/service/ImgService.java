@@ -130,4 +130,8 @@ public class ImgService {
                 .toString();
         return uuid + generatedString;
     }
+
+    public void deleteStoreImage(String link) {
+        storeImgRepository.deleteByLink(link.replace(" ",""));
+    }
 }

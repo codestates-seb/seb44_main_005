@@ -53,7 +53,6 @@ public class StoreService {
 
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
-
     private final ImgService imgService;
 
 //    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
@@ -104,20 +103,27 @@ public class StoreService {
         if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())){
             throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
         }
-
         //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
-
         storeRepository.delete(findStore);
     }
+    public List<Long> getWishStoreIdList(Member member){
+        List<Wish> wishList = wishService.getWishListByMember(member);
+        List<Long> wishStoreIdList = new ArrayList<>();
+        for (Wish wish : wishList) {
+            long storeId = wish.getStore().getStoreId();
+            wishStoreIdList.add(storeId);
+        }
+        return wishStoreIdList;
+    }
+
     public Store findStoreByStoreId(long storeId) {
         return storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
 
     public List<Store> findStoreByCategory(String category, String sortFiled) {
         try{
-            if (sortFiled.isEmpty()) {
-                sortFiled = "likeCount";
-            }
+            if (sortFiled.isEmpty()) sortFiled = "likeCount";
+
             if (category.equals("all") || category.isEmpty()) {
                 if (sortFiled.equals("lowPrice")){
                     return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
@@ -186,42 +192,33 @@ public class StoreService {
         return mainPageResponseDto;
     }
 
-    public List<Long> getWishStoreIdList(Member member){
-        List<Wish> wishList = wishService.getWishListByMember(member);
-        List<Long> wishStoreIdList = new ArrayList<>();
-        for (Wish wish : wishList) {
-            wishStoreIdList.add(wish.getStore().getStoreId());
-        }
-        return wishStoreIdList;
-    }
-
-    public StoreResponseDto insertWishAtStoreResponseDto(Member member, StoreResponseDto storeResponseDto, long storeId) {
-        List<Long> wishStoreIdList = getWishStoreIdList(member);
+    public StoreResponseDto insertWishAtStoreResponseDto(StoreResponseDto responseDto, long storeId){
+        if (AuthUtil.getCurrentMemberEmail().equals("anonymousUser")) return responseDto;
+        List<Long> wishStoreIdList =
+                getWishStoreIdList(memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail()));
         if (wishStoreIdList.contains(storeId)){
-            storeResponseDto.setIsLike(true);
+            responseDto.setIsLike(true);
         }
-        return storeResponseDto;
+        return responseDto;
+
     }
 
-    public CategoryResponseDto insertWishAtCategoryResponseDto(Member member, CategoryResponseDto categoryResponseDto) {
-        List<Long> wishStoreIdList = getWishStoreIdList(member);
+    public CategoryResponseDto insertWishAtCategoryResponseDto(CategoryResponseDto categoryResponseDto) {
+        if (AuthUtil.getCurrentMemberEmail().equals("anonymousUser")) return categoryResponseDto;
+        List<Long> wishStoreIdList =
+                getWishStoreIdList(memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail()));
         List<CategoryStoreDto> categoryStoreDtoList = categoryResponseDto.getData();
         for (CategoryStoreDto store : categoryStoreDtoList) {
-            long storeId = store.getStoreId();
-
-            if (wishStoreIdList.contains(storeId)){
-                store.setIsLike(true);
-            }
+            if (wishStoreIdList.contains(store.getStoreId())) store.setIsLike(true);
         }
         categoryResponseDto.setData(categoryStoreDtoList);
         return categoryResponseDto;
     }
 
     @Transactional
-    public void deleteStoreImgByLinks(List<String> links){
-        for (String link : links){
-            storeImgRepository.deleteByLink(link.replace(" ",""));
-        }
+    public void deleteStoreImgLink(String link, long storeId, Boolean doVerify){
+        if (doVerify) verifyIdentityToStore(storeId);
+        imgService.deleteStoreImage(link);
     }
 
     public void verifyIdentityToStore(long storeId){
