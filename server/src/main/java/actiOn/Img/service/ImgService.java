@@ -13,6 +13,7 @@ import actiOn.store.repository.StoreRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-
 public class ImgService {
     @Value("${cloud.aws.s3.bucket}")
     private String BUCKET_NAME;
@@ -33,15 +33,11 @@ public class ImgService {
     //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
-    private final StoreRepository storeRepository;
 
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository,
-                      StoreRepository storeRepository) {
+    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository){
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
-        this.storeRepository = storeRepository;
     }
-
     // 기본 프로필 이미지 경로 저장하는 메서드
     public ProfileImg setDefaultProfileImg(Member member) {
         ProfileImg profileImg = new ProfileImg();
@@ -70,49 +66,27 @@ public class ImgService {
         return profileImgRepository.save(profileImg);
     }
 
-    public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
-        String randomString = generateRandomName();
-        try {
-            List<StoreImg> storeImgs = new ArrayList<>();
-            if (thumbnailImage != null) { //thumbnailImage가 null이 아니면 파일리스트 0번째 넣어서 썸네일로 만들기
-                files.add(0,thumbnailImage);
-            }
-            else{
-                files.add(0,null);
-            }
-
-            Store findStore = storeRepository.findById(storeId).orElseThrow(()->new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-            if (findStore == null) {
-                return null;
-            }
-            int index=1;
-            for (MultipartFile file : files) {
-                if (file != null){
-                    String imageName = String.valueOf(storeId) +  randomString + String.valueOf(index);
-                    StoreImg storeImg = new StoreImg();
-                    String fileUrl = uploadImage(file, imageName);
-                    storeImg.setLink(fileUrl);
-                    if (file.equals(files.get(0))){
-                        storeImg.setIsThumbnail(true);
-                        StoreImg findThumbnail = storeImgRepository.findByStoreAndIsThumbnail(findStore, true);
-                        if (findThumbnail != null) {
-                            storeImg.setImgId(findThumbnail.getImgId());
-                        }
-                    }
-                    storeImg.setStore(findStore);
-                    storeImgs.add(storeImgRepository.save(storeImg));
-                    index++;
-                }
-            }
-
-            return storeImgs;
-            //Todo url / 디비에 저장
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
+    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg){
+        storeImg.setIsThumbnail(true);
+        StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
+        if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
+        return storeImg;
     }
+    public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
+        String randomStringForImageName = generateRandomName();
+        List<StoreImg> storeImgs = new ArrayList<>();
+        int index=1;
+        for (MultipartFile file : files) {
+            if (file==null)continue;
+            String imageName = String.valueOf(store.getStoreId()) + randomStringForImageName + String.valueOf(index);
+            String fileUrl = uploadImage(file, imageName);
+            StoreImg storeImg = new StoreImg(fileUrl, store);
+            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store,storeImg);
+            storeImgs.add(storeImg);
+            index++;
+            }
+        storeImgRepository.saveAll(storeImgs);
+        }//수정완료
 
     private ProfileImg findProfileImgByMember(Member member) {
         Optional<ProfileImg> profileImg = profileImgRepository.findByMember(member);

@@ -25,7 +25,7 @@ public class ReservationMapper {
         reservation.setReservationDate(LocalDate.parse(reservationReqDto.getReservationDate()));
         reservation.setTotalPrice(reservationReqDto.getTotalPrice());
 
-        List<ReservationItemReqDto> itemReqDtos = reservationReqDto.getReservationItemReqDtos();
+        List<ReservationItemReqDto> itemReqDtos = reservationReqDto.getReservationItems();
         List<ReservationItem> reservationItems = new ArrayList<>();
         for (ReservationItemReqDto itemReqDto : itemReqDtos) {
             ReservationItem reservationItem = new ReservationItem();

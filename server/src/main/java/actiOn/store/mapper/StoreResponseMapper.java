@@ -29,7 +29,7 @@ public class StoreResponseMapper {
         Map<Long,Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
         for (Item item : findItems){
             long itemId = item.getItemId();
-            int maxCount = item.getMaxCount();
+            int maxCount = item.getTotalTicket();
             int remainingTicketCount = maxCount;
             if (reservationTicketCountInfo.size() != 0){
                 int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
@@ -38,7 +38,7 @@ public class StoreResponseMapper {
             if (remainingTicketCount < 0) {
                 remainingTicketCount = 0;
             }
-            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(),item.getMaxCount(),
+            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(),item.getTotalTicket(),
                     item.getPrice(), remainingTicketCount
                     );
             modifiedItems.add(modifiedItem);

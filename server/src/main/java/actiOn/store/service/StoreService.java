@@ -1,5 +1,6 @@
 package actiOn.store.service;
 
+import actiOn.Img.service.ImgService;
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.Img.storeImg.StoreImgRepository;
 import actiOn.auth.utils.AuthUtil;
@@ -25,13 +26,16 @@ import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
+import com.amazonaws.services.ec2.model.ImageState;
 import com.nimbusds.openid.connect.sdk.assurance.IdentityVerification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -49,6 +53,8 @@ public class StoreService {
 
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
+
+    private final ImgService imgService;
 
 //    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
 //        this.storeRepository = storeRepository;
@@ -75,14 +81,17 @@ public class StoreService {
         return store;
     }
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
-        return storeRepository.save(shapingStore(store));
+        Store shapedStore = shapingStore(store);
+        Member storeCreator = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
+        shapedStore.setMember(storeCreator);
+        return storeRepository.save(store);
     }
 
     public Store updateStore(Store store, long storeId) {
+        verifyIdentityToStore(storeId);
         Store shapedStore = shapingStore(store);
         shapedStore.setStoreId(storeId);
-        storeRepository.save(store);
-        return store;
+        return storeRepository.save(store);
     }
     @Transactional
     public void deleteStore(Long storeId){
@@ -215,11 +224,22 @@ public class StoreService {
         }
     }
 
-    public void verifyIdentityToStore(long storeId, String memberEmail){
+    public void verifyIdentityToStore(long storeId){
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
         if (!store.getMember().equals(memberService.findMemberByEmail(memberEmail))) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
+    }
+
+    public void storeImageUpload(List<MultipartFile> images, long storeId, MultipartFile thumbnailImage) throws IOException {
+        verifyIdentityToStore(storeId); // 본인 검증
+        Store findStore = findStoreByStoreId(storeId); // 스토어 찾기
+        if (images == null) images = new ArrayList<>();
+        images.add(0,null);
+        if (thumbnailImage != null) images.add(0,thumbnailImage);
+
+        imgService.uploadStoreImage(images,findStore,thumbnailImage); // 업로드
     }
 }

@@ -35,12 +35,12 @@ public class ItemService {
                         reservationTickets.containsKey(item.getItemId())
                                 ? reservationTickets.get(item.getItemId()) : 0;
 
-                int remainingTicketCount = item.getMaxCount()-reservationTicketCount;
+                int remainingTicketCount = item.getTotalTicket()-reservationTicketCount;
                 if (remainingTicketCount <0) remainingTicketCount=0;
                 ItemDto itemDto = new ItemDto(
                         item.getItemId(),
                         item.getItemName(),
-                        item.getMaxCount(),
+                        item.getTotalTicket(),
                         item.getPrice(),
                         remainingTicketCount
                 );
