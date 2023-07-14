@@ -43,10 +43,11 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     // 로그인 response를 Json 형식으로 반환
     private String getLoginResponseJson(Member member) {
-        long memberId = member.getMemberId();
+        String role = member.getRoleName();
         String nickname = member.getNickname();
+        String profileImage = member.getProfileImgLink();
 
-        LoginResponseDto responseDto = new LoginResponseDto(memberId, nickname);
+        LoginResponseDto responseDto = new LoginResponseDto(role, nickname, profileImage);
         return JsonUtil.toJson(responseDto, LoginResponseDto.class);
     }
 }
