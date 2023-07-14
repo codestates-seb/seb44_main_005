@@ -17,17 +17,18 @@ public class ProfileImg {
     private long imgId;
 
     @Column(nullable = false)
-    private String link;
+    private String link = "default image";
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
-    private ProfileImgStatus imgStatus = ProfileImgStatus.PROFILE_ACTIVE;
+    private ProfileImgStatus imgStatus = ProfileImgStatus.PROFILE_DEFAULT;
 
     @OneToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     public enum ProfileImgStatus {
+        PROFILE_DEFAULT,
         PROFILE_ACTIVE,
         PROFILE_DELETED
     }
