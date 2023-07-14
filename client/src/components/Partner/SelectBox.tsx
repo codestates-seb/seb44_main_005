@@ -1,7 +1,20 @@
-function SelectBox() {
+import { useState } from "react";
+
+function SelectBox({ value, onChange }) {
+  const [isSelectDisabled, setIsSelectDisabled] = useState(false);
+
+  const handleSelectFocus = () => {
+    setIsSelectDisabled(true);
+  };
+
   return (
-    <select className="border-[1px] border-[#9A9A9A] rounded-md w-[100%] mr-[40px] px-2 py-[4px]">
-      <option key="select" value="select">
+    <select 
+      className="border-[1px] border-[#9A9A9A] rounded-md w-[100%] mr-[40px] px-2 py-[4px]"
+      value={value}
+      onChange={onChange}
+      onFocus={handleSelectFocus}
+    >
+      <option disabled={isSelectDisabled} value="select">
         선택
       </option>
       <option key="sprtsService" value="sportsService">

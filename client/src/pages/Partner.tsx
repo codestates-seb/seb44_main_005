@@ -26,6 +26,11 @@ import {
 
 function Partner() {
   const [regiNumber, setRegiNumber] = useState('');
+  const [repreName, setRepreName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [openingDate, setOpeningDate] = useState('');
+  const [businessSector, setBusinessSector] = useState('');
+
   const [isInputTouched, setIsInputTouched] = useState(false);
   const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
   const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
@@ -61,6 +66,15 @@ function Partner() {
     }
   };
 
+  const isFormValid = (
+    regiNumber && 
+    isRegiNumberValid &&
+    repreName.length > 0 &&
+    companyName.length > 0 &&
+    openingDate.length > 0 &&
+    businessSector.length > 0
+  );
+
   return (
     <PartnerContainer>
       <div className="p-10">
@@ -74,6 +88,8 @@ function Partner() {
               <CommonInput
                 placeholder="ex. 홍길동"
                 type="text"
+                value={repreName}
+                onChange={(e) => setRepreName(e.target.value)}
               />
             </RepreNameContainer>
             <RegiNumberContainer>
@@ -115,6 +131,8 @@ function Partner() {
               <CommonInput
                 placeholder="ex. OO레저"
                 type="text"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
               />
             </CompanyName>
             <OpeningContainer>
@@ -122,6 +140,8 @@ function Partner() {
               <CommonInput
                 placeholder="2023-00-00"
                 type="date"
+                value={openingDate}
+                onChange={(e) => setOpeningDate(e.target.value)}
               />
             </OpeningContainer>
             <BusinessSectorContainer>
@@ -139,13 +159,17 @@ function Partner() {
               <SectorContainer>
                 <label>업종</label>
                 <div>
-                  <SelectBox />
+                  <SelectBox
+                    value={businessSector}
+                    onChange={(e) => setBusinessSector(e.target.value)}
+                  />
                 </div>
               </SectorContainer>
             </BusinessSectorContainer>
             <FormRegiContainer>
               <FormRegiButton
                 type="submit"
+                disabled={!isFormValid}
               >
                 등록하기
               </FormRegiButton>
