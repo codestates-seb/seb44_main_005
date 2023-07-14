@@ -5,12 +5,12 @@ function RepresentativeName({ repreName, handleRepreNameChange }) {
         <RepreNameContainer>
             <label>대표자 명</label>
             <CommonInput
-            placeholder="ex. 홍길동"
-            type="text"
-            value={repreName}
-            onChange={handleRepreNameChange}
+              placeholder="ex. 홍길동"
+              type="text"
+              value={repreName}
+              onChange={handleRepreNameChange}
             />
-      </RepreNameContainer>
+        </RepreNameContainer>
     );
 };
 
