@@ -43,14 +43,14 @@ public class MemberService {
         String encryptedPW = encoder.encode(member.getPassword());
         member.setPassword(encryptedPW);
 
-        // TODO 프로필 기본 이미지 설정
-        /*ProfileImg defaultImage = imgService.setDefaultProfileImg(member);
-        member.setProfileImg(defaultImage);*/
-
         // DB에 User Role 저장
         Role userRole = roleService.findUserRole();
         List<MemberRole> memberRoles = addedMemberRole(member, userRole);
         member.setMemberRoles(memberRoles);
+
+        // 기본 프로필 이미지 저장
+        ProfileImg profileImg = imgService.setDefaultProfileImage(member);
+        member.setProfileImg(profileImg);
 
         return memberRepository.save(member);
     }
@@ -96,29 +96,26 @@ public class MemberService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void registerProfileImage(MultipartFile file, String email) throws IOException {
         Member member = findMemberByEmail(email);
-        ProfileImg profileImg = member.getProfileImg();
-
-        // 기존 프로필 이미지가 존재하는 경우
-        if (profileImg == null) {
-            // 기존 프로필 이미지는 DELETED로 변경
-            imgService.updateCurrentProfileImageStatus(member);
-        }
 
         // 프로필 이미지 업로드
-        profileImg = imgService.uploadProfileImage(file, member);
+        ProfileImg profileImg = imgService.uploadProfileImage(file, member);
         member.setProfileImg(profileImg);
 
         memberRepository.save(member);
     }
 
-    // 기본 프로필 이미지로 변경 (프로필 이미지 삭제)
+    // 프로필 이미지 삭제
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteProfileImage(String email) {
         Member member = findMemberByEmail(email);
-        imgService.updateCurrentProfileImageStatus(member);
 
-        // TODO 기본 프로필 이미지로 변경
-        member.setProfileImg(null);
+        // 기존 프로필 이미지 status DELETED로 변경
+        imgService.updateProfileImageStatusDeleted(member);
+
+        // 기본 프로필로 변경
+        ProfileImg defaultImage = imgService.getDefaultProfileImage(member);
+        member.setProfileImg(defaultImage);
+
         memberRepository.save(member);
     }
 
