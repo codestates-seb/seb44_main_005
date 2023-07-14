@@ -22,7 +22,7 @@ public class ReservationItem extends BaseEntity {
     @Column(nullable = false)
     private int ticketCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "RESERVATION_ID")
     private Reservation reservation;
 

@@ -42,11 +42,11 @@ public class ReviewService {
             throw new BusinessLogicException(ExceptionCode.CURSE_WORD_IN_REVIEW);
         }
 
-        //Todo 로그인한 회원의 정보 가져오기
+        //로그인한 회원의 정보 가져오기
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
 
-        //Todo 업체 존재 여부 확인
+        //Todo 업체 존재 여부 확인 -> 리팩토링
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
@@ -60,6 +60,13 @@ public class ReviewService {
         } else {
             throw new BusinessLogicException(ExceptionCode.MEMBER_RESERVATION_CAN_REVIEW);
         }
+
+        //todo 두번 이상 씀 금지
+        boolean existMember = reviewRepository.existsByMember(findMember);
+        if (existMember){
+            throw new BusinessLogicException(ExceptionCode.REVIEW_MEMBER_CONFLICT);
+        }
+
         Review saveReview = reviewRepository.save(review);
 
         //Todo review 전체 평점의 평균

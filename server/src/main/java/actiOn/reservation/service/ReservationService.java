@@ -13,7 +13,9 @@ import actiOn.reservation.repository.ReservationItemRepository;
 import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import java.util.*;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -31,16 +34,11 @@ public class ReservationService {
     private final ItemRepository itemRepository;
     private final ReservationItemRepository reservationItemRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, StoreRepository storeRepository, MemberService memberService, ItemRepository itemRepository, ReservationItemRepository reservationItemRepository) {
-        this.reservationRepository = reservationRepository;
-        this.storeRepository = storeRepository;
-        this.memberService = memberService;
-        this.itemRepository = itemRepository;
-        this.reservationItemRepository = reservationItemRepository;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public void postReservation(Long storeId, Reservation reqReservation) {
+        //예약날짜 잘못들어올시 예외처리
+        checkDateTime(reqReservation.getReservationDate());
+
         //Todo store 존재하는지 여부 확인 -> 예외처리 리팩토링 필요
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
         reqReservation.setStore(store);
@@ -54,15 +52,16 @@ public class ReservationService {
         reqReservation.setMember(member);
 
         //reqReservation에 있는 상품 id가 존재하는지 확인 후 reservationItem 저장
-        List<ReservationItem> saveReservationItems = createReservationItem(reqReservation,store);
+        List<ReservationItem> saveReservationItems = createReservationItem(reqReservation, store);
         reqReservation.setReservationItems(saveReservationItems);
 
-        //todo 하루에 예약은 한번만
-
-        //todo 예약이 계속 가능, remaining 티켓값 연구 필요
+        ///todo remaining ticket 초과시 error 발생
+//        checkRemainingTicketCount(saveReservationItems); //V1
 
         //예약 정보 저장
         reservationRepository.save(reqReservation);
+
+
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -138,15 +137,18 @@ public class ReservationService {
     private List<ReservationItem> createReservationItem(Reservation reservation, Store store) {
         List<ReservationItem> saveReservationItemList = new ArrayList<>();
         List<ReservationItem> reservationItemList = reservation.getReservationItems();
+        //예약날짜
+        LocalDate reservedDate = reservation.getReservationDate();
         for (ReservationItem reservationItem : reservationItemList) {
+
             //예약한 업체의 아이템 ID
             Long itemId = reservationItem.getItem().getItemId();
 
-            //store의 item이 예약한 상품의 item과 맞는지 점검
+            //store의 item이 예약한 상품의 item과 맞는지 검증
             List<Item> storeItems = store.getItems();
             boolean itemfound = false;
-            for (Item item : storeItems){
-                if (item.getItemId().equals(itemId)){
+            for (Item item : storeItems) {
+                if (item.getItemId().equals(itemId)) {
                     itemfound = true;
                     break;
                 }
@@ -157,6 +159,10 @@ public class ReservationService {
             Item item = itemRepository.findById(itemId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
             //티켓 valid 검사
             item.validateTicketCount(reservationItem.getTicketCount());
+
+            //check Remaining 티켓
+            checkRemainingTicketCount(store,item,reservedDate,reservationItem);
+
 
             //ReservationItem 저장
             ReservationItem saveReservationItem = new ReservationItem();
@@ -207,4 +213,56 @@ public class ReservationService {
         }
         return remainingTicketInfo;
     }
+
+    //잘못된 형식의 날짜가 들어온 경우 예외
+    private void checkDateTime(LocalDate reservationDate){
+        String checkDate = String.valueOf(reservationDate);
+        if (!checkDate.matches("\\d{4}-\\d{2}-\\d{2}")){
+            throw new BusinessLogicException(ExceptionCode.CHECK_DATE);
+        }
+    }
+
+    //remaining 티켓 검증 메서드
+    private void checkRemainingTicketCount(Store store, Item reservedItem, LocalDate reservedDate, ReservationItem reservedReservationItem) throws BusinessLogicException{
+        //현재 예약한 티켓 개수 -> 반복문을 이미 받고 있어서 reservedTicket 값은 바뀜
+        int reservedTicket = reservedReservationItem.getTicketCount();
+
+        //업체에서 예약한 날짜에 이전까지 아이템을 예약한 티켓값의 총 값을 가져오기
+            //업체의 예약한 날짜 예약 리스트 가져오기
+            List<Reservation> reservations = reservationRepository.findByReservationDateAndStore(reservedDate,store);
+            //예약 리스트를 반복문을 통해 예약 한개의 상품들을 보기
+            for (Reservation reservation : reservations){
+                //예약 정보의 예약 상품들 가져오기
+                List<ReservationItem> reservationItems = reservation.getReservationItems();
+                int itemTotalTicket = 0;
+                //한 개의 예약 상품 보기
+                for (ReservationItem reservationItem : reservationItems){
+                    //한 개의 예약 상품에서 예약한 상품(reservedItem)과 같은 아이템들의 이전까지 예약한 TICKET 개수 모두 가져오기
+                    if (reservationItem.getItem().getItemId().equals(reservedItem.getItemId())) {
+                        int ticketCount = reservationItemRepository.getTotalTicketCountByItem(reservedItem);
+                        itemTotalTicket += ticketCount;
+                        break;
+                    }
+                }
+                //itemTotalTicket 값을 사용해서 예약한 티켓 개수 검증
+                if (reservedTicket + itemTotalTicket > reservedItem.getMaxCount()){
+                    throw new BusinessLogicException(ExceptionCode.RESERVATION_TICKET_EXCEEDED);
+                }
+
+            }
+
+
+    }
+
+    //remaining 티켓 검증 메서드 V1
+//    private void checkRemainingTicketCount(List<ReservationItem> saveReservationItems){
+//        //item id의 ticket_count의 총 개수보다 max카운트가 같으면 에러 발생
+//        for (ReservationItem reservationItem : saveReservationItems){
+//            Item item = reservationItem.getItem();
+//            int totalTicketCount = reservationItemRepository.getTotalTicketCountByItem(item);
+//            if (totalTicketCount > item.getMaxCount()){
+//                throw new BusinessLogicException(ExceptionCode.RESERVATION_TICKET_EXCEEDED);
+//            }
+//        }
+//    }
 }

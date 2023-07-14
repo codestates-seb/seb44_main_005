@@ -36,6 +36,8 @@ public enum ExceptionCode {
     RESERVED_AMOUNT_INVALID(400, "Reserved Amount Not Invalid Item Total price"),
     ONLY_MEMBER_RESERVATION_MODIFY(403,"Only members who have made a reservation can modify it"),
     TICKET_OVER(400,"Number of tickets exceeded the maximum allowed"),
+    CHECK_DATE(400,"Date Format Is Not Vaild"),
+    RESERVATION_TICKET_EXCEEDED(409,"Daily Reservation Ticket Exceeded"),
 
     // REVIEW
     CURSE_WORD_IN_REVIEW(400,"Curse Word In The Review."),
@@ -43,6 +45,7 @@ public enum ExceptionCode {
     TOTAL_PRICE_INVALID(400,"The total amount you reserved does not match the total amount of each ticket price"),
     RESERVATION_DATE_INVALID(400,"Reservation date is not applicable to previous date"),
     RESERVATION_CHANGE_ONLY_MEMBER(403,"Only members who made a reservation can modify the reservation"),
+    REVIEW_MEMBER_CONFLICT(400, "You Can Write a Review Only Once"),
 
     // ITEM
     ITEM_NOT_FOUND(404,"Item not found"),
