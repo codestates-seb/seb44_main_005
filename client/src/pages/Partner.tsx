@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   RepresentativeName, 
   RegistrationNumber, 
@@ -18,6 +19,8 @@ import {
 
 function Partner() {
   const APIURL = import.meta.env.VITE_APP_API_URL
+  const navigate = useNavigate();
+
   const [regiNumber, setRegiNumber] = useState('');
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -79,10 +82,12 @@ function Partner() {
     };
 
     try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization')
       const response = await fetch(`${APIURL}/partners`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': ACCESS_TOKEN
         },
         body: JSON.stringify(formData)
       });
@@ -92,10 +97,12 @@ function Partner() {
         console.log('Status', response.status);
         if(response.status === 201) {
           console.log('201 Created');
+          navigate('/home');
         }
       } else {
         // 등록 실패한 경우 처리
         console.log('Status', response.status);
+        alert('파트너 등록에 실패했습니다.');
       }
     } catch (error) {
       // 예외 처리
