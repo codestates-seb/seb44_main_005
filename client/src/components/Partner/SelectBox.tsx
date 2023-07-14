@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { 
+  SelectContainer 
+} from "../../styles/Partner/SelectBox";
 
 function SelectBox({ value, onChange }) {
   const [isSelectDisabled, setIsSelectDisabled] = useState(false);
@@ -8,8 +11,7 @@ function SelectBox({ value, onChange }) {
   };
 
   return (
-    <select 
-      className="border-[1px] border-[#9A9A9A] rounded-md w-[100%] mr-[40px] px-2 py-[4px]"
+    <SelectContainer
       value={value}
       onChange={onChange}
       onFocus={handleSelectFocus}
@@ -26,7 +28,7 @@ function SelectBox({ value, onChange }) {
       <option key="oceanSports" value="oceanSports">
         해상 오락관련 서비스업
       </option>
-    </select>
+    </SelectContainer>
   );
 }
 
