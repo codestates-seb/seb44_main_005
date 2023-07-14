@@ -67,13 +67,49 @@ function Partner() {
   };
 
   const isFormValid = (
-    regiNumber && 
+    regiNumber &&
     isRegiNumberValid &&
     repreName.length > 0 &&
     companyName.length > 0 &&
     openingDate.length > 0 &&
     businessSector.length > 0
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      owner: repreName,
+      businessName: companyName,
+      registrationNumber: regiNumber,
+      businessCategory: businessSector
+    };
+
+    try {
+      const response = await fetch('/partners', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        // 성공적으로 등록된 경우 처리
+        console.log('Status', response.status);
+        if(response.status === 201) {
+          console.log('201 Created');
+        }
+      } else {
+        // 등록 실패한 경우 처리
+        console.log('Status', response.status);
+      }
+    } catch (error) {
+      // 예외 처리
+      console.log('네트워크 오류: 파트너 등록에 실패하였습니다.');
+    }
+  };
+  
 
   return (
     <PartnerContainer>
@@ -170,6 +206,7 @@ function Partner() {
               <FormRegiButton
                 type="submit"
                 disabled={!isFormValid}
+                onClick={handleSubmit}
               >
                 등록하기
               </FormRegiButton>
