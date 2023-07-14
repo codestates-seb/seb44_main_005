@@ -1,30 +1,23 @@
 import { useEffect, useState } from 'react';
-import SelectBox from '../components/Partner/SelectBox';
+import { 
+  RepresentativeName, 
+  RegistrationNumber, 
+  BusinessComponents, 
+  FormRegistration 
+} from '../components/Partner';
 
 import {
   RegiContainer,
   PartnerContainer,
   RegiTitle,
   FormContainer,
-  RepreNameContainer,
-  RegiNumberContainer,
-  RegiNumberNoWrite,
-  RegiNumberCorrect,
-  RegiNumberWrong,
   CompanyName,
   CommonInput,
-  RegiNumberInput,
-  BusinessInput,
-  BusinessContanier,
-  SectorContainer,
-  BusinessSectorContainer,
-  FormRegiButton,
-  FormRegiContainer,
-  LabelStyle,
   OpeningContainer
 } from '../styles/Partner/Partner';
 
 function Partner() {
+  const APIURL = import.meta.env.VITE_APP_API_URL
   const [regiNumber, setRegiNumber] = useState('');
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -86,7 +79,7 @@ function Partner() {
     };
 
     try {
-      const response = await fetch('/partners', {
+      const response = await fetch(`${APIURL}/partners`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -119,49 +112,20 @@ function Partner() {
             파트너 등록하기
           </RegiTitle>
           <FormContainer>
-            <RepreNameContainer>
-              <label>대표자 명</label>
-              <CommonInput
-                placeholder="ex. 홍길동"
-                type="text"
-                value={repreName}
-                onChange={(e) => setRepreName(e.target.value)}
-              />
-            </RepreNameContainer>
-            <RegiNumberContainer>
-              <label>사업자등록번호</label>
-              <div className="w-[78%] flex flex-row">
-                <div className="pr-4 w-[100%]">
-                  <RegiNumberInput
-                    placeholder="ex. 123-45-67890"
-                    type="text"
-                    value={regiNumber}
-                    onChange={handleRegiNumberChange}
-                    maxLength={12}
-                    onBlur={() => setIsInputTouched(true)}
-                  />
-                  {isInputTouched && !regiNumber && (
-                    <RegiNumberNoWrite>숫자만 입력해주세요.</RegiNumberNoWrite>
-                  )}
-                  {isRegiNumberValid && (
-                    <RegiNumberCorrect>올바른 입력입니다.</RegiNumberCorrect>
-                  )}
-                  {isRegiNumberIncomplete && (
-                    <RegiNumberWrong>사업자 등록번호는 10자리로 입력되어야 합니다.</RegiNumberWrong>
-                  )}
-                </div>
-                <button
-                  className={`rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white ${
-                    isRegiNumberValid ? 'cursor-pointer' : 'cursor-default'
-                  }`}
-                  type="button"
-                  disabled={!isRegiNumberValid || isCheckingDuplicate}
-                  onClick={handleDuplicateCheck}
-                >
-                  중복확인
-                </button>
-              </div>
-            </RegiNumberContainer>
+            <RepresentativeName 
+              repreName={repreName}
+              handleRepreNameChange={(e) => setRepreName(e.target.value)}
+            />
+            <RegistrationNumber
+              regiNumber={regiNumber}
+              handleRegiNumberChange={handleRegiNumberChange}
+              isInputTouched={isInputTouched}
+              isRegiNumberValid={isRegiNumberValid}
+              isRegiNumberIncomplete={isRegiNumberIncomplete}
+              setIsInputTouched={setIsInputTouched}
+              handleDuplicateCheck={handleDuplicateCheck}
+              isCheckingDuplicate={isCheckingDuplicate}
+            />
             <CompanyName>
               <label>업체명</label>
               <CommonInput
@@ -180,37 +144,14 @@ function Partner() {
                 onChange={(e) => setOpeningDate(e.target.value)}
               />
             </OpeningContainer>
-            <BusinessSectorContainer>
-              <BusinessContanier>
-                <LabelStyle>업태</LabelStyle>
-                <BusinessInput
-                  type="text"
-                  name="business"
-                  value="스포츠 및 여가관련 서비스업"
-                  readOnly
-                  onClick={(e) => e.preventDefault()}
-                  style={{ pointerEvents: 'none' }}
-                />
-              </BusinessContanier>
-              <SectorContainer>
-                <label>업종</label>
-                <div>
-                  <SelectBox
-                    value={businessSector}
-                    onChange={(e) => setBusinessSector(e.target.value)}
-                  />
-                </div>
-              </SectorContainer>
-            </BusinessSectorContainer>
-            <FormRegiContainer>
-              <FormRegiButton
-                type="submit"
-                disabled={!isFormValid}
-                onClick={handleSubmit}
-              >
-                등록하기
-              </FormRegiButton>
-            </FormRegiContainer>
+            <BusinessComponents
+              businessSector={businessSector}
+              setBusinessSector={setBusinessSector}
+            />
+            <FormRegistration 
+              isFormValid={isFormValid}
+              handleSubmit={handleSubmit}
+            />
           </FormContainer>
         </RegiContainer>
       </div>
