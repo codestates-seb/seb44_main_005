@@ -137,31 +137,23 @@ public class ReservationService {
     private List<ReservationItem> createReservationItem(Reservation reservation, Store store) {
         List<ReservationItem> saveReservationItemList = new ArrayList<>();
         List<ReservationItem> reservationItemList = reservation.getReservationItems();
+
         //예약날짜
         LocalDate reservedDate = reservation.getReservationDate();
         for (ReservationItem reservationItem : reservationItemList) {
-
             //예약한 업체의 아이템 ID
             Long itemId = reservationItem.getItem().getItemId();
 
             //store의 item이 예약한 상품의 item과 맞는지 검증
-            List<Item> storeItems = store.getItems();
-            boolean itemfound = false;
-            for (Item item : storeItems) {
-                if (item.getItemId().equals(itemId)) {
-                    itemfound = true;
-                    break;
-                }
-            }
-            if (!itemfound) throw new BusinessLogicException(ExceptionCode.STORE_ITEM_INVALID);
+            validateReservedItem(store,reservationItem.getItem());
 
             //itemId로 해당 상품을 찾았음
             Item item = itemRepository.findById(itemId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
             //티켓 valid 검사
             item.validateTicketCount(reservationItem.getTicketCount());
 
-            //check Remaining 티켓
-            checkRemainingTicketCount(store,item,reservedDate,reservationItem);
+            //todo check Remaining 티켓 -> 오류
+//            checkRemainingTicketCount(store,item,reservedDate,reservationItem);
 
 
             //ReservationItem 저장
@@ -222,8 +214,8 @@ public class ReservationService {
         }
     }
 
-    //remaining 티켓 검증 메서드
-    private void checkRemainingTicketCount(Store store, Item reservedItem, LocalDate reservedDate, ReservationItem reservedReservationItem) throws BusinessLogicException{
+    //todo remaining 티켓 검증 메서드 -> 오류
+    private void checkRemainingTicketCount(Store store, Item reservedItem, LocalDate reservedDate, ReservationItem reservedReservationItem){
         //현재 예약한 티켓 개수 -> 반복문을 이미 받고 있어서 reservedTicket 값은 바뀜
         int reservedTicket = reservedReservationItem.getTicketCount();
 
@@ -248,21 +240,22 @@ public class ReservationService {
                 if (reservedTicket + itemTotalTicket > reservedItem.getMaxCount()){
                     throw new BusinessLogicException(ExceptionCode.RESERVATION_TICKET_EXCEEDED);
                 }
-
             }
-
-
     }
 
-    //remaining 티켓 검증 메서드 V1
-//    private void checkRemainingTicketCount(List<ReservationItem> saveReservationItems){
-//        //item id의 ticket_count의 총 개수보다 max카운트가 같으면 에러 발생
-//        for (ReservationItem reservationItem : saveReservationItems){
-//            Item item = reservationItem.getItem();
-//            int totalTicketCount = reservationItemRepository.getTotalTicketCountByItem(item);
-//            if (totalTicketCount > item.getMaxCount()){
-//                throw new BusinessLogicException(ExceptionCode.RESERVATION_TICKET_EXCEEDED);
-//            }
-//        }
-//    }
+    //store의 item이 예약한 상품의 item과 맞는지 검증
+    private void validateReservedItem(Store store, Item reservedItem){
+        List<Item> storeItems = store.getItems();
+        boolean itemFound = false;
+        for (Item item : storeItems){
+            if (item.getItemId().equals(reservedItem.getItemId())){
+                itemFound = true;
+                break;
+            }
+        }
+        if (!itemFound){
+            throw new BusinessLogicException(ExceptionCode.STORE_ITEM_INVALID);
+        }
+    }
+
 }

@@ -1,26 +1,33 @@
 package actiOn.item.service;
 
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.item.repository.ItemRepository;
 import actiOn.reservation.service.ReservationService;
 import actiOn.store.entity.Store;
 import actiOn.store.service.StoreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ItemService {
-    private final StoreService storeService;
-    private final ReservationService  reservationService;
 
-    public ItemService(StoreService storeService, ReservationService reservationService) {
+    private final StoreService storeService;
+    private final ReservationService reservationService;
+    private final ItemRepository itemRepository;
+
+    public ItemService(StoreService storeService, ReservationService reservationService, ItemRepository itemRepository) {
         this.storeService = storeService;
         this.reservationService = reservationService;
+        this.itemRepository = itemRepository;
     }
 
     public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
@@ -51,5 +58,8 @@ public class ItemService {
         }
     }
 
-
+    public Item findItem(Long itemId){
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        return optionalItem.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND));
+    }
 }

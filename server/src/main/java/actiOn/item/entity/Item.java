@@ -27,7 +27,7 @@ public class Item {
     @Column(name = "MAX_COUNT", nullable = false)
     private Integer maxCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STORE_ID")
     private Store store;
 

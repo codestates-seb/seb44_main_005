@@ -25,6 +25,7 @@ import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,27 +36,13 @@ import java.util.*;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
     private final KakaoMapService kakaoMapService;
-
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
-
     private final MemberService memberService;
-
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
-
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
-        this.storeRepository = storeRepository;
-        this.kakaoMapService = kakaoMapService;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
-        this.memberService = memberService;
-        this.wishService = wishService;
-        this.storeImgRepository = storeImgRepository;
-    }
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());

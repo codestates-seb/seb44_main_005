@@ -3,16 +3,16 @@ package actiOn.reservation.entity;
 
 import actiOn.helper.audit.BaseEntity;
 import actiOn.item.entity.Item;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class ReservationItem extends BaseEntity {
 
     @Id

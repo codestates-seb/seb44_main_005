@@ -59,7 +59,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "STORE_ID")
     private Store store;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
     private LocalDateTime deletedAt;
