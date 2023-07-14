@@ -54,7 +54,8 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private ProfileImg profileImg;
 
     @Override
@@ -67,5 +68,27 @@ public class Member extends BaseEntity implements Principal {
                 .stream()
                 .map(memberRole -> memberRole.getRole().getName())
                 .collect(Collectors.toList());
+    }
+
+    // 클라이언트에 회원 권한 전송하기 위한 메서드
+    public String getRoleName() {
+        List<String> roleNames = this.getRoles();
+
+        // 파트너 권한이 포함되어 있으면 파트너로 리턴
+        if (roleNames.contains("PARTNER")) {
+            return "PARTNER";
+        }
+
+        return "USER";
+    }
+
+    // 프로필 이미지 링크 반환
+    public String getProfileImgLink() {
+        // 프로필 사진 null인 경우 기본 이미지 링크 리턴
+        if (this.getProfileImg() == null) {
+            return "default image";
+        }
+
+        return this.getProfileImg().getLink();
     }
 }
