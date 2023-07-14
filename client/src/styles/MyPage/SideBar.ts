@@ -8,6 +8,7 @@ export const SideContainer = tw.div`
     px-10
     py-16
     space-y-20
+    mr-10
 `;
 
 export const SideSpace = tw.div`
