@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class PaymentService {
@@ -30,11 +32,35 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void handlePaymentSuccess(Payment payment, Long totalAmount, String email) {
+        Member customer = memberService.findMemberByEmail(email);
+
+        verifyTotalAmount(payment, totalAmount);
+
+        payment.setCustomer(customer);
+
+    }
+
+    // 존재하는 결제인지 확인
+    public Payment findExistsPayment(String orderId) {
+        Optional<Payment> payment = paymentRepository.findByOrderId(orderId);
+
+        if (payment.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
+        }
+        return payment.get();
+    }
+
+    // 총 결제 금액 일치하는지 확인
+    private void verifyTotalAmount(Payment payment, long totalAmount) {
+        if (payment.getTotalAmount() != totalAmount) {
+            throw new BusinessLogicException(ExceptionCode.PAYMENT_AMOUNT_MISMATCH);
+        }
+    }
+
     public void sendPaymentRequest() {
 
     }
 
-    public void handlePaymentResponse(Payment payment) {
-
-    }
 }
