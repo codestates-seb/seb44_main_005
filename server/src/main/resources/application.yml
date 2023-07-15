@@ -38,11 +38,12 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: ERROR
-server:                   # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
+server: # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
   servlet:
     encoding:
       force-response: true
-jwt:                      # JWT 관련 정보
+
+jwt: # JWT 관련 정보
   key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
   access-token-expiration-minutes: 100
   refresh-token-expiration-minutes: 200
@@ -54,15 +55,28 @@ cloud: # 이거 안하면 host down 에러 발생
   aws:
     s3:
       bucket: test-main-005
-#    credentials:
-#      access-key: ${S3_ACCESS_KEY}
-#      secret-key: ${S3_SECRET_KEY}
+    #    credentials:
+    #      access-key: ${S3_ACCESS_KEY}
+    #      secret-key: ${S3_SECRET_KEY}
     region:
       static: ap-northeast-2
       auto: false
     stack:
       auto: false
 
+google:   # 구글 로그인 관련
+  oauth2:
+    success-url: ""
+    fail-url: ""
+
 kakao:
   url: https://dapi.kakao.com/v2/local/search/address.json
   access-key: ${KAKAO_ACCESS_KEY}
+
+payment:  # 토스 페이먼츠 관련
+  toss:
+    test-client-key: ${TOSS_CLIENT_KEY}
+    test-secret-key: ${TOSS_SECRET_KEY}
+    success-url: "http://localhost:8080/payments/toss/success"
+    failure-url: "http://localhost:8080/payments/toss/fail"
+    url: "https://api.tosspayments.com/v1/payments"
