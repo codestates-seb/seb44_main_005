@@ -5,57 +5,38 @@ import actiOn.Img.storeImg.StoreImgRepository;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
-import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.map.response.GeoLocation;
 import actiOn.map.service.KakaoMapService;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
-import actiOn.reservation.entity.Reservation;
-import actiOn.reservation.entity.ReservationItem;
-import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.dto.CategoryResponseDto;
 import actiOn.store.dto.CategoryStoreDto;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.dto.mainrep.DataDto;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
 import actiOn.store.dto.mainrep.RecommendDto;
-import actiOn.reservation.service.ReservationService;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.service.WishService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
     private final KakaoMapService kakaoMapService;
-
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
-
     private final MemberService memberService;
-
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
-
-    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
-        this.storeRepository = storeRepository;
-        this.kakaoMapService = kakaoMapService;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
-        this.memberService = memberService;
-        this.wishService = wishService;
-        this.storeImgRepository = storeImgRepository;
-    }
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
@@ -73,14 +54,14 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStore(Long storeId){
+    public void deleteStore(Long storeId) {
         Store findStore = this.findStoreByStoreId(storeId);
 
         //Todo member가 올린 스토어인지 확인 필요
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
 
-        if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())){
+        if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())) {
             throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
         }
 
@@ -95,23 +76,23 @@ public class StoreService {
     }
 
     public List<Store> findStoreByCategory(String category, String sortFiled) {
-        try{
+        try {
             if (sortFiled.isEmpty()) {
                 sortFiled = "likeCount";
             }
             if (category.equals("all") || category.isEmpty()) {
-                if (sortFiled.equals("lowPrice")){
+                if (sortFiled.equals("lowPrice")) {
                     return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
                 }
                 if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
                 return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
             }
-            if (sortFiled.equals("highPrice")){
+            if (sortFiled.equals("highPrice")) {
                 return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, "lowPrice")); // 오름차순
             }
 
             return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
@@ -169,7 +150,7 @@ public class StoreService {
         return mainPageResponseDto;
     }
 
-    public List<Long> getWishStoreIdList(Member member){
+    public List<Long> getWishStoreIdList(Member member) {
         List<Wish> wishList = wishService.getWishListByMember(member);
         List<Long> wishStoreIdList = new ArrayList<>();
         for (Wish wish : wishList) {
@@ -180,7 +161,7 @@ public class StoreService {
 
     public StoreResponseDto insertWishAtStoreResponseDto(Member member, StoreResponseDto storeResponseDto, long storeId) {
         List<Long> wishStoreIdList = getWishStoreIdList(member);
-        if (wishStoreIdList.contains(storeId)){
+        if (wishStoreIdList.contains(storeId)) {
             storeResponseDto.setIsLike(true);
         }
         return storeResponseDto;
@@ -192,7 +173,7 @@ public class StoreService {
         for (CategoryStoreDto store : categoryStoreDtoList) {
             long storeId = store.getStoreId();
 
-            if (wishStoreIdList.contains(storeId)){
+            if (wishStoreIdList.contains(storeId)) {
                 store.setIsLike(true);
             }
         }
@@ -201,9 +182,9 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStoreImgByLinks(List<String> links){
-        for (String link : links){
-            storeImgRepository.deleteByLink(link.replace(" ",""));
+    public void deleteStoreImgByLinks(List<String> links) {
+        for (String link : links) {
+            storeImgRepository.deleteByLink(link.replace(" ", ""));
         }
     }
 }
