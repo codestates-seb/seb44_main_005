@@ -29,6 +29,10 @@ public enum ExceptionCode {
 
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
+    RESERVATION_MEMBER_NOT_FOUND(404, "Reservation member not match"),
+
+    // ITEM
+    ITEM_NOT_FOUND(404, "Item not found"),
 
     //WISH
     WISH_EXIST(409, "Wish exists"),
