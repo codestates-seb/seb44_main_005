@@ -1,22 +1,31 @@
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSearchParams } from "react-router-dom";
 
 import { InputTitle } from "../../styles/StoreAdd/StoreAdd";
 import { DeleteImgBtn, ImageInput, PreviewBox, PreviewImg } from "../../styles/StoreAdd/AddImages";
-import { DetailImgsState, FirstImgState } from "../../store/StoreAdd";
+import {
+  DetailImgsState,
+  FirstImgState,
+  SendDetailImgsState,
+  SendFirstImgState
+} from "../../store/storeAddAtom";
 
 function AddImages() {
-  const [sendFirstImg, setSendFirstImg] = useRecoilState(FirstImgState);
-  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(DetailImgsState);
-  const [firstImg, setFirstImg] = useState(null);
-  const [detailImgs, setDetailImgs] = useState([]);
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const [firstImg, setFirstImg] = useRecoilState(FirstImgState);
+  const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
+  const setSendFirstImg = useSetRecoilState(SendFirstImgState);
+  const setSendDetailImgs = useSetRecoilState(SendDetailImgsState);
+  const [searchParams] = useSearchParams();
+  const storeId = searchParams.get('store_id');
+  const accessToken = sessionStorage.getItem('Authorization');
 
   const saveFirstImgFile = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setFirstImg(reader.result);
+      setFirstImg(String(reader.result))
     }
     setSendFirstImg(file);
   }
@@ -38,6 +47,14 @@ function AddImages() {
     const sendResult = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
+    if (searchParams.get('store_id')) {
+      fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': accessToken
+        }
+      });
+    }
   }
 
   return (

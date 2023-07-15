@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 
-import { ReserDateState, ReserFormState, itemsState, totalPrice } from '../../store/categoryDetailAtom';
+import { ReserFormState, itemsState, totalPrice } from '../../store/categoryDetailAtom';
 
 function TicketCard({ item, itemIdx }) {
   const [items, setItems] = useRecoilState(itemsState);
@@ -11,7 +11,6 @@ function TicketCard({ item, itemIdx }) {
   const setForm = useSetRecoilState(ReserFormState);
   const setTotal = useSetRecoilState(totalPrice);
   const form = useRecoilValue(ReserFormState);
-  const date = useRecoilValue(ReserDateState);
 
   const countClickHandler = (keyword) => {
     const result = [...items];
@@ -39,7 +38,7 @@ function TicketCard({ item, itemIdx }) {
   return (
     <TicketCardSection>
       <div className="flex justify-between items-center mb-3">
-        <div className="font-semibold text-lg">{item.item}</div>
+        <div className="font-semibold text-lg">{item.itemName}</div>
         <div className="flex items-center">
           <AiOutlineMinusCircle onClick={() => countClickHandler('minus')} size="25" color="#4771B7" />
           <div className="mx-3">{update.ticketCount ? update.ticketCount : 0}</div>
