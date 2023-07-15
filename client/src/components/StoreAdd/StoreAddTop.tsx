@@ -3,7 +3,7 @@ import SelectCategory from "./SelectCategory";
 import { InputTitle, Input, IntroContent } from "../../styles/StoreAdd/StoreAdd";
 import { useRecoilValue } from "recoil";
 
-import { pageTitleState } from "../../pages/StoreAdd";
+import { pageTitleState } from "../../store/StoreAdd";
 
 function StoreAddTop({ formChangeHandler }) {
   const pageTitle = useRecoilValue(pageTitleState);
@@ -16,7 +16,7 @@ function StoreAddTop({ formChangeHandler }) {
       </div>
       <div className="flex mb-6">
         <InputTitle className="pt-3">소개글</InputTitle>
-        <IntroContent onChange={formChangeHandler} name="content" />
+        <IntroContent onChange={formChangeHandler} name="body" />
       </div>
       <Address />
       <div className="flex mb-6 items-center">

@@ -1,15 +1,17 @@
-import { useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 
-import { ReserFormState, itemsState, totalPrice } from '../../store/categoryDetailAtom';
+import { ReserDateState, ReserFormState, itemsState, totalPrice } from '../../store/categoryDetailAtom';
 
 function TicketCard({ item, itemIdx }) {
   const [items, setItems] = useRecoilState(itemsState);
   const [update, setUpdate] = useState({...items[itemIdx]});
   const setForm = useSetRecoilState(ReserFormState);
   const setTotal = useSetRecoilState(totalPrice);
+  const form = useRecoilValue(ReserFormState);
+  const date = useRecoilValue(ReserDateState);
 
   const countClickHandler = (keyword) => {
     const result = [...items];
@@ -17,16 +19,22 @@ function TicketCard({ item, itemIdx }) {
     if (keyword === "plus") {
       updateItem.ticketCount += 1;
       setTotal((prev) => prev + item.price);
+      console.log(form);
     }
     else if (keyword === "minus" && updateItem.ticketCount > 0) {
       updateItem.ticketCount -= 1;
       setTotal((prev) => prev - item.price);
+      console.log(form);
     }
     result[itemIdx] = updateItem;
     setUpdate(updateItem)
     setItems(result);
     setForm((prev) => ({...prev, reservationItems: result}));
   }
+
+  useEffect(() => {
+    setUpdate({...items[itemIdx], ticketCount: 0})
+  }, [form.reservationDate])
 
   return (
     <TicketCardSection>

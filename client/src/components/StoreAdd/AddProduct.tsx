@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import {
   Input,
@@ -9,12 +9,12 @@ import {
   ProductInputTitle,
   Ticket
 } from "../../styles/StoreAdd/StoreAdd";
-import { formState } from "../../pages/StoreAdd";
+import { StoreformState } from "../../store/StoreAdd";
 
 function AddProduct() {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
-  const setForm = useSetRecoilState(formState);
+  const [form, setForm] = useRecoilState(StoreformState);
 
   const productChangeHandler = (e) => {
     if (e.target.name === "itemName") {
@@ -29,7 +29,7 @@ function AddProduct() {
   }
 
   const productAddHandler = () => {
-    setProducts([...products, {...product}]);
+    setProducts((prev) => [...prev, {...product}]);
     setForm((prev) => ({...prev, items: products}));
   }
 

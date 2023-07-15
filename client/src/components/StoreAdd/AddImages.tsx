@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 import { InputTitle } from "../../styles/StoreAdd/StoreAdd";
 import { DeleteImgBtn, ImageInput, PreviewBox, PreviewImg } from "../../styles/StoreAdd/AddImages";
+import { DetailImgsState, FirstImgState } from "../../store/StoreAdd";
 
 function AddImages() {
-  const [sendFirstImg, setSendFirstImg] = useState<null | object>(null);
-  const [sendDetailImgs, setSendDetailImgs] = useState([]);
+  const [sendFirstImg, setSendFirstImg] = useRecoilState(FirstImgState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(DetailImgsState);
   const [firstImg, setFirstImg] = useState(null);
   const [detailImgs, setDetailImgs] = useState([]);
 
