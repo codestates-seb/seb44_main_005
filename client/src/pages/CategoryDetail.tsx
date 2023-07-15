@@ -8,13 +8,15 @@ import PaymentInfo from "../components/CategoryDetail/PaymentInfo";
 import ReservationInfo from "../components/CategoryDetail/ReservationInfo";
 import Review from "../components/CategoryDetail/Review";
 import TicketSelect from "../components/CategoryDetail/TicketSelect";
-import { CategoryDetailState, ReserFormState } from '../store/categoryDetailAtom';
+import { CategoryDetailState, ReserDateState, ReserFormState } from '../store/categoryDetailAtom';
+import { reserFormType } from '../intefaces/CategoryDetail';
 
 function CategoryDetail() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const location = useLocation();
   const [data, setData] = useRecoilState(CategoryDetailState);
-  const form = useRecoilValue(ReserFormState);
+  const [form, setForm] = useRecoilState(ReserFormState);
+  const date = useRecoilValue(ReserDateState);
 
   const CategoryDetailFetch = async () => {
     try {
@@ -27,31 +29,33 @@ function CategoryDetail() {
     catch(error) {
       console.log(error);
     }
-  }
+  };
 
   const dateFetch = async () => {
     const storeId = location.pathname.substring(10);
     try {
-      const date = form.reservationDate.split('-').join('');
-      const res = await fetch(`${API_URL}/items/${storeId}?date=${date}`);
+      const dateValue = date.split('-').join('');
+      const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
       const json = await res.json();
       setData((prev) => ({...prev, items: json}));
     }
     catch(error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
+    setForm({} as reserFormType);
     CategoryDetailFetch();
-  }, [])
+    dateFetch();
+  }, []);
 
   useEffect(() => {
     dateFetch();
-  }, [form.reservationDate])
+  }, [form.reservationDate]);
 
   return (
-    <section className="flex justify-center">
+    <section className="flex justify-center mt-[100px]">
       {data &&
         <section className="flex flex-col items-center">
           <DetailContent />

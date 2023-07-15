@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 
-import { formState } from '../../pages/StoreAdd';
+import { StoreformState } from '../../store/StoreAdd';
 import DaumPostcode from 'react-daum-postcode';
 
 import {
@@ -13,7 +13,7 @@ import {
 function Address() {
   const [openPostcode, setOpenPostcode] = React.useState<boolean>(false);
   const [addressInfo, setAddressInfo] = useState("");
-  const setForm = useSetRecoilState(formState);
+  const setForm = useSetRecoilState(StoreformState);
 
   const openPostHandler = () => {
     setOpenPostcode((prev) => !prev);
