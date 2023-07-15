@@ -237,6 +237,6 @@ public class StoreService {
         images.add(0,null);
         if (thumbnailImage != null) images.add(0,thumbnailImage);
 
-        imgService.uploadStoreImage(images,findStore,thumbnailImage); // 업로드
+        imgService.uploadStoreImage(images,findStore,thumbnailImage); // 업로드 //
     }
 }
