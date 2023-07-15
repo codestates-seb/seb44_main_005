@@ -1,56 +1,42 @@
 package actiOn.item.service;
 
-import actiOn.item.dto.ItemDto;
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.item.entity.Item;
 import actiOn.item.repository.ItemRepository;
-import actiOn.reservation.service.ReservationService;
-import actiOn.store.entity.Store;
-import actiOn.store.service.StoreService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ItemService {
-    private final StoreService storeService;
-    private final ReservationService  reservationService;
+    private final ItemRepository itemRepository;
 
-    public ItemService(StoreService storeService, ReservationService reservationService) {
-        this.storeService = storeService;
-        this.reservationService = reservationService;
-    }
+    // 기존 아이템을 수정 후 저장
+    public void updateItems(List<Item> findItems, List<Item> newItems) {
+        for (int i = 0; i < findItems.size(); i++) {
+            Item findItem = findItem(findItems.get(i));
+            Item newItem = newItems.get(i);
 
-    public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
-        try{
-            //Todo 예외처리하기
-            List<ItemDto> itemDtos = new ArrayList<>();
-            Store findStore = storeService.findStoreByStoreId(storeId);
-            List<Item> findItems = findStore.getItems();
-            Map<Long,Integer> reservationTickets = reservationService.reservationTicketCount(findStore,date);
-            for (Item item : findItems) {
-                int reservationTicketCount = // 예약된 티켓이 없다면 null로 나오므로, null과 int는 연산이 불가능하므로, int로 변환
-                        reservationTickets.containsKey(item.getItemId())
-                                ? reservationTickets.get(item.getItemId()) : 0;
+            findItem.setItemName(newItem.getItemName());
+            findItem.setPrice(newItem.getPrice());
+            findItem.setTotalTicket(newItem.getTotalTicket());
+            findItem.setStore(findItem.getStore());
 
-                int remainingTicketCount = item.getTotalTicket()-reservationTicketCount;
-                if (remainingTicketCount <0) remainingTicketCount=0;
-                ItemDto itemDto = new ItemDto(
-                        item.getItemId(),
-                        item.getItemName(),
-                        item.getTotalTicket(),
-                        item.getPrice(),
-                        remainingTicketCount
-                );
-                itemDtos.add(itemDto);
-            }
-            return itemDtos;
-        }catch (Exception e) {
-            return null;
+            itemRepository.save(findItem);
         }
     }
 
+    public Item findItem(Item item) {
+        Optional<Item> findItem = itemRepository.findItemByItemId(item.getItemId());
 
+        if (findItem.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND);
+        }
+
+        return findItem.get();
+    }
 }
