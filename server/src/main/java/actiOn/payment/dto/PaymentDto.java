@@ -23,6 +23,9 @@ public class PaymentDto {
     private Long totalAmount;
 
     @NotBlank
+    private String orderId;
+
+    @NotBlank
     private String orderName;
 
 }
