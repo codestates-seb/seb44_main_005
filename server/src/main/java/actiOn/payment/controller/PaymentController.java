@@ -2,6 +2,7 @@ package actiOn.payment.controller;
 
 import actiOn.auth.utils.AuthUtil;
 import actiOn.config.payments.TossPaymentsConfiguration;
+import actiOn.member.service.MemberService;
 import actiOn.payment.dto.PaymentDto;
 import actiOn.payment.dto.PaymentResponseDto;
 import actiOn.payment.entity.Payment;
@@ -11,10 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -39,6 +37,19 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 결제 성공시 리디렉션되는 엔드포인트
+    @GetMapping("/toss/success")
+    public ResponseEntity tossPaymentSuccess(@RequestParam @Valid String paymentKey,
+                                             @RequestParam @Valid String orderId,
+                                             @RequestParam @Valid Long totalAmount) {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Payment payment = paymentService.findExistsPayment(orderId);
+
+        paymentService.handlePaymentSuccess(payment, totalAmount, email);
+
+        PaymentResponseDto response = mapper.paymentToPaymentResponseDto(payment);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 }
