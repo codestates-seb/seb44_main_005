@@ -195,14 +195,14 @@ public class StubDataLoader implements CommandLineRunner {
         Item item1 = new Item();
         item1.setItemId(1L);
         item1.setItemName("제주 서귀포 잠수함");
-        item1.setMaxCount(10);
+        item1.setTotalTicket(10);
         item1.setPrice(36270);
         item1.setStore(bestStore1);
 
         Item item2 = new Item();
         item2.setItemId(2L);
         item2.setItemName("가디언다이브 체험 스쿠버 다이빙");
-        item2.setMaxCount(10);
+        item2.setTotalTicket(10);
         item2.setPrice(95000);
         item2.setStore(bestStore1);
 
@@ -221,14 +221,14 @@ public class StubDataLoader implements CommandLineRunner {
         Item item3 = new Item();
         item3.setItemId(3L);
         item3.setItemName("돌고래 에코투어 선셋(요트투어)");
-        item3.setMaxCount(10);
+        item3.setTotalTicket(10);
         item3.setPrice(39060);
         item3.setStore(bestStore2);
 
         Item item4 = new Item();
         item4.setItemId(4L);
         item4.setItemName("제주도 서귀포 그랑블루요트 선셋");
-        item4.setMaxCount(10);
+        item4.setTotalTicket(10);
         item4.setPrice(26040);
         item4.setStore(bestStore2);
 
@@ -247,14 +247,14 @@ public class StubDataLoader implements CommandLineRunner {
         Item item5 = new Item();
         item5.setItemId(5L);
         item5.setItemName("중문색달해변 서핑 강습");
-        item5.setMaxCount(10);
+        item5.setTotalTicket(10);
         item5.setPrice(60000);
         item5.setStore(bestStore3);
 
         Item item6 = new Item();
         item6.setItemId(6L);
         item6.setItemName("누디다이브 범섬 체험 다이빙");
-        item6.setMaxCount(10);
+        item6.setTotalTicket(10);
         item6.setPrice(79000);
         item6.setStore(bestStore3);
 
@@ -273,14 +273,14 @@ public class StubDataLoader implements CommandLineRunner {
         Item item7 = new Item();
         item7.setItemId(7L);
         item7.setItemName("율랜드 스쿠버 다이빙 체험");
-        item7.setMaxCount(10);
+        item7.setTotalTicket(10);
         item7.setPrice(100000);
         item7.setStore(bestStore4);
 
         Item item8 = new Item();
         item8.setItemId(8L);
         item8.setItemName("제주 투명카약/바다카약/스노클링 체험");
-        item8.setMaxCount(10);
+        item8.setTotalTicket(10);
         item8.setPrice(10000);
         item8.setStore(bestStore4);
 

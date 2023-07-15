@@ -29,6 +29,13 @@ spring:
             scope:
               - profile
               - email
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+      resolve-lazily: false
 logging:
   level:
     org:

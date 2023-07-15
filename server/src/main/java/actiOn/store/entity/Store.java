@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,15 +47,15 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private String contact;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Column(columnDefinition = "integer default 0")
     private int likeCount;
 
     //리뷰 개수
-    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Column(columnDefinition = "integer default 0")
     private int reviewCount;
 
     //평점
-    @Column(nullable = false)
+    @Column
     private double rating;
 
     //가격

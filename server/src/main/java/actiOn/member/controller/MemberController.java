@@ -101,7 +101,6 @@ public class MemberController {
         memberService.findMemberByEmail(email);
 
         businessService.verifyRegistrationNumber(registrationNumber);
-
         return new ResponseEntity<>(registrationNumber, HttpStatus.OK);
     }
 

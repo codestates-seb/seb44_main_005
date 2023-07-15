@@ -13,6 +13,7 @@ import actiOn.store.repository.StoreRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-
 public class ImgService {
     @Value("${cloud.aws.s3.bucket}")
     private String BUCKET_NAME;
@@ -33,13 +33,17 @@ public class ImgService {
     //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
-    private final StoreRepository storeRepository;
 
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository,
-                      StoreRepository storeRepository) {
+    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository){
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
-        this.storeRepository = storeRepository;
+    }
+
+    // 기본 프로필 이미지 경로 저장하는 메서드
+    public ProfileImg setDefaultProfileImg(Member member) {
+        ProfileImg profileImg = new ProfileImg();
+        profileImg.setLink("default Link"); // TODO 변경 해주어야 함
+        profileImg.setMember(member);
     }
 
     // 프로필 이미지 등록
@@ -50,6 +54,7 @@ public class ImgService {
             // 기존 프로필 DELETED로 변경
             updateProfileImageStatusDeleted(member);
         }
+
 
         // S3에 이미지 파일 업로드
         String imageName = generateRandomName();
@@ -80,6 +85,13 @@ public class ImgService {
         profileImgRepository.save(currentProfileImg);
     }
 
+
+    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg){
+        storeImg.setIsThumbnail(true);
+        StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
+        if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
+        return storeImg;
+    }
     public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
         String randomString = generateRandomName();
         try {
@@ -121,7 +133,23 @@ public class ImgService {
 
             return null;
         }
+
     }
+    public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
+        String randomStringForImageName = generateRandomName();
+        List<StoreImg> storeImgs = new ArrayList<>();
+        int index=1;
+        for (MultipartFile file : files) {
+            if (file==null)continue;
+            String imageName = String.valueOf(store.getStoreId()) + randomStringForImageName + String.valueOf(index);
+            String fileUrl = uploadImage(file, imageName);
+            StoreImg storeImg = new StoreImg(fileUrl, store);
+            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store,storeImg);
+            storeImgs.add(storeImg);
+            index++;
+            }
+        storeImgRepository.saveAll(storeImgs);
+        }//수정완료
 
     // 기본 프로필 이미지 설정
     public ProfileImg setDefaultProfileImage(Member member) {
@@ -183,5 +211,9 @@ public class ImgService {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return uuid + generatedString;
+    }
+
+    public void deleteStoreImage(String link) {
+        storeImgRepository.deleteByLink(link.replace(" ",""));
     }
 }
