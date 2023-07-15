@@ -3,6 +3,7 @@ package actiOn.reservation.service;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
+import actiOn.item.dto.ItemDto;
 import actiOn.item.entity.Item;
 import actiOn.item.repository.ItemRepository;
 import actiOn.member.entity.Member;
@@ -13,6 +14,8 @@ import actiOn.reservation.repository.ReservationItemRepository;
 import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
+import actiOn.store.service.StoreService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,21 +26,15 @@ import java.util.*;
 
 @Transactional
 @Service
+@AllArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final StoreRepository storeRepository;
+    private final StoreService storeService;
     private final MemberService memberService;
     private final ItemRepository itemRepository;
     private final ReservationItemRepository reservationItemRepository;
-
-    public ReservationService(ReservationRepository reservationRepository, StoreRepository storeRepository, MemberService memberService, ItemRepository itemRepository, ReservationItemRepository reservationItemRepository) {
-        this.reservationRepository = reservationRepository;
-        this.storeRepository = storeRepository;
-        this.memberService = memberService;
-        this.itemRepository = itemRepository;
-        this.reservationItemRepository = reservationItemRepository;
-    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void postReservation(Long storeId, Reservation reqReservation) {
@@ -186,5 +183,34 @@ public class ReservationService {
             }
         }
         return remainingTicketInfo;
+    }
+
+    public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
+        try{
+            //Todo 예외처리하기
+            List<ItemDto> itemDtos = new ArrayList<>();
+            Store findStore = storeService.findStoreByStoreId(storeId);
+            List<Item> findItems = findStore.getItems();
+            Map<Long,Integer> reservationTickets = reservationTicketCount(findStore,date);
+            for (Item item : findItems) {
+                int reservationTicketCount = // 예약된 티켓이 없다면 null로 나오므로, null과 int는 연산이 불가능하므로, int로 변환
+                        reservationTickets.containsKey(item.getItemId())
+                                ? reservationTickets.get(item.getItemId()) : 0;
+
+                int remainingTicketCount = item.getTotalTicket()-reservationTicketCount;
+                if (remainingTicketCount <0) remainingTicketCount=0;
+                ItemDto itemDto = new ItemDto(
+                        item.getItemId(),
+                        item.getItemName(),
+                        item.getTotalTicket(),
+                        item.getPrice(),
+                        remainingTicketCount
+                );
+                itemDtos.add(itemDto);
+            }
+            return itemDtos;
+        }catch (Exception e) {
+            return null;
+        }
     }
 }
