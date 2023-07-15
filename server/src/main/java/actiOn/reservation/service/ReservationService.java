@@ -12,90 +12,71 @@ import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationItemRepository;
 import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.entity.Store;
-import actiOn.store.repository.StoreRepository;
+import actiOn.store.service.StoreService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional
 @Service
+@AllArgsConstructor
 public class ReservationService {
-
     private final ReservationRepository reservationRepository;
-    private final StoreRepository storeRepository;
+    private final StoreService storeService;
     private final MemberService memberService;
     private final ItemRepository itemRepository;
     private final ReservationItemRepository reservationItemRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, StoreRepository storeRepository, MemberService memberService, ItemRepository itemRepository, ReservationItemRepository reservationItemRepository) {
-        this.reservationRepository = reservationRepository;
-        this.storeRepository = storeRepository;
-        this.memberService = memberService;
-        this.itemRepository = itemRepository;
-        this.reservationItemRepository = reservationItemRepository;
-    }
-
     @Transactional(propagation = Propagation.REQUIRED)
-    public void postReservation(Long storeId, Reservation reqReservation) {
+    public void postReservation(Long storeId, Reservation reservation, List<ReservationItem> reservationItems) {
         //Todo store 존재하는지 여부 확인 -> 예외처리 리팩토링 필요
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-        reqReservation.setStore(store);
+        Store store = storeService.findStoreByStoreId(storeId);
+        reservation.setStore(store);
 
         //예약 날짜 유효성 검사 -> 오늘 기준 이전 날짜가 오면 에러 발생
-        validateReservationDate(reqReservation.getReservationDate());
+        validateReservationDate(reservation.getReservationDate());
 
         //로그인한 유저의 정보를 reservation에 담기
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member member = memberService.findMemberByEmail(loginUserEmail);
-        reqReservation.setMember(member);
+        reservation.setMember(member);
 
         //reqReservation에 있는 상품 id가 존재하는지 확인 후 reservationItem 저장
-        List<ReservationItem> saveReservationItems = createReservationItem(reqReservation);
-        reqReservation.setReservationItems(saveReservationItems);
+        //List<ReservationItem> saveReservationItems = createReservationItem(reservationItems);
+        reservation.setReservationItems(reservationItems);
 
         //예약 정보 저장
-        reservationRepository.save(reqReservation);
+        reservationRepository.save(reservation);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateReservation(Long reservationId, Reservation updateReservation) {
         //수정할 예약 정보 조회 찾기
-        Reservation findReservation = this.findByReservation(reservationId);
+        Reservation findReservation = findReservation(reservationId);
 
         //로그인한 회원 정보와 reservation의 member와 동일한지 검증
-        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
-        Member member = memberService.findMemberByEmail(loginUserEmail);
-        memberService.loginMemberEqualReservationMember(member.getMemberId(), findReservation.getMember().getMemberId());
+        verifyReservationMember(findReservation.getMember());
 
         Optional.ofNullable(updateReservation.getReservationName())
-                .ifPresent(reservationName -> {
-                    findReservation.setReservationName(reservationName);
-                });
+                .ifPresent(findReservation::setReservationName);
         Optional.ofNullable(updateReservation.getReservationPhone())
-                .ifPresent(reservationPhone -> {
-                    findReservation.setReservationPhone(reservationPhone);
-                });
+                .ifPresent(findReservation::setReservationPhone);
         Optional.ofNullable(updateReservation.getReservationEmail())
-                .ifPresent(reservationEmail -> {
-                    findReservation.setReservationEmail(reservationEmail);
-                });
+                .ifPresent(findReservation::setReservationEmail);
 
-        findReservation.setModifiedAt(LocalDateTime.now());
         reservationRepository.save(findReservation);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void cancelReservation(Long reservationId) {
-        Reservation findReservation = this.findByReservation(reservationId);
+        Reservation findReservation = findReservation(reservationId);
 
         //로그인한 회원 정보와 reservation의 member와 동일한지 검증
-        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
-        Member member = memberService.findMemberByEmail(loginUserEmail);
-        memberService.loginMemberEqualReservationMember(member.getMemberId(), findReservation.getMember().getMemberId());
+        verifyReservationMember(findReservation.getMember());
 
         //예약 대기 -> 예약 취소
         findReservation.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CANCLE);
@@ -104,14 +85,24 @@ public class ReservationService {
         //Todo 예약 취소 -> 환불
     }
 
+    // 로그인한 회원과 reservation member 일치하는지 확인
+    private void verifyReservationMember(Member reservationMember) {
+        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
+        Member findMember = memberService.findMemberByEmail(loginUserEmail);
+
+        if (!findMember.equals(reservationMember)) {
+            throw new BusinessLogicException(ExceptionCode.RESERVATION_MEMBER_NOT_FOUND);
+        }
+    }
+
     @Transactional(readOnly = true)
     public Reservation getReservations(Long reservationId) {
-        Reservation reservation = this.findByReservation(reservationId);
+        Reservation reservation = findReservation(reservationId);
         return reservation;
     }
 
     //예약 찾기
-    private Reservation findByReservation(Long reservationId) {
+    private Reservation findReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.RESERVATION_NOT_FOUND));
     }
