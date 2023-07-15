@@ -61,8 +61,8 @@ public class StoreController {
                                      @RequestBody StorePatchDto storePatchDto) {
         Store store = storeMapper.storePatchDtoToStore(storePatchDto); // dto를 store로 변환
         Store patchStore = storeService.updateStore(store, storeId); // 스토어 생성
-        StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
 
+        StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.OK);
 
     }
