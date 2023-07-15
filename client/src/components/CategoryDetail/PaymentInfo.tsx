@@ -21,13 +21,15 @@ function PaymentInfo() {
 
   const reservationPost = async () => {
     const storeId = location.pathname.substring(10);
+    const accessToken = sessionStorage.getItem('Authorization');
     try {
       await fetch(`${API_URL}/reservations/${storeId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': accessToken
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify({...form, totalPrice: total})
       })
     }
     catch(error) {
@@ -43,11 +45,11 @@ function PaymentInfo() {
         </div>
         <div className="m-7 flex justify-between">
           <div>주문금액</div>
-          <div>{total}원</div>
+          <div>{total.toLocaleString('ko-KR')}원</div>
         </div>
         <AmountBox>
           <div>총 결제금액</div>
-          <div>{total}원</div>
+          <div>{total.toLocaleString('ko-KR')}원</div>
         </AmountBox>
         <RuleBox>
           <div className="font-semibold">예약취소 규정</div>
@@ -57,7 +59,7 @@ function PaymentInfo() {
             <li>부분 사용 및 부분 취소는 불가능합니다.</li>
           </ul>
         </RuleBox>
-        <PaymentButton type="button" onClick={reservationPost}>{total}원 결제하기</PaymentButton>
+        <PaymentButton type="button" onClick={reservationPost}>{total.toLocaleString('ko-KR')}원 결제하기</PaymentButton>
         <WishButton type="button">
           <span className="text-[#4771B7]">♥ </span>
           <span>위시리스트에 담기</span>

@@ -43,9 +43,9 @@ public class MemberController {
 
     // 회원 프로필 사진 등록
     @PutMapping("/mypage/profile")
-    public ResponseEntity uploadProfileImage(@RequestBody @Valid MultipartFile requestBody) throws IOException {
+    public ResponseEntity uploadProfileImage(@RequestParam("image") MultipartFile profileImage) throws IOException {
         String email = AuthUtil.getCurrentMemberEmail();
-        memberService.registerProfileImage(requestBody, email);
+        memberService.registerProfileImage(profileImage, email);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -88,7 +88,7 @@ public class MemberController {
         String email = AuthUtil.getCurrentMemberEmail();
         Business business = businessMapper.BusinessPostDtoToBusiness(requestBody);
 
-        businessService.createBusiness(business, email);
+        business = businessService.createBusiness(business, email);
         memberService.registerPartnership(business, email);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -142,6 +142,6 @@ public class MemberController {
         Member partner = memberService.findMemberByEmail(email);
 
         PartnerStoreResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

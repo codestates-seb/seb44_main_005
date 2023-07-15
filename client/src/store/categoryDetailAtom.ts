@@ -26,3 +26,8 @@ export const ReviewsState = atom({
   key: 'ReviewsState',
   default: {} as ReviewsType
 })
+
+export const ReserDateState = atom({
+  key: 'ReserDateState',
+  default: new Date().toISOString().substring(0, 10)
+})

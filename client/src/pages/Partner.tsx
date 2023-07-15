@@ -1,8 +1,32 @@
 import { useEffect, useState } from 'react';
-import SelectBox from '../components/Partner/SelectBox';
+import { useNavigate } from 'react-router-dom';
+import { 
+  RepresentativeName, 
+  RegistrationNumber, 
+  BusinessComponents, 
+  FormRegistration 
+} from '../components/Partner';
+
+import {
+  RegiContainer,
+  PartnerContainer,
+  RegiTitle,
+  FormContainer,
+  CompanyName,
+  CommonInput,
+  OpeningContainer
+} from '../styles/Partner/Partner';
 
 function Partner() {
+  const APIURL = import.meta.env.VITE_APP_API_URL
+  const navigate = useNavigate();
+
   const [regiNumber, setRegiNumber] = useState('');
+  const [repreName, setRepreName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [openingDate, setOpeningDate] = useState('');
+  const [businessSector, setBusinessSector] = useState('');
+
   const [isInputTouched, setIsInputTouched] = useState(false);
   const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
   const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
@@ -14,8 +38,8 @@ function Partner() {
     setRegiNumber(formattedRegiNumber);
   };
 
-  const isRegiNumberValid = regiNumber.length === 12;
-  const isRegiNumberIncomplete = regiNumber.length > 0 && regiNumber.length <12;
+  const isRegiNumberValid = regiNumber.match(/^\d{3}-\d{2}-\d{5}$/);
+  const isRegiNumberIncomplete = regiNumber.length > 0 && !isRegiNumberValid;
 
   useEffect(() => {
     setIsInputTouched(true);
@@ -38,107 +62,107 @@ function Partner() {
     }
   };
 
+  const isFormValid = (
+    regiNumber &&
+    isRegiNumberValid &&
+    repreName.length > 0 &&
+    companyName.length > 0 &&
+    openingDate.length > 0 &&
+    businessSector.length > 0
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      owner: repreName,
+      businessName: companyName,
+      registrationNumber: regiNumber,
+      businessCategory: businessSector
+    };
+
+    try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization')
+      const response = await fetch(`${APIURL}/partners`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': ACCESS_TOKEN
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        // 성공적으로 등록된 경우 처리
+        console.log('Status', response.status);
+        if(response.status === 201) {
+          console.log('201 Created');
+          navigate('/home');
+        }
+      } else {
+        // 등록 실패한 경우 처리
+        console.log('Status', response.status);
+        alert('파트너 등록에 실패했습니다.');
+      }
+    } catch (error) {
+      // 예외 처리
+      console.log('네트워크 오류: 파트너 등록에 실패하였습니다.');
+    }
+  };
+  
+
   return (
-    <div className="flex justify-center items-center h-[80%]">
+    <PartnerContainer>
       <div className="p-10">
-        <div className="flex flex-col justify-center w-[700px]">
-          <p className="text-2xl font-semibold justify-start p-10">
+        <RegiContainer>
+          <RegiTitle>
             파트너 등록하기
-          </p>
-          <form className="justify-center">
-            <div className="flex space-x-5 justify-end py-2">
-              <label className="">대표자 명</label>
-              <input
-                className="border-[1px] border-[#9A9A9A] rounded-md w-[78%] px-2 py-[2px]"
-                placeholder="ex. 홍길동"
-                type="text"
-              />
-            </div>
-            <div className="flex space-x-4 justify-end py-2">
-              <label>사업자등록번호</label>
-              <div className="w-[78%] flex flex-row">
-                <div className="pr-4 w-[100%]">
-                  <input
-                    className="border-[1px] border-[#9A9A9A] rounded-md w-[100%]  px-2 py-[2px]"
-                    placeholder="ex. 123-45-67890"
-                    type="text"
-                    value={regiNumber}
-                    onChange={handleRegiNumberChange}
-                    maxLength={12}
-                    onBlur={() => setIsInputTouched(true)}
-                  />
-                  {isInputTouched && !regiNumber && (
-                    <p className="pt-1 text-gray-950">숫자만 입력해주세요.</p>
-                  )}
-                  {isRegiNumberValid && (
-                    <p className="pt-1 text-green-500">올바른 입력입니다.</p>
-                  )}
-                  {isRegiNumberIncomplete && (
-                    <p className="pt-1 text-red-500">
-                      사업자 등록번호는 10자리로 입력되어야 합니다.
-                    </p>
-                  )}
-                </div>
-                <button
-                  className={`rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white ${
-                    isRegiNumberValid ? 'cursor-pointer' : 'cursor-default'
-                  }`}
-                  type="button"
-                  disabled={!isRegiNumberValid || isCheckingDuplicate}
-                  onClick={handleDuplicateCheck}
-                >
-                  중복확인
-                </button>
-              </div>
-            </div>
-            <div className="flex space-x-5 justify-end py-2">
-              <label className="">업체명</label>
-              <input
-                className="border-[1px] border-[#9A9A9A] rounded-md w-[78%]  px-2 py-[2px]"
+          </RegiTitle>
+          <FormContainer>
+            <RepresentativeName 
+              repreName={repreName}
+              handleRepreNameChange={(e) => setRepreName(e.target.value)}
+            />
+            <RegistrationNumber
+              regiNumber={regiNumber}
+              handleRegiNumberChange={handleRegiNumberChange}
+              isInputTouched={isInputTouched}
+              isRegiNumberValid={isRegiNumberValid}
+              isRegiNumberIncomplete={isRegiNumberIncomplete}
+              setIsInputTouched={setIsInputTouched}
+              handleDuplicateCheck={handleDuplicateCheck}
+              isCheckingDuplicate={isCheckingDuplicate}
+            />
+            <CompanyName>
+              <label>업체명</label>
+              <CommonInput
                 placeholder="ex. OO레저"
                 type="text"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
               />
-            </div>
-            <div className="flex space-x-5 justify-end py-2">
-              <label className="">개업 일자</label>
-              <input
-                className="border-[1px] border-[#9A9A9A] rounded-md  w-[78%] px-2 py-[2px]"
+            </CompanyName>
+            <OpeningContainer>
+              <label>개업 일자</label>
+              <CommonInput
                 placeholder="2023-00-00"
                 type="date"
+                value={openingDate}
+                onChange={(e) => setOpeningDate(e.target.value)}
               />
-            </div>
-            <div className="flex flex-row justify-end py-2">
-              <div className="flex space-x-5 justify-end w-[55%]">
-                <label className="w-[9%]">업태</label>
-                <input
-                  className="border-[1px] border-[#9A9A9A] rounded-md w-[60%]  px-2 py-[2px]"
-                  type="text"
-                  name="business"
-                  value="스포츠 및 여가관련 서비스업"
-                  readOnly
-                  onClick={(e) => e.preventDefault()}
-                  style={{ pointerEvents: 'none' }}
-                />
-              </div>
-              <div className="flex space-x-5 justify-end w-[45%]">
-                <label className="">업종</label>
-                <div>
-                  <SelectBox />
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center pt-4">
-              <button
-                className="font-semibold rounded-md text-xl px-14 py-3 bg-[#4771B7] text-white"
-                type="submit"
-              >
-                등록하기
-              </button>
-            </div>
-          </form>
-        </div>
+            </OpeningContainer>
+            <BusinessComponents
+              businessSector={businessSector}
+              setBusinessSector={setBusinessSector}
+            />
+            <FormRegistration 
+              isFormValid={isFormValid}
+              handleSubmit={handleSubmit}
+            />
+          </FormContainer>
+        </RegiContainer>
       </div>
-    </div>
+    </PartnerContainer>
   );
 }
 
