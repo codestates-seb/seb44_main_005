@@ -17,7 +17,7 @@ public enum ExceptionCode {
     ROLE_NOT_FOUND(404, "Role not found"),
 
     // BUSINESS
-    BUSINESS_EXISTS(409, "Registration number exists."),
+    BUSINESS_EXISTS(409, "Registration number exists"),
     INVALID_REGISTRATION_NUMBER(400, "Invalid registration number format"),
 
     // STORE
@@ -35,7 +35,9 @@ public enum ExceptionCode {
     WISH_NOT_FOUND(404, "Wish not found"),
 
     // PAYMENT
-    INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount");
+    INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount"),
+    PAYMENT_NOT_FOUND(404, "Payment not found"),
+    PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match");
 
     @Getter
     private int status;
