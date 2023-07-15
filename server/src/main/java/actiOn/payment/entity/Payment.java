@@ -32,10 +32,10 @@ public class Payment extends BaseEntity {
     private Long totalAmount;
 
     @Column(nullable = false)
-    private String orderName;
+    private String orderId;
 
     @Column(nullable = false)
-    private String orderId;
+    private String orderName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
