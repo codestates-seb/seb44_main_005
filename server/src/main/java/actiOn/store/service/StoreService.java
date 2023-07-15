@@ -53,6 +53,7 @@ public class StoreService {
 
     private final WishService wishService;
     private final StoreImgRepository storeImgRepository;
+
     private final ImgService imgService;
 
 //    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
@@ -83,7 +84,7 @@ public class StoreService {
         Store shapedStore = shapingStore(store);
         Member storeCreator = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
         shapedStore.setMember(storeCreator);
-        return storeRepository.save(store);
+        return storeRepository.save(shapedStore);
     }
 
     public Store updateStore(Store store, long storeId) {
@@ -103,7 +104,9 @@ public class StoreService {
         if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())){
             throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
         }
+
         //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
+
         storeRepository.delete(findStore);
     }
     public List<Long> getWishStoreIdList(Member member){
@@ -120,26 +123,21 @@ public class StoreService {
         return storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
 
-    public List<Store> findStoreByCategory(String category, String sortFiled) {
-        try{
-            if (sortFiled.isEmpty()) sortFiled = "likeCount";
-
-            if (category.equals("all") || category.isEmpty()) {
-                if (sortFiled.equals("lowPrice")){
-                    return storeRepository.findAll(Sort.by(Sort.Direction.ASC, sortFiled));
-                }
-                if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
-                return storeRepository.findAll(Sort.by(Sort.Direction.DESC, sortFiled));
-            }
-            if (sortFiled.equals("highPrice")){
-                return storeRepository.findByCategory(category, Sort.by(Sort.Direction.ASC, "lowPrice")); // 오름차순
-            }
-
-            return storeRepository.findByCategory(category, Sort.by(Sort.Direction.DESC, sortFiled)); // 내림차순
-        }catch (Exception e){
-            return null;
+    private void isValidValue(String category, String sortField){
+        List<String> categoryList = Arrays.asList("all","스노클링/다이빙","수상레저","서핑","승마","ATV");
+        List<String> sortFieldList = Arrays.asList("likeCount","rating","lowPrice","highPrice","reviewCount");
+        if (!categoryList.contains(category) || !sortFieldList.contains(sortField)){
+            throw new BusinessLogicException(ExceptionCode.INVALID_PARAMETER_VALUE);
         }
 
+    }
+    public List<Store> findStoreByCategory(String category, String sortFiled) {
+        isValidValue(category, sortFiled);
+        Sort.Direction sortOption = Sort.Direction.DESC;
+        if (sortFiled.equals("lowPrice")) sortOption = Sort.Direction.ASC;
+        if (sortFiled.equals("highPrice")) sortFiled = "lowPrice";
+        if (category.equals("all")) return storeRepository.findAll(Sort.by(sortOption,sortFiled));
+        return storeRepository.findByCategory(category,Sort.by(sortOption,sortFiled));
     }
     public List<Store> searchEnginOnStoreNameByKeyword(String keyword) {
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
@@ -229,6 +227,7 @@ public class StoreService {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
+
 
     public void storeImageUpload(List<MultipartFile> images, long storeId, MultipartFile thumbnailImage) throws IOException {
         verifyIdentityToStore(storeId); // 본인 검증

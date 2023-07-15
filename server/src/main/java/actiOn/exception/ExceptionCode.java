@@ -28,6 +28,7 @@ public enum ExceptionCode {
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
     UNAUTHORIZED(401, "Unauthorized to update store"),
 
+    INVALID_PARAMETER_VALUE(400, "INVALID_PARAMETER_VALUE"),
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
 
