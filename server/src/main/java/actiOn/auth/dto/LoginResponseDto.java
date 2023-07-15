@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginResponseDto {
-    private long memberId;
+    private String role;
     private String nickname;
+    private String profileImage;
 }
