@@ -1,13 +1,14 @@
 package actiOn.reservation.mapper;
 
 import actiOn.item.entity.Item;
-import actiOn.reservation.dto.request.ReservationItemReqDto;
+import actiOn.item.service.ItemService;
+import actiOn.reservation.dto.ReservationPostDto;
 import actiOn.reservation.dto.request.ReservationPatchDto;
 import actiOn.reservation.dto.response.ReservationItemRepDto;
 import actiOn.reservation.dto.response.ReservationRepDto;
-import actiOn.reservation.dto.request.ReservationReqDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,34 +16,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ReservationMapper {
+@Mapper(componentModel = "spring")
+public interface ReservationMapper {
 
-    public Reservation reservationReqDtoToReservation(ReservationReqDto reservationReqDto) {
-        Reservation reservation = new Reservation();
-        reservation.setReservationName(reservationReqDto.getReservationName());
-        reservation.setReservationPhone(reservationReqDto.getReservationPhone());
-        reservation.setReservationEmail(reservationReqDto.getReservationEmail());
-        reservation.setReservationDate(LocalDate.parse(reservationReqDto.getReservationDate()));
-        reservation.setTotalPrice(reservationReqDto.getTotalPrice());
+    default Reservation reservationPostDtoToReservation(ReservationPostDto requestBody) {
+        Reservation reservation = new Reservation(
+                requestBody.getReservationName(),
+                requestBody.getReservationPhone(),
+                requestBody.getReservationEmail()
+        );
 
-        List<ReservationItemReqDto> itemReqDtos = reservationReqDto.getReservationItemReqDtos();
-        List<ReservationItem> reservationItems = new ArrayList<>();
-        for (ReservationItemReqDto itemReqDto : itemReqDtos) {
-            ReservationItem reservationItem = new ReservationItem();
-            reservationItem.setTicketCount(itemReqDto.getTicketCount());
+        reservation.setTotalPrice(requestBody.getTotalPrice());
+        reservation.setReservationDate(LocalDate.parse(requestBody.getReservationDate()));
 
-            //Item 객체 매핑
-            Item item = new Item();
-            item.setItemId(itemReqDto.getItemId());
-            reservationItem.setItem(item);
-
-            reservationItems.add(reservationItem);
-        }
-        reservation.setReservationItems(reservationItems);
         return reservation;
     }
 
-    public Reservation reservationPatchDtoToReservation(ReservationPatchDto reservationPatchDto){
+    default List<ReservationItem> reservationItemsDtoToReservationItem(
+            ReservationPostDto requestBody, ItemService itemService) {
+
+        List<ReservationPostDto.ReservationItemDto> reservationItemDtos =
+                requestBody.getReservationItems();
+
+        List<ReservationItem> reservationItems = new ArrayList<>();
+        for (ReservationPostDto.ReservationItemDto reservationItemDto : reservationItemDtos) {
+            reservationItems.add(
+                    reservationItemDtoToReservationItem(reservationItemDto, itemService)
+            );
+        }
+
+        return reservationItems;
+    }
+
+    default ReservationItem reservationItemDtoToReservationItem(
+            ReservationPostDto.ReservationItemDto reservationItemDto, ItemService itemService) {
+        ReservationItem reservationItem = new ReservationItem(reservationItemDto.getTicketCount());
+
+        Item item = itemService.findItem(reservationItemDto.getItemId());
+        reservationItem.setItem(item);
+
+        return reservationItem;
+    }
+
+    default Reservation reservationPatchDtoToReservation(ReservationPatchDto reservationPatchDto) {
         return new Reservation(
                 reservationPatchDto.getReservationName(),
                 reservationPatchDto.getReservationPhone(),
@@ -50,10 +66,10 @@ public class ReservationMapper {
         );
     }
 
-    public ReservationRepDto reservationToReservationRepDto(Reservation reservation){
+    default ReservationRepDto reservationToReservationRepDto(Reservation reservation) {
         List<ReservationItemRepDto> reservationItemRepDtos = new ArrayList<>();
         List<ReservationItem> reservationItems = reservation.getReservationItems();
-        for(ReservationItem reservationItem : reservationItems){
+        for (ReservationItem reservationItem : reservationItems) {
             ReservationItemRepDto reservationItemRepDto = new ReservationItemRepDto();
             reservationItemRepDto.setItemName(reservationItem.getItem().getItemName());
             reservationItemRepDto.setTicketCount(reservationItem.getTicketCount());
