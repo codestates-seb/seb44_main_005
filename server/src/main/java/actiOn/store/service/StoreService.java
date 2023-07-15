@@ -79,8 +79,8 @@ public class StoreService {
         List<Item> newItems = store.getItems();
 
         // 기존 아이템 정보 업데이트
-        itemService.updateItems(findItems, newItems);
-        findStore.setItems(findStore.getItems());
+        List<Item> updateItems = itemService.updateItems(findItems, newItems);
+        findStore.setItems(updateItems);
 
         shapingFindStore(findStore, store);
 

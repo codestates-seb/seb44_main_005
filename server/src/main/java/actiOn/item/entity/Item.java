@@ -27,6 +27,9 @@ public class Item {
     @Column(name = "TOTAL_TICKET", nullable = false)
     private Integer totalTicket;
 
+    @Column(name = "STATUS")
+    private String status = "saved";
+
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;

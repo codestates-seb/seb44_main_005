@@ -4,9 +4,12 @@ import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.item.entity.Item;
 import actiOn.item.repository.ItemRepository;
+import actiOn.store.entity.Store;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +19,24 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     // 기존 아이템을 수정 후 저장
-    public void updateItems(List<Item> findItems, List<Item> newItems) {
-        for (int i = 0; i < findItems.size(); i++) {
-            Item findItem = findItem(findItems.get(i));
-            Item newItem = newItems.get(i);
+    public List<Item> updateItems(List<Item> findItems, List<Item> newItems) {
+        Store parentStore = findItems.get(0).getStore();
+        itemStatusChange(findItems);
+        List<Item> items = new ArrayList<>();
+        for (Item item : newItems) {
+            Item newItem = new Item();
+            newItem.setItemName(item.getItemName());
+            newItem.setPrice(item.getPrice());
+            newItem.setTotalTicket(item.getTotalTicket());
+            newItem.setStore(parentStore);
+            items.add(newItem);
+        }
+        return itemRepository.saveAll(items);
 
-            findItem.setItemName(newItem.getItemName());
-            findItem.setPrice(newItem.getPrice());
-            findItem.setTotalTicket(newItem.getTotalTicket());
-            findItem.setStore(findItem.getStore());
-
-            itemRepository.save(findItem);
+    }
+    private void itemStatusChange(List<Item> findItems) {
+        for (Item item : findItems) {
+            item.setStatus("deleted");
         }
     }
 

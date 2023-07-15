@@ -39,7 +39,8 @@ public class ReservationService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void postReservation(Long storeId, Reservation reqReservation) {
         //Todo store 존재하는지 여부 확인 -> 예외처리 리팩토링 필요
-        Store store = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+//        Store store = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+        Store store = storeService.findStoreByStoreId(storeId);
         reqReservation.setStore(store);
 
         //예약 날짜 유효성 검사 -> 오늘 기준 이전 날짜가 오면 에러 발생
