@@ -16,7 +16,7 @@ export interface CategoryDetailType {
 
 export interface ItemType {
   itemId: number;
-  item: string;
+  itemName: string;
   price: number;
   totalTicket: number;
   remainingTicket: number;

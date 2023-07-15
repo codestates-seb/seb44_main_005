@@ -61,6 +61,14 @@ export const ProductAddBtn = tw.button`
 export const Ticket = tw.div`
   ml-40 mb-5
   font-bold text-[#4771B7]
+  flex
+`;
+
+export const TicketDeleteBtn = tw.button`
+  px-3 py-1 ml-5
+  border-[1px] border-black rounded-[5px]
+  bg-[#EDF1F8]
+  text-sm text-black
 `;
 
 export const AddBtn = tw.button`

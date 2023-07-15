@@ -45,6 +45,7 @@ function CategoryDetail() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setForm({} as reserFormType);
     CategoryDetailFetch();
     dateFetch();

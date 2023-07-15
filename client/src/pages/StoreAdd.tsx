@@ -1,6 +1,6 @@
 
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { AddBtn, StoreAddSection } from "../styles/StoreAdd/StoreAdd";
@@ -10,18 +10,26 @@ import StoreAddTop from "../components/StoreAdd/StoreAddTop";
 import {
   DetailImgsState,
   FirstImgState,
+  SendDetailImgsState,
+  SendFirstImgState,
   StoreformState,
   pageTitleState
-} from '../store/StoreAdd';
+} from '../store/storeAddAtom';
 
 function StoreAdd() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
-  const setPageTitle = useSetRecoilState(pageTitleState);
   const [form, setForm] = useRecoilState(StoreformState);
-  const sendFirstImg = useRecoilValue(FirstImgState);
-  const sendDetailImgs = useRecoilValue(DetailImgsState);
+  const [btnText, setBtnText] = useState(true);
+  const sendFirstImg = useRecoilValue(SendFirstImgState);
+  const sendDetailImgs = useRecoilValue(SendDetailImgsState);
+  const setPageTitle = useSetRecoilState(pageTitleState);
+  const setFirstImg = useSetRecoilState(FirstImgState);
+  const setDetailImgs = useSetRecoilState(DetailImgsState);
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const storeId = searchParams.get('store_id');
+  const accessToken = sessionStorage.getItem('Authorization');
 
   const formChangeHandler = (e) => {
     if (e.target.name === "storeName") {
@@ -42,36 +50,90 @@ function StoreAdd() {
     console.log(form);
   }
 
-  const storeContentPost = async () => {
+  const storeAddPost = async () => {
     console.log(form);
 
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
     imgForm.append('thumbnailImage', sendFirstImg);
+    try {
+      const res = await fetch(`${API_URL}/stores`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken
+        },
+        body: JSON.stringify(form)
+      });
+      const json = await res.json();
+      await fetch(`${API_URL}/storeImages/${json.storeId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': accessToken
+        },
+        body: imgForm
+      });
+      navigate(`/category/${json.storeId}`);
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
 
-    const res = await fetch(`${API_URL}/stores`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJwaG9uZU51bWJlciI6IjAxMC0xMTExLTIyMjIiLCJyb2xlcyI6WyJQQVJUTkVSIl0sIm5pY2tuYW1lIjoidGFld29vQmFibyIsInVzZXJuYW1lIjoiaGdkQGdtYWlsLmNvbSIsIm1lbWJlcklkIjoxLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjg5MzE4MTg4LCJleHAiOjE2ODkzMjQxODh9.1BBoGwN6bZGB8_ygLb13Rw1S0KjtowXI0_idbqPtn_F6XJtYn-_wDeXRO_DJ8ZhyrChsww_ZXXq_OWm0sBuhpg'
-      },
-      body: JSON.stringify(form)
-    });
-    const json = await res.json();
-    await fetch(`${API_URL}/storeImages/${json.storeId}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJwaG9uZU51bWJlciI6IjAxMC0xMTExLTIyMjIiLCJyb2xlcyI6WyJQQVJUTkVSIl0sIm5pY2tuYW1lIjoidGFld29vQmFibyIsInVzZXJuYW1lIjoiaGdkQGdtYWlsLmNvbSIsIm1lbWJlcklkIjoxLCJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjg5MzE4MTg4LCJleHAiOjE2ODkzMjQxODh9.1BBoGwN6bZGB8_ygLb13Rw1S0KjtowXI0_idbqPtn_F6XJtYn-_wDeXRO_DJ8ZhyrChsww_ZXXq_OWm0sBuhpg'
-      },
-      body: imgForm
-    });
-    navigate(`/category/${json.storeId}`);
+  const storeEditFetch = async (storeId: string) => {
+    try {
+      const res = await fetch(`${API_URL}/stores/${storeId}`);
+      const json = await res.json();
+      setForm({
+        storeName: json.storeName,
+        body: json.body,
+        address: json.address,
+        kakao: json.kakao,
+        contact: json.contact,
+        category: json.category,
+        items: json.items
+      })
+      setFirstImg(json.storeImages[0]);
+      setDetailImgs(json.storeImages.slice(1));
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
+
+  const storeEditPatch = async (storeId: string) => {
+    const imgForm = new FormData();
+    sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
+    imgForm.append('thumbnailImage', sendFirstImg);
+    try {
+      await fetch(`${API_URL}/stores/${storeId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken
+        },
+        body: JSON.stringify(form)
+      });
+      await fetch(`${API_URL}/storeImages/${storeId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': accessToken
+        },
+        body: imgForm
+      });
+      navigate(`/category/${storeId}`);
+    }
+    catch(error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
     const path = location.pathname.substring(6);
-    if (path === "/edit") {
-      setPageTitle("업체 수정하기");
+    if (path === '/edit') {
+      setPageTitle('업체 수정하기');
+      setBtnText((prev) => !prev);
+      storeEditFetch(storeId);
     }
   }, [])
 
@@ -81,8 +143,13 @@ function StoreAdd() {
       <AddProduct />
       <AddImages />
       <AddBtn type="button" onClick={() => {
-        storeContentPost();
-      }}>등록하기</AddBtn>
+        if (btnText) {
+          storeAddPost();
+        }
+        else {
+          storeEditPatch(storeId);
+        }
+      }}>{btnText ? '등록하기' : '수정하기'}</AddBtn>
     </StoreAddSection>
   );
 }
