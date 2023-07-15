@@ -4,6 +4,7 @@ import actiOn.Img.profileImg.ProfileImg;
 import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
+import actiOn.payment.entity.Payment;
 import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
@@ -38,12 +39,16 @@ public class Member extends BaseEntity implements Principal {
     @Column
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
-    private List<MemberRole> memberRoles = new ArrayList<>();
+    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private ProfileImg profileImg;
 
     @OneToOne(mappedBy = "member")
     private Business business;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<MemberRole> memberRoles = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Wish> wishList = new ArrayList<>();
@@ -54,9 +59,8 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private ProfileImg profileImg;
+    @OneToMany(mappedBy = "member")
+    private List<Payment> payments = new ArrayList<>();
 
     @Override
     public String getName() {
