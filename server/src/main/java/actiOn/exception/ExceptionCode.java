@@ -32,7 +32,10 @@ public enum ExceptionCode {
 
     //WISH
     WISH_EXIST(409, "Wish exists"),
-    WISH_NOT_FOUND(404, "Wish not found");
+    WISH_NOT_FOUND(404, "Wish not found"),
+
+    // PAYMENT
+    INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount");
 
     @Getter
     private int status;
