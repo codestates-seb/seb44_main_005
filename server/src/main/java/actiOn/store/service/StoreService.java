@@ -50,16 +50,6 @@ public class StoreService {
     private final ItemService itemService;
     private final ImgService imgService;
 
-//    public StoreService(StoreRepository storeRepository, KakaoMapService kakaoMapService, ReservationRepository reservationRepository, ReservationService reservationService, MemberService memberService, WishService wishService, StoreImgRepository storeImgRepository) {
-//        this.storeRepository = storeRepository;
-//        this.kakaoMapService = kakaoMapService;
-//        this.reservationRepository = reservationRepository;
-//        this.reservationService = reservationService;
-//        this.memberService = memberService;
-//        this.wishService = wishService;
-//        this.storeImgRepository = storeImgRepository;
-//    }
-
     private Store shapingStore(Store store) {
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
         store.setLatitude(Double.parseDouble(location.getLatitude()));
@@ -116,6 +106,7 @@ public class StoreService {
         return lowPrice;
     }
 
+    // 위도, 경도, 주소 설정
     private void shapingFindStore(Store findStore, Store store) {
         GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
         findStore.setAddress(store.getAddress());
