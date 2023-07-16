@@ -44,17 +44,7 @@ public class ItemService {
 
     private void itemStatusChange(List<Item> findItems) {
         for (Item item : findItems) {
-            item.setStatus("deleted");
+            item.setStatus(Item.ItemStatus.DELETED);
         }
-    }
-
-    public Item findItem(Item item) {
-        Optional<Item> findItem = itemRepository.findItemByItemId(item.getItemId());
-
-        if (findItem.isEmpty()) {
-            throw new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND);
-        }
-
-        return findItem.get();
     }
 }
