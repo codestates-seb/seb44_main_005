@@ -2,9 +2,9 @@ package actiOn.reservation.controller;
 
 import actiOn.item.dto.ItemDto;
 import actiOn.item.service.ItemService;
+import actiOn.reservation.dto.ReservationPatchDto;
 import actiOn.reservation.dto.ReservationPostDto;
-import actiOn.reservation.dto.request.ReservationPatchDto;
-import actiOn.reservation.dto.response.ReservationRepDto;
+import actiOn.reservation.dto.ReservationResponseDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.mapper.ReservationMapper;
@@ -44,7 +44,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // 예약 수정(완료, 테스트 필요)
+    // 예약 수정
     @PatchMapping("/{reservation-id}")
     public ResponseEntity patchReservation(@Positive @PathVariable("reservation-id") Long reservationId,
                                            @Valid @RequestBody ReservationPatchDto reservationPatchDto) {
@@ -57,8 +57,8 @@ public class ReservationController {
     @GetMapping("/{reservation-id}")
     public ResponseEntity getReservations(@Positive @PathVariable("reservation-id") Long reservationId) {
         Reservation findReservation = reservationService.getReservations(reservationId);
-        ReservationRepDto reservationRepDto = reservationMapper.reservationToReservationRepDto(findReservation);
-        return new ResponseEntity<>(reservationRepDto, HttpStatus.OK);
+        ReservationResponseDto response = reservationMapper.reservationToReservationRepDto(findReservation);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //Todo RS_004 예약 취소(완료, 테스트 필요)

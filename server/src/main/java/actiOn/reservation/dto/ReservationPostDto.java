@@ -29,13 +29,4 @@ public class ReservationPostDto {
     private int totalPrice;
 
     private List<ReservationItemDto> reservationItems;
-
-    @Getter
-    @Builder
-    public static class ReservationItemDto {
-        private Long itemId;
-
-        @Positive
-        private int ticketCount;
-    }
 }
