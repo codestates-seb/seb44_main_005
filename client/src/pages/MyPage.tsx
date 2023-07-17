@@ -208,7 +208,7 @@ function MyPage() {
           </MySpace>
         </MyBioContainer>
       </MyPageContainer>
-      {showModal && <Modal onClick={closeModal} defaultNickname={user.nickname} defaultPhoneNumber={user.phoneNumber} />}
+      {showModal && <Modal onClick={closeModal} defaultNickname={nickname} defaultPhoneNumber={phoneNumber} />}
     </>
   );
 }
