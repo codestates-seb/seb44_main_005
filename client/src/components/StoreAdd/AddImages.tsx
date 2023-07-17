@@ -32,7 +32,11 @@ function AddImages() {
 
   const saveDetailImgFile = (e) => {
     const files = e.target.files;
+    if (detailImgs.length + files.length > 9) {
+      return alert('상세 이미지는 최대 9장까지 업로드 할 수 있습니다.');
+    }
     for (let i = 0; i < files.length; i++) {
+      console.log(detailImgs);
       const reader = new FileReader();
       reader.readAsDataURL(files[i]);
       reader.onloadend = () => {
