@@ -13,7 +13,6 @@ import actiOn.store.repository.StoreRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +32,12 @@ public class ImgService {
     //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
+    private final StoreRepository storeRepository;
 
-    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository){
+    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository){
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
+        this.storeRepository = storeRepository;
     }
 
     // 기본 프로필 이미지 경로 저장하는 메서드
@@ -44,6 +45,8 @@ public class ImgService {
         ProfileImg profileImg = new ProfileImg();
         profileImg.setLink("default Link"); // TODO 변경 해주어야 함
         profileImg.setMember(member);
+
+        return profileImg;
     }
 
     // 프로필 이미지 등록
