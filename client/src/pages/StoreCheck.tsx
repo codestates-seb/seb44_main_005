@@ -1,5 +1,5 @@
-import { storecheckdummy } from "../dummy/storecheckdummy";
-import { 
+import { storecheckdummy } from '../dummy/storecheckdummy';
+import {
   StoreButtonStyle,
   ButtonsContainer,
   ImgContainer,
@@ -7,14 +7,14 @@ import {
   ImgStyle,
   StoreCards,
   StoreCheckContainer,
-  StoreCheckTitle, 
+  StoreCheckTitle,
   StoreInfoContainer,
-  StoreName
-} from "../styles/MyPage/StoreCheck";
+  StoreName,
+} from '../styles/MyPage/StoreCheck';
 
 function StoreCheck() {
   const { stores } = storecheckdummy;
-  
+
   const handleDeleteClick = () => {
     alert('정말 삭제하시겠습니가?');
   };

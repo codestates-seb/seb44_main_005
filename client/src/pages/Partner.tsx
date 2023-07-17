@@ -21,7 +21,7 @@ import {
   FormRegiButton,
   FormRegiContainer,
   LabelStyle,
-  OpeningContainer
+  OpeningContainer,
 } from '../styles/Partner/Partner';
 
 function Partner() {
@@ -38,7 +38,10 @@ function Partner() {
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
     const formattedInput = input.slice(0, 10);
-    const formattedRegiNumber = formattedInput.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+    const formattedRegiNumber = formattedInput.replace(
+      /(\d{3})(\d{2})(\d{5})/,
+      '$1-$2-$3'
+    );
     setRegiNumber(formattedRegiNumber);
   };
 
@@ -66,14 +69,13 @@ function Partner() {
     }
   };
 
-  const isFormValid = (
+  const isFormValid =
     regiNumber &&
     isRegiNumberValid &&
     repreName.length > 0 &&
     companyName.length > 0 &&
     openingDate.length > 0 &&
-    businessSector.length > 0
-  );
+    businessSector.length > 0;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,22 +84,22 @@ function Partner() {
       owner: repreName,
       businessName: companyName,
       registrationNumber: regiNumber,
-      businessCategory: businessSector
+      businessCategory: businessSector,
     };
 
     try {
       const response = await fetch('/partners', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         // 성공적으로 등록된 경우 처리
         console.log('Status', response.status);
-        if(response.status === 201) {
+        if (response.status === 201) {
           console.log('201 Created');
         }
       } else {
@@ -109,15 +111,12 @@ function Partner() {
       console.log('네트워크 오류: 파트너 등록에 실패하였습니다.');
     }
   };
-  
 
   return (
     <PartnerContainer>
       <div className="p-10">
         <RegiContainer>
-          <RegiTitle>
-            파트너 등록하기
-          </RegiTitle>
+          <RegiTitle>파트너 등록하기</RegiTitle>
           <FormContainer>
             <RepreNameContainer>
               <label>대표자 명</label>
@@ -147,7 +146,9 @@ function Partner() {
                     <RegiNumberCorrect>올바른 입력입니다.</RegiNumberCorrect>
                   )}
                   {isRegiNumberIncomplete && (
-                    <RegiNumberWrong>사업자 등록번호는 10자리로 입력되어야 합니다.</RegiNumberWrong>
+                    <RegiNumberWrong>
+                      사업자 등록번호는 10자리로 입력되어야 합니다.
+                    </RegiNumberWrong>
                   )}
                 </div>
                 <button

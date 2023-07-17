@@ -15,6 +15,7 @@ function CategoryRouter() {
             <Route path="/category" element={<CategoryPage />} />
             <Route path="/category/:id" element={<CategoryDetail />} />
           </Route>
+          <Route path="/search" element={<CategoryPage />} />
         </Route>
       </Route>
     </Routes>

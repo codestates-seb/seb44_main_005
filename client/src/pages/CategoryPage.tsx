@@ -8,34 +8,36 @@ import {
   Option,
   Category,
 } from '../styles/Category/CategoryPage';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { categoryData } from '../store/categoryAtom';
-import { loading, search, searchKeyword } from '../store/searchbarAtom';
+import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
-  // const [isLoading, setIsLoading] = useState(false);
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
+  const keywords = searchParams.get('keyword');
 
   // 전역 상태 변수
-  const keyword = useRecoilValue(searchKeyword);
   const [isSearch, setIsSearch] = useRecoilState(search);
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
 
+  // console.log(keywords); // 출력: '함덕'
+
   useEffect(() => {
     const fetchData = async () => {
+      console.log('1');
       let data;
       // 검색 조건이 있을 때
-      if (keyword) {
+      if (keywords) {
         setIsSearch(true);
         setIsLoading(true);
-        const res = await fetch(`${url}/search?keyword=${keyword}`);
+        const res = await fetch(`${url}/search?keyword=${keywords}`);
         data = await res.json();
         if (res.status !== 200) throw res;
       } else {
@@ -110,9 +112,9 @@ function CategoryPage() {
             <CategoryCard data={el} key={el.storeId} />
           ))}
         </Category>
-      ) : (
+      ) : isSearch ? (
         <NoResult />
-      )}
+      ) : null}
     </Style>
   );
 }

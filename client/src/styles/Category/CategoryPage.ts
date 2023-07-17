@@ -3,6 +3,7 @@ import tw from 'tailwind-styled-components';
 export const Style = tw.div`
   flex
   flex-col
+  min-h-[80vh]
 `;
 export const CategoryContainer = tw.section`
   flex

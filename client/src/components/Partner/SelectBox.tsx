@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { 
-  SelectContainer 
-} from "../../styles/Partner/SelectBox";
+import { useState } from 'react';
+import { SelectContainer } from '../../styles/Partner/SelectBox';
 
 function SelectBox({ value, onChange }) {
   const [isSelectDisabled, setIsSelectDisabled] = useState(false);
