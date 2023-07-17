@@ -40,12 +40,7 @@ import java.util.Optional;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final KakaoMapService kakaoMapService;
-
-//    private final ReservationRepository reservationRepository;
-//    private final ReservationService reservationService;
-
     private final MemberService memberService;
-
     private final WishService wishService;
     private final ItemService itemService;
     private final ImgService imgService;
@@ -168,7 +163,6 @@ public class StoreService {
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
     }
 
-    //
     //메인페이지
     public MainPageResponseDto getMainPage() {
 
@@ -263,7 +257,6 @@ public class StoreService {
         return store.get();
     }
 
-
     public void storeImageUpload(List<MultipartFile> images, long storeId, MultipartFile thumbnailImage) throws IOException {
         findverifyIdentityStore(storeId); // 본인 검증
         Store findStore = findStoreByStoreId(storeId); // 스토어 찾기
@@ -272,5 +265,11 @@ public class StoreService {
         if (thumbnailImage != null) images.add(0, thumbnailImage);
 
         imgService.uploadStoreImage(images, findStore, thumbnailImage); // 업로드 //
+    }
+
+    public void validateImagePost(List<MultipartFile> images, MultipartFile thumbnailImage) {
+        System.out.println(thumbnailImage);
+        if (images == null) throw new BusinessLogicException(ExceptionCode.IMAGE_LIST_IS_EMPTY);
+        if (thumbnailImage == null) throw new BusinessLogicException(ExceptionCode.THUMBNAIL_IS_NULL);
     }
 }

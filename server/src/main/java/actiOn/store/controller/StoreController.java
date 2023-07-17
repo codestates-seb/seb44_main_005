@@ -48,8 +48,9 @@ public class StoreController {
 
     @PostMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
-                                         @RequestPart("images") List<MultipartFile> images,
-                                         @RequestParam("thumbnailImage") MultipartFile thumbnailImage) throws IOException {
+                                         @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                         @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage) throws IOException {
+        storeService.validateImagePost(images,thumbnailImage);
         storeService.storeImageUpload(images, storeId, thumbnailImage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -127,7 +128,5 @@ public class StoreController {
         CategoryResponseDto searchResponseDtoWithLike =
                 storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
         return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
-
-
     }
 }

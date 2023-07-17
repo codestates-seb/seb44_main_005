@@ -1,24 +1,17 @@
 package actiOn.item.dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ItemDto {
-
     long itemId;
-    String item;
+    String itemName;
     int totalTicket;
     int price;
     int remainingTicket;
-
-    public ItemDto(long itemId, String itemName, int maxCount, int price, int remainingTicket){
-        this.itemId=itemId;
-        this.item=itemName;
-        this.totalTicket=maxCount;
-        this.price=price;
-        this.remainingTicket=remainingTicket;
-    }
 }

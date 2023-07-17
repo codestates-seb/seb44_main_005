@@ -1,48 +1,72 @@
 package actiOn.reservation.mapper;
 
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.item.entity.Item;
-import actiOn.reservation.dto.request.ReservationItemReqDto;
-import actiOn.reservation.dto.request.ReservationPatchDto;
-import actiOn.reservation.dto.response.ReservationItemRepDto;
-import actiOn.reservation.dto.response.ReservationRepDto;
-import actiOn.reservation.dto.request.ReservationReqDto;
+import actiOn.item.service.ItemService;
+import actiOn.reservation.dto.*;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ReservationMapper {
+@Mapper(componentModel = "spring")
+public interface ReservationMapper {
+    // 예약 등록
+    default Reservation reservationPostDtoToReservation(ReservationPostDto requestBody) {
+        Reservation reservation = new Reservation(
+                requestBody.getReservationName(),
+                requestBody.getReservationPhone(),
+                requestBody.getReservationEmail()
+        );
 
-    public Reservation reservationReqDtoToReservation(ReservationReqDto reservationReqDto) {
-        Reservation reservation = new Reservation();
-        reservation.setReservationName(reservationReqDto.getReservationName());
-        reservation.setReservationPhone(reservationReqDto.getReservationPhone());
-        reservation.setReservationEmail(reservationReqDto.getReservationEmail());
-        reservation.setReservationDate(LocalDate.parse(reservationReqDto.getReservationDate()));
-        reservation.setTotalPrice(reservationReqDto.getTotalPrice());
-
-        List<ReservationItemReqDto> itemReqDtos = reservationReqDto.getReservationItems();
-        List<ReservationItem> reservationItems = new ArrayList<>();
-        for (ReservationItemReqDto itemReqDto : itemReqDtos) {
-            ReservationItem reservationItem = new ReservationItem();
-            reservationItem.setTicketCount(itemReqDto.getTicketCount());
-//
-            //Item 객체 매핑
-            Item item = new Item();
-            item.setItemId(itemReqDto.getItemId());
-            reservationItem.setItem(item);
-
-            reservationItems.add(reservationItem);
+        reservation.setTotalPrice(requestBody.getTotalPrice());
+        LocalDate date;
+        try{
+            date = LocalDate.parse(requestBody.getReservationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }catch (DateTimeParseException e) {
+            throw new BusinessLogicException(ExceptionCode.DATE_BAD_REQUEST);
         }
-        reservation.setReservationItems(reservationItems);
+        reservation.setReservationDate(date);
+
         return reservation;
     }
 
-    public Reservation reservationPatchDtoToReservation(ReservationPatchDto reservationPatchDto){
+    default List<ReservationItem> reservationItemsDtoToReservationItem(
+            ReservationPostDto requestBody, ItemService itemService) {
+
+        List<ReservationItemDto> reservationItemDtos =
+                requestBody.getReservationItems();
+
+        List<ReservationItem> reservationItems = new ArrayList<>();
+        for (ReservationItemDto reservationItemDto : reservationItemDtos) {
+            reservationItems.add(
+                    reservationItemDtoToReservationItem(reservationItemDto, itemService)
+            );
+        }
+
+        return reservationItems;
+    }
+
+    default ReservationItem reservationItemDtoToReservationItem(
+            ReservationItemDto reservationItemDto, ItemService itemService) {
+        ReservationItem reservationItem = new ReservationItem(reservationItemDto.getTicketCount());
+
+        Item item = itemService.findItem(reservationItemDto.getItemId());
+        reservationItem.setItem(item);
+
+        return reservationItem;
+    }
+
+    // 예약 수정
+    default Reservation reservationPatchDtoToReservation(ReservationPatchDto reservationPatchDto) {
         return new Reservation(
                 reservationPatchDto.getReservationName(),
                 reservationPatchDto.getReservationPhone(),
@@ -50,27 +74,41 @@ public class ReservationMapper {
         );
     }
 
-    public ReservationRepDto reservationToReservationRepDto(Reservation reservation){
-        List<ReservationItemRepDto> reservationItemRepDtos = new ArrayList<>();
-        List<ReservationItem> reservationItems = reservation.getReservationItems();
-        for(ReservationItem reservationItem : reservationItems){
-            ReservationItemRepDto reservationItemRepDto = new ReservationItemRepDto();
-            reservationItemRepDto.setItemName(reservationItem.getItem().getItemName());
-            reservationItemRepDto.setTicketCount(reservationItem.getTicketCount());
+    // 예약 페이지 렌더링
+    default ReservationResponseDto reservationToReservationRepDto(Reservation reservation) {
+        ReservationResponseDto.ReservationResponseDtoBuilder builder
+                = ReservationResponseDto.builder();
 
-            reservationItemRepDtos.add(reservationItemRepDto);
-        }
+        builder.storeName(reservation.getStore().getStoreName())
+                .reservationDate(reservation.getReservationDate())
+                .totalPrice(reservation.getTotalPrice())
+                .reservationName(reservation.getReservationName())
+                .reservationPhone(reservation.getReservationPhone())
+                .reservationEmail(reservation.getReservationEmail())
+                .reservationItems(
+                        reservationItemsToResonseDtos(reservation.getReservationItems())
+                );
 
-        ReservationRepDto reservationRepDto = new ReservationRepDto();
-        reservationRepDto.setStoreName(reservation.getStore().getStoreName());
-        reservationRepDto.setReservationDate(reservation.getReservationDate());
-        reservationRepDto.setTotalPrice(reservation.getTotalPrice());
-        reservationRepDto.setReservationName(reservation.getReservationName());
-        reservationRepDto.setReservationPhone(reservation.getReservationPhone());
-        reservationRepDto.setReservationEmail(reservation.getReservationEmail());
-        reservationRepDto.setReservationItemRepDtos(reservationItemRepDtos);
-
-        return reservationRepDto;
+        return builder.build();
     }
 
+    default List<ReservationItemResponseDto> reservationItemsToResonseDtos(List<ReservationItem> reservationItems) {
+        List<ReservationItemResponseDto> reservationItemDtos = new ArrayList<>();
+
+        for (ReservationItem reservationItem : reservationItems) {
+            reservationItemDtos.add(reservationItemToResponseDto(reservationItem));
+        }
+
+        return reservationItemDtos;
+    }
+
+    default ReservationItemResponseDto reservationItemToResponseDto(ReservationItem reservationItem) {
+        ReservationItemResponseDto.ReservationItemResponseDtoBuilder builder =
+                ReservationItemResponseDto.builder();
+
+        builder.itemName(reservationItem.getItem().getItemName())
+                .ticketCount(reservationItem.getTicketCount());
+
+        return builder.build();
+    }
 }
