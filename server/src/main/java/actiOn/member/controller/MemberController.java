@@ -1,5 +1,6 @@
 package actiOn.member.controller;
 
+import actiOn.auth.dto.LoginResponseDto;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.business.dto.BusinessDto;
 import actiOn.business.entity.Business;
@@ -39,6 +40,15 @@ public class MemberController {
         memberService.createMember(member);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/google/login")
+    public ResponseEntity oauth2LoginSuccess() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member member = memberService.findMemberByEmail(email);
+
+        LoginResponseDto response = memberMapper.memberGoogleLoginResponseDto(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 회원 프로필 사진 등록
