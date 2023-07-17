@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-
-import { isLoginState } from '../../store/userInfoAtom';
+import { Role, isLoginState, isProfile } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
 import profile from '../../assets/profile.svg';
 import Searchbar from './Searchbar';
-import tw from 'tailwind-styled-components';
 
 import {
   HaederContainer,
@@ -17,21 +15,25 @@ import {
   DropdownContainer,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
-import { searchKeyword } from '../../store/searchbarAtom';
+import { search, searchKeyword } from '../../store/searchbarAtom';
 
 function Header() {
   //비로그인 상태일때
   //로그인 된 상태일때 -> 1. 파트너 로그인을 한 상태일때 2. 파트너 로그인을 하지 않은 상태일 때
   //UseContainer 안 요소를 다르게 설정해줄 것
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-  const [isPartner, setIsPartner] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
   const setKeyword = useSetRecoilState(searchKeyword);
+  const profileImg = useRecoilValue(isProfile);
+  const role = useRecoilValue(Role);
+  const isLogin = useRecoilValue(isLoginState);
+  const setIsSearch = useSetRecoilState(search);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate('/home');
+    setIsSearch(false);
     setKeyword('');
   };
   const onClickPartner = () => {
@@ -42,14 +44,10 @@ function Header() {
       navigate('/partner');
     }
   };
-  // const handlePartnerClick = () => {
-  //   setIsPartner(!isPartner);
-  // };
+
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
-  console.log(setIsLogin);
-  console.log(setIsPartner);
   return (
     <HaederContainer>
       <LogoContainer>
@@ -78,17 +76,26 @@ function Header() {
         </UnLoginContainer>
       ) : (
         <LoginContainer>
-          {isPartner ? (
+          {role === 'PARTNER' ? ( //&&
             <>
               <Link to="/partner" className="mt-1">
                 업체 등록
               </Link>
               <DropdownContainer>
-                <img
-                  src={profile}
-                  className="w-[28px] ml-[20px]"
-                  onClick={handleDropdownClick}
-                />
+                {}
+                {profileImg == 'default image' ? (
+                  <img
+                    src={profileImg}
+                    className="w-[28px] ml-[20px] rounded-full"
+                    onClick={handleDropdownClick}
+                  />
+                ) : (
+                  <img
+                    src={profile}
+                    className="w-[28px] ml-[20px]"
+                    onClick={handleDropdownClick}
+                  />
+                )}
                 {isOpen && <Dropdown />}
               </DropdownContainer>
             </>
@@ -97,11 +104,19 @@ function Header() {
               <Link to="/partner" className="mt-1">
                 파트너 등록
               </Link>
-              <img
-                src={profile}
-                className="w-[28px] ml-[50px]"
-                onClick={handleDropdownClick}
-              />
+              {profileImg !== 'default image' ? ( // 로직을 하나로 빼두기 ?
+                <img
+                  src={profileImg}
+                  className="w-[30px] ml-[40px] rounded-full"
+                  onClick={handleDropdownClick}
+                />
+              ) : (
+                <img
+                  src={profile}
+                  className="w-[28px] ml-[40px]"
+                  onClick={handleDropdownClick}
+                />
+              )}
               {isOpen && <Dropdown />}
             </>
           )}

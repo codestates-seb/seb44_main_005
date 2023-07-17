@@ -13,7 +13,6 @@ function RegistrationNumber({
     isRegiNumberIncomplete,
     isRegiNumberValid,
     setIsInputTouched,
-    handleDuplicateCheck,
     isCheckingDuplicate
  }) {
     return (
@@ -45,7 +44,6 @@ function RegistrationNumber({
                   }`}
                   type="button"
                   disabled={!isRegiNumberValid || isCheckingDuplicate}
-                  onClick={handleDuplicateCheck}
                 >
                   중복확인
                 </button>

@@ -33,7 +33,7 @@ public class ImgService {
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
     private final StoreRepository storeRepository;
-
+  
     public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository) {
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;

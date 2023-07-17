@@ -98,6 +98,14 @@ export const ButtonStyle = tw.button`
     rounded-lg
 `;
 
+export const ButtonReview = tw.button`
+    bg-[#4771B7]
+    p-2
+    text-sm
+    rounded-lg
+    text-white
+`;
+
 export const NoButtons = tw.p`
     h-[38.5px]
 `;

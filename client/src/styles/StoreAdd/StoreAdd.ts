@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const StoreAddSection = tw.section`
-  w-[900px]
+  w-[900px] min-h-[55vh]
   mx-auto mt-20
   font-medium text-lg
 `;
