@@ -83,7 +83,7 @@ function Header() {
               </Link>
               <DropdownContainer>
                 {}
-                {profileImg == 'default image' ? (
+                {profileImg !== 'default image' ? (
                   <img
                     src={profileImg}
                     className="w-[28px] ml-[20px] rounded-full"
