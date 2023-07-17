@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { storecheckdummy } from '../dummy/storecheckdummy';
+import { useNavigate } from 'react-router-dom';
 import {
   StoreButtonStyle,
   ButtonsContainer,
@@ -16,8 +16,6 @@ import {
 function StoreCheck() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [storesData, setStoresData] = useState([]);
-
-  // const { stores } = storecheckdummy;
 
   useEffect(() => {
     fetchStores();
@@ -44,6 +42,12 @@ function StoreCheck() {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleEditClick = (storeId) => {
+    navigate(`/store/edit?store_id=${storeId}`);
+  }
+
   const handleDeleteClick = () => {
     alert('정말 삭제하시겠습니가?');
   };
@@ -63,7 +67,7 @@ function StoreCheck() {
               <StoreName>{store.storeName}</StoreName>
             </div>
             <ButtonsContainer>
-              <StoreButtonStyle type="button">업체 수정</StoreButtonStyle>
+              <StoreButtonStyle type="button" onClick={() => handleEditClick(store.storeId)}>업체 수정</StoreButtonStyle>
               <StoreButtonStyle type="button" onClick={handleDeleteClick}>
                 업체 삭제
               </StoreButtonStyle>
