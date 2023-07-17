@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { dummyBio } from '../dummy/mypagedummy';
 import Modal from '../components/MyPage/Modal';
 import profile from '../assets/profile.svg';
 
@@ -23,7 +22,6 @@ import {
 
 function MyPage() {
   const APIURL = import.meta.env.VITE_APP_API_URL
-  const user = dummyBio[0];
   const businessRegi = `스포츠 및 여가관련 서비스업`;
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
@@ -31,7 +29,7 @@ function MyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
-  const [accessDenied, setAccessDenied] = useState(false);
+  const [_, setAccessDenied] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -128,6 +126,14 @@ function MyPage() {
     }
   };
 
+  const handleEditComplete = (updatedUserData) => {
+    setUserData({
+      ...updatedUserData,
+      email: userData.email
+    });
+    setShowModal(false);
+  };
+
   return (
     <>
       <MyPageContainer>
@@ -208,7 +214,12 @@ function MyPage() {
           </MySpace>
         </MyBioContainer>
       </MyPageContainer>
-      {showModal && <Modal onClick={closeModal} defaultNickname={nickname} defaultPhoneNumber={phoneNumber} />}
+      {showModal && <Modal 
+        onClick={closeModal}
+        defaultNickname={nickname} 
+        defaultPhoneNumber={phoneNumber} 
+        onEditComplete={handleEditComplete}
+      />}
     </>
   );
 }
