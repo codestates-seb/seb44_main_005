@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -34,7 +34,7 @@ public class ReservationController {
     }
 
     //Todo RS_002 예약 등록(완료 직전, 테스트 필요)
-    @PostMapping("/{store-id}")
+    @PostMapping("/reservations/{store-id}")
     public ResponseEntity postReservation(@Positive @PathVariable("store-id") Long storeId,
                                           @Valid @RequestBody ReservationPostDto requestBody) {
         Reservation reservation = reservationMapper.reservationPostDtoToReservation(requestBody);
@@ -45,7 +45,7 @@ public class ReservationController {
     }
 
     // 예약 수정
-    @PatchMapping("/{reservation-id}")
+    @PatchMapping("/reservations/{reservation-id}")
     public ResponseEntity patchReservation(@Positive @PathVariable("reservation-id") Long reservationId,
                                            @Valid @RequestBody ReservationPatchDto reservationPatchDto) {
         Reservation updateReservation = reservationMapper.reservationPatchDtoToReservation(reservationPatchDto);
@@ -54,7 +54,7 @@ public class ReservationController {
     }
 
     //Todo RS_001 예약 수정 페이지 렌더(완료, 테스트 필요)
-    @GetMapping("/{reservation-id}")
+    @GetMapping("/reservations/{reservation-id}")
     public ResponseEntity getReservations(@Positive @PathVariable("reservation-id") Long reservationId) {
         Reservation findReservation = reservationService.getReservations(reservationId);
         ReservationResponseDto response = reservationMapper.reservationToReservationRepDto(findReservation);
@@ -62,7 +62,7 @@ public class ReservationController {
     }
 
     //Todo RS_004 예약 취소(완료, 테스트 필요)
-    @DeleteMapping("/{reservation-id}")
+    @DeleteMapping("/reservations/{reservation-id}")
     public ResponseEntity cancelReservation(@Positive @PathVariable("reservation-id") long reservationId) {
         reservationService.cancelReservation(reservationId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -70,12 +70,14 @@ public class ReservationController {
 
     @GetMapping("/items/{store-id}") // 그 스토어, 그 날짜에 티켓 상태 조회
     public ResponseEntity getStoreByDate(@PathVariable("store-id") @Positive long storeId,
-                                         @RequestParam("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
-
+                                         @RequestParam("date") String date) {
         List<ItemDto> items = reservationService.findItemsByStoreIdAndDate(storeId, date);
-        if (items != null) {
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("예약정보를 불러오는데 실패했습니다.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @PostMapping("/reservationsUsed/{reservation-id}")
+    public ResponseEntity doneReservation(@PathVariable("reservation-id")@Positive Long reservationId){
+        reservationService.changeReservationStatus(reservationId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

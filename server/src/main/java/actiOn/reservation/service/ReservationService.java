@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Transactional
@@ -32,26 +34,30 @@ public class ReservationService {
     private final ItemService itemService;
     private final ReservationItemRepository reservationItemRepository;
 
+    private void validateItemId(List<ReservationItem> reservationItems, Store store) {
+        List<Item> items = store.getItems();
+        for (ReservationItem reservationItem : reservationItems) {
+            if (!items.contains(reservationItem.getItem()))
+                throw new BusinessLogicException(ExceptionCode.REQUEST_ITEM_ID_IS_REJECTED);
+        }
+    }
     @Transactional(propagation = Propagation.REQUIRED)
     public void postReservation(Long storeId, Reservation reservation, List<ReservationItem> reservationItems) {
+        //로그인한 유저의 정보를 reservation에 담기 겸, 사용자 검증
+        Member member = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
+        reservation.setMember(member);
+        //스토어 가져오기 겸 검증
         Store store = storeService.findStoreByStoreId(storeId);
+        validateItemId(reservationItems, store);
         reservation.setStore(store);
-
         //예약 날짜 유효성 검사
         validateReservationDate(reservation.getReservationDate());
-
-        //로그인한 유저의 정보를 reservation에 담기
-        String email = AuthUtil.getCurrentMemberEmail();
-        Member member = memberService.findMemberByEmail(email);
-        reservation.setMember(member);
-
+        validateTicketCount(store,reservation.getReservationDate(), reservationItems);
         // reservationItem 저장
         List<ReservationItem> newReservationItems = generateReservationItem(reservation, reservationItems);
         reservation.setReservationItems(newReservationItems);
-
         // 입력된 총 금액과 총 예약 가격이 동일한지 검증
         validateTotalPrice(newReservationItems, reservation.getTotalPrice());
-
         //예약 정보 저장
         reservationRepository.save(reservation);
     }
@@ -109,19 +115,30 @@ public class ReservationService {
         return reservationItemRepository.saveAll(newReservationItems);
     }
 
-    public List<ItemDto> findItemsByStoreIdAndDate(long storeId, LocalDate date) {
-        try {
+    private int getRemainingTicketCount(Item item, Map<Long,Integer> reservationTickets) {
+        int reservationTicketCount = // 예약된 티켓이 없다면 null로 나오므로, null과 int는 연산이 불가능하므로, int로 변환
+                reservationTickets.containsKey(item.getItemId())
+                        ? reservationTickets.get(item.getItemId()) : 0;
+
+        int remainingTicketCount = item.getTotalTicket() - reservationTicketCount;
+        return remainingTicketCount;
+    }
+
+    public List<ItemDto> findItemsByStoreIdAndDate(long storeId, String targetDate) {
             //Todo 예외처리하기
+            LocalDate date;
+            try{
+                date = LocalDate.parse(targetDate, DateTimeFormatter.BASIC_ISO_DATE);
+            }catch (DateTimeParseException e) {
+                throw new BusinessLogicException(ExceptionCode.DATE_BAD_REQUEST);
+            }
+
             List<ItemDto> itemDtos = new ArrayList<>();
             Store findStore = storeService.findStoreByStoreId(storeId);
             List<Item> findItems = findStore.getItems();
             Map<Long, Integer> reservationTickets = reservationTicketCount(findStore, date);
             for (Item item : findItems) {
-                int reservationTicketCount = // 예약된 티켓이 없다면 null로 나오므로, null과 int는 연산이 불가능하므로, int로 변환
-                        reservationTickets.containsKey(item.getItemId())
-                                ? reservationTickets.get(item.getItemId()) : 0;
-
-                int remainingTicketCount = item.getTotalTicket() - reservationTicketCount;
+                int remainingTicketCount = getRemainingTicketCount(item,reservationTickets);
                 if (remainingTicketCount < 0) remainingTicketCount = 0;
                 ItemDto itemDto = new ItemDto(
                         item.getItemId(),
@@ -133,13 +150,10 @@ public class ReservationService {
                 itemDtos.add(itemDto);
             }
             return itemDtos;
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public Map<Long, Integer> reservationTicketCount(Store store, LocalDate currentDate) throws BusinessLogicException {
-        //Todo 예약내역에서 1. 날짜,예약상태로 필터링 한 예약 정보들 // 그러면 조건에 맞는 예약들이 나옴 //
+        //Todo 리펙토링하기
         //선택한 업체와 날짜의 예약들을 가져옴
         List<Reservation> currentDateReservations =
                 reservationRepository.findByReservationDateAndStore(currentDate, store);
@@ -201,4 +215,33 @@ public class ReservationService {
             throw new BusinessLogicException(ExceptionCode.RESERVATION_TOTAL_PRICE_MISMATCH);
         }
     }
+
+    private void validateTicketCount(Store store,LocalDate date, List<ReservationItem> requestItems) {
+        //잔여티켓과 요청티켓을 구해서 비교, 음수가 나오면 에러 발생
+        // 현재 티켓 예약내역 가져옴 + 반복문으로 잔여티켓 구해옴
+        Map<Long, Integer> reservationTickets = reservationTicketCount(store, date);
+        for (int i=0; i< store.getItems().size(); i++) {
+            Item item = store.getItems().get(i);
+            int requestTicketCount = requestItems.get(i).getTicketCount();
+            int remainingTicketCount = getRemainingTicketCount(item,reservationTickets);
+            if (requestTicketCount > remainingTicketCount)
+                throw new BusinessLogicException(ExceptionCode.TICKET_QUANTITY_EXCEEDED);
+        }
+    }
+
+    public int countReservation(Store store, Member member) {
+        int count = reservationRepository.
+                countByStoreAndMemberAndReservationStatus(store,member,Reservation.ReservationStatus.RESERVATION_USE_COMPLETED);
+        return count;
+    }
+
+    public void changeReservationStatus(long reservationId) {
+        Reservation findReservation = findReservation(reservationId);
+        findReservation.setReservationStatus(Reservation.ReservationStatus.RESERVATION_USE_COMPLETED);
+    }
+
 }
+//"RESERVATION_REQUEST"
+//        );
+//
+////        "RESERVATION_USE_COMPLETED"

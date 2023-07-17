@@ -266,4 +266,10 @@ public class StoreService {
 
         imgService.uploadStoreImage(images, findStore, thumbnailImage); // 업로드 //
     }
+
+    public void validateImagePost(List<MultipartFile> images, MultipartFile thumbnailImage) {
+        System.out.println(thumbnailImage);
+        if (images == null) throw new BusinessLogicException(ExceptionCode.IMAGE_LIST_IS_EMPTY);
+        if (thumbnailImage == null) throw new BusinessLogicException(ExceptionCode.THUMBNAIL_IS_NULL);
+    }
 }

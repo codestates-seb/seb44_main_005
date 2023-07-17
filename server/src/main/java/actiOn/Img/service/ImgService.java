@@ -141,6 +141,13 @@ public class ImgService {
     }
 
     public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
+        int storeImgListSize = storeImgRepository.countByStore(store);
+        if (files.size() > 12- storeImgListSize) { // 사진개수 제한
+            int remainingSize = 12 - storeImgListSize;
+            if (remainingSize < 0) remainingSize = 0;
+            files = files.subList(0, remainingSize);
+        }
+
         String randomStringForImageName = generateRandomName();
         List<StoreImg> storeImgs = new ArrayList<>();
         int index = 1;

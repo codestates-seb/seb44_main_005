@@ -22,7 +22,6 @@ public class ReservationPostDto {
     @NotSpace
     private String reservationEmail;
 
-    @NotSpace
     private String reservationDate;
 
     @Positive

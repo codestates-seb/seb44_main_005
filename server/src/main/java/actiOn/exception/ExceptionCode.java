@@ -35,13 +35,19 @@ public enum ExceptionCode {
     RESERVATION_MEMBER_NOT_FOUND(404, "Reservation member not match"),
     INVALID_RESERVATION_DATE(400, "Invalid reservation date"),
     RESERVATION_TOTAL_PRICE_MISMATCH(403, "Reservation total price is not correct"),
-
+    TICKET_QUANTITY_EXCEEDED(400, "request ticket quantity exceeded."),
+    THUMBNAIL_IS_NULL(400, "Thumbnail Image is null."),
+    IMAGE_LIST_IS_EMPTY(400, "Image List is empty."),
+    REQUEST_ITEM_ID_IS_REJECTED(400, "Request itemId is rejected!"),
+    REVIEW_CREATE_REJECTED(400, "사용완료 예약건을 초과하여 리뷰를 작성할 수 없습니다."),
+    DATE_BAD_REQUEST(400, "날짜형식이 올바르지 않습니다."),
     //WISH
     WISH_EXIST(409, "Wish exists"),
     WISH_NOT_FOUND(404, "Wish not found"),
 
     // ITEM
     ITEM_NOT_FOUND(404, "Item not found");
+
 
     @Getter
     private int status;

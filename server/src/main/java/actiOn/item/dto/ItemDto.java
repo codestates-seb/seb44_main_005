@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDto {
     long itemId;
-    String item;
+    String itemName;
     int totalTicket;
     int price;
     int remainingTicket;

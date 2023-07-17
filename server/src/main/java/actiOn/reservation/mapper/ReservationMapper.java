@@ -1,5 +1,7 @@
 package actiOn.reservation.mapper;
 
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.item.entity.Item;
 import actiOn.item.service.ItemService;
 import actiOn.reservation.dto.*;
@@ -9,6 +11,8 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +28,13 @@ public interface ReservationMapper {
         );
 
         reservation.setTotalPrice(requestBody.getTotalPrice());
-        reservation.setReservationDate(LocalDate.parse(requestBody.getReservationDate()));
+        LocalDate date;
+        try{
+            date = LocalDate.parse(requestBody.getReservationDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }catch (DateTimeParseException e) {
+            throw new BusinessLogicException(ExceptionCode.DATE_BAD_REQUEST);
+        }
+        reservation.setReservationDate(date);
 
         return reservation;
     }
