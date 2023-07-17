@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dummyBio } from '../dummy/mypagedummy';
 import Modal from '../components/MyPage/Modal';
 import profile from '../assets/profile.svg';
@@ -22,6 +22,7 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
+  const APIURL = import.meta.env.VITE_APP_API_URL
   const user = dummyBio[0];
   const businessCategory = user.stores[0].businessCategory;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
@@ -29,6 +30,25 @@ function MyPage() {
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`${APIURL}/mypage`);
+      const data = await res.json();
+      setUserData(data);
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
+
+  if(!userData) {
+    return <p>Loading...</p>;
+  }
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
