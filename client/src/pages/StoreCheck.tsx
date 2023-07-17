@@ -46,7 +46,11 @@ function StoreCheck() {
 
   const handleEditClick = (storeId) => {
     navigate(`/store/edit?store_id=${storeId}`);
-  }
+  };
+
+  const handleAddClick = () => {
+    navigate(`/store/add`);
+  };
 
   const handleDeleteClick = () => {
     alert('정말 삭제하시겠습니가?');
@@ -54,7 +58,10 @@ function StoreCheck() {
 
   return (
     <StoreCheckContainer>
-      <StoreCheckTitle>판매 서비스 관리</StoreCheckTitle>
+      <div className='flex flex-row justify-between'>
+        <StoreCheckTitle>판매 서비스 관리</StoreCheckTitle>
+        <button className='text-[18px] font-semibold bg-[#4771B7] text-white p-[7px] rounded-lg' type='button' onClick={handleAddClick}>업체 등록</button>
+      </div>
       {storesData.map((store) => (
         <StoreCards key={store.storeId}>
           <ImgContainer>
