@@ -18,12 +18,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,12 +33,14 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
+    private final MemberService memberService;
+    private final RoleService roleService;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
@@ -60,15 +62,13 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
 
                 .and()
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeRequests(authorize -> authorize
                         .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
                 )
                 .oauth2Login(oAuth2 -> oAuth2
                         .loginPage("/oauth2/authorization/google")
                         .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
                 );
-
-        return httpSecurity.build();
     }
 
     // JwtAuthenticationFilter 구성하는 클래스
