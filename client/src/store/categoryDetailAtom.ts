@@ -1,6 +1,10 @@
-import { atom } from "recoil"
+import { atom } from 'recoil';
 
-import { CategoryDetailType, ReviewsType, reserFormType } from "../intefaces/CategoryDetail"
+import {
+  CategoryDetailType,
+  ReviewsType,
+  reserFormType,
+} from '../intefaces/CategoryDetail';
 
 export const CategoryDetailState = atom({
   key: 'CategoryDetailState',
@@ -23,18 +27,18 @@ export const CategoryDetailState = atom({
 
 export const ReserFormState = atom({
   key: 'ReservationFormState',
-  default: {} as reserFormType
-})
+  default: {} as reserFormType,
+});
 
 export const itemsState = atom({
   key: 'itemsState',
-  default: []
-})
+  default: [],
+});
 
 export const totalPrice = atom({
   key: 'totalPrice',
-  default: 0
-})
+  default: 0,
+});
 
 export const ReviewsState = atom({
   key: 'ReviewsState',

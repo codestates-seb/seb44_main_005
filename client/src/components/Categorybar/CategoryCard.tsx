@@ -33,25 +33,25 @@ function CategoryCard({ data }: CProps) {
     data;
   const url = import.meta.env.VITE_APP_API_URL;
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  const [isHeart, setIsHeart] = useState(isLike);
+  // const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
+  console.log(clickTimer);
 
+  // 상태코드 보고 UI 변경시키기 ..
   const onClickHeart = async () => {
     if (!isLogin) {
       alert(`로그인 상태에서만 등록할 수 있습니다.`);
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
-      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
+      await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      console.log(isHeart);
-      if (res.status === 201) {
-        setIsHeart(true);
-      }
+      // console.log(isLike);
+
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
@@ -65,19 +65,17 @@ function CategoryCard({ data }: CProps) {
     if (!isHeartClicked) {
       setIsHeartClicked(true);
 
-      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
+      await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      if (res.status === 201) {
-        setIsHeart(false);
-      }
-      console.log(isHeart);
+      // console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
     }
   };
+  // console.log(isLike);
   return (
     <CardContainer>
       <img className="w-[250px] h-[198px] object-cover" src={img} />
@@ -95,7 +93,7 @@ function CategoryCard({ data }: CProps) {
         </Text>
         <CardPrice>
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
-          {isHeart ? (
+          {isLike ? (
             <PiHeartFill
               className="cursor-pointer"
               onClick={onClickNonHeart}

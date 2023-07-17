@@ -12,6 +12,7 @@ function Dropdown() {
 
     sessionStorage.removeItem('Authorization');
     sessionStorage.removeItem('memberId');
+    sessionStorage.removeItem('access_token');
     window.location.href = '/home';
   };
   return (
@@ -25,7 +26,6 @@ function Dropdown() {
         </Menu>
       </StyledContainer>
     </div>
-
   );
 }
 

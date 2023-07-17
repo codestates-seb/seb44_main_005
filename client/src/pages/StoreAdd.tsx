@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -48,7 +47,7 @@ function StoreAdd() {
     else if (e.target.name === "category") {
       setForm({...form, category: e.target.value});
     }
-  }
+  };
 
   const storeAddPost = async () => {
     const imgForm = new FormData();
@@ -152,7 +151,7 @@ function StoreAdd() {
       setBtnText((prev) => !prev);
       storeEditFetch(storeId);
     }
-  }, [])
+  }, []);
 
   return (
     <StoreAddSection>
