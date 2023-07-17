@@ -27,7 +27,6 @@ function AddProduct() {
     else if (e.target.name === "totalTicket") {
       setProduct({...product, totalTicket: onlyNumbers});
     }
-    console.log(form);
   }
 
   const productAddHandler = () => {

@@ -48,7 +48,6 @@ function StoreAdd() {
     else if (e.target.name === "category") {
       setForm({...form, category: e.target.value});
     }
-    console.log(form);
   }
 
   const storeAddPost = async () => {
@@ -65,7 +64,6 @@ function StoreAdd() {
         },
         body: JSON.stringify(form)
       });
-      console.log(res);
       if (!res.ok) {
         setIsLoading((prev) => !prev);
         return alert('업체 등록에 실패했습니다.');
