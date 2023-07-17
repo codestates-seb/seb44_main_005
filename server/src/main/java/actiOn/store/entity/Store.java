@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,8 +47,20 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private String contact;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
+    @Column(columnDefinition = "integer default 0")
     private int likeCount;
+
+    //리뷰 개수
+    @Column(columnDefinition = "integer default 0")
+    private int reviewCount;
+
+    //평점
+    @Column
+    private double rating;
+
+    //가격
+    @Column(nullable = false)
+    private int lowPrice;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -57,7 +69,7 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Item> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)

@@ -1,12 +1,14 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { search } from '../../store/searchbarAtom';
 
 import Categorybar from '../Categorybar/Categorybar';
 
 function CategoryLayout() {
+  const isSearch = useRecoilValue(search);
   return (
     <>
-      <Categorybar />
+      {!isSearch && <Categorybar />}
       <Outlet />
     </>
   );

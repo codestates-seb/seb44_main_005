@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import tw from 'tailwind-styled-components';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
-import { recommend } from '../dummy/main';
 import Carousel from '../components/Home/Carousel';
 import KakaoMap from '../components/Home/KakaoMap';
+import { CarouselBox, LeftArrow, RightArrow } from '../styles/Home/Home';
+import { homeDataState } from '../store/homeAtom';
+import { homeDataType } from '../intefaces/Home';
 
 function Home() {
-  const [current, setCurrent] = useState(0);
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const [homeData, setHomeData] = useRecoilState<homeDataType>(homeDataState);
+  const [current, setCurrent] = useState<number>(0);
   const moveStyle = {
-    0: 'translate-x-0 bg-[#67C2E4]',
+    0: 'translate-x-0 bg-[#4770b755]',
     1: 'translate-x-[-100vw] bg-[#879fa8]',
     2: 'translate-x-[-200vw] bg-[#e4c767]',
     3: 'translate-x-[-300vw] bg-[#678fe4]',
@@ -17,39 +21,56 @@ function Home() {
 
   const arrowLeftHandler = () => {
     if (current === 0) {
-      setCurrent(recommend.recommend.length - 1);
+      setCurrent(homeData.recommend.length - 1);
     } else {
       setCurrent(current - 1);
     }
   };
 
   const arrowRightHandler = () => {
-    if (current === recommend.recommend.length - 1) {
+    if (current === homeData.recommend.length - 1) {
       setCurrent(0);
     } else {
       setCurrent(current + 1);
     }
   };
 
+  const homeDataFetch = async () => {
+    const res = await fetch(`${API_URL}/main`);
+    const json = await res.json();
+    setHomeData(json);
+  }
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (current === recommend.recommend.length - 1) {
-        setCurrent(0);
-      } else {
-        setCurrent(current + 1);
-      }
-    }, 3000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [current]);
+    if (homeData.recommend) {
+      const interval = setInterval(() => {
+        if (current === homeData.recommend.length - 1) {
+          setCurrent(0);
+        } else {
+          setCurrent(current + 1);
+        }
+      }, 3000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [current, homeData]);
+
+  useEffect(() => {
+    try {
+      homeDataFetch();
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }, [])
 
   return (
     <section>
-      <section className="relative">
+      <section className="relative overflow-x-hidden">
         <CarouselBox className={`${moveStyle[current]} carousel-container`}>
-          {recommend.recommend.map((el) => {
-            return <Carousel data={el} key={el.storeId} />
+          {homeData.recommend && homeData.recommend.map((el) => {
+            return <Carousel data={el} key={el.storeId} />;
           })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>
@@ -62,7 +83,7 @@ function Home() {
       <section className="w-[80%] mt-10 mx-auto">
         <div className="font-bold text-2xl mb-5">모든 레저 한눈에 보기</div>
         <div className="rounded-xl h-[600px]">
-          <KakaoMap marker={recommend.data} />
+          {homeData.data && <KakaoMap marker={homeData.data} /> }
         </div>
       </section>
     </section>
@@ -70,22 +91,3 @@ function Home() {
 }
 
 export default Home;
-
-const CarouselBox = tw.div`
-  w-[400vw]
-  flex
-  overflow-hidden
-  duration-1000
-`;
-
-const LeftArrow = tw.div`
-  absolute top-[50%] left-[3%]
-  translate-y-[-50%]
-  cursor-pointer
-`;
-
-const RightArrow = tw.div`
-  absolute top-[50%] right-[3%]
-  translate-y-[-50%]
-  cursor-pointer
-`;

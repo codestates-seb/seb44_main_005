@@ -6,7 +6,7 @@ export const StyleContainer = tw.div`
   items-center
 `;
 
-export const RegisterContainer = tw.form`
+export const RegisterContainer = tw.div`
   flex 
   flex-col 
   items-center 
@@ -34,9 +34,11 @@ export const Input = tw.input`
   border-[1px] 
   border-[#9A9A9A] 
   rounded-md 
-  px-2 
+  p-2 
   py-[2px] 
   w-[280px]
+  h-[30px]
+  text-[13px]
 `;
 
 export const Label = tw.label`

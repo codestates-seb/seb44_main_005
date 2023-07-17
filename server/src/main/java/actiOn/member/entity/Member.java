@@ -1,8 +1,10 @@
 package actiOn.member.entity;
 
 import actiOn.Img.profileImg.ProfileImg;
+import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
+import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
 import lombok.Getter;
@@ -13,6 +15,7 @@ import javax.persistence.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -32,11 +35,12 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String nickname;
 
-    @Column // nullable true로 임시 변경
+    @Column
     private String phoneNumber;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<MemberRole> memberRoles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")
     private Business business;
@@ -47,7 +51,11 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Store> stores = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "member")
+    private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private ProfileImg profileImg;
 
     @Override
@@ -55,8 +63,32 @@ public class Member extends BaseEntity implements Principal {
         return getEmail();
     }
 
-    public enum MemberRole {
-        ROLE_USER,
-        ROLE_PARTNER
+    public List<String> getRoles() {
+        return this.getMemberRoles()
+                .stream()
+                .map(memberRole -> memberRole.getRole().getName())
+                .collect(Collectors.toList());
+    }
+
+    // 클라이언트에 회원 권한 전송하기 위한 메서드
+    public String getRoleName() {
+        List<String> roleNames = this.getRoles();
+
+        // 파트너 권한이 포함되어 있으면 파트너로 리턴
+        if (roleNames.contains("PARTNER")) {
+            return "PARTNER";
+        }
+
+        return "USER";
+    }
+
+    // 프로필 이미지 링크 반환
+    public String getProfileImgLink() {
+        // 프로필 사진 null인 경우 기본 이미지 링크 리턴
+        if (this.getProfileImg() == null) {
+            return "default image";
+        }
+
+        return this.getProfileImg().getLink();
     }
 }

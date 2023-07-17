@@ -1,7 +1,9 @@
 package actiOn.auth.oauth2;
 
 import actiOn.auth.provider.TokenProvider;
-import actiOn.auth.utils.MemberAuthorityUtil;
+import actiOn.auth.role.MemberRole;
+import actiOn.auth.role.Role;
+import actiOn.auth.role.RoleService;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -17,11 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.List;
 
+// OAuth2 인증에 성공하면 호출되는 핸들러
 @AllArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final MemberAuthorityUtil authorityUtil;
     private final MemberService memberService;
+    private final RoleService roleService;
     private final TokenProvider tokenProvider;
 
     @Override
@@ -46,8 +50,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         member.setEmail(email);
         member.setPassword(generateRandomPassword());
         member.setNickname(generateNicknameFromEmail(email));
-//        member.setPhoneNumber("010-1111-4444");
-        member.setRoles(authorityUtil.createRoles(email));
+
+        // USER 권한 부여
+        Role userRole = roleService.findUserRole();
+        List<MemberRole> memberRole = memberService.addedMemberRole(member, userRole);
+        member.setMemberRoles(memberRole);
 
         return member;
     }
@@ -72,6 +79,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return nickname;
     }
 
+    // 프론트로 JWT 전송하기 위해 redirect하는 메서드
     private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
         String accessToken = tokenProvider.delegateAccessToken(member);
 //        String refreshToken = tokenProvider.delegateRefreshToken(member);
@@ -91,8 +99,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .scheme("http")
                 .host("localhost")
 //                .host("S3 엔드포인트") // TODO 엔드포인트
-                .port(80)
+                .port(5173)
                 .path("/oauth2/authorization/google/success")
+//                .path("/home") // TODO redirect 어디로 할 건지
                 .queryParams(queryParams)
                 .build().toUri()
                 .toString();

@@ -1,4 +1,4 @@
-package actiOn.config;
+package actiOn.config.sercurity;
 
 import actiOn.auth.filter.JwtAuthenticationFilter;
 import actiOn.auth.filter.JwtVerificationFilter;
@@ -8,8 +8,10 @@ import actiOn.auth.handler.MemberAuthenticationFailureHandler;
 import actiOn.auth.handler.MemberAuthenticationSuccessHandler;
 import actiOn.auth.oauth2.OAuth2MemberSuccessHandler;
 import actiOn.auth.provider.TokenProvider;
+import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,28 +30,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
-    private final MemberService memberService;
-
-    public SecurityConfiguration(TokenProvider tokenProvider, MemberAuthorityUtil authorityUtil, MemberService memberService) {
-        this.tokenProvider = tokenProvider;
-        this.authorityUtil = authorityUtil;
-        this.memberService = memberService;
-    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
                 .and()
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
-
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -65,12 +60,12 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
 
                 .and()
-                .authorizeRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
                 )
                 .oauth2Login(oAuth2 -> oAuth2
                         .loginPage("/oauth2/authorization/google")
-                        .successHandler(new OAuth2MemberSuccessHandler(authorityUtil, memberService, tokenProvider))
+                        .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
                 );
 
         return httpSecurity.build();
@@ -105,8 +100,13 @@ public class SecurityConfiguration {
 
         configuration.setAllowedOrigins(
                 Arrays.asList(
-                        "http://localhost:3000")
-                // TODO S3 엔드포인트 추가 ""
+                        "http://localhost:3000",
+                        "https://acti-on.netlify.app",
+                        "https://6f76-222-232-33-89.ngrok-free.app",
+                        "http://localhost:5173",
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com"
+                        // TODO S3 엔드포인트 추가 ""
+                )
         );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
 

@@ -1,102 +1,170 @@
-import React from 'react';
-import dummyImg from '../dummy/mypagedummy.jpeg';
+import { useState } from 'react';
+import { dummyBio } from '../dummy/mypagedummy';
+import Modal from '../components/MyPage/Modal';
+import profile from '../assets/profile.svg';
+
+import {
+  BusinessCategory,
+  BusinessSpace,
+  ButtonGrid,
+  ButtonStyle,
+  ImgStyle,
+  MiniButtonGrid,
+  MySpace,
+  NicknameAccent,
+  TopSpace,
+  UserInfo,
+  UserInfoTitle,
+  BusinessCategoryTitle,
+  MyPageContainer,
+  MyBioContainer,
+  PhotoInputStyle,
+} from '../styles/MyPage/MyPage';
 
 function MyPage() {
+  // const APIURL = import.meta.env.VITE_APP_API_URL
+  const user = dummyBio[0];
+  const businessCategory = user.stores[0].businessCategory;
+  const businessRegi = `스포츠 및 여가관련 서비스업`;
+
+  const [showBusinessSpace, setShowBusinessSpace] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  // const [userData, setUserData] = useState(null);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // const fetchData = async () => {
+  //   try {
+  //     const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+  //     const res = await fetch(`${APIURL}/mypage`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Authorization': ACCESS_TOKEN
+  //       }
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         //응답 데이터처리
+  //       })
+  //   } catch (error) {
+  //     console.error('Error fetching data', error);
+  //   }
+  // };
+
+  // if(!userData) {
+  //   return <p>Loading...</p>;
+  // }
+  
+  const handleBusinessSpaceToggle = () => {
+    setShowBusinessSpace(!showBusinessSpace);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedPhoto(file);
+  };
+
+  const handlePhotoRemove = () => {
+    setSelectedPhoto(null);
+    const input = document.getElementById('photoInput') as HTMLInputElement;
+    if (input) {
+      input.value='';
+    }
+  };
+
   return (
-    <div>
-      <div className="flex flex-row justify-center items-start py-24 space-x-8">
-        <div className="border-[1px] border-[#4771B7] h-[100%] px-10 py-16 space-y-20">
-          <div className="flex flex-col space-y-8">
-            <span className="text-xl font-semibold">마이페이지</span>
-            <div className="text-lg flex flex-col space-y-8 pl-5">
-              <a>내 정보 관리</a>
-              <a>위시리스트</a>
-              <a>예약 내역 조회</a>
-            </div>
-          </div>
-          <div className="flex flex-col space-y-8">
-            <span className="text-xl font-semibold">파트너쉽</span>
-            <div className="text-lg pl-5">
-              <a>판매 서비스 관리</a>
-            </div>
-          </div>
-        </div>
-        <div className="border-[1px] border-[#4771B7] space-y-32 p-20">
-          <div className="space-y-7">
-            <div className="grid justify-items-end">
-              <button
-                className="bg-[#4771B7] text-white px-4 py-1 rounded"
-                type="button"
-              >
-                편집
-              </button>
-            </div>
-            <div className="flex flex-col items-center space-y-2">
-              <img className="w-[100px]" src={dummyImg} alt="dummy bio img" />
-              <div className="flex space-x-3">
-                <button
-                  className="text-[12px] bg-[#EDF1F8] border-[1px] border-[#4771B7] rounded"
-                  type="button"
-                >
-                  사진 변경
-                </button>
-                <button
-                  className="text-[12px] bg-[#EDF1F8] border-[1px] border-[#4771B7] rounded"
-                  type="button"
-                >
-                  사진 삭제
-                </button>
-              </div>
-              <span className="font-medium text-xl">Taewoo Kim</span>
-            </div>
-            <div className="space-y-7">
-              <div className="space-x-10 text-lg">
-                <span className="font-medium">닉네임</span>
-                <span>Taewoo Kim</span>
-              </div>
-              <div className="space-x-10 text-lg">
-                <span className="font-medium">이메일</span>
-                <span>abc123@naver.com</span>
-              </div>
-              <div className="space-x-10 text-lg">
-                <span className="font-medium">연락처</span>
-                <span>010-1234-5678</span>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-7">
-            <div className="grid justify-items-end">
-              <button
-                className="bg-[#4771B7] text-white px-4 py-1 rounded"
-                type="button"
-              >
-                등록한 업체보기
-              </button>
-            </div>
-            <div className="flex flex-row space-x-10 justify-center">
-              <div className="flex flex-col space-y-5 text-lg">
-                <span className="font-semibold">업태</span>
-                <span>스포츠 및 여가관련 서비스업</span>
-                <span>스포츠 및 여가관련 서비스업</span>
-                <span>스포츠 및 여가관련 서비스업</span>
-              </div>
-              <div className="flex flex-col space-y-5 text-lg">
-                <span className="font-semibold">업종</span>
-                <span>레저 좋아</span>
-                <span>레저 화이팅</span>
-                <span>태우네 레저</span>
-              </div>
-              <div className="flex flex-col space-y-5 text-lg">
-                <span className="font-semibold">업태</span>
-                <span>언더워터플레이 함덕점</span>
-                <span>언더워터플레이 애월점</span>
-                <span>언더워터플레이 김녕점</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <MyPageContainer>
+        <MyBioContainer>
+          <MySpace>
+            <ButtonGrid>
+              <ButtonStyle type="button" onClick={openModal}>편집</ButtonStyle>
+            </ButtonGrid>
+            <TopSpace>
+              <ImgStyle 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                alt="profile img" 
+              />
+              <MiniButtonGrid>
+                <label htmlFor='photoInput'>
+                  <input 
+                    id='photoInput'
+                    type='file'
+                    accept='image/*'
+                    style={{ display: 'none' }}
+                    onChange={handlePhotoChange} 
+                  />
+                  <PhotoInputStyle>사진 변경</PhotoInputStyle>
+                </label>
+                <label htmlFor='photoRemoveInput'>
+                  <input 
+                    id='photoRemoveInput'
+                    type='button'
+                    style={{ display: 'none' }}
+                    onClick={handlePhotoRemove}
+                  />
+                  <PhotoInputStyle>사진 삭제</PhotoInputStyle>
+                </label>
+              </MiniButtonGrid>
+              <NicknameAccent>{user.nickname}</NicknameAccent>
+            </TopSpace>
+            <MySpace>
+              <UserInfo>
+                <UserInfoTitle>닉네임</UserInfoTitle>
+                <span>{user.nickname}</span>
+              </UserInfo>
+              <UserInfo>
+                <UserInfoTitle>이메일</UserInfoTitle>
+                <span>{user.email}</span>
+              </UserInfo>
+              <UserInfo>
+                <UserInfoTitle>연락처</UserInfoTitle>
+                <span>{user.phoneNumber}</span>
+              </UserInfo>
+            </MySpace>
+          </MySpace>
+          <MySpace>
+            <ButtonGrid>
+              <ButtonStyle type="button" onClick={handleBusinessSpaceToggle}>등록한 업체보기</ButtonStyle>
+            </ButtonGrid>
+            {showBusinessSpace && (
+              <BusinessSpace>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업태</BusinessCategoryTitle>
+                  {user.stores.map((_, index) => (
+                    <span key={index}>{businessRegi}</span>
+                  ))}
+                </BusinessCategory>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업종</BusinessCategoryTitle>
+                  {user.stores.map((_, index) => (
+                    <span key={index}>{businessCategory}</span>
+                  ))}
+                </BusinessCategory>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업체명</BusinessCategoryTitle>
+                  {user.stores.map((store, index) => (
+                    <span key={index}>{store.storeName}</span>
+                  ))}
+                </BusinessCategory>
+              </BusinessSpace>
+            )}
+          </MySpace>
+        </MyBioContainer>
+      </MyPageContainer>
+      {showModal && <Modal onClick={closeModal} defaultNickname={user.nickname} defaultPhoneNumber={user.phoneNumber} />}
+    </>
   );
 }
 

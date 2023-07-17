@@ -1,20 +1,32 @@
-import React from 'react';
-function SelectBox() {
+import { useState } from 'react';
+import { SelectContainer } from '../../styles/Partner/SelectBox';
+
+function SelectBox({ value, onChange }) {
+  const [isSelectDisabled, setIsSelectDisabled] = useState(false);
+
+  const handleSelectFocus = () => {
+    setIsSelectDisabled(true);
+  };
+
   return (
-    <select className="border-[1px] border-[#9A9A9A] rounded-md w-[100%] mr-[40px] px-2 py-[4px]">
-      <option key="select" value="select">
+    <SelectContainer
+      value={value}
+      onChange={onChange}
+      onFocus={handleSelectFocus}
+    >
+      <option disabled={isSelectDisabled} value="select">
         선택
       </option>
-      <option key="sprtsService" value="sportsService">
+      <option key="sprtsService" value="스포츠 서비스업">
         스포츠 서비스업
       </option>
-      <option key="groundSports" value="groundSports">
+      <option key="groundSports" value="육상 오락관련 서비스업">
         육상 오락관련 서비스업
       </option>
-      <option key="oceanSports" value="oceanSports">
+      <option key="oceanSports" value="해상 오락관련 서비스업">
         해상 오락관련 서비스업
       </option>
-    </select>
+    </SelectContainer>
   );
 }
 

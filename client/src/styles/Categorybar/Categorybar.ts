@@ -5,6 +5,7 @@ export const Item = tw.div`
   flex-col
   justify-center 
   items-center
+
 `;
 
 export const CategoryBarContainer = tw.div`

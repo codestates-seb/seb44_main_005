@@ -2,6 +2,7 @@ package actiOn.Img.storeImg;
 
 
 import actiOn.store.entity.Store;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class StoreImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imgId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String link;
 
     @Column(nullable = false)
@@ -26,4 +27,11 @@ public class StoreImg {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
+
+    public StoreImg(String link, Store store) {
+        this.link = link;
+        this.store = store;
+    }
+
+
 }

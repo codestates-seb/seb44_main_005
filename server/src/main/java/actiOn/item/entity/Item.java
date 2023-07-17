@@ -24,10 +24,24 @@ public class Item {
     @Column(name = "PRICE", nullable = false)
     private Integer price;
 
-    @Column(name = "MAX_COUNT", nullable = false)
-    private Integer maxCount;
+    @Column(name = "TOTAL_TICKET", nullable = false)
+    private Integer totalTicket;
+
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private ItemStatus status = ItemStatus.SAVED;
 
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
+
+    public void validateTicketCount(int ticketCount) {
+        if (ticketCount > this.totalTicket) {
+            throw new IllegalArgumentException("티켓 수가 최대 허용량을 초과했습니다.");
+        }
+    }
+
+    public enum ItemStatus {
+        SAVED, DELETED
+    }
 }
