@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import DetailContent from "../components/CategoryDetail/DetailContent";
 import LocationInfo from "../components/CategoryDetail/LocationInfo";
@@ -25,8 +25,7 @@ function CategoryDetail() {
       const json = await res.json();
       delete json.items;
       setData(json);
-    }
-    catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -37,9 +36,8 @@ function CategoryDetail() {
       const dateValue = date.split('-').join('');
       const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
       const json = await res.json();
-      setData((prev) => ({...prev, items: json}));
-    }
-    catch(error) {
+      setData((prev) => ({ ...prev, items: json }));
+    } catch (error) {
       console.log(error);
     }
   };
@@ -65,7 +63,7 @@ function CategoryDetail() {
           <LocationInfo />
           <Review />
         </section>
-      }
+      )}
       <PaymentInfo />
     </section>
   );

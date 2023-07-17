@@ -28,7 +28,8 @@ function Partner() {
   const [businessSector, setBusinessSector] = useState('');
 
   const [isInputTouched, setIsInputTouched] = useState(false);
-  const [isCheckingDuplicate, _] = useState(false);
+  const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
+  const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -43,6 +44,23 @@ function Partner() {
   useEffect(() => {
     setIsInputTouched(true);
   }, []);
+
+  const handleDuplicateCheck = async () => {
+    setIsCheckingDuplicate(true);
+
+    // 비동기 요청 지연 시뮬레이션
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // 사업자 등록번호 중복 확인용 시뮬레이션
+    const isDuplicate = regiNumber === '123-45-67890'; //실제 유효성 검사 로직으로 대체
+
+    setIsDuplicateRegiNumber(isDuplicate);
+    setIsCheckingDuplicate(false);
+
+    if (isDuplicate) {
+      alert('이미 등록된 사업자등록번호입니다.');
+    }
+  };
 
   const isFormValid = (
     regiNumber &&
@@ -76,12 +94,14 @@ function Partner() {
 
       if (response.ok) {
         // 성공적으로 등록된 경우 처리
+        console.log('Status', response.status);
         if(response.status === 201) {
-          alert('파트너 등록에 성공했습니다.');
+          console.log('201 Created');
           navigate('/home');
         }
       } else {
         // 등록 실패한 경우 처리
+        console.log('Status', response.status);
         alert('파트너 등록에 실패했습니다.');
       }
     } catch (error) {
@@ -110,6 +130,7 @@ function Partner() {
               isRegiNumberValid={isRegiNumberValid}
               isRegiNumberIncomplete={isRegiNumberIncomplete}
               setIsInputTouched={setIsInputTouched}
+              handleDuplicateCheck={handleDuplicateCheck}
               isCheckingDuplicate={isCheckingDuplicate}
             />
             <CompanyName>

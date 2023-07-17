@@ -28,6 +28,6 @@ function MyRouter() {
       </Route>
     </Routes>
   );
-};
+}
 
 export default MyRouter;

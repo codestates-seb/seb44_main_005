@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.List;
 
+// OAuth2 인증에 성공하면 호출되는 핸들러
 @AllArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final MemberService memberService;
@@ -49,6 +50,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         member.setEmail(email);
         member.setPassword(generateRandomPassword());
         member.setNickname(generateNicknameFromEmail(email));
+
+        // USER 권한 부여
         Role userRole = roleService.findUserRole();
         List<MemberRole> memberRole = memberService.addedMemberRole(member, userRole);
         member.setMemberRoles(memberRole);
@@ -76,6 +79,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return nickname;
     }
 
+    // 프론트로 JWT 전송하기 위해 redirect하는 메서드
     private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
         String accessToken = tokenProvider.delegateAccessToken(member);
 //        String refreshToken = tokenProvider.delegateRefreshToken(member);
@@ -97,6 +101,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 //                .host("S3 엔드포인트") // TODO 엔드포인트
                 .port(5173)
                 .path("/oauth2/authorization/google/success")
+//                .path("/home") // TODO redirect 어디로 할 건지
                 .queryParams(queryParams)
                 .build().toUri()
                 .toString();

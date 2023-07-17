@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isLoginState } from '../store/userInfoAtom';
+import { useSetRecoilState } from 'recoil';
+import { Role, isLoginState, isProfile } from '../store/userInfoAtom';
 
 import {
   InputContainer,
@@ -17,13 +16,17 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
+  // const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID;
+  // const GOOGLE_REDIRECT_URI = import.meta.env.VITE_APP_REDIRECT_URI;
 
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
+  // const [accessToken, setAccessToken] = useState('');
 
   //recoil 전역상태
-  const isLogin = useRecoilValue(isLoginState);
   const setIsLoginState = useSetRecoilState(isLoginState);
+  const setIsProfile = useSetRecoilState(isProfile);
+  const setIsRole = useSetRecoilState(Role);
 
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
@@ -34,11 +37,83 @@ function Login() {
   };
 
   //구글로그인
+  // const getAccessToken = async (authorizationCode) => {
+  //   // console.log('3');
+  //   // await fetch(`${url}/oauth2/authorization/google`, {
+  //   //   method: 'POST',
+  //   //   body: JSON.stringify({
+  //   //     accesstoken: authorizationCode,
+  //   //   }),
+  //   // });
+  //   // setIsLoginState(true);
+  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+  //   const accessToken = parsedHash.get('access_token');
+
+  //   // await url.post('oauth/google', { accessToken });
+  //   await fetch(`${url}/oauth2/authorization/google/success`, {
+  //     method: 'POST',
+  //     body: JSON.stringify({
+  //       accesstoken: accessToken,
+  //     }),
+  //   });
+  //   // setIsLoginState(true);
+  //   setIsLoginState(true);
+  //   navigate('/home');
+  // };
+  // useEffect(() => {
+  //   // Authorization Server로부터 클라이언트로 리디렉션된 경우, Authorization Code가 함께 전달됩니다.
+  //   // ex) http://localhost:3000/mypage?code=5e52fb85d6a1ed46a51f
+  //   // 4. [Github Auth 서버 ->클라이언트] Redirect + Authorization code 확인
+  //   console.log('3');
+  //   const url = new URL(window.location.href);
+  //   const authorizationCode = url.searchParams.get('code');
+  //   if (authorizationCode) {
+  //     getAccessToken(authorizationCode);
+  //   }
+  // }, []);
+  // const getAccessToken = async (accessToken) => {
+  //   console.log('1');
+  //   try {
+  //     await fetch(`${url}/oauth2/authorization/google`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         accessToken: accessToken,
+  //       }),
+  //     });
+  //     // const { accessToken } = result.data;
+  //     setIsLoginState(true);
+  //     setAccessToken(accessToken);
+  //     navigate('/home');
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // };
+
+  // const handleAccessToken = async () => {
+  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
+  //   console.log('2');
+  //   const accessToken = parsedHash.get('access_token');
+  //   if (accessToken) {
+  //     await getAccessToken(accessToken);
+  //   }
+  // };
+
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
-    window.location.href =
-      await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
+    window.location.href = `${url}/oauth2/authorization/google`;
+    // 'https://accounts.google.com/o/oauth2/auth?' +
+    // `client_id=${CLIENT_ID}&` +
+    // `redirect_uri=${GOOGLE_REDIRECT_URI}&` +
+    // 'response_type=token&' +
+    // 'scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
   };
+
+  // useEffect(() => {
+  //   handleAccessToken();
+  // }, []);
 
   //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
@@ -57,6 +132,10 @@ function Login() {
       //헤더에서 멤버아이디와 닉네임을 받아옴
       const Authorization = res.headers.get('Authorization');
       const name = result1.nickname;
+      const profile = result1.profileImage;
+      const role = result1.role;
+      setIsProfile(profile);
+      setIsRole(role);
       // 로컬 스토리지에 memberId,토큰 저장
       sessionStorage.setItem('Authorization', Authorization);
       setIsLoginState(true);
@@ -69,14 +148,7 @@ function Login() {
     } catch (error) {
       console.error('로그인 요청 중 오류가 발생했습니다', error);
     }
-    console.log(isLogin);
   };
-
-  // useEffect(() => {
-  //   if (isLogin) {
-  //     // 로그인 상태인 경우 새로고침
-  //   }
-  // }, [isLogin]);
 
   return (
     <StyleContainer>
@@ -94,10 +166,7 @@ function Login() {
               type="text"
               value={email}
               onChange={onEmailHandler}
-
-
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-4 rounded-md mb-3 p-2"
-
             />
           </div>
           <div>

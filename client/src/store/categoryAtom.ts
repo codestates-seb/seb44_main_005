@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 export interface CategoryData {
   pageInfo: { storeCount: number }[];
-  data: any[];
+  data: [];
 }
 export const categoryData = atom<CategoryData>({
   key: 'categoryData',
@@ -10,5 +10,9 @@ export const categoryData = atom<CategoryData>({
     pageInfo: [{ storeCount: 0 }],
     data: [],
   },
+});
 
+export const Heart = atom<boolean>({
+  key: 'Heart',
+  default: false,
 });

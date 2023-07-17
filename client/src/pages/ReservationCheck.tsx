@@ -15,7 +15,6 @@ import {
   ResButtonsContainer,
   ButtonStyle,
   NoButtons,
-  ButtonReview,
 } from '../styles/MyPage/ReservationCheck';
 
 function ReservationCheck() {
@@ -74,14 +73,9 @@ function ReservationCheck() {
                   <ButtonStyle type="button">예약 삭제</ButtonStyle>
                 </div>
               )}
-              {reservation.reservationStatus === "예약 취소" && (
+              {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (
                 <div>
                   <NoButtons></NoButtons>
-                </div>
-              )}
-              {reservation.reservationStatus === "이용 완료" && (
-                <div>
-                  <ButtonReview>리뷰 작성</ButtonReview>
                 </div>
               )}
             </ResButtonsContainer>
