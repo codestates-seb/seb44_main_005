@@ -63,7 +63,7 @@ function CategoryDetail() {
           <LocationInfo />
           <Review />
         </section>
-      )}
+      }
       <PaymentInfo />
     </section>
   );
