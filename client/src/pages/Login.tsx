@@ -150,6 +150,12 @@ function Login() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
+    }
+  };
+
   return (
     <StyleContainer>
       <LoginContainer>
@@ -176,6 +182,7 @@ function Login() {
               value={password}
               onChange={onPwHandler}
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-3 rounded-md mr-3 p-2"
+              onKeyDown={handleKeyDown}
             />
           </div>
         </InputContainer>

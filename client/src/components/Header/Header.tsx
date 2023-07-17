@@ -12,7 +12,6 @@ import {
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
-  DropdownContainer,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
 import { search, searchKeyword } from '../../store/searchbarAtom';
