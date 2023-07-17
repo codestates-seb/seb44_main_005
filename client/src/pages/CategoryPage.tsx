@@ -21,6 +21,7 @@ function CategoryPage() {
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
   const keywords = searchParams.get('keyword');
+  // const keyword = useRecoilValue<string>(searchKeyword);
 
   // 전역 상태 변수
   const [isSearch, setIsSearch] = useRecoilState(search);
@@ -31,7 +32,6 @@ function CategoryPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('1');
       let data;
       // 검색 조건이 있을 때
       if (keywords) {
@@ -59,7 +59,7 @@ function CategoryPage() {
     };
 
     fetchData();
-  }, [categoryName, sort]);
+  }, [categoryName, sort, keywords]);
 
   return (
     <Style>

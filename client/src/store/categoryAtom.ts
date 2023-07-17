@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 export interface CategoryData {
   pageInfo: { storeCount: number }[];
-  data: [];
+  data: any[];
 }
 export const categoryData = atom<CategoryData>({
   key: 'categoryData',
