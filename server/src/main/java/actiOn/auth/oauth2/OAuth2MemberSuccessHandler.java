@@ -99,7 +99,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .scheme("http")
                 .host("localhost")
 //                .host("S3 엔드포인트") // TODO 엔드포인트
-//                .port(5173)
+                .port(5173)
                 .path("/oauth2/authorization/google/success")
 //                .path("/home") // TODO redirect 어디로 할 건지
                 .queryParams(queryParams)
