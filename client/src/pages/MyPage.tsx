@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { dummyBio } from '../dummy/mypagedummy';
 import Modal from '../components/MyPage/Modal';
+import profile from '../assets/profile.svg';
 
 import {
   BusinessCategory,
@@ -9,7 +10,6 @@ import {
   ButtonStyle,
   ImgStyle,
   MiniButtonGrid,
-  MiniButtonStyle,
   MySpace,
   NicknameAccent,
   TopSpace,
@@ -18,6 +18,7 @@ import {
   BusinessCategoryTitle,
   MyPageContainer,
   MyBioContainer,
+  PhotoInputStyle,
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
@@ -27,6 +28,7 @@ function MyPage() {
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
@@ -40,6 +42,19 @@ function MyPage() {
     setShowModal(false);
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedPhoto(file);
+  };
+
+  const handlePhotoRemove = () => {
+    setSelectedPhoto(null);
+    const input = document.getElementById('photoInput') as HTMLInputElement;
+    if (input) {
+      input.value='';
+    }
+  };
+
   return (
     <>
       <MyPageContainer>
@@ -49,10 +64,30 @@ function MyPage() {
               <ButtonStyle type="button" onClick={openModal}>편집</ButtonStyle>
             </ButtonGrid>
             <TopSpace>
-              <ImgStyle src={user.profileImg} alt="dummy bio img" />
+              <ImgStyle 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                alt="profile img" 
+              />
               <MiniButtonGrid>
-                <MiniButtonStyle type="button">사진 변경</MiniButtonStyle>
-                <MiniButtonStyle type="button">사진 삭제</MiniButtonStyle>
+                <label htmlFor='photoInput'>
+                  <input 
+                    id='photoInput'
+                    type='file'
+                    accept='image/*'
+                    style={{ display: 'none' }}
+                    onChange={handlePhotoChange} 
+                  />
+                  <PhotoInputStyle>사진 변경</PhotoInputStyle>
+                </label>
+                <label htmlFor='photoRemoveInput'>
+                  <input 
+                    id='photoRemoveInput'
+                    type='button'
+                    style={{ display: 'none' }}
+                    onClick={handlePhotoRemove}
+                  />
+                  <PhotoInputStyle>사진 삭제</PhotoInputStyle>
+                </label>
               </MiniButtonGrid>
               <NicknameAccent>{user.nickname}</NicknameAccent>
             </TopSpace>
