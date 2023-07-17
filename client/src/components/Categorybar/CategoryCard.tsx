@@ -11,8 +11,9 @@ import { BsFillStarFill } from 'react-icons/bs';
 import { PiHeartFill } from 'react-icons/pi';
 import { PiHeart } from 'react-icons/pi';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from '../../store/userInfoAtom';
+import { Heart } from '../../store/categoryAtom';
 
 type CProps = {
   data: {
@@ -33,11 +34,11 @@ function CategoryCard({ data }: CProps) {
     data;
   const url = import.meta.env.VITE_APP_API_URL;
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  // const [isHeart, setIsHeart] = useState(isLike);
+  const [isHeart, setIsHeart] = useRecoilState(Heart);
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
-  console.log(clickTimer);
+  // console.log(clickTimer);
 
   // 상태코드 보고 UI 변경시키기 ..
   const onClickHeart = async () => {
@@ -46,10 +47,14 @@ function CategoryCard({ data }: CProps) {
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
+      if (res.status === 201) {
+        setIsHeart(true);
+        console.log(isLike);
+      }
       // console.log(isLike);
 
       clickTimer = setTimeout(() => {
@@ -65,11 +70,15 @@ function CategoryCard({ data }: CProps) {
     if (!isHeartClicked) {
       setIsHeartClicked(true);
 
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
       // console.log(isLike);
+      if (res.status === 201) {
+        setIsHeart(false);
+      }
+      console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
@@ -93,7 +102,7 @@ function CategoryCard({ data }: CProps) {
         </Text>
         <CardPrice>
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
-          {isLike ? (
+          {isHeart ? (
             <PiHeartFill
               className="cursor-pointer"
               onClick={onClickNonHeart}
