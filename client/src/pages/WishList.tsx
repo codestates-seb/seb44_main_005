@@ -1,3 +1,4 @@
+
 // import { useSearchParams } from 'react-router-dom';
 // import { useEffect } from 'react';
 // import { useRecoilState } from 'recoil';
@@ -60,6 +61,7 @@ function WishList() {
         </div>
 
       )} */}
+
     </WishContainer>
   );
 }

@@ -22,6 +22,7 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
+  // const APIURL = import.meta.env.VITE_APP_API_URL
   const user = dummyBio[0];
   const businessCategory = user.stores[0].businessCategory;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
@@ -29,6 +30,33 @@ function MyPage() {
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  // const [userData, setUserData] = useState(null);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // const fetchData = async () => {
+  //   try {
+  //     const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+  //     const res = await fetch(`${APIURL}/mypage`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Authorization': ACCESS_TOKEN
+  //       }
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         //응답 데이터처리
+  //       })
+  //   } catch (error) {
+  //     console.error('Error fetching data', error);
+  //   }
+  // };
+
+  // if(!userData) {
+  //   return <p>Loading...</p>;
+  // }
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
@@ -114,13 +142,13 @@ function MyPage() {
               <BusinessSpace>
                 <BusinessCategory>
                   <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-                  {user.stores.map((store, index) => (
+                  {user.stores.map((_, index) => (
                     <span key={index}>{businessRegi}</span>
                   ))}
                 </BusinessCategory>
                 <BusinessCategory>
                   <BusinessCategoryTitle>업종</BusinessCategoryTitle>
-                  {user.stores.map((store, index) => (
+                  {user.stores.map((_, index) => (
                     <span key={index}>{businessCategory}</span>
                   ))}
                 </BusinessCategory>

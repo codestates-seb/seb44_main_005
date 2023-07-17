@@ -34,10 +34,7 @@ function Partner() {
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
     const formattedInput = input.slice(0, 10);
-    const formattedRegiNumber = formattedInput.replace(
-      /(\d{3})(\d{2})(\d{5})/,
-      '$1-$2-$3'
-    );
+    const formattedRegiNumber = formattedInput.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
     setRegiNumber(formattedRegiNumber);
   };
 
@@ -65,13 +62,14 @@ function Partner() {
     }
   };
 
-  const isFormValid =
+  const isFormValid = (
     regiNumber &&
     isRegiNumberValid &&
     repreName.length > 0 &&
     companyName.length > 0 &&
     openingDate.length > 0 &&
-    businessSector.length > 0;
+    businessSector.length > 0
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,7 +78,7 @@ function Partner() {
       owner: repreName,
       businessName: companyName,
       registrationNumber: regiNumber,
-      businessCategory: businessSector,
+      businessCategory: businessSector
     };
 
     try {
@@ -91,13 +89,13 @@ function Partner() {
           'Content-Type': 'application/json',
           'Authorization': ACCESS_TOKEN
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
 
       if (response.ok) {
         // 성공적으로 등록된 경우 처리
         console.log('Status', response.status);
-        if (response.status === 201) {
+        if(response.status === 201) {
           console.log('201 Created');
           navigate('/home');
         }
@@ -111,12 +109,15 @@ function Partner() {
       console.log('네트워크 오류: 파트너 등록에 실패하였습니다.');
     }
   };
+  
 
   return (
     <PartnerContainer>
       <div className="p-10">
         <RegiContainer>
-          <RegiTitle>파트너 등록하기</RegiTitle>
+          <RegiTitle>
+            파트너 등록하기
+          </RegiTitle>
           <FormContainer>
             <RepresentativeName 
               repreName={repreName}
