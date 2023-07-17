@@ -18,7 +18,7 @@ java {
 	sourceCompatibility = '11'
 }
 
-//apply plugin: 'io.spring.dependency-management'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 configurations {
