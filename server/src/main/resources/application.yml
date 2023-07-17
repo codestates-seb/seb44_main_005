@@ -1,4 +1,9 @@
 spring:
+#  datasource:
+##    url: ${MYSQL_ACCESS_URL}
+#    username: ${MYSQL_ACCESS_USERNAME}
+#    password: ${MYSQL_ACCESS_PASSWORD}
+
   h2:
     console:
       enabled: true
