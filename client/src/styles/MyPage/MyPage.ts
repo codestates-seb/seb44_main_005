@@ -10,10 +10,11 @@ export const MyPageContainer = tw.div`
 export const MyBioContainer = tw.div`
     border-[1px]
     border-[#4771B7]
+    w-[800px]
 `;
 
 export const MySpace = tw.div`
-    space-y-7
+    space-y-8
     p-10
 `;
 
@@ -35,23 +36,25 @@ export const MiniButtonGrid = tw.div`
     space-x-3
 `;
 
-export const MiniButtonStyle = tw.button`
+export const PhotoInputStyle = tw.span`
     text-[12px]
     bg-[#EDF1F8]
     border-[1px]
     border-[#4771B7]
     rounded
+    p-2
 `;
 
 export const ImgStyle = tw.img`
     w-[100px]
+    rounded-full
 `;
 
 export const TopSpace = tw.div`
     flex
     flex-col
     items-center
-    space-y-2
+    space-y-4
 `;
 
 export const NicknameAccent = tw.span`

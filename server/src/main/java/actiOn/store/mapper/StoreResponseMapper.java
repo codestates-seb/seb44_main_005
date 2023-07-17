@@ -28,8 +28,9 @@ public class StoreResponseMapper {
         LocalDate currentDate = LocalDate.now();
         Map<Long,Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
         for (Item item : findItems){
+            if (item.getStatus().equals("deleted")) continue;
             long itemId = item.getItemId();
-            int maxCount = item.getMaxCount();
+            int maxCount = item.getTotalTicket();
             int remainingTicketCount = maxCount;
             if (reservationTicketCountInfo.size() != 0){
                 int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
@@ -38,7 +39,7 @@ public class StoreResponseMapper {
             if (remainingTicketCount < 0) {
                 remainingTicketCount = 0;
             }
-            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(),item.getMaxCount(),
+            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(),item.getTotalTicket(),
                     item.getPrice(), remainingTicketCount
                     );
             modifiedItems.add(modifiedItem);
@@ -66,7 +67,12 @@ public class StoreResponseMapper {
         storeResponseDto.setCreatedAt(store.getCreatedAt());
         storeResponseDto.setItems(modifiedItems);
         storeResponseDto.setStoreImages(modifiedStoreImgs);
-        storeResponseDto.setProfileImg("21");
+        try {
+            storeResponseDto.setProfileImg(store.getMember().getProfileImg().getLink());
+        }
+        catch (NullPointerException e){
+            storeResponseDto.setProfileImg(null); // null 자리에 기본 이미지 넣을 수 있음
+        }
         return storeResponseDto;
         //
     }

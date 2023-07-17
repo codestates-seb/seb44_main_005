@@ -1,27 +1,42 @@
-import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSearchParams } from "react-router-dom";
 
 import { InputTitle } from "../../styles/StoreAdd/StoreAdd";
 import { DeleteImgBtn, ImageInput, PreviewBox, PreviewImg } from "../../styles/StoreAdd/AddImages";
+import {
+  DetailImgsState,
+  FirstImgState,
+  SendDetailImgsState,
+  SendFirstImgState
+} from "../../store/storeAddAtom";
 
 function AddImages() {
-  const [sendFirstImg, setSendFirstImg] = useState<null | object>(null);
-  const [sendDetailImgs, setSendDetailImgs] = useState([]);
-  const [firstImg, setFirstImg] = useState(null);
-  const [detailImgs, setDetailImgs] = useState([]);
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const [firstImg, setFirstImg] = useRecoilState(FirstImgState);
+  const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
+  const setSendFirstImg = useSetRecoilState(SendFirstImgState);
+  const setSendDetailImgs = useSetRecoilState(SendDetailImgsState);
+  const [searchParams] = useSearchParams();
+  const storeId = searchParams.get('store_id');
+  const accessToken = sessionStorage.getItem('Authorization');
 
   const saveFirstImgFile = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setFirstImg(reader.result);
+      setFirstImg(String(reader.result))
     }
     setSendFirstImg(file);
   }
 
   const saveDetailImgFile = (e) => {
     const files = e.target.files;
+    if (detailImgs.length + files.length > 9) {
+      return alert('상세 이미지는 최대 9장까지 업로드 할 수 있습니다.');
+    }
     for (let i = 0; i < files.length; i++) {
+      console.log(detailImgs);
       const reader = new FileReader();
       reader.readAsDataURL(files[i]);
       reader.onloadend = () => {
@@ -36,6 +51,14 @@ function AddImages() {
     const sendResult = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
+    if (searchParams.get('store_id')) {
+      fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': accessToken
+        }
+      });
+    }
   }
 
   return (

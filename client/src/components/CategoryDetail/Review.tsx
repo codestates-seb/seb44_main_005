@@ -36,11 +36,13 @@ function Review() {
 
   const reviewPost = async () => {
     const storeId = location.pathname.substring(10);
+    const accessToken = sessionStorage.getItem('Authorization');
     try {
       await fetch(`${API_URL}/reviews/${storeId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': accessToken
         },
         body: JSON.stringify(form)
       })

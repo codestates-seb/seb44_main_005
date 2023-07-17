@@ -8,8 +8,22 @@ import {
 
 export const CategoryDetailState = atom({
   key: 'CategoryDetailState',
-  default: {} as CategoryDetailType,
-});
+  default: {
+    storeName: '',
+    category: '',
+    body: '',
+    latitude: 0,
+    longitude: 0,
+    kakao: '',
+    contact: '',
+    address: '',
+    isLike: false,
+    profileImg:'',
+    createdAt: '',
+    items: [],
+    storeImages: []
+  } as CategoryDetailType
+})
 
 export const ReserFormState = atom({
   key: 'ReservationFormState',
@@ -28,5 +42,10 @@ export const totalPrice = atom({
 
 export const ReviewsState = atom({
   key: 'ReviewsState',
-  default: {} as ReviewsType,
-});
+  default: {} as ReviewsType
+})
+
+export const ReserDateState = atom({
+  key: 'ReserDateState',
+  default: new Date().toISOString().substring(0, 10)
+})

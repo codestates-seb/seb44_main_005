@@ -20,5 +20,4 @@ const Style = tw.div`
     flex-row
     justify-center
     pt-20
-    space-x-10
 `;

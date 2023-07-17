@@ -5,6 +5,7 @@ import CategoryDetail from '../pages/CategoryDetail';
 import CategoryLayout from '../components/Layout/CategoryLayout';
 import FooterLayout from '../components/Layout/FooterLayout';
 import HeaderLayout from '../components/Layout/HeaderLayout';
+import Payments from '../pages/Payments';
 
 function CategoryRouter() {
   return (
@@ -18,6 +19,7 @@ function CategoryRouter() {
           <Route path="/search" element={<CategoryPage />} />
         </Route>
       </Route>
+      <Route path="/store/payment" element={<Payments />} />
     </Routes>
   );
 }

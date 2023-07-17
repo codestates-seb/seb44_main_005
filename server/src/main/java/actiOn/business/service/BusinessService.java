@@ -25,6 +25,9 @@ public class BusinessService {
 
     // 비즈니스 등록
     public Business createBusiness(Business business, String email) {
+        // 이미 등록된 business인지 검증
+        verifyExistsBusiness(business.getRegistrationNumber());
+
         // member 연결
         Member member = memberService.findMemberByEmail(email);
         business.setMember(member);
@@ -38,6 +41,10 @@ public class BusinessService {
         verifyRegistrationNumberFormat(registrationNumber);
 
         // 중복 검증
+        verifyExistsBusiness(registrationNumber);
+    }
+
+    private void verifyExistsBusiness(String registrationNumber) {
         Optional<Business> business =
                 businessRepository.findBusinessByRegistrationNumber(registrationNumber);
 

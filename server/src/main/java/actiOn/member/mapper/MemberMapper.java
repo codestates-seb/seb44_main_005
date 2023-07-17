@@ -25,7 +25,7 @@ public interface MemberMapper {
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .profileImg(member.getProfileImg().getLink())
+                .profileImg(member.getProfileImgLink())
                 .build();
     }
 

@@ -1,4 +1,8 @@
-import dummyImg from '../dummy/mypagedummy.jpeg';
+import { useState } from 'react';
+import { dummyBio } from '../dummy/mypagedummy';
+import Modal from '../components/MyPage/Modal';
+import profile from '../assets/profile.svg';
+
 import {
   BusinessCategory,
   BusinessSpace,
@@ -6,7 +10,6 @@ import {
   ButtonStyle,
   ImgStyle,
   MiniButtonGrid,
-  MiniButtonStyle,
   MySpace,
   NicknameAccent,
   TopSpace,
@@ -15,66 +18,125 @@ import {
   BusinessCategoryTitle,
   MyPageContainer,
   MyBioContainer,
+  PhotoInputStyle,
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
+  const user = dummyBio[0];
+  const businessCategory = user.stores[0].businessCategory;
+  const businessRegi = `스포츠 및 여가관련 서비스업`;
+
+  const [showBusinessSpace, setShowBusinessSpace] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  
+  const handleBusinessSpaceToggle = () => {
+    setShowBusinessSpace(!showBusinessSpace);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedPhoto(file);
+  };
+
+  const handlePhotoRemove = () => {
+    setSelectedPhoto(null);
+    const input = document.getElementById('photoInput') as HTMLInputElement;
+    if (input) {
+      input.value='';
+    }
+  };
+
   return (
-    <MyPageContainer>
-      <MyBioContainer>
-        <MySpace>
-          <ButtonGrid>
-            <ButtonStyle type="button">편집</ButtonStyle>
-          </ButtonGrid>
-          <TopSpace>
-            <ImgStyle src={dummyImg} alt="dummy bio img" />
-            <MiniButtonGrid>
-              <MiniButtonStyle type="button">사진 변경</MiniButtonStyle>
-              <MiniButtonStyle type="button">사진 삭제</MiniButtonStyle>
-            </MiniButtonGrid>
-            <NicknameAccent>Taewoo Kim</NicknameAccent>
-          </TopSpace>
+    <>
+      <MyPageContainer>
+        <MyBioContainer>
           <MySpace>
-            <UserInfo>
-              <UserInfoTitle>닉네임</UserInfoTitle>
-              <span>Taewoo Kim</span>
-            </UserInfo>
-            <UserInfo>
-              <UserInfoTitle>이메일</UserInfoTitle>
-              <span>abc123@naver.com</span>
-            </UserInfo>
-            <UserInfo>
-              <UserInfoTitle>연락처</UserInfoTitle>
-              <span>010-1234-5678</span>
-            </UserInfo>
+            <ButtonGrid>
+              <ButtonStyle type="button" onClick={openModal}>편집</ButtonStyle>
+            </ButtonGrid>
+            <TopSpace>
+              <ImgStyle 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                alt="profile img" 
+              />
+              <MiniButtonGrid>
+                <label htmlFor='photoInput'>
+                  <input 
+                    id='photoInput'
+                    type='file'
+                    accept='image/*'
+                    style={{ display: 'none' }}
+                    onChange={handlePhotoChange} 
+                  />
+                  <PhotoInputStyle>사진 변경</PhotoInputStyle>
+                </label>
+                <label htmlFor='photoRemoveInput'>
+                  <input 
+                    id='photoRemoveInput'
+                    type='button'
+                    style={{ display: 'none' }}
+                    onClick={handlePhotoRemove}
+                  />
+                  <PhotoInputStyle>사진 삭제</PhotoInputStyle>
+                </label>
+              </MiniButtonGrid>
+              <NicknameAccent>{user.nickname}</NicknameAccent>
+            </TopSpace>
+            <MySpace>
+              <UserInfo>
+                <UserInfoTitle>닉네임</UserInfoTitle>
+                <span>{user.nickname}</span>
+              </UserInfo>
+              <UserInfo>
+                <UserInfoTitle>이메일</UserInfoTitle>
+                <span>{user.email}</span>
+              </UserInfo>
+              <UserInfo>
+                <UserInfoTitle>연락처</UserInfoTitle>
+                <span>{user.phoneNumber}</span>
+              </UserInfo>
+            </MySpace>
           </MySpace>
-        </MySpace>
-        <MySpace>
-          <ButtonGrid>
-            <ButtonStyle type="button">등록한 업체보기</ButtonStyle>
-          </ButtonGrid>
-          <BusinessSpace>
-            <BusinessCategory>
-              <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-              <span>스포츠 및 여가관련 서비스업</span>
-              <span>스포츠 및 여가관련 서비스업</span>
-              <span>스포츠 및 여가관련 서비스업</span>
-            </BusinessCategory>
-            <BusinessCategory>
-              <BusinessCategoryTitle>업종</BusinessCategoryTitle>
-              <span>레저 좋아</span>
-              <span>레저 화이팅</span>
-              <span>태우네 레저</span>
-            </BusinessCategory>
-            <BusinessCategory>
-              <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-              <span>언더워터플레이 함덕점</span>
-              <span>언더워터플레이 애월점</span>
-              <span>언더워터플레이 김녕점</span>
-            </BusinessCategory>
-          </BusinessSpace>
-        </MySpace>
-      </MyBioContainer>
-    </MyPageContainer>
+          <MySpace>
+            <ButtonGrid>
+              <ButtonStyle type="button" onClick={handleBusinessSpaceToggle}>등록한 업체보기</ButtonStyle>
+            </ButtonGrid>
+            {showBusinessSpace && (
+              <BusinessSpace>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업태</BusinessCategoryTitle>
+                  {user.stores.map((store, index) => (
+                    <span key={index}>{businessRegi}</span>
+                  ))}
+                </BusinessCategory>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업종</BusinessCategoryTitle>
+                  {user.stores.map((store, index) => (
+                    <span key={index}>{businessCategory}</span>
+                  ))}
+                </BusinessCategory>
+                <BusinessCategory>
+                  <BusinessCategoryTitle>업체명</BusinessCategoryTitle>
+                  {user.stores.map((store, index) => (
+                    <span key={index}>{store.storeName}</span>
+                  ))}
+                </BusinessCategory>
+              </BusinessSpace>
+            )}
+          </MySpace>
+        </MyBioContainer>
+      </MyPageContainer>
+      {showModal && <Modal onClick={closeModal} defaultNickname={user.nickname} defaultPhoneNumber={user.phoneNumber} />}
+    </>
   );
 }
 

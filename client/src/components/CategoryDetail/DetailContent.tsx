@@ -40,10 +40,10 @@ function DetailContent() {
         <div className="cursor-pointer my-auto" onClick={arrowLeftHandler}>
           <FaChevronLeft size="50" color="#4771B7" />
         </div>
-        <div className='w-[400px] h-[320px]'>
+        <div className='w-[450px] h-[320px]'>
           {data.storeImages && (
             <>
-              <img className="w-[400px] h-[300px] object-cover" src={data.storeImages[current]} alt="업체사진" />
+              <img className="w-[450px] h-[300px] object-cover rounded-[5px]" src={data.storeImages[current]} alt="업체사진" />
               <div className="mt-3 text-center font-bold text-[#4771B7]">{current + 1} / {data.storeImages.length}</div>
             </>
           )}

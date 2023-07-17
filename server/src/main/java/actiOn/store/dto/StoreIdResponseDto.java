@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StorePostResponseDto {
+public class StoreIdResponseDto {
     private long storeId;
 }

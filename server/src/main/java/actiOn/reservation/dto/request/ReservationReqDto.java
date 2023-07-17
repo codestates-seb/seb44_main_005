@@ -26,6 +26,6 @@ public class ReservationReqDto {
         @Positive
         private int totalPrice;
 
-        private List<ReservationItemReqDto> reservationItemReqDtos;
+        private List<ReservationItemReqDto> reservationItems;
 
 }

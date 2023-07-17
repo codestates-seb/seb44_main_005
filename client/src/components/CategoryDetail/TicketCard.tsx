@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import tw from 'tailwind-styled-components';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 
@@ -10,6 +10,7 @@ function TicketCard({ item, itemIdx }) {
   const [update, setUpdate] = useState({...items[itemIdx]});
   const setForm = useSetRecoilState(ReserFormState);
   const setTotal = useSetRecoilState(totalPrice);
+  const form = useRecoilValue(ReserFormState);
 
   const countClickHandler = (keyword) => {
     const result = [...items];
@@ -17,10 +18,12 @@ function TicketCard({ item, itemIdx }) {
     if (keyword === "plus") {
       updateItem.ticketCount += 1;
       setTotal((prev) => prev + item.price);
+      console.log(form);
     }
     else if (keyword === "minus" && updateItem.ticketCount > 0) {
       updateItem.ticketCount -= 1;
       setTotal((prev) => prev - item.price);
+      console.log(form);
     }
     result[itemIdx] = updateItem;
     setUpdate(updateItem)
@@ -28,10 +31,14 @@ function TicketCard({ item, itemIdx }) {
     setForm((prev) => ({...prev, reservationItems: result}));
   }
 
+  useEffect(() => {
+    setUpdate({...items[itemIdx], ticketCount: 0})
+  }, [form.reservationDate])
+
   return (
     <TicketCardSection>
       <div className="flex justify-between items-center mb-3">
-        <div className="font-semibold text-lg">{item.item}</div>
+        <div className="font-semibold text-lg">{item.itemName}</div>
         <div className="flex items-center">
           <AiOutlineMinusCircle onClick={() => countClickHandler('minus')} size="25" color="#4771B7" />
           <div className="mx-3">{update.ticketCount ? update.ticketCount : 0}</div>

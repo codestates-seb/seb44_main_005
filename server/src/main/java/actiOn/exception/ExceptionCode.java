@@ -15,6 +15,7 @@ public enum ExceptionCode {
     USERNAME_NOT_FOUND(404, "Username not found"),
     UNAUTHORIZED_PRINCIPAL(404, "Unauthorized principal"),
     ROLE_NOT_FOUND(404, "Role not found"),
+    INVALID_MEMBER(400, "Invalid member access"),
 
     // BUSINESS
     BUSINESS_EXISTS(409, "Registration number exists."),
@@ -26,13 +27,18 @@ public enum ExceptionCode {
     INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
     NULL_STORE_IMAGE(404, "Store image is null"),
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
+    UNAUTHORIZED(401, "Unauthorized to update store"),
+    INVALID_PARAMETER_VALUE(400, "INVALID_PARAMETER_VALUE"),
 
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
 
     //WISH
     WISH_EXIST(409, "Wish exists"),
-    WISH_NOT_FOUND(404, "Wish not found");
+    WISH_NOT_FOUND(404, "Wish not found"),
+
+    // ITEM
+    ITEM_NOT_FOUND(404, "Item not found");
 
     @Getter
     private int status;

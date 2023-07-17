@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-
 public class ImgService {
     @Value("${cloud.aws.s3.bucket}")
     private String BUCKET_NAME;
@@ -35,8 +34,7 @@ public class ImgService {
     private final StoreImgRepository storeImgRepository;
     private final StoreRepository storeRepository;
 
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository,
-                      StoreRepository storeRepository) {
+    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository){
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
         this.storeRepository = storeRepository;
@@ -51,48 +49,74 @@ public class ImgService {
         return profileImg;
     }
 
-    // 기존 프로필 이미지 status DELETED로 변경
-    public ProfileImg updateCurrentProfileImageStatus(Member member) {
-        ProfileImg currentProfileImg = findProfileImgByMember(member);
-        currentProfileImg.setImgStatus(ProfileImg.ProfileImgStatus.PROFILE_DELETED);
-
-        return profileImgRepository.save(currentProfileImg);
-    }
-
     // 프로필 이미지 등록
+    @Transactional
     public ProfileImg uploadProfileImage(MultipartFile file, Member member) throws IOException {
+        // 기존 프로필 사진이 존재하는 경우
+        if (existsCurrentProfileImage(member)) {
+            // 기존 프로필 DELETED로 변경
+            updateProfileImageStatusDeleted(member);
+        }
+
+
+        // S3에 이미지 파일 업로드
         String imageName = generateRandomName();
         String fileUrl = uploadImage(file, imageName);
 
-        ProfileImg profileImg = new ProfileImg();
-        profileImg.setLink(fileUrl);
-        profileImg.setMember(member);
+        // 새로운 프로필 이미지 생성
+        ProfileImg profileImg = createNewProfileImage(member, fileUrl);
         return profileImgRepository.save(profileImg);
     }
 
+    // 기본 프로필 이미지 탐색
+    public ProfileImg getDefaultProfileImage(Member member) {
+        Optional<ProfileImg> defaultProfileImg = profileImgRepository.findByMemberAndImgStatus(
+                member, ProfileImg.ProfileImgStatus.PROFILE_DEFAULT);
+
+        if (defaultProfileImg.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.PROFILE_IMAGE_NOT_FOUND);
+        }
+
+        return defaultProfileImg.get();
+    }
+
+    // 기존 프로필 이미지 status DELETED로 변경
+    public void updateProfileImageStatusDeleted(Member member) {
+        ProfileImg currentProfileImg = findProfileImgByMember(member);
+        currentProfileImg.setImgStatus(ProfileImg.ProfileImgStatus.PROFILE_DELETED);
+
+        profileImgRepository.save(currentProfileImg);
+    }
+
+
+    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg){
+        storeImg.setIsThumbnail(true);
+        StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
+        if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
+        return storeImg;
+    }
     public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
         String randomString = generateRandomName();
         try {
             List<StoreImg> storeImgs = new ArrayList<>();
             if (thumbnailImage != null) { //thumbnailImage가 null이 아니면 파일리스트 0번째 넣어서 썸네일로 만들기
-                files.add(0,thumbnailImage);
-            }
-            else{
-                files.add(0,null);
+                files.add(0, thumbnailImage);
+            } else {
+                files.add(0, null);
             }
 
-            Store findStore = storeRepository.findById(storeId).orElseThrow(()->new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+            Store findStore = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
             if (findStore == null) {
                 return null;
             }
-            int index=1;
+            int index = 1;
             for (MultipartFile file : files) {
-                if (file != null){
-                    String imageName = String.valueOf(storeId) +  randomString + String.valueOf(index);
+                if (file != null) {
+                    String imageName = String.valueOf(storeId) + randomString + String.valueOf(index);
                     StoreImg storeImg = new StoreImg();
                     String fileUrl = uploadImage(file, imageName);
                     storeImg.setLink(fileUrl);
-                    if (file.equals(files.get(0))){
+                    if (file.equals(files.get(0))) {
                         storeImg.setIsThumbnail(true);
                         StoreImg findThumbnail = storeImgRepository.findByStoreAndIsThumbnail(findStore, true);
                         if (findThumbnail != null) {
@@ -112,23 +136,58 @@ public class ImgService {
 
             return null;
         }
+
+    }
+    public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
+        String randomStringForImageName = generateRandomName();
+        List<StoreImg> storeImgs = new ArrayList<>();
+        int index=1;
+        for (MultipartFile file : files) {
+            if (file==null)continue;
+            String imageName = String.valueOf(store.getStoreId()) + randomStringForImageName + String.valueOf(index);
+            String fileUrl = uploadImage(file, imageName);
+            StoreImg storeImg = new StoreImg(fileUrl, store);
+            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store,storeImg);
+            storeImgs.add(storeImg);
+            index++;
+            }
+        storeImgRepository.saveAll(storeImgs);
+        }//수정완료
+
+    // 기본 프로필 이미지 설정
+    public ProfileImg setDefaultProfileImage(Member member) {
+        ProfileImg profileImg = new ProfileImg();
+        profileImg.setMember(member);
+
+        return profileImgRepository.save(profileImg);
     }
 
-    private ProfileImg findProfileImgByMember(Member member) {
-        Optional<ProfileImg> profileImg = profileImgRepository.findByMember(member);
+    // 새로운 프로필 이미지 생성
+    private ProfileImg createNewProfileImage(Member member, String fileUrl) {
+        ProfileImg profileImg = new ProfileImg();
+        profileImg.setLink(fileUrl);
+        profileImg.setImgStatus(ProfileImg.ProfileImgStatus.PROFILE_ACTIVE);
+        profileImg.setMember(member);
 
-        if (profileImg.isEmpty()) {
+        return profileImg;
+    }
+
+    // 기존 프로필 사진 탐색
+    private ProfileImg findProfileImgByMember(Member member) {
+        Optional<ProfileImg> currentProfileImg = profileImgRepository
+                .findByMemberAndImgStatus(member, ProfileImg.ProfileImgStatus.PROFILE_ACTIVE);
+
+        if (currentProfileImg.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.PROFILE_IMAGE_NOT_FOUND);
         }
-        return profileImg.get();
+        return currentProfileImg.get();
     }
 
-    public Optional<StoreImg> findStoreImgByStore(Store store) {
-        return storeImgRepository.findByStore(store);
-    }
-
-    public void deleteStoreImg(Store store) {  // 스토어 이미지들 삭제
-
+    // 기존 프로필 사진이 존재하는지 확인
+    private boolean existsCurrentProfileImage(Member member) {
+        return profileImgRepository
+                .findByMemberAndImgStatus(member, ProfileImg.ProfileImgStatus.PROFILE_ACTIVE)
+                .isPresent();
     }
 
     private String uploadImage(MultipartFile file, String imageName) throws IOException {
@@ -155,5 +214,9 @@ public class ImgService {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return uuid + generatedString;
+    }
+
+    public void deleteStoreImage(String link) {
+        storeImgRepository.deleteByLink(link.replace(" ",""));
     }
 }

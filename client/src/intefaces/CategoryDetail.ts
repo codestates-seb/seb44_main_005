@@ -1,6 +1,6 @@
 export interface CategoryDetailType {
   storeName: string;
-  category: string
+  category: string;
   body: string;
   latitude: number;
   longitude: number;
@@ -16,7 +16,7 @@ export interface CategoryDetailType {
 
 export interface ItemType {
   itemId: number;
-  item: string;
+  itemName: string;
   price: number;
   totalTicket: number;
   remainingTicket: number;

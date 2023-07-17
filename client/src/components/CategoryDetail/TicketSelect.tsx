@@ -1,14 +1,24 @@
-import { useState, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import TicketCard from "./TicketCard";
-import { CategoryDetailState, ReserFormState, itemsState, totalPrice } from '../../store/categoryDetailAtom';
-import { DateInput, DateSelectBox, SelectBox, TicketBox } from '../../styles/CategoryDetail/TicketSelect';
+import {
+  CategoryDetailState,
+  ReserDateState,
+  ReserFormState,
+  itemsState,
+  totalPrice
+} from '../../store/categoryDetailAtom';
+import { DateInput,
+  DateSelectBox,
+  SelectBox,
+  TicketBox
+} from '../../styles/CategoryDetail/TicketSelect';
 
 function TicketSelect() {
-  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
+  const [date, setDate] = useRecoilState(ReserDateState);
+  const [total, setTotal] = useRecoilState(totalPrice);
   const data = useRecoilValue(CategoryDetailState);
-  const total = useRecoilValue(totalPrice);
   const setItems = useSetRecoilState(itemsState);
   const setForm = useSetRecoilState(ReserFormState);
 
@@ -18,8 +28,11 @@ function TicketSelect() {
   }
 
   useEffect(() => {
-    setForm((prev) => ({...prev, reservationDate: date}))
+    setForm((prev) => ({...prev, reservationDate: date}));
     if (data.items) {
+      setForm((prev) => ({...prev, reservationItems: []}));
+      setItems([]);
+      setTotal(0);
       data.items.forEach((item) => {
         setItems((prev) => [...prev, {
           itemId: item.itemId,
@@ -49,7 +62,7 @@ function TicketSelect() {
             </div>
             <div className="text-right pt-3 mb-5">
               <span className="mr-5 font-bold">총 상품 금액</span>
-              <span className="font-bold text-[#4771B7] text-xl">{total} 원</span>
+              <span className="font-bold text-[#4771B7] text-xl">{total.toLocaleString('ko-KR')} 원</span>
             </div>
           </TicketBox>
         </div>

@@ -1,17 +1,21 @@
 package actiOn.reservation.controller;
 
+import actiOn.item.dto.ItemDto;
 import actiOn.reservation.dto.request.ReservationPatchDto;
 import actiOn.reservation.dto.request.ReservationReqDto;
 import actiOn.reservation.dto.response.ReservationRepDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.mapper.ReservationMapper;
 import actiOn.reservation.service.ReservationService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
@@ -58,5 +62,16 @@ public class ReservationController {
     public ResponseEntity cancelReservation(@Positive @PathVariable("reservation-id") long reservationId){
         reservationService.cancelReservation(reservationId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/items/{store-id}") // 그 스토어, 그 날짜에 티켓 상태 조회
+    public ResponseEntity getStoreByDate(@PathVariable("store-id") @Positive long storeId,
+                                         @RequestParam("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date){
+
+        List<ItemDto> items = reservationService.findItemsByStoreIdAndDate(storeId,date);
+        if (items != null) {
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("예약정보를 불러오는데 실패했습니다.", HttpStatus.NOT_FOUND);
     }
 }
