@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import {
   PaymentWidgetInstance,
   loadPaymentWidget,
-  ANONYMOUS
 } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 import { useRecoilValue } from "recoil";
@@ -10,7 +9,7 @@ import { totalPrice } from "../store/categoryDetailAtom";
 
 const selector = "#payment-widget";
 const clientKey = 'test_ck_dP9BRQmyarY0eEomwzZVJ07KzLNk';
-const secretKey = 'test_sk_7DLJOpm5Qrl0eEYvlG0rPNdxbWnY';
+// const secretKey = 'test_sk_7DLJOpm5Qrl0eEYvlG0rPNdxbWnY';
 const customerKey = "YbX2HuSlsC9uVJW6NMRMj";
 
 function Payments() {

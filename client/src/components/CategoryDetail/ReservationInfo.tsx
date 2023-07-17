@@ -16,7 +16,6 @@ function ReservationInfo() {
     else if (e.target.name === "reservationEmail") {
       setForm({...form, reservationEmail: e.target.value})
     }
-    console.log(form);
   }
 
   return (
