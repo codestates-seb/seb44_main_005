@@ -37,13 +37,18 @@ function CategoryPage() {
       if (keywords) {
         setIsSearch(true);
         setIsLoading(true);
-        const res = await fetch(`${url}/search?keyword=${keywords}`);
+        const res = await fetch(`${url}/search?keyword=${keywords}`, {
+          headers: { Authorization: sessionStorage.getItem('Authorization') },
+        });
         data = await res.json();
         if (res.status !== 200) throw res;
       } else {
         // 검색 조건이 없을 때
         const res = await fetch(
-          `${url}/stores?category=${categoryName}&sort_field=${sort}`
+          `${url}/stores?category=${categoryName}&sort_field=${sort}`,
+          {
+            headers: { Authorization: sessionStorage.getItem('Authorization') },
+          }
         );
         data = await res.json();
         setIsSearch(false);

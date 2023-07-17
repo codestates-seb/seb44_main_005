@@ -84,13 +84,13 @@ function Header() {
           {profileImg !== 'default image' ? (
             <img
               src={profileImg}
-              className="w-[30px] ml-[30px] rounded-full"
+              className="w-[30px] ml-[40px] rounded-full"
               onClick={handleDropdownClick}
             />
           ) : (
             <img
               src={profile}
-              className="w-[30px] ml-[30px]"
+              className="w-[30px] ml-[40px]"
               onClick={handleDropdownClick}
             />
           )}

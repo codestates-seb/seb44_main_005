@@ -11,9 +11,8 @@ import { BsFillStarFill } from 'react-icons/bs';
 import { PiHeartFill } from 'react-icons/pi';
 import { PiHeart } from 'react-icons/pi';
 import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { isLoginState } from '../../store/userInfoAtom';
-import { Heart } from '../../store/categoryAtom';
 
 type CProps = {
   data: {
@@ -34,7 +33,7 @@ function CategoryCard({ data }: CProps) {
     data;
   const url = import.meta.env.VITE_APP_API_URL;
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  const [isHeart, setIsHeart] = useRecoilState(Heart);
+  const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
@@ -51,16 +50,16 @@ function CategoryCard({ data }: CProps) {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      if (res.status === 201) {
+      if (res.ok) {
         setIsHeart(true);
-        console.log(isLike);
       }
-      // console.log(isLike);
-
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
     }
+    console.log(isLike);
+    alert('위시리스트에 추가되었습니다.');
+
+    clickTimer = setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
 
   const onClickNonHeart = async () => {
@@ -75,16 +74,17 @@ function CategoryCard({ data }: CProps) {
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
       // console.log(isLike);
-      if (res.status === 201) {
+      if (res.ok) {
         setIsHeart(false);
       }
+      alert('위시리스트에서 제거되었습니다.');
       console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
     }
   };
-  // console.log(isLike);
+  console.log(data);
   return (
     <CardContainer>
       <img className="w-[250px] h-[198px] object-cover" src={img} />

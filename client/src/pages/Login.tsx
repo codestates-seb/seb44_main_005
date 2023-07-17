@@ -36,84 +36,10 @@ function Login() {
     setPassWord(event.currentTarget.value);
   };
 
-  //구글로그인
-  // const getAccessToken = async (authorizationCode) => {
-  //   // console.log('3');
-  //   // await fetch(`${url}/oauth2/authorization/google`, {
-  //   //   method: 'POST',
-  //   //   body: JSON.stringify({
-  //   //     accesstoken: authorizationCode,
-  //   //   }),
-  //   // });
-  //   // setIsLoginState(true);
-  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  //   const accessToken = parsedHash.get('access_token');
-
-  //   // await url.post('oauth/google', { accessToken });
-  //   await fetch(`${url}/oauth2/authorization/google/success`, {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //       accesstoken: accessToken,
-  //     }),
-  //   });
-  //   // setIsLoginState(true);
-  //   setIsLoginState(true);
-  //   navigate('/home');
-  // };
-  // useEffect(() => {
-  //   // Authorization Server로부터 클라이언트로 리디렉션된 경우, Authorization Code가 함께 전달됩니다.
-  //   // ex) http://localhost:3000/mypage?code=5e52fb85d6a1ed46a51f
-  //   // 4. [Github Auth 서버 ->클라이언트] Redirect + Authorization code 확인
-  //   console.log('3');
-  //   const url = new URL(window.location.href);
-  //   const authorizationCode = url.searchParams.get('code');
-  //   if (authorizationCode) {
-  //     getAccessToken(authorizationCode);
-  //   }
-  // }, []);
-  // const getAccessToken = async (accessToken) => {
-  //   console.log('1');
-  //   try {
-  //     await fetch(`${url}/oauth2/authorization/google`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         accessToken: accessToken,
-  //       }),
-  //     });
-  //     // const { accessToken } = result.data;
-  //     setIsLoginState(true);
-  //     setAccessToken(accessToken);
-  //     navigate('/home');
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-
-  // const handleAccessToken = async () => {
-  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  //   console.log('2');
-  //   const accessToken = parsedHash.get('access_token');
-  //   if (accessToken) {
-  //     await getAccessToken(accessToken);
-  //   }
-  // };
-
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
     window.location.href = `${url}/oauth2/authorization/google`;
-    // 'https://accounts.google.com/o/oauth2/auth?' +
-    // `client_id=${CLIENT_ID}&` +
-    // `redirect_uri=${GOOGLE_REDIRECT_URI}&` +
-    // 'response_type=token&' +
-    // 'scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
   };
-
-  // useEffect(() => {
-  //   handleAccessToken();
-  // }, []);
 
   //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
