@@ -16,5 +16,4 @@ public class CategoryStoreDto {
     private int price;
     private Boolean isLike = false;
     private String img;
-
 }
