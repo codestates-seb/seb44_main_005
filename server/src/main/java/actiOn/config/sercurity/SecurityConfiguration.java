@@ -102,8 +102,9 @@ public class SecurityConfiguration {
                 Arrays.asList(
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
-                        "https://2e4f-222-232-33-89.ngrok-free.app",
-                        "http://localhost:5173"
+                        "https://6f76-222-232-33-89.ngrok-free.app",
+                        "http://localhost:5173",
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com"
                         // TODO S3 엔드포인트 추가 ""
                 )
         );
