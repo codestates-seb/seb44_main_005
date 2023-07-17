@@ -17,17 +17,17 @@ function KakaoMap({ marker }: homeMapPropsType) {
       }}
       level={10}
     >
-      {
-        marker.map((el) => {
-          return (
+    {
+      marker.map((el) => {
+        return (
             <EventMarkerContainer
               position={{ lat: el.latitude, lng: el.longitude }}
               content={el}
               key={el.storeId}
             />
-          );
-        })
-      }
+            );
+          })
+        }
     </Map>
   );
 }

@@ -7,14 +7,15 @@ type BProps = {
   color?: string;
   bgColor?: string;
   clickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 };
-function Button({ children, color, bgColor, clickHandler }: BProps) {
+function Button({ children, color, bgColor, clickHandler, disabled }: BProps) {
   const style = {
     backgroundColor: bgColor,
     color: color,
   };
   return (
-    <StyleButton onClick={clickHandler} style={style}>
+    <StyleButton onClick={clickHandler} style={style} disabled={disabled}>
       {children}
     </StyleButton>
   );

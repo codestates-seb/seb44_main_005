@@ -1,11 +1,13 @@
-package actiOn.reservation.dto.request;
+package actiOn.reservation.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@AllArgsConstructor
 public class ReservationPatchDto {
     @NotBlank(message = "예약자 이름은 필수 값입니다.")
     private String reservationName;

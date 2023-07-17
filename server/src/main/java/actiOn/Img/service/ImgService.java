@@ -33,8 +33,8 @@ public class ImgService {
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
     private final StoreRepository storeRepository;
-
-    public ImgService (ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository){
+  
+    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository) {
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
         this.storeRepository = storeRepository;
@@ -89,12 +89,13 @@ public class ImgService {
     }
 
 
-    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg){
+    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg) {
         storeImg.setIsThumbnail(true);
         StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
         if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
         return storeImg;
     }
+
     public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
         String randomString = generateRandomName();
         try {
@@ -138,21 +139,29 @@ public class ImgService {
         }
 
     }
+
     public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
+        int storeImgListSize = storeImgRepository.countByStore(store);
+        if (files.size() > 12- storeImgListSize) { // 사진개수 제한
+            int remainingSize = 12 - storeImgListSize;
+            if (remainingSize < 0) remainingSize = 0;
+            files = files.subList(0, remainingSize);
+        }
+
         String randomStringForImageName = generateRandomName();
         List<StoreImg> storeImgs = new ArrayList<>();
-        int index=1;
+        int index = 1;
         for (MultipartFile file : files) {
-            if (file==null)continue;
+            if (file == null) continue;
             String imageName = String.valueOf(store.getStoreId()) + randomStringForImageName + String.valueOf(index);
             String fileUrl = uploadImage(file, imageName);
             StoreImg storeImg = new StoreImg(fileUrl, store);
-            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store,storeImg);
+            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store, storeImg);
             storeImgs.add(storeImg);
             index++;
-            }
+        }
         storeImgRepository.saveAll(storeImgs);
-        }//수정완료
+    }//수정완료
 
     // 기본 프로필 이미지 설정
     public ProfileImg setDefaultProfileImage(Member member) {
@@ -217,6 +226,6 @@ public class ImgService {
     }
 
     public void deleteStoreImage(String link) {
-        storeImgRepository.deleteByLink(link.replace(" ",""));
+        storeImgRepository.deleteByLink(link.replace(" ", ""));
     }
 }

@@ -10,5 +10,9 @@ export const categoryData = atom<CategoryData>({
     pageInfo: [{ storeCount: 0 }],
     data: [],
   },
+});
 
+export const Heart = atom<boolean>({
+  key: 'Heart',
+  default: false,
 });

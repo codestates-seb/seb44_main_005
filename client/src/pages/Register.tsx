@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import { useEffect, useState } from 'react';
 
 import {
   StyleContainer,
@@ -15,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const url = import.meta.env.VITE_APP_API_URL;
+  // const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID;
+  // const GOOGLE_REDIRECT_URI = import.meta.env.VITE_APP_REDIRECT_URI;
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   //useRef ->객체관리....
@@ -32,54 +33,55 @@ function Register() {
   );
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState('비밀번호가 일치하지 않습니다');
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  // const setIsLoginState = useSetRecoilState(isLoginState);
 
   //이메일 유효성
+
   const onChangeEmail = (e) => {
     const currentEmail = e.target.value;
     setEmail(currentEmail);
     const emailRegExp =
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-
-    if (!emailRegExp.test(currentEmail)) {
-      setEmailMessage('올바른 이메일 형식이 아닙니다.');
-    } else {
+    if (emailRegExp.test(currentEmail)) {
       setEmailMessage('사용 가능한 이메일 입니다.');
+    } else {
+      setEmailMessage('올바른 이메일 형식이 아닙니다.');
     }
   };
-  //닉네임 유효성
+
   const onChangeName = (e) => {
     const currentName = e.target.value;
     setName(currentName);
     const nameRegExp = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,25}$/;
 
-    if (!nameRegExp.test(currentName)) {
-      setNameMessage('영문 숫자로만 입력해주세요.');
+    if (nameRegExp.test(currentName)) {
+      setNameMessage('사용 가능한 닉네임 입니다.');
     } else {
-      setNameMessage('사용가능한 닉네임 입니다.');
+      setNameMessage('영문 숫자로만 입력해주세요.');
     }
   };
-  //비밀번호 유효성
+
   const onChangePassword = (e) => {
     const currentPassword = e.target.value;
     setPassword(currentPassword);
     const passwordRegExp =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    if (!passwordRegExp.test(currentPassword)) {
+    if (passwordRegExp.test(currentPassword)) {
+      setPasswordMessage('안전한 비밀번호 입니다.');
+    } else {
       setPasswordMessage(
         '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
       );
-    } else {
-      setPasswordMessage('안전한 비밀번호 입니다.');
     }
   };
 
-  //비밀번호 확인 유효성
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
-    if (password !== currentPasswordConfirm) {
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
-    } else {
+    if (password === currentPasswordConfirm) {
       setPasswordConfirmMessage('비밀번호가 일치합니다');
+    } else {
+      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
     }
   };
 
@@ -90,31 +92,54 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      email: email,
-      password: password,
-      phoneNumber: phone,
-      nickname: name,
-    });
-    await fetch(`${url}/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        phoneNumber: phone,
-        nickname: name,
-      }),
-    }).then(() => navigate('/login'));
+    if (!isSubmitDisabled) {
+      await fetch(`${url}/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          phoneNumber: phone,
+          nickname: name,
+        }),
+      }).then(() => navigate('/login'));
+    } else {
+      alert('조건에 맞게 회원정보를 입력해주세요.');
+    }
   };
 
-  const handleGoogleLogin = async (e) => {
+  const handleGoogleSignup = async (e) => {
     e.preventDefault();
-    window.location.href =
-      await `http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`;
+    window.location.href = `${url}/oauth2/authorization/google`;
+    // 'https://accounts.google.com/o/oauth2/auth?' +
+    // `client_id=${CLIENT_ID}&` +
+    // `redirect_uri=${GOOGLE_REDIRECT_URI}&` +
+    // 'response_type=token&' +
+    // 'scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
+    // const parsedHash = new URLSearchParams(window.location.hash);
+    // console.log('2');
+    // const accessToken = parsedHash.get('access_token');
+    // sessionStorage.setItem('access_token', accessToken);
+
+    // setIsLoginState(true);
+    // navigate('/home');
   };
+
+  useEffect(() => {
+    // 모든 유효성 검사가 통과한 경우에만 가입 진행하기 버튼 활성화
+    if (
+      emailMessage === '사용 가능한 이메일 입니다.' &&
+      nameMessage === '사용 가능한 닉네임 입니다.' &&
+      passwordMessage === '안전한 비밀번호 입니다.' &&
+      passwordConfirmMessage === '비밀번호가 일치합니다'
+    ) {
+      setIsSubmitDisabled(false);
+    } else {
+      setIsSubmitDisabled(true);
+    }
+  }, [emailMessage, nameMessage, passwordMessage, passwordConfirmMessage]);
 
   return (
     <StyleContainer>
@@ -154,14 +179,19 @@ function Register() {
         <div className="flex pt-2 pr-[15px] mb-[30px]">
           <Label htmlFor="phone">전화번호</Label>
           <InputContainer>
-            <Input id="phone" type="tel" onChange={onChangePhone} />
+            <Input
+              id="phone"
+              type="tel"
+              onChange={onChangePhone}
+              maxLength={13}
+            />
             <Message>전화번호는 - 를 넣고 입력해주세요.</Message>
           </InputContainer>
         </div>
         <Button
           bgColor="#FFFFFF"
           color="#000000"
-          clickHandler={handleGoogleLogin}
+          clickHandler={handleGoogleSignup}
         >
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
@@ -173,9 +203,13 @@ function Register() {
             {/* </a> */}
           </div>
         </Button>
-        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleSubmit}>
+        <Button
+          bgColor="#4771B7"
+          color="#FFFFFF"
+          clickHandler={handleSubmit}
+          disabled={isSubmitDisabled}
+        >
           <span className="font-medium">가입 진행하기</span>
-          {/* 가입진행하기 */}
         </Button>
       </RegisterContainer>
     </StyleContainer>

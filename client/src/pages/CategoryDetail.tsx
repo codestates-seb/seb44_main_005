@@ -1,14 +1,18 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import DetailContent from "../components/CategoryDetail/DetailContent";
-import LocationInfo from "../components/CategoryDetail/LocationInfo";
-import PaymentInfo from "../components/CategoryDetail/PaymentInfo";
-import ReservationInfo from "../components/CategoryDetail/ReservationInfo";
-import Review from "../components/CategoryDetail/Review";
-import TicketSelect from "../components/CategoryDetail/TicketSelect";
-import { CategoryDetailState, ReserDateState, ReserFormState } from '../store/categoryDetailAtom';
+import DetailContent from '../components/CategoryDetail/DetailContent';
+import LocationInfo from '../components/CategoryDetail/LocationInfo';
+import PaymentInfo from '../components/CategoryDetail/PaymentInfo';
+import ReservationInfo from '../components/CategoryDetail/ReservationInfo';
+import Review from '../components/CategoryDetail/Review';
+import TicketSelect from '../components/CategoryDetail/TicketSelect';
+import {
+  CategoryDetailState,
+  ReserDateState,
+  ReserFormState,
+} from '../store/categoryDetailAtom';
 import { reserFormType } from '../intefaces/CategoryDetail';
 
 function CategoryDetail() {
@@ -25,8 +29,7 @@ function CategoryDetail() {
       const json = await res.json();
       delete json.items;
       setData(json);
-    }
-    catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -37,9 +40,8 @@ function CategoryDetail() {
       const dateValue = date.split('-').join('');
       const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
       const json = await res.json();
-      setData((prev) => ({...prev, items: json}));
-    }
-    catch(error) {
+      setData((prev) => ({ ...prev, items: json }));
+    } catch (error) {
       console.log(error);
     }
   };
@@ -57,7 +59,7 @@ function CategoryDetail() {
 
   return (
     <section className="flex justify-center mt-[100px]">
-      {data &&
+      {data && (
         <section className="flex flex-col items-center">
           <DetailContent />
           <ReservationInfo />

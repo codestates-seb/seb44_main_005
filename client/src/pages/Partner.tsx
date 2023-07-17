@@ -28,8 +28,7 @@ function Partner() {
   const [businessSector, setBusinessSector] = useState('');
 
   const [isInputTouched, setIsInputTouched] = useState(false);
-  const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
-  const [isDuplicateRegiNumber, setIsDuplicateRegiNumber] = useState(false);
+  const [isCheckingDuplicate, _] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -44,23 +43,6 @@ function Partner() {
   useEffect(() => {
     setIsInputTouched(true);
   }, []);
-
-  const handleDuplicateCheck = async () => {
-    setIsCheckingDuplicate(true);
-
-    // 비동기 요청 지연 시뮬레이션
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // 사업자 등록번호 중복 확인용 시뮬레이션
-    const isDuplicate = regiNumber === '123-45-67890'; //실제 유효성 검사 로직으로 대체
-
-    setIsDuplicateRegiNumber(isDuplicate);
-    setIsCheckingDuplicate(false);
-
-    if (isDuplicate) {
-      alert('이미 등록된 사업자등록번호입니다.');
-    }
-  };
 
   const isFormValid = (
     regiNumber &&
@@ -130,7 +112,6 @@ function Partner() {
               isRegiNumberValid={isRegiNumberValid}
               isRegiNumberIncomplete={isRegiNumberIncomplete}
               setIsInputTouched={setIsInputTouched}
-              handleDuplicateCheck={handleDuplicateCheck}
               isCheckingDuplicate={isCheckingDuplicate}
             />
             <CompanyName>

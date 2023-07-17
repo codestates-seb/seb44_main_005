@@ -6,19 +6,18 @@ import actiOn.item.entity.Item;
 import actiOn.reservation.service.ReservationService;
 import actiOn.store.dto.StoreResponseDto;
 import actiOn.store.entity.Store;
-import actiOn.store.service.StoreService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class StoreResponseMapper {
-    private final StoreService storeService;
     private final ReservationService reservationService;
 
-    public StoreResponseMapper(StoreService storeService, ReservationService reservationService) {
-        this.storeService = storeService;
+    public StoreResponseMapper(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
@@ -26,32 +25,31 @@ public class StoreResponseMapper {
         List<Item> findItems = store.getItems();
         List<ItemDto> modifiedItems = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
-        Map<Long,Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
-        for (Item item : findItems){
-            if (item.getStatus().equals("deleted")) continue;
+        Map<Long, Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
+        for (Item item : findItems) {
+            if (item.getStatus().equals(Item.ItemStatus.DELETED)) continue;
             long itemId = item.getItemId();
             int maxCount = item.getTotalTicket();
             int remainingTicketCount = maxCount;
-            if (reservationTicketCountInfo.size() != 0){
+            if (reservationTicketCountInfo.size() != 0) {
                 int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
-                remainingTicketCount = remainingTicketCount-reservationTicketCount;
+                remainingTicketCount = remainingTicketCount - reservationTicketCount;
             }
             if (remainingTicketCount < 0) {
                 remainingTicketCount = 0;
             }
-            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(),item.getTotalTicket(),
+            ItemDto modifiedItem = new ItemDto(itemId, item.getItemName(), item.getTotalTicket(),
                     item.getPrice(), remainingTicketCount
-                    );
+            );
             modifiedItems.add(modifiedItem);
         }
         List<StoreImg> findImgs = store.getStoreImgList();
         List<String> modifiedStoreImgs = new ArrayList<>();
-        for (StoreImg storeImg : findImgs){
+        for (StoreImg storeImg : findImgs) {
             String link = storeImg.getLink();
-            if (storeImg.getIsThumbnail()==true){
-                modifiedStoreImgs.add(0,link);
-            }
-            else{
+            if (storeImg.getIsThumbnail()) {
+                modifiedStoreImgs.add(0, link);
+            } else {
                 modifiedStoreImgs.add(link);
             }
         }
@@ -69,8 +67,7 @@ public class StoreResponseMapper {
         storeResponseDto.setStoreImages(modifiedStoreImgs);
         try {
             storeResponseDto.setProfileImg(store.getMember().getProfileImg().getLink());
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             storeResponseDto.setProfileImg(null); // null 자리에 기본 이미지 넣을 수 있음
         }
         return storeResponseDto;

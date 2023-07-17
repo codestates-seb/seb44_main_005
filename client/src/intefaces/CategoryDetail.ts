@@ -1,6 +1,6 @@
 export interface CategoryDetailType {
   storeName: string;
-  category: string
+  category: string;
   body: string;
   latitude: number;
   longitude: number;

@@ -8,7 +8,6 @@ import actiOn.store.entity.Store;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +16,15 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
+
+    public Item findItem(Long itemId) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if (item.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND);
+        }
+
+        return item.get();
+    }
 
     // 기존 아이템을 수정 후 저장
     public List<Item> updateItems(List<Item> findItems, List<Item> newItems) {
@@ -32,21 +40,11 @@ public class ItemService {
             items.add(newItem);
         }
         return itemRepository.saveAll(items);
-
     }
+
     private void itemStatusChange(List<Item> findItems) {
         for (Item item : findItems) {
-            item.setStatus("deleted");
+            item.setStatus(Item.ItemStatus.DELETED);
         }
-    }
-
-    public Item findItem(Item item) {
-        Optional<Item> findItem = itemRepository.findItemByItemId(item.getItemId());
-
-        if (findItem.isEmpty()) {
-            throw new BusinessLogicException(ExceptionCode.ITEM_NOT_FOUND);
-        }
-
-        return findItem.get();
     }
 }

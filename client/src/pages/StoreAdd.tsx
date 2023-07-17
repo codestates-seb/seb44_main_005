@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -20,6 +19,7 @@ function StoreAdd() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [form, setForm] = useRecoilState(StoreformState);
   const [btnText, setBtnText] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const sendFirstImg = useRecoilValue(SendFirstImgState);
   const sendDetailImgs = useRecoilValue(SendDetailImgsState);
   const setPageTitle = useSetRecoilState(pageTitleState);
@@ -31,7 +31,7 @@ function StoreAdd() {
   const storeId = searchParams.get('store_id');
   const accessToken = sessionStorage.getItem('Authorization');
 
-  const formChangeHandler = (e) => {
+  const formChangeHandler = (e) => { // 스위치문으로 추천
     if (e.target.name === "storeName") {
       setForm({...form, storeName: e.target.value});
     }
@@ -47,16 +47,14 @@ function StoreAdd() {
     else if (e.target.name === "category") {
       setForm({...form, category: e.target.value});
     }
-    console.log(form);
-  }
+  };
 
   const storeAddPost = async () => {
-    console.log(form);
-
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
     imgForm.append('thumbnailImage', sendFirstImg);
     try {
+      setIsLoading((prev) => !prev);
       const res = await fetch(`${API_URL}/stores`, {
         method: 'POST',
         headers: {
@@ -65,14 +63,23 @@ function StoreAdd() {
         },
         body: JSON.stringify(form)
       });
+      if (!res.ok) {
+        setIsLoading((prev) => !prev);
+        return alert('업체 등록에 실패했습니다.');
+      }
       const json = await res.json();
-      await fetch(`${API_URL}/storeImages/${json.storeId}`, {
+      const imgRes = await fetch(`${API_URL}/storeImages/${json.storeId}`, {
         method: 'POST',
         headers: {
           'Authorization': accessToken
         },
         body: imgForm
       });
+      if (!imgRes.ok) {
+        setIsLoading((prev) => !prev);
+        return alert('업체 이미지 등록에 실패했습니다.');
+      }
+      setIsLoading((prev) => !prev);
       navigate(`/category/${json.storeId}`);
     }
     catch(error) {
@@ -106,7 +113,8 @@ function StoreAdd() {
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
     imgForm.append('thumbnailImage', sendFirstImg);
     try {
-      await fetch(`${API_URL}/stores/${storeId}`, {
+      setIsLoading((prev) => !prev);
+      const res = await fetch(`${API_URL}/stores/${storeId}`, { // 동기 필요없음
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -114,13 +122,21 @@ function StoreAdd() {
         },
         body: JSON.stringify(form)
       });
-      await fetch(`${API_URL}/storeImages/${storeId}`, {
+      if (!res.ok) {
+        setIsLoading((prev) => !prev);
+        return alert('업체 등록에 실패했습니다.');
+      }
+      const imgRes = await fetch(`${API_URL}/storeImages/${storeId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': accessToken
         },
         body: imgForm
       });
+      if (!imgRes.ok) {
+        setIsLoading((prev) => !prev);
+        return alert('업체 등록에 실패했습니다.');
+      }
       navigate(`/category/${storeId}`);
     }
     catch(error) {
@@ -135,21 +151,26 @@ function StoreAdd() {
       setBtnText((prev) => !prev);
       storeEditFetch(storeId);
     }
-  }, [])
+  }, []);
 
   return (
     <StoreAddSection>
-      <StoreAddTop formChangeHandler={formChangeHandler} />
-      <AddProduct />
-      <AddImages />
-      <AddBtn type="button" onClick={() => {
-        if (btnText) {
-          storeAddPost();
-        }
-        else {
-          storeEditPatch(storeId);
-        }
-      }}>{btnText ? '등록하기' : '수정하기'}</AddBtn>
+      {isLoading ? 
+        <div className="text-center text-2xl font-bold">업체 등록/수정 중입니다...</div> :
+        <>
+          <StoreAddTop formChangeHandler={formChangeHandler} />
+          <AddProduct />
+          <AddImages />
+          <AddBtn type="button" onClick={() => {
+            if (btnText) {
+              storeAddPost();
+            }
+            else {
+              storeEditPatch(storeId);
+            }
+          }}>{btnText ? '등록하기' : '수정하기'}</AddBtn>
+        </>
+      }
     </StoreAddSection>
   );
 }
