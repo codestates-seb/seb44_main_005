@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isLoginState, Role } from '../../store/userInfoAtom';
+
 import {
   SideContainer,
   SideSpace,
@@ -7,6 +10,16 @@ import {
 } from '../../styles/MyPage/SideBar';
 
 function SideBar() {
+  const isLogin = useRecoilValue(isLoginState);
+  const userRole = useRecoilValue(Role);
+
+  const handleLinkClick = (e) => {
+    if (userRole !== 'PARTNER') {
+      e.preventDefault();
+      alert('접근 권한이 없습니다.');
+    }
+  };
+
   return (
     <SideContainer>
       <SideSpace>
@@ -20,7 +33,9 @@ function SideBar() {
       <SideSpace>
         <SideTitle>파트너쉽</SideTitle>
         <SideList>
-          <Link to="/my/stores">판매 서비스 관리</Link>
+          {isLogin && (
+            <Link to="/my/stores" onClick={handleLinkClick}>판매 서비스 관리</Link>
+          )}
         </SideList>
       </SideSpace>
     </SideContainer>

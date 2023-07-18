@@ -12,7 +12,4 @@ public class CategoryResponseDto {
     private List<Map<String, Integer>> pageInfo;
 
     private List<CategoryStoreDto> data;
-
-
-
 }

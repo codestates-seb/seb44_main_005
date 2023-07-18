@@ -1,6 +1,7 @@
 package actiOn.member.mapper;
 
 import actiOn.Img.storeImg.StoreImg;
+import actiOn.auth.dto.LoginResponseDto;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.dto.*;
@@ -133,5 +134,14 @@ public interface MemberMapper {
                 .filter(StoreImg::getIsThumbnail)
                 .findAny()
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.THUMBNAIL_NOT_FOUND));
+    }
+
+    // 구글 로그인 이후 response
+    default LoginResponseDto memberGoogleLoginResponseDto(Member member) {
+        return LoginResponseDto.builder()
+                .role(member.getRoleName())
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImgLink())
+                .build();
     }
 }
