@@ -1,9 +1,4 @@
 spring:
-#  datasource:
-##    url: ${MYSQL_ACCESS_URL}
-#    username: ${MYSQL_ACCESS_USERNAME}
-#    password: ${MYSQL_ACCESS_PASSWORD}
-
   h2:
     console:
       enabled: true
@@ -80,3 +75,11 @@ cloud: # 이거 안하면 host down 에러 발생
 kakao:
   url: https://dapi.kakao.com/v2/local/search/address.json
   access-key: ${KAKAO_ACCESS_KEY}
+
+payment:  # 토스 페이먼츠 관련
+  toss:
+    test-client-key: ${TOSS_CLIENT_KEY}
+    test-secret-key: ${TOSS_SECRET_KEY}
+    success-url: "http://localhost:8080/payments/toss/success"
+    failure-url: "http://localhost:8080/payments/toss/fail"
+    url: "https://api.tosspayments.com/v1/payments"
