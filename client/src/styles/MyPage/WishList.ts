@@ -3,7 +3,8 @@ import tw from 'tailwind-styled-components';
 export const WishContainer = tw.div`
     border-[1px]
     border-[#4771B7]
-    p-10
+    py-16
+    px-[50px]
     max-h-[800px]
     overflow-y-auto
 `;
@@ -27,9 +28,11 @@ export const NoWishTitle = tw.p`
     text-2xl
     font-semibold
     pt-12
+    pl-4
 `;
 
 export const WishCountTitle = tw.span`
     font-semibold
     text-2xl
+    pl-4
 `;
