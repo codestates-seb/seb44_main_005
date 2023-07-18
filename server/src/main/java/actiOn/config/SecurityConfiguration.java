@@ -1,4 +1,4 @@
-package actiOn.config.sercurity;
+package actiOn.config;
 
 import actiOn.auth.filter.JwtAuthenticationFilter;
 import actiOn.auth.filter.JwtVerificationFilter;
