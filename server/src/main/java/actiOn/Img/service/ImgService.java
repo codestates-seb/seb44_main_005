@@ -9,7 +9,6 @@ import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
-import actiOn.store.repository.StoreRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -32,21 +31,18 @@ public class ImgService {
     //    private final String S3Repository = "https://test-main-005.s3.ap-northeast-2.amazonaws.com/";
     private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
-    private final StoreRepository storeRepository;
-  
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository, StoreRepository storeRepository) {
+
+    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository) {
         this.profileImgRepository = profileImgRepository;
         this.storeImgRepository = storeImgRepository;
-        this.storeRepository = storeRepository;
     }
 
-    // 기본 프로필 이미지 경로 저장하는 메서드
-    public ProfileImg setDefaultProfileImg(Member member) {
+    // 기본 프로필 이미지 설정
+    public ProfileImg setDefaultProfileImage(Member member) {
         ProfileImg profileImg = new ProfileImg();
-        profileImg.setLink("default Link"); // TODO 변경 해주어야 함
         profileImg.setMember(member);
 
-        return profileImg;
+        return profileImgRepository.save(profileImg);
     }
 
     // 프로필 이미지 등록
@@ -88,61 +84,12 @@ public class ImgService {
         profileImgRepository.save(currentProfileImg);
     }
 
-
-    public StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg) {
-        storeImg.setIsThumbnail(true);
-        StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
-        if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
-        return storeImg;
-    }
-
-    public List<StoreImg> uploadStoreImage(List<MultipartFile> files, long storeId, MultipartFile thumbnailImage) {
-        String randomString = generateRandomName();
-        try {
-            List<StoreImg> storeImgs = new ArrayList<>();
-            if (thumbnailImage != null) { //thumbnailImage가 null이 아니면 파일리스트 0번째 넣어서 썸네일로 만들기
-                files.add(0, thumbnailImage);
-            } else {
-                files.add(0, null);
-            }
-
-            Store findStore = storeRepository.findById(storeId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-            if (findStore == null) {
-                return null;
-            }
-            int index = 1;
-            for (MultipartFile file : files) {
-                if (file != null) {
-                    String imageName = String.valueOf(storeId) + randomString + String.valueOf(index);
-                    StoreImg storeImg = new StoreImg();
-                    String fileUrl = uploadImage(file, imageName);
-                    storeImg.setLink(fileUrl);
-                    if (file.equals(files.get(0))) {
-                        storeImg.setIsThumbnail(true);
-                        StoreImg findThumbnail = storeImgRepository.findByStoreAndIsThumbnail(findStore, true);
-                        if (findThumbnail != null) {
-                            storeImg.setImgId(findThumbnail.getImgId());
-                        }
-                    }
-                    storeImg.setStore(findStore);
-                    storeImgs.add(storeImgRepository.save(storeImg));
-                    index++;
-                }
-            }
-
-            return storeImgs;
-            //Todo url / 디비에 저장
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
-
-    }
-
+    // 업체 이미지 등록
+    @Transactional
     public void uploadStoreImage(List<MultipartFile> files, Store store, MultipartFile thumbnailImage) throws IOException {
         int storeImgListSize = storeImgRepository.countByStore(store);
-        if (files.size() > 12- storeImgListSize) { // 사진개수 제한
+
+        if (files.size() > 12 - storeImgListSize) { // 사진개수 제한
             int remainingSize = 12 - storeImgListSize;
             if (remainingSize < 0) remainingSize = 0;
             files = files.subList(0, remainingSize);
@@ -150,25 +97,24 @@ public class ImgService {
 
         String randomStringForImageName = generateRandomName();
         List<StoreImg> storeImgs = new ArrayList<>();
+
         int index = 1;
         for (MultipartFile file : files) {
-            if (file == null) continue;
-            String imageName = String.valueOf(store.getStoreId()) + randomStringForImageName + String.valueOf(index);
+            if (file == null) {
+                continue;
+            }
+
+            String imageName = store.getStoreId() + randomStringForImageName + index;
             String fileUrl = uploadImage(file, imageName);
             StoreImg storeImg = new StoreImg(fileUrl, store);
-            if (file.equals(thumbnailImage)) storeImg = StoreThumbnailImgIdGenerator(store, storeImg);
+
+            if (file.equals(thumbnailImage)) {
+                storeImg = StoreThumbnailImgIdGenerator(store, storeImg);
+            }
             storeImgs.add(storeImg);
             index++;
         }
         storeImgRepository.saveAll(storeImgs);
-    }//수정완료
-
-    // 기본 프로필 이미지 설정
-    public ProfileImg setDefaultProfileImage(Member member) {
-        ProfileImg profileImg = new ProfileImg();
-        profileImg.setMember(member);
-
-        return profileImgRepository.save(profileImg);
     }
 
     // 새로운 프로필 이미지 생성
@@ -217,12 +163,20 @@ public class ImgService {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 25;
+
         Random random = new Random();
         String generatedString = random.ints(leftLimit, rightLimit + 1)
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return uuid + generatedString;
+    }
+
+    private StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg) {
+        storeImg.setIsThumbnail(true);
+        StoreImg thumbnailImg = storeImgRepository.findByStoreAndIsThumbnail(store, true);
+        if (thumbnailImg != null) storeImg.setImgId(thumbnailImg.getImgId());
+        return storeImg;
     }
 
     public void deleteStoreImage(String link) {
