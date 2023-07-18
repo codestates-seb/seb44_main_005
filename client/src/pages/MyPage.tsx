@@ -85,7 +85,11 @@ function MyPage() {
   };
 
   if(!userData) {
-    return <p>Loading...</p>;
+    return (
+      <div className='border-[1px] border-[#4771B7] w-[700px] flex justify-center items-center text-xl font-semibold'>
+        <p>로그인 상태를 확인하여주시기 바랍니다.</p>
+      </div>
+    )
   }
 
   const { nickname, email, phoneNumber } = userData;
