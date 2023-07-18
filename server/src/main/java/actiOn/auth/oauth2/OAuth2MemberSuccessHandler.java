@@ -96,9 +96,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         // 컨트롤러로 보낸 후 프론트로 리다이렉트 시도
         return UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("acti-on.netlify.app") // TODO 엔드포인트
-//                .port(5173)
+                // 프론트 도메인
+                .scheme("http")
+                .host("localhost") // TODO 엔드포인트
+                .port(5173)
                 .path("/oauth2/authorization/google/success")
                 .queryParams(queryParams)
                 .build().toUri()
