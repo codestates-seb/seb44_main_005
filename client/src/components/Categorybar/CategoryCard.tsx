@@ -33,11 +33,11 @@ function CategoryCard({ data }: CProps) {
     data;
   const url = import.meta.env.VITE_APP_API_URL;
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  // const [isHeart, setIsHeart] = useState(isLike);
+  const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
-  console.log(clickTimer);
+  // console.log(clickTimer);
 
   // 상태코드 보고 UI 변경시키기 ..
   const onClickHeart = async () => {
@@ -46,16 +46,20 @@ function CategoryCard({ data }: CProps) {
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      // console.log(isLike);
-
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
+      if (res.ok) {
+        setIsHeart(true);
+      }
     }
+    console.log(isLike);
+    alert('위시리스트에 추가되었습니다.');
+
+    clickTimer = setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
 
   const onClickNonHeart = async () => {
@@ -65,17 +69,22 @@ function CategoryCard({ data }: CProps) {
     if (!isHeartClicked) {
       setIsHeartClicked(true);
 
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
       // console.log(isLike);
+      if (res.ok) {
+        setIsHeart(false);
+      }
+      alert('위시리스트에서 제거되었습니다.');
+      console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
     }
   };
-  // console.log(isLike);
+  console.log(data);
   return (
     <CardContainer>
       <img className="w-[250px] h-[198px] object-cover" src={img} />
@@ -93,7 +102,7 @@ function CategoryCard({ data }: CProps) {
         </Text>
         <CardPrice>
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
-          {isLike ? (
+          {isHeart ? (
             <PiHeartFill
               className="cursor-pointer"
               onClick={onClickNonHeart}

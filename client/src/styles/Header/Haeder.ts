@@ -1,10 +1,9 @@
 import tw from 'tailwind-styled-components';
 
 export const HaederContainer = tw.header`
+  h-[80px]
   flex
-  mt-5
   justify-between
-  pb-[15px]
   border-b-[0.5px]
   border-[#4771B7]
   w-full
@@ -31,7 +30,4 @@ export const UnLoginContainer = tw.div`
   text-sm
   leading-0
   items-center
-`;
-export const DropdownContainer = tw.div`
-  relative
 `;
