@@ -16,12 +16,9 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
-  // const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID;
-  // const GOOGLE_REDIRECT_URI = import.meta.env.VITE_APP_REDIRECT_URI;
 
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
-  // const [accessToken, setAccessToken] = useState('');
 
   //recoil 전역상태
   const setIsLoginState = useSetRecoilState(isLoginState);
