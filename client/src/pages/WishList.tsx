@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import CategoryCard from '../components/Categorybar/CategoryCard'; // Import the CategoryCard component
 
 import search from '../assets/search.svg';
-import starOne from '../assets/starOne.svg';
-import { PiHeartFill } from 'react-icons/pi';
+
 import {
   NoWishList,
   NoWishImgSize,
@@ -15,7 +14,6 @@ import {
 function WishList() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [wishlist, setWishList] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWishList();
@@ -42,10 +40,20 @@ function WishList() {
     }
   };
 
-  const handleTitleClick = (storeId) => {
-    navigate(`/category/${storeId}`);
-  }
-  
+  const handleIsLikeToggle = (storeId) => {
+   setWishList((prevWishList) => {
+    return prevWishList.map((item) => {
+      if (item.storeId === storeId) {
+        return {
+          ...item,
+          isLike: !item.isLike
+        };
+      }
+      return item;
+    })
+   })
+  };
+
   return (
     <WishContainer>
       {wishlist.length === 0 ? (
@@ -61,33 +69,11 @@ function WishList() {
               위시 상품 {wishlist.length}개
             </WishCountTitle>
           </div>
-          {wishlist.map((item) => (
-            <div key={item.storeId} className='border-[1px] border-[#4771B7] w-[800px] h-[200px]'>
-              <div className='flex flex-row'>
-                <div>
-                  <img className='h-[198px] w-[250px] object-cover' src={item.img} alt="temporary image" />
-                </div>
-                <div className='p-4 w-[550px] flex flex-col justify-between'>
-                  <div>
-                    <p 
-                      className='text-[20px] font-semibold pb-[2px] cursor-pointer'
-                      onClick={() => handleTitleClick(item.storeId)}
-                    >{item.title}</p>
-                    <div className='flex flex-row space-x-1'>
-                      <img src={starOne} alt='star' />
-                      <span className='text-[15px] font-medium'>{item.rating}</span>
-                      <span className='text-[15px] font-medium'>({item.reviewCount})</span>
-                      <span className='text-[15px] text-[#707070] font-medium'>{item.address}</span>
-                    </div>
-                  </div>
-                  <div className='flex flex-row justify-between'>
-                    <span className='text-[15px] font-semibold'>{item.price}원~</span>
-                    <PiHeartFill size="24" color="#4771B7" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          {wishlist
+            .filter((item) => item.isLike) // Filter out items with isLike: false
+            .map((item) => (
+              <CategoryCard key={item.storeId} data={item} handleIsLikeToggle={() => handleIsLikeToggle(item.storeId)} />
+            ))}
         </div>
       )}
     </WishContainer>

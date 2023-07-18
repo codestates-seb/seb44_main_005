@@ -1,5 +1,6 @@
 // import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import {
   CardContainer,
@@ -27,8 +28,10 @@ type CProps = {
     isLike: boolean;
     img: string;
   };
+  handleIsLikeToggle: () => void;
 };
-function CategoryCard({ data }: CProps) {
+
+function CategoryCard({ data, handleIsLikeToggle }: CProps) {
   const { storeId, img, title, reviewCount, address, rating, price, isLike } =
     data;
   const url = import.meta.env.VITE_APP_API_URL;
@@ -37,7 +40,7 @@ function CategoryCard({ data }: CProps) {
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
-  // console.log(clickTimer);
+  console.log(clickTimer);
 
   // 상태코드 보고 UI 변경시키기 ..
   const onClickHeart = async () => {
@@ -55,16 +58,17 @@ function CategoryCard({ data }: CProps) {
       }
     }
     console.log(isLike);
-    alert('위시리스트에 추가되었습니다.');
+    toast('❤️ 위시리스트에 추가되었습니다.');
 
     clickTimer = setTimeout(() => {
       setIsHeartClicked(false);
     }, 5000);
+    handleIsLikeToggle();
   };
 
   const onClickNonHeart = async () => {
     if (!isLogin) {
-      alert(`로그인 상태에서만 등록할 수 있습니다.`);
+      toast(`로그인 상태에서만 등록할 수 있습니다.`);
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
@@ -77,16 +81,27 @@ function CategoryCard({ data }: CProps) {
       if (res.ok) {
         setIsHeart(false);
       }
-      alert('위시리스트에서 제거되었습니다.');
+      toast('위시리스트에서 제거되었습니다.');
       console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
+      handleIsLikeToggle();
     }
   };
   console.log(data);
   return (
     <CardContainer>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
+        }
+        position="top-right"
+        limit={10}
+        closeButton={false}
+        autoClose={2000}
+        hideProgressBar
+      />
       <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">

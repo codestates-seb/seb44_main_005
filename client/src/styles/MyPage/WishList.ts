@@ -15,8 +15,6 @@ export const NoWishList = tw.div`
     justify-center
     items-center
     space-y-5
-    border-[1px]
-    border-[#4771B7]
     p-20
 `;
 
