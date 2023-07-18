@@ -24,6 +24,7 @@ spring:
       client:
         registration:
           google:
+            # 백엔드 도메인
             redirect-uri: http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/google
             client-id: ${G_CLIENT_ID}
             client-secret: ${G_CLIENT_SECRET}
@@ -43,14 +44,14 @@ logging:
       springframework:
         orm: DEBUG
     com:
-      amazonaws:
+      amazons:
         util:
           EC2MetadataUtils: ERROR
-server:                   # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
+server: # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
   servlet:
     encoding:
       force-response: true
-jwt:                      # JWT 관련 정보
+jwt: # JWT 관련 정보
   key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
   access-token-expiration-minutes: 100
   refresh-token-expiration-minutes: 200
@@ -60,11 +61,11 @@ jwt:                      # JWT 관련 정보
 
 cloud: # 이거 안하면 host down 에러 발생
   aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
     s3:
-      bucket: test-main-005
-#    credentials:
-#      access-key: ${S3_ACCESS_KEY}
-#      secret-key: ${S3_SECRET_KEY}
+      bucket: action-project
     region:
       static: ap-northeast-2
       auto: false
