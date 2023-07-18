@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   StyleContainer,
@@ -14,8 +16,6 @@ import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const url = import.meta.env.VITE_APP_API_URL;
-  // const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID;
-  // const GOOGLE_REDIRECT_URI = import.meta.env.VITE_APP_REDIRECT_URI;
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   //useRef ->객체관리....
@@ -34,7 +34,6 @@ function Register() {
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState('비밀번호가 일치하지 않습니다');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  // const setIsLoginState = useSetRecoilState(isLoginState);
 
   //이메일 유효성
 
@@ -90,43 +89,6 @@ function Register() {
     setPhone(currentPhone);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isSubmitDisabled) {
-      await fetch(`${url}/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          phoneNumber: phone,
-          nickname: name,
-        }),
-      }).then(() => navigate('/login'));
-    } else {
-      alert('조건에 맞게 회원정보를 입력해주세요.');
-    }
-  };
-
-  const handleGoogleSignup = async (e) => {
-    e.preventDefault();
-    window.location.href = `${url}/oauth2/authorization/google`;
-    // 'https://accounts.google.com/o/oauth2/auth?' +
-    // `client_id=${CLIENT_ID}&` +
-    // `redirect_uri=${GOOGLE_REDIRECT_URI}&` +
-    // 'response_type=token&' +
-    // 'scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
-    // const parsedHash = new URLSearchParams(window.location.hash);
-    // console.log('2');
-    // const accessToken = parsedHash.get('access_token');
-    // sessionStorage.setItem('access_token', accessToken);
-
-    // setIsLoginState(true);
-    // navigate('/home');
-  };
-
   useEffect(() => {
     // 모든 유효성 검사가 통과한 경우에만 가입 진행하기 버튼 활성화
     if (
@@ -141,8 +103,53 @@ function Register() {
     }
   }, [emailMessage, nameMessage, passwordMessage, passwordConfirmMessage]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('hi');
+    if (!isSubmitDisabled) {
+      try {
+        const res = await fetch(`${url}/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            phoneNumber: phone,
+            nickname: name,
+          }),
+        });
+        if (res.ok) {
+          toast('회원가입을 성공했습니다 !');
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('회원가입 요청 중 오류가 발생했습니다', error);
+        toast('회원가입을 실패했습니다');
+      }
+    } else {
+      toast('🚨 가입조건을 모두 만족해주세요 !');
+    }
+  };
+
+  const handleGoogleSignup = async (e) => {
+    e.preventDefault();
+    window.location.href = `${url}/oauth2/authorization/google`;
+  };
+
   return (
     <StyleContainer>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+        }
+        position="top-left"
+        limit={10}
+        closeButton={false}
+        autoClose={3000}
+        hideProgressBar
+      />
       <RegisterContainer>
         <div className="flex pt-2">
           <Label htmlFor="email">이메일</Label>
