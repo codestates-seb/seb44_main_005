@@ -102,8 +102,9 @@ public class SecurityConfiguration {
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
-                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com"
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
                         // TODO S3 엔드포인트 추가 ""
+                        "https://85b2-121-176-132-24.ngrok-free.app" //여기 임시 url
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
