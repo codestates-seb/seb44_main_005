@@ -6,6 +6,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [updatedNickname, setUpdatedNickname] = useState(defaultNickname);
   const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState(defaultPhoneNumber);
+  const [isNicknameValid, setNicknameValid] = useState(true);
 
   const handleEditComplete = async () => {
     try {
@@ -45,8 +46,15 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
   };
 
   const handleNicknameChange = (e) => {
-    setUpdatedNickname(e.target.value);
+    const nickname = e.target.value;
+    setUpdatedNickname(nickname);
+    setNicknameValid(isValidNickname(nickname));
   };
+
+  const isValidNickname = (nickname) => {
+    const regex = /^[A-Za-z0-9]+$/;
+    return regex.test(nickname);
+  }
 
   const handlePhoneNumberChange = (e) => {
     setUpdatedPhoneNumber(e.target.value);
@@ -54,7 +62,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
 
   return (
     <div className='fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-40 z-50'>
-      <div className='flex flex-col w-[600px] h-[500px] space-y-[30px] rounded-lg bg-white drop-shadow-lg'>
+      <div className='flex flex-col w-[600px] h-[500px] space-y-[20px] rounded-lg bg-white drop-shadow-lg'>
         <div className='flex justify-end p-2'>
           <img className='cursor-pointer' src={close} alt='close button' onClick={onClick} />
         </div>
@@ -70,6 +78,11 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
             onChange={handleNicknameChange}
           />
         </div>
+        {!isNicknameValid && (
+           <div className='flex flex-row justify-center text-sm'>
+             <p className='text-red-500'>닉네임 편집은 영문, 숫자로만 가능합니다.</p>
+          </div>
+        )}
         <div className='flex flex-row justify-center space-x-[50px]'>
           <p>연락처</p>
           <input
