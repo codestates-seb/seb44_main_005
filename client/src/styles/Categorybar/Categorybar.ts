@@ -5,7 +5,8 @@ export const Item = tw.div`
   flex-col
   justify-center 
   items-center
-
+  transition duration-500 ease-in-out
+  hover:scale-110
 `;
 
 export const CategoryBarContainer = tw.div`

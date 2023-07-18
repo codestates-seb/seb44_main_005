@@ -1,5 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -16,6 +18,13 @@ import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 
 function CategoryPage() {
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      offset: 100,
+    });
+    // AOS.refresh();
+  }, []);
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');

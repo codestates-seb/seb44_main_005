@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -23,6 +23,7 @@ function Header() {
   //로그인 된 상태일때 -> 1. 파트너 로그인을 한 상태일때 2. 파트너 로그인을 하지 않은 상태일 때
   //UseContainer 안 요소를 다르게 설정해줄 것
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const setKeyword = useSetRecoilState(searchKeyword);
   const profileImg = useRecoilValue(isProfile);
@@ -31,6 +32,7 @@ function Header() {
   const setIsSearch = useSetRecoilState(search);
 
   const navigate = useNavigate();
+
   const handlePartner = () => {
     if (!isLogin) {
       toast('로그인 상태에서 이용할 수 있는 서비스입니다.');
@@ -49,6 +51,7 @@ function Header() {
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <HaederContainer>
       <LogoContainer>
@@ -69,7 +72,7 @@ function Header() {
             toastClassName={
               'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
             }
-            position="top-left"
+            position="top-right"
             limit={1}
             closeButton={false}
             autoClose={2000}

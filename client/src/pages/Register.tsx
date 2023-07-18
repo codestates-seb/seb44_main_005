@@ -144,7 +144,7 @@ function Register() {
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
-        position="top-left"
+        position="top-right"
         limit={10}
         closeButton={false}
         autoClose={3000}
@@ -214,7 +214,7 @@ function Register() {
           bgColor="#4771B7"
           color="#FFFFFF"
           clickHandler={handleSubmit}
-          disabled={isSubmitDisabled}
+          // disabled={isSubmitDisabled}
         >
           <span className="font-medium">가입 진행하기</span>
         </Button>

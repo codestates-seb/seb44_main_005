@@ -52,6 +52,7 @@ function Login() {
         }),
       });
       const result1 = await res.json();
+      console.log(result1);
       if (res.status !== 200) throw res;
 
       //헤더에서 멤버아이디와 닉네임을 받아옴
@@ -59,13 +60,14 @@ function Login() {
       const name = result1.nickname;
       const profile = result1.profileImage;
       const role = result1.role;
+      console.log(profile);
       setIsProfile(profile);
       setIsRole(role);
       // 로컬 스토리지에 memberId,토큰 저장
       sessionStorage.setItem('Authorization', Authorization);
       setIsLoginState(true);
       if (name) {
-        toast(`${name}님 반갑습니다 🌊`);
+        toast(`🌊 ${name}님 반갑습니다 `);
         setTimeout(() => {
           navigate('/home');
         }, 2000);
@@ -88,7 +90,7 @@ function Login() {
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
-        position="top-left"
+        position="top-right"
         limit={10}
         closeButton={false}
         autoClose={2000}

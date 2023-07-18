@@ -1,6 +1,6 @@
-// import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import 'aos/dist/aos.css';
 
 import {
   CardContainer,
@@ -78,7 +78,7 @@ function CategoryCard({ data }: CProps) {
       if (res.ok) {
         setIsHeart(false);
       }
-      toast('위시리스트에서 제거되었습니다.');
+      toast('💔 위시리스트에서 제거되었습니다.');
       console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
@@ -87,12 +87,12 @@ function CategoryCard({ data }: CProps) {
   };
   console.log(data);
   return (
-    <CardContainer>
+    <CardContainer data-aos="fade-up">
       <ToastContainer
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
         }
-        position="top-left"
+        position="bottom-right"
         limit={10}
         closeButton={false}
         autoClose={2000}
