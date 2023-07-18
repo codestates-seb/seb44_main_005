@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from '../components/MyPage/Modal';
-import profile from '../assets/profile.svg';
+import defaultProfileImg from '../assets/profile.svg';
 
 import {
   BusinessCategory,
@@ -21,7 +21,7 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
-  const APIURL = import.meta.env.VITE_APP_API_URL
+  const APIURL = import.meta.env.VITE_APP_API_URL;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
@@ -29,7 +29,7 @@ function MyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
-  const [_, setAccessDenied] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
   const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ function MyPage() {
     )
   }
 
-  const { nickname, email, phoneNumber } = userData;
+  const { nickname, email, phoneNumber, profileImg } = userData;
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
@@ -137,11 +137,25 @@ function MyPage() {
 
       if (res.ok) {
         console.log('프로필 업데이트 완료');
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedPhoto(file);
+        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+        fetchData(); // Fetch updated user data after profile update
       } else {
         console.error('프로필 업데이트 실패', res.status);
       }
     } catch (error) {
       console.error('프로필 업데이트 에러', error);
+    }
+  };
+
+  const getProfileImage = () => {
+    if (profileImg === 'default image') {
+      return defaultProfileImg;
+    } else if (profileImg) {
+      return profileImg;
+    } else {
+      return defaultProfileImg;
     }
   };
 
@@ -164,6 +178,10 @@ function MyPage() {
         if (input) {
           input.value = '';
         }
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          profileImg: 'default image',
+        }));
       } else {
         console.error('프로필 사진 삭제 실패', res.status);
       }
@@ -192,7 +210,7 @@ function MyPage() {
             </ButtonGrid>
             <TopSpace>
               <ImgStyle 
-                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : getProfileImage()}
                 alt="profile img" 
               />
               <MiniButtonGrid>

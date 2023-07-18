@@ -43,6 +43,7 @@ export const PhotoInputStyle = tw.span`
     border-[#4771B7]
     rounded
     p-2
+    cursor-pointer
 `;
 
 export const ImgStyle = tw.img`
