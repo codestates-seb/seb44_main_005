@@ -72,7 +72,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
         <div className='flex flex-row justify-center space-x-[50px]'>
           <p>닉네임</p>
           <input
-            className='border-[2px] border-[#CCCCCC] rounded'
+            className='border-[2px] border-[#CCCCCC] rounded p-1'
             type='text'
             defaultValue={updatedNickname}
             onChange={handleNicknameChange}
@@ -86,7 +86,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
         <div className='flex flex-row justify-center space-x-[50px]'>
           <p>연락처</p>
           <input
-            className='border-[2px] border-[#CCCCCC] rounded'
+            className='border-[2px] border-[#CCCCCC] rounded p-1'
             type='text'
             defaultValue={updatedPhoneNumber}
             onChange={handlePhoneNumberChange}

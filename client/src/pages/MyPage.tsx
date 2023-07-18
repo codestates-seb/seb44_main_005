@@ -30,6 +30,7 @@ function MyPage() {
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
   const [_, setAccessDenied] = useState(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -117,16 +118,59 @@ function MyPage() {
     setShowModal(false);
   };
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     setSelectedPhoto(file);
+
+    try  {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log('프로필 업데이트 완료');
+      } else {
+        console.error('프로필 업데이트 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 업데이트 에러', error);
+    }
   };
 
-  const handlePhotoRemove = () => {
-    setSelectedPhoto(null);
-    const input = document.getElementById('photoInput') as HTMLInputElement;
-    if (input) {
-      input.value='';
+  const handlePhotoRemove = async () => {
+    setIsDeletingPhoto(true);
+
+    try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+      });
+
+      if (res.ok) {
+        console.log('프로필 사진 삭제 완료');
+        setSelectedPhoto(null);
+        const input = document.getElementById('photoInput') as HTMLInputElement;
+        if (input) {
+          input.value = '';
+        }
+      } else {
+        console.error('프로필 사진 삭제 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 사진 삭제 에러', error);
+    } finally {
+      setIsDeletingPhoto(false);
     }
   };
 
