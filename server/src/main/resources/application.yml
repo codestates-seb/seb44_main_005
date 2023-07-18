@@ -7,6 +7,9 @@ spring:
         web-allow-others: true
   datasource:
     url: jdbc:h2:mem:test
+  sql:
+    init:
+      data-locations: classpath*:db/h2/data.sql
   jpa:
     hibernate:
       ddl-auto: update    # 스키마 자동 생성
@@ -16,9 +19,6 @@ spring:
         format_sql: true  # SQL pretty print
         jdbc:
           time_zone: Asia/Seoul   # 서버 시간 서울로 변경
-  sql:
-    init:
-      data-locations: classpath*:db/h2/data.sql
   security:
     oauth2:
       client:
@@ -38,6 +38,7 @@ spring:
       max-file-size: 200MB
       max-request-size: 215MB
       resolve-lazily: false
+
 logging:
   level:
     org:
@@ -47,19 +48,18 @@ logging:
       amazons:
         util:
           EC2MetadataUtils: ERROR
+
 server: # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 방지)
   servlet:
     encoding:
       force-response: true
+
 jwt: # JWT 관련 정보
   key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
   access-token-expiration-minutes: 100
   refresh-token-expiration-minutes: 200
-#awsParameterStorePropertySource:
-#  enabled: true
 
-
-cloud: # 이거 안하면 host down 에러 발생
+cloud: # AWS S3 버킷 설정
   aws:
     credentials:
       access-key: ${AWS_ACCESS_KEY}
@@ -72,11 +72,11 @@ cloud: # 이거 안하면 host down 에러 발생
     stack:
       auto: false
 
-kakao:
+kakao: # 카카오 지도 관련
   url: https://dapi.kakao.com/v2/local/search/address.json
   access-key: ${KAKAO_ACCESS_KEY}
 
-payment:  # 토스 페이먼츠 관련
+payment: # 토스 페이먼츠 관련
   toss:
     test-client-key: ${TOSS_CLIENT_KEY}
     test-secret-key: ${TOSS_SECRET_KEY}
