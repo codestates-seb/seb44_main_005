@@ -55,7 +55,6 @@ public class StoreController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
     public ResponseEntity patchStore(@PathVariable("store-id") @Positive long storeId,
@@ -65,7 +64,6 @@ public class StoreController {
 
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.OK);
-
     }
 
     @PatchMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
@@ -93,7 +91,7 @@ public class StoreController {
         return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
     }
 
-    // 업체 삭제 PP_003
+    // 업체 삭제
     @DeleteMapping("/stores/{store-id}") //스토어 삭제
     public ResponseEntity deleteStore(@PathVariable("store-id") @Positive Long storeId) {
         storeService.deleteStore(storeId);
