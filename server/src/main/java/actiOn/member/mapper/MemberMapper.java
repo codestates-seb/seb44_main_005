@@ -21,6 +21,7 @@ public interface MemberMapper {
 
     Member memberPatchDtoToMember(MemberPatchDto requestBody);
 
+
     default MemberResponseDto memberToMemberResponseDto(Member member) {
         return MemberResponseDto.builder()
                 .nickname(member.getNickname())

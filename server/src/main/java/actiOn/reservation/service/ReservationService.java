@@ -8,6 +8,7 @@ import actiOn.item.entity.Item;
 import actiOn.item.service.ItemService;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
+import actiOn.payment.service.PaymentService;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.repository.ReservationItemRepository;
@@ -33,6 +34,7 @@ public class ReservationService {
     private final MemberService memberService;
     private final ItemService itemService;
     private final ReservationItemRepository reservationItemRepository;
+    private final PaymentService paymentService;
 
     private void validateItemId(List<ReservationItem> reservationItems, Store store) {
         List<Item> items = store.getItems();
@@ -41,6 +43,8 @@ public class ReservationService {
                 throw new BusinessLogicException(ExceptionCode.REQUEST_ITEM_ID_IS_REJECTED);
         }
     }
+
+
     @Transactional(propagation = Propagation.REQUIRED)
     public void postReservation(Long storeId, Reservation reservation, List<ReservationItem> reservationItems) {
         //로그인한 유저의 정보를 reservation에 담기 겸, 사용자 검증
@@ -60,6 +64,10 @@ public class ReservationService {
         validateTotalPrice(newReservationItems, reservation.getTotalPrice());
         //예약 정보 저장
         reservationRepository.save(reservation);
+
+        //paymentService.getPaymentInfoByOrderId(); // 검증하고 페이먼츠 테이블 생성
+        /**   여기까진 예약정보 생성// 페이먼트 검증 및 페이먼트 테이블 생성           ***/
+
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

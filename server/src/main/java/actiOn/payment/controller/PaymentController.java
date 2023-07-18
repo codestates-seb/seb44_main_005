@@ -51,5 +51,9 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @GetMapping("/payments") //임시로 만든 엔드포인트
+    public ResponseEntity successPayment(@RequestParam("order-id") String orderId){
+        paymentService.getPaymentInfoByOrderId(orderId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

@@ -83,3 +83,4 @@ payment: # 토스 페이먼츠 관련
     success-url: "http://localhost:8080/payments/toss/success"
     failure-url: "http://localhost:8080/payments/toss/fail"
     url: "https://api.tosspayments.com/v1/payments"
+#    member-info-secret-key: ${MEMBER_ENCODING_SECRET_KEY}

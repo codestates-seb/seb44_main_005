@@ -59,7 +59,7 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "customer")
     private List<Payment> payments = new ArrayList<>();
 
     @Override

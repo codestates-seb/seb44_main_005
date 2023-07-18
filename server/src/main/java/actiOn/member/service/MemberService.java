@@ -5,12 +5,16 @@ import actiOn.Img.service.ImgService;
 import actiOn.auth.role.MemberRole;
 import actiOn.auth.role.Role;
 import actiOn.auth.role.RoleService;
+import actiOn.auth.utils.AuthUtil;
 import actiOn.business.entity.Business;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
+import actiOn.member.dto.EncodedMemberInfoDto;
 import actiOn.member.entity.Member;
 import actiOn.member.repository.MemberRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,18 +22,32 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.*;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final ImgService imgService;
     private final RoleService roleService;
+//    @Value("${payment.toss.member-info-secret-key}")
+//    @Getter
+    private String secretKeyString="hS1pY4KBuHjMQaVYj8uJFQ==";
+    public MemberService(MemberRepository memberRepository, PasswordEncoder encoder, ImgService imgService, RoleService roleService){
+        this.memberRepository = memberRepository;
+        this.encoder = encoder;
+        this.imgService = imgService;
+        this.roleService = roleService;
+    }
+
 
     // 회원 등록
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
@@ -173,5 +191,50 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
 
         return member.isPresent();
+    }
+
+    public EncodedMemberInfoDto encodingMemberInfo() {
+        String memberEmail = AuthUtil.getCurrentMemberEmail();
+        Member member = findMemberByEmail(memberEmail);
+        long memberId = member.getMemberId();
+        EncodedMemberInfoDto encodedMemberInfoDto = new EncodedMemberInfoDto();
+        encodedMemberInfoDto.setClientInfo(memberInfoEncoding(String.valueOf(memberId)));
+        return encodedMemberInfoDto;
+    }
+
+    private String memberInfoEncoding(String info){
+
+        byte[] messageBytes = info.getBytes(StandardCharsets.UTF_8);
+        byte[] secretKeyBytes = secretKeyString.getBytes(StandardCharsets.UTF_8);
+
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            SecretKey secretKey = new javax.crypto.spec.SecretKeySpec(secretKeyBytes, "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+            byte[] encryptedBytes = cipher.doFinal(messageBytes);
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        }catch (Exception e){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);// 예외코드 다시
+        }
+    }
+
+    public String memberInfoDecoding(String encryptedInfo) {
+
+        try {
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedInfo.replace(" ","+"));
+            byte[] secretKeyBytes = secretKeyString.getBytes(StandardCharsets.UTF_8);
+
+            Cipher cipher = Cipher.getInstance("AES");
+            SecretKey secretKey = new javax.crypto.spec.SecretKeySpec(secretKeyBytes, "AES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND); //예외코드 다시
+        }
     }
 }
