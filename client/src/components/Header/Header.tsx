@@ -12,7 +12,6 @@ import {
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
-  DropdownContainer,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
 import { search, searchKeyword } from '../../store/searchbarAtom';
@@ -76,50 +75,26 @@ function Header() {
         </UnLoginContainer>
       ) : (
         <LoginContainer>
-          {role === 'PARTNER' ? ( //&&
-            <>
-              <Link to="/partner" className="mt-1">
-                업체 등록
-              </Link>
-              <DropdownContainer>
-                {}
-                {profileImg !== 'default image' ? (
-                  <img
-                    src={profileImg}
-                    className="w-[28px] ml-[20px] rounded-full"
-                    onClick={handleDropdownClick}
-                  />
-                ) : (
-                  <img
-                    src={profile}
-                    className="w-[28px] ml-[20px]"
-                    onClick={handleDropdownClick}
-                  />
-                )}
-                {isOpen && <Dropdown />}
-              </DropdownContainer>
-            </>
+          <Link
+            to={role === 'PARTNER' ? '/store/add' : '/partner'}
+            className="mt-1"
+          >
+            {role === 'PARTNER' ? '업체 등록' : '파트너 등록'}
+          </Link>
+          {profileImg !== 'default image' ? (
+            <img
+              src={profileImg}
+              className="w-[30px] ml-[40px] rounded-full"
+              onClick={handleDropdownClick}
+            />
           ) : (
-            <>
-              <Link to="/partner" className="mt-1">
-                파트너 등록
-              </Link>
-              {profileImg !== 'default image' ? ( // 로직을 하나로 빼두기 ?
-                <img
-                  src={profileImg}
-                  className="w-[30px] ml-[40px] rounded-full"
-                  onClick={handleDropdownClick}
-                />
-              ) : (
-                <img
-                  src={profile}
-                  className="w-[28px] ml-[40px]"
-                  onClick={handleDropdownClick}
-                />
-              )}
-              {isOpen && <Dropdown />}
-            </>
+            <img
+              src={profile}
+              className="w-[30px] ml-[40px]"
+              onClick={handleDropdownClick}
+            />
           )}
+          {isOpen && <Dropdown />}
         </LoginContainer>
       )}
     </HaederContainer>
