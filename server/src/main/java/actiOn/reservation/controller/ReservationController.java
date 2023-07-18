@@ -40,7 +40,7 @@ public class ReservationController {
         Reservation reservation = reservationMapper.reservationPostDtoToReservation(requestBody);
         List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(requestBody, itemService);
         reservationService.postReservation(storeId, reservation, reservationItems);
-        //Todo 내용추가
+        //Todo 내용추가 // 예약자 정보 안적었을 때 500
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

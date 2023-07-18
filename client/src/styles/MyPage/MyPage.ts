@@ -87,4 +87,5 @@ export const BusinessCategory = tw.div`
 
 export const BusinessCategoryTitle = tw.span`
     font-semibold
+    w-[180px]
 `;

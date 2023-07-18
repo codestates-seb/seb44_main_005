@@ -9,6 +9,7 @@ import actiOn.store.entity.Store;
 import actiOn.store.repository.StoreRepository;
 import actiOn.wish.entity.Wish;
 import actiOn.wish.repository.WishRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,20 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class WishService {
 
     private final WishRepository wishRepository;
     private final StoreRepository storeRepository;
     private final MemberService memberService;
 
-    public WishService(WishRepository wishRepository, StoreRepository storeRepository, MemberService memberService) {
-        this.wishRepository = wishRepository;
-        this.storeRepository = storeRepository;
-        this.memberService = memberService;
-    }
-
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerWish(Long storeId){
+    public void registerWish(Long storeId) {
         //Todo Login 유저 찾기 -> 리팩토링. memberservice에서 findByEmail 메서드 사용 예정
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
@@ -39,7 +35,7 @@ public class WishService {
                 (() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND)));
 
         //Todo 이미 좋아요 되어 있으면 에러 반환 -> Frontend에서 요청 메서드 실수 있을수도 있기에 추가
-        if (wishRepository.findByMemberAndStore(findMember,store).isPresent()){
+        if (wishRepository.findByMemberAndStore(findMember, store).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.WISH_EXIST);
         }
 
@@ -53,7 +49,7 @@ public class WishService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteWish(Long storeId){
+    public void deleteWish(Long storeId) {
         //Todo Login 유저 찾기 -> 리팩토링. memberservice에서 findByEmail 메서드 사용 예정
         String loginUserEmail = AuthUtil.getCurrentMemberEmail();
         Member findMember = memberService.findMemberByEmail(loginUserEmail);
@@ -63,7 +59,7 @@ public class WishService {
                 (() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND)));
 
         //Tdo Wish 존재 여부 확인
-        Wish wish = wishRepository.findByMemberAndStore(findMember,store)
+        Wish wish = wishRepository.findByMemberAndStore(findMember, store)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.WISH_NOT_FOUND));
 
         wishRepository.delete(wish);
@@ -72,11 +68,8 @@ public class WishService {
         storeRepository.subLikeCount(store);
     }
 
-
     public List<Wish> getWishListByMember(Member member) {
         List<Wish> wishList = wishRepository.findByMember(member);
         return wishList;
     }
-
-
 }

@@ -138,6 +138,7 @@ public class ReservationService {
             List<Item> findItems = findStore.getItems();
             Map<Long, Integer> reservationTickets = reservationTicketCount(findStore, date);
             for (Item item : findItems) {
+                if (item.getStatus().equals(Item.ItemStatus.DELETED)) continue;
                 int remainingTicketCount = getRemainingTicketCount(item,reservationTickets);
                 if (remainingTicketCount < 0) remainingTicketCount = 0;
                 ItemDto itemDto = new ItemDto(

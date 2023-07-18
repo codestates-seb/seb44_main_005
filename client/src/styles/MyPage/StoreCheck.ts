@@ -60,6 +60,7 @@ export const StoreInfoContainer = tw.div`
 export const StoreName = tw.span`
     text-[20px]
     font-semibold
+    cursor-pointer
 `;
 
 export const ButtonsContainer = tw.div`

@@ -1,4 +1,9 @@
 spring:
+#  datasource:
+##    url: ${MYSQL_ACCESS_URL}
+#    username: ${MYSQL_ACCESS_USERNAME}
+#    password: ${MYSQL_ACCESS_PASSWORD}
+
   h2:
     console:
       enabled: true
@@ -24,6 +29,7 @@ spring:
       client:
         registration:
           google:
+            redirect-uri: https://85b2-121-176-132-24.ngrok-free.app/login/oauth2/code/google
             client-id: ${G_CLIENT_ID}
             client-secret: ${G_CLIENT_SECRET}
             scope:
