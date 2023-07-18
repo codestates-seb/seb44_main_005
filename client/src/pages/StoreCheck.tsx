@@ -52,6 +52,10 @@ function StoreCheck() {
     navigate(`/store/add`);
   };
 
+  const handleStoreNameClick = (storeId) => {
+    navigate(`/category/${storeId}`);
+  };
+
   const handleDeleteClick = () => {
     alert('정말 삭제하시겠습니가?');
   };
@@ -71,7 +75,7 @@ function StoreCheck() {
           </ImgContainer>
           <StoreInfoContainer>
             <div className="pt-5">
-              <StoreName>{store.storeName}</StoreName>
+              <StoreName onClick={() => handleStoreNameClick(store.storeId)}>{store.storeName}</StoreName>
             </div>
             <ButtonsContainer>
               <StoreButtonStyle type="button" onClick={() => handleEditClick(store.storeId)}>업체 수정</StoreButtonStyle>
