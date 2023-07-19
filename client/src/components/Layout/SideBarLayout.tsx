@@ -19,5 +19,5 @@ const Style = tw.div`
     flex
     flex-row
     justify-center
-    pt-20
+    py-12
 `;
