@@ -1,12 +1,8 @@
 package actiOn.Img.service;
 
 
-import actiOn.Img.profileImg.ProfileImg;
-import actiOn.Img.profileImg.ProfileImgRepository;
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.Img.storeImg.StoreImgRepository;
-import actiOn.exception.BusinessLogicException;
-import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
 import com.amazonaws.services.s3.AmazonS3;
@@ -21,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,58 +27,19 @@ public class ImgService {
     @Value("${cloud.aws.region.static}")
     private String REGION;
 
-    private final ProfileImgRepository profileImgRepository;
     private final StoreImgRepository storeImgRepository;
 
-    public ImgService(ProfileImgRepository profileImgRepository, StoreImgRepository storeImgRepository) {
-        this.profileImgRepository = profileImgRepository;
+    public ImgService(StoreImgRepository storeImgRepository) {
         this.storeImgRepository = storeImgRepository;
     }
 
-    // 기본 프로필 이미지 설정
-    public ProfileImg setDefaultProfileImage(Member member) {
-        ProfileImg profileImg = new ProfileImg();
-        profileImg.setMember(member);
-
-        return profileImgRepository.save(profileImg);
-    }
-
     // 프로필 이미지 등록
-    @Transactional
-    public ProfileImg uploadProfileImage(MultipartFile file, Member member) throws IOException {
-        // 기존 프로필 사진이 존재하는 경우
-        if (existsCurrentProfileImage(member)) {
-            // 기존 프로필 DELETED로 변경
-            updateProfileImageStatusDeleted(member);
-        }
-
+    public String uploadProfileImage(MultipartFile file, Member member) throws IOException {
         // S3에 이미지 파일 업로드
-        String imageName = generateRandomName(file, 1);
+        String imageName = generateRandomName(file, Math.toIntExact(member.getMemberId()));
         String fileUrl = uploadImage(file, imageName);
 
-        // 새로운 프로필 이미지 생성
-        ProfileImg profileImg = createNewProfileImage(member, fileUrl);
-        return profileImgRepository.save(profileImg);
-    }
-
-    // 기본 프로필 이미지 탐색
-    public ProfileImg getDefaultProfileImage(Member member) {
-        Optional<ProfileImg> defaultProfileImg = profileImgRepository.findByMemberAndImgStatus(
-                member, ProfileImg.ProfileImgStatus.PROFILE_DEFAULT);
-
-        if (defaultProfileImg.isEmpty()) {
-            throw new BusinessLogicException(ExceptionCode.PROFILE_IMAGE_NOT_FOUND);
-        }
-
-        return defaultProfileImg.get();
-    }
-
-    // 기존 프로필 이미지 status DELETED로 변경
-    public void updateProfileImageStatusDeleted(Member member) {
-        ProfileImg currentProfileImg = findProfileImgByMember(member);
-        currentProfileImg.setImgStatus(ProfileImg.ProfileImgStatus.PROFILE_DELETED);
-
-        profileImgRepository.save(currentProfileImg);
+        return fileUrl;
     }
 
     // 업체 이미지 등록
@@ -116,34 +72,6 @@ public class ImgService {
             index++;
         }
         storeImgRepository.saveAll(storeImgs);
-    }
-
-    // 새로운 프로필 이미지 생성
-    private ProfileImg createNewProfileImage(Member member, String fileUrl) {
-        ProfileImg profileImg = new ProfileImg();
-        profileImg.setLink(fileUrl);
-        profileImg.setImgStatus(ProfileImg.ProfileImgStatus.PROFILE_ACTIVE);
-        profileImg.setMember(member);
-
-        return profileImg;
-    }
-
-    // 기존 프로필 사진 탐색
-    private ProfileImg findProfileImgByMember(Member member) {
-        Optional<ProfileImg> currentProfileImg = profileImgRepository
-                .findByMemberAndImgStatus(member, ProfileImg.ProfileImgStatus.PROFILE_ACTIVE);
-
-        if (currentProfileImg.isEmpty()) {
-            throw new BusinessLogicException(ExceptionCode.PROFILE_IMAGE_NOT_FOUND);
-        }
-        return currentProfileImg.get();
-    }
-
-    // 기존 프로필 사진이 존재하는지 확인
-    private boolean existsCurrentProfileImage(Member member) {
-        return profileImgRepository
-                .findByMemberAndImgStatus(member, ProfileImg.ProfileImgStatus.PROFILE_ACTIVE)
-                .isPresent();
     }
 
     private String uploadImage(MultipartFile file, String imageName) throws IOException {
