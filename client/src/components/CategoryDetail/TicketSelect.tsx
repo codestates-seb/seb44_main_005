@@ -23,6 +23,11 @@ function TicketSelect() {
   const setForm = useSetRecoilState(ReserFormState);
 
   const dateChangeHandler = (e) => {
+    const today = new Date().toLocaleDateString();
+    const selectDate = new Date(e.target.value).toLocaleDateString();
+    if (selectDate < today) {
+      return alert('지난 날짜는 선택할 수 없습니다.');
+    }
     setDate(e.target.value);
     setForm((prev) => ({...prev, reservationDate: e.target.value}));
   }

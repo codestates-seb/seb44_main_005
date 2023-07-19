@@ -80,9 +80,9 @@ function Home() {
           <FaChevronRight size="50" color="white" />
         </RightArrow>
       </section>
-      <section className="w-[80%] mt-10 mx-auto">
+      <section className="w-[70%] mt-10 mx-auto">
         <div className="font-bold text-2xl mb-5">모든 레저 한눈에 보기</div>
-        <div className="rounded-xl h-[600px]">
+        <div className="rounded-xl h-[600px] mb-20">
           {homeData.data && <KakaoMap marker={homeData.data} /> }
         </div>
       </section>

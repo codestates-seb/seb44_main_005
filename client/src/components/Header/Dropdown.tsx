@@ -9,12 +9,12 @@ function Dropdown() {
 
   const handleLogout = () => {
     setIsLoginState(false);
-
     sessionStorage.removeItem('Authorization');
     sessionStorage.removeItem('memberId');
     sessionStorage.removeItem('access_token');
     window.location.href = '/home';
   };
+
   return (
     <div className="relative">
       <StyledContainer>

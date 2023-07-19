@@ -17,16 +17,17 @@ import { reserFormType } from '../intefaces/CategoryDetail';
 
 function CategoryDetail() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
-  const location = useLocation();
   const [data, setData] = useRecoilState(CategoryDetailState);
   const [form, setForm] = useRecoilState(ReserFormState);
   const date = useRecoilValue(ReserDateState);
+  const location = useLocation();
 
   const CategoryDetailFetch = async () => {
     try {
       const storeId = location.pathname.substring(10);
       const res = await fetch(`${API_URL}/stores/${storeId}`);
       const json = await res.json();
+      console.log(json);
       delete json.items;
       setData(json);
     } catch (error) {
@@ -40,6 +41,7 @@ function CategoryDetail() {
       const dateValue = date.split('-').join('');
       const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
       const json = await res.json();
+      console.log(json);
       setData((prev) => ({ ...prev, items: json }));
     } catch (error) {
       console.log(error);
@@ -58,8 +60,8 @@ function CategoryDetail() {
   }, [form.reservationDate]);
 
   return (
-    <section className="flex justify-center mt-[100px]">
-      {data && (
+    <section className="flex justify-center my-[100px]">
+      {data &&
         <section className="flex flex-col items-center">
           <DetailContent />
           <ReservationInfo />
@@ -67,7 +69,7 @@ function CategoryDetail() {
           <LocationInfo />
           <Review />
         </section>
-      )}
+      }
       <PaymentInfo />
     </section>
   );

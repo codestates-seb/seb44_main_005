@@ -44,6 +44,13 @@ html, body, #root {
   height: 100%;
 }
 
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .carousel-title {
   font-size: xx-large;
   font-weight: 700;
@@ -58,4 +65,17 @@ html, body, #root {
 .card-star {
   width: 100px;
   max-width: initial;
+}
+
+.wheel {
+  animation: wheelRotate 1.5s infinite linear;
+}
+
+@keyframes wheelRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
