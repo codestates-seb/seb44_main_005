@@ -122,6 +122,7 @@ public interface MemberMapper {
         builder.storeName(store.getStoreName());
         builder.reservationDate(reservation.getReservationDate());
         builder.totalPrice(reservation.getTotalPrice());
+        builder.reservationId(reservation.getReservationId());
         builder.itemCount(reservation.getReservationItems().size());
         builder.reservationStatus(reservation.getReservationStatus().getStepDescription());
 
