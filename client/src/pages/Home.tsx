@@ -68,7 +68,7 @@ function Home() {
   return (
     <section>
       <section className="relative overflow-x-hidden">
-        <CarouselBox className={`${moveStyle[current]} carousel-container`}>
+        <CarouselBox className={`${moveStyle[current]}`}>
           {homeData.recommend && homeData.recommend.map((el) => {
             return <Carousel data={el} key={el.storeId} />;
           })}

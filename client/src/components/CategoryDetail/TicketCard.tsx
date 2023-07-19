@@ -12,18 +12,16 @@ function TicketCard({ item, itemIdx }) {
   const setTotal = useSetRecoilState(totalPrice);
   const form = useRecoilValue(ReserFormState);
 
-  const countClickHandler = (keyword) => {
+  const countClickHandler = (keyword: string) => {
     const result = [...items];
     const updateItem = {...items[itemIdx]};
     if (keyword === "plus" && updateItem.ticketCount < item.remainingTicket) {
       updateItem.ticketCount += 1;
       setTotal((prev) => prev + item.price);
-      console.log(form);
     }
     else if (keyword === "minus" && updateItem.ticketCount > 0) {
       updateItem.ticketCount -= 1;
       setTotal((prev) => prev - item.price);
-      console.log(form);
     }
     result[itemIdx] = updateItem;
     setUpdate(updateItem)

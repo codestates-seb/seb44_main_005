@@ -50,6 +50,33 @@ function StoreAdd() {
   };
 
   const storeAddPost = async () => {
+    if (!form.storeName) {
+      return alert('업체명을 입력해주세요.');
+    }
+    else if (!form.body) {
+      return alert('소개글을 입력해주세요.');
+    }
+    else if (!form.address) {
+      return alert('주소를 선택해주세요.');
+    }
+    else if (!form.kakao) {
+      return alert('카카오톡 ID를 입력해주세요.');
+    }
+    else if (!form.contact) {
+      return alert('전화번호를 입력해주세요.');
+    }
+    else if (!form.category) {
+      return alert('카테고리를 선택해주세요.');
+    }
+    else if (!form.items.length) {
+      return alert('상품을 1개 이상 등록해주세요.');
+    }
+    else if (!sendFirstImg) {
+      return alert('대표사진을 등록해주세요.');
+    }
+    else if (sendDetailImgs.length < 3) {
+      return alert('상세 이미지를 최소 3장 이상 등록해 주세요.');
+    }
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
     imgForm.append('thumbnailImage', sendFirstImg);
