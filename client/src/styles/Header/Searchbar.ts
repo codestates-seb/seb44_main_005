@@ -5,7 +5,8 @@ export const SearchbarContainer = tw.div`
 `;
 
 export const SearchbarInput = tw.input`
-  z-50
+  z-40
+  relative
   border
   border-[#4771B7]
   rounded-[30px]
@@ -13,29 +14,30 @@ export const SearchbarInput = tw.input`
   h-[40px]
   pl-5
   text-sm
+  focus:outline-none
 `;
 
 export const AutoSearchContainer = tw.div`
-  z-30 
+  z-10
   border-[0.5px] 
   border-t-none 
-  border-[#4771B7] 
+  border-[#4771B7]
   absolute 
-  h-auto 
-  w-[470px] 
+  w-[500px] 
+  h-auto
   bg-white 
   p-[8px] 
-  top-[40px] 
-  left-[15px] 
+  top-[16px] 
   rounded-b-lg
 `;
 
 export const AutoSearchData = tw.li`
-  z-20 
-  relative 
+  z-10
+  relative
   px-[8px] 
   py-[4px] 
   w-full 
+
   text-[14px] 
   font-medium 
   hover:bg-[#EDF1F8] 
