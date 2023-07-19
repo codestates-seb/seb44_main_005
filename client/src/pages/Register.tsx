@@ -202,12 +202,7 @@ function Register() {
         >
           <div className="flex justify-center items-center">
             <img src={google} className="mr-2" />
-            {/* <a
-              href="https://daae-222-232-33-89.ngrok-free.app/oauth2/authorization/google"
-              className="font-medium"
-            > */}
             <span className="font-medium">구글로 회원가입하기</span>
-            {/* </a> */}
           </div>
         </Button>
         <Button

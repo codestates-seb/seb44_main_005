@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'aos/dist/aos.css';
 
 import {
@@ -88,16 +88,6 @@ function CategoryCard({ data }: CProps) {
   console.log(data);
   return (
     <CardContainer data-aos="fade-up">
-      <ToastContainer
-        toastClassName={
-          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
-        }
-        position="bottom-right"
-        limit={10}
-        closeButton={false}
-        autoClose={2000}
-        hideProgressBar
-      />
       <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">

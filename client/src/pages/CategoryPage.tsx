@@ -1,7 +1,9 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { ToastContainer } from 'react-toastify';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -10,8 +12,6 @@ import {
   Option,
   Category,
 } from '../styles/Category/CategoryPage';
-import { useRecoilState } from 'recoil';
-
 import { categoryData } from '../store/categoryAtom';
 import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
@@ -23,21 +23,17 @@ function CategoryPage() {
       duration: 700,
       offset: 100,
     });
-    // AOS.refresh();
   }, []);
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
   const keywords = searchParams.get('keyword');
-  // const keyword = useRecoilValue<string>(searchKeyword);
 
   // 전역 상태 변수
   const [isSearch, setIsSearch] = useRecoilState(search);
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
-
-  // console.log(keywords); // 출력: '함덕'
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +60,7 @@ function CategoryPage() {
         // 에러 처리
         if (res.status !== 200) throw res;
       }
-      // 2초 동안 로딩 표시
+      // 0.5초 동안 로딩 표시
 
       setTimeout(() => {
         setIsLoading(false);
@@ -77,6 +73,16 @@ function CategoryPage() {
 
   return (
     <Style>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
+        }
+        position="bottom-right"
+        limit={1}
+        closeButton={false}
+        autoClose={2000}
+        hideProgressBar
+      />
       <CategoryContainer style={{ display: isLoading ? 'none' : 'flex' }}>
         <span className="font-semibold text-2xl">
           전체상품 {category.pageInfo[0].storeCount}
