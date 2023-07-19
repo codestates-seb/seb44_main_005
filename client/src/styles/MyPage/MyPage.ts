@@ -5,12 +5,14 @@ export const MyPageContainer = tw.div`
     flex-row
     justify-center
     space-x-10
+    max-w-[902px]
+    min-h-[800px]
 `;
 
 export const MyBioContainer = tw.div`
     border-[1px]
     border-[#4771B7]
-    w-[800px]
+    w-[902px]
 `;
 
 export const MySpace = tw.div`
@@ -43,6 +45,7 @@ export const PhotoInputStyle = tw.span`
     border-[#4771B7]
     rounded
     p-2
+    cursor-pointer
 `;
 
 export const ImgStyle = tw.img`

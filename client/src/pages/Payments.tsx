@@ -30,7 +30,7 @@ function Payments() {
       // https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
       const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
         selector,
-        { value: 200 }
+        { value: price }
       );
 
       // ------  이용약관 렌더링 ------
@@ -58,7 +58,7 @@ function Payments() {
   }, [price]);
 
   return (
-    <section className="w-[600px] mx-auto mt-[200px]">
+    <section className="w-[600px] mx-auto pt-[200px]">
       <span className="text-xl font-bold text-[#4771B7]">총 결제금액: {`${price.toLocaleString()}원`}</span>
       <div id="payment-widget" />
       <div id="agreement" />
@@ -69,12 +69,12 @@ function Payments() {
           try {
             // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
             // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-            await paymentWidget?.requestPayment({
+              await paymentWidget?.requestPayment({
               orderId: nanoid(),
               orderName: "토스 티셔츠 외 2건",
-              customerName: "김토스",
-              customerEmail: "customer123@gmail.com",
-              successUrl: `${window.location.origin}/home`,
+              // customerName: "김토스",
+              // customerEmail: "customer123@gmail.com",
+              successUrl: `${window.location.origin}/store/payment/success?reservaionId=6`,
               failUrl: `${window.location.origin}/fail`,
             });
           } catch (error) {

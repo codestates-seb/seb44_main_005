@@ -1,7 +1,7 @@
 import tw from 'tailwind-styled-components';
 
 export const HaederContainer = tw.header`
-  h-[80px]
+  h-[8vh]
   flex
   justify-between
   border-b-[0.5px]
