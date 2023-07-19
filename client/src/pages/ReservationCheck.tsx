@@ -24,9 +24,9 @@ function ReservationCheck() {
   const [data, setData] = useState([]);
   const accessToken = sessionStorage.getItem('Authorization');
 
-  const reservationDelete = async () => {
+  const reservationDelete = async (reservationId: number) => {
     const confirmDelete = confirm("정말 예약을 취소하겠습니까?");
-    confirmDelete && fetch(`${API_URL}/reservations/1`, {
+    confirmDelete && fetch(`${API_URL}/reservations/${reservationId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': accessToken
@@ -43,7 +43,6 @@ function ReservationCheck() {
     });
     const json = await res.json();
     setData(json.data);
-    console.log(json);
   }
 
   useEffect(() => {
@@ -99,10 +98,13 @@ function ReservationCheck() {
             <ResButtonsContainer>
               {reservation.reservationStatus === "예약 완료" && (
                 <div className="space-x-3">
-                  <Link to="/my/order/edit?reservationId=1">
+                  <Link to={`/my/order/edit?reservationId=${reservation.reservationId}`}>
                     <ButtonStyle type="button">예약 수정</ButtonStyle>
                   </Link>
-                  <ButtonStyle type="button" onClick={reservationDelete}>예약 삭제</ButtonStyle>
+                  <ButtonStyle
+                    type="button"
+                    onClick={() => {reservationDelete(reservation.reservationId)}}
+                  >예약 삭제</ButtonStyle>
                 </div>
               )}
               {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (
