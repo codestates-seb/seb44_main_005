@@ -83,6 +83,7 @@ public class StoreService {
         findStore.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
 
         findStore.setStoreName(store.getStoreName());
+        findStore.setCategory(store.getCategory());
         findStore.setBody(store.getBody());
         findStore.setKakao(store.getKakao());
         findStore.setContact(store.getContact());
