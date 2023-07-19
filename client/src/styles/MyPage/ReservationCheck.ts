@@ -6,6 +6,9 @@ export const ResCheckContainer = tw.div`
     px-[50px]
     py-16
     space-y-5
+    w-[902px]
+    h-[800px]
+    overflow-y-auto
 `;
 
 export const ResCheckTitle = tw.p`
@@ -17,7 +20,7 @@ export const ResCheckTitle = tw.p`
 export const ResCheckCards = tw.div`
     border-[1.5px]
     border-[#4771B7]
-    w-[700px]
+    w-[780px]
     h-[200px]
     rounded-lg
     p-5
