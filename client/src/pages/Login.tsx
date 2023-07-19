@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { Role, isLoginState, isProfile } from '../store/userInfoAtom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   InputContainer,
@@ -50,6 +52,7 @@ function Login() {
         }),
       });
       const result1 = await res.json();
+      console.log(result1);
       if (res.status !== 200) throw res;
 
       //헤더에서 멤버아이디와 닉네임을 받아옴
@@ -57,19 +60,21 @@ function Login() {
       const name = result1.nickname;
       const profile = result1.profileImage;
       const role = result1.role;
+      console.log(profile);
       setIsProfile(profile);
       setIsRole(role);
       // 로컬 스토리지에 memberId,토큰 저장
       sessionStorage.setItem('Authorization', Authorization);
       setIsLoginState(true);
-
-      // 헤더에서 데이터를 받았으면 리다이렉트
       if (name) {
-        alert(`${name}님 반갑습니다 !`);
-        navigate('/home');
+        toast(`🌊 ${name}님 반갑습니다 `);
+        setTimeout(() => {
+          navigate('/home');
+        }, 2000);
       }
     } catch (error) {
-      console.error('로그인 요청 중 오류가 발생했습니다', error);
+      console.error(error);
+      toast(`🚨 이메일과 비밀번호를 정확하게 입력해주세요`);
     }
   };
 
@@ -81,6 +86,16 @@ function Login() {
 
   return (
     <StyleContainer>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+        }
+        position="top-right"
+        limit={10}
+        closeButton={false}
+        autoClose={2000}
+        hideProgressBar
+      />
       <LoginContainer>
         <img src={headerlogo} className="pl-[30px]" />
         <IntroText>
