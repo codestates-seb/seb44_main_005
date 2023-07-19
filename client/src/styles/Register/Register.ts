@@ -4,6 +4,7 @@ export const StyleContainer = tw.div`
   flex 
   justify-center 
   items-center
+  mb-[50px]
 `;
 
 export const RegisterContainer = tw.div`

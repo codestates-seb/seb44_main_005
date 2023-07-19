@@ -74,3 +74,23 @@ export const PaymentButton = tw.button`
   text-white
   rounded-[10px]
 `;
+
+export const InputContainer = tw.div`
+  flex 
+  ml-7 
+  mb-3 
+  items-center
+`;
+
+export const ModifyButton = tw.div`
+  relative 
+  w-[75px]
+  left-[520px] 
+  bottom-[50px] 
+  bg-[#F3F5F7] 
+  rounded-lg 
+  font-semibold 
+  text-[14px] 
+  p-[10px]
+  cursor-pointer
+`;
