@@ -1,22 +1,27 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import {
   PaymentWidgetInstance,
   loadPaymentWidget,
 } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
-import { useRecoilValue } from "recoil";
-import { totalPrice } from "../store/categoryDetailAtom";
+import { ReserFormState, totalPrice } from "../store/categoryDetailAtom";
 
 const selector = "#payment-widget";
 const clientKey = 'test_ck_dP9BRQmyarY0eEomwzZVJ07KzLNk';
-// const secretKey = 'test_sk_7DLJOpm5Qrl0eEYvlG0rPNdxbWnY';
 const customerKey = "YbX2HuSlsC9uVJW6NMRMj";
 
 function Payments() {
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const accessToken = sessionStorage.getItem('Authorization');
+  const location = useLocation();
+  const storeId = location.pathname.substring(15);
   const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
   const paymentMethodsWidgetRef = useRef<ReturnType<
-    PaymentWidgetInstance["renderPaymentMethods"]
-    > | null>(null);
+  PaymentWidgetInstance["renderPaymentMethods"]
+  > | null>(null);
+  const form = useRecoilValue(ReserFormState);
   const price = useRecoilValue(totalPrice);
 
   useEffect(() => {
@@ -67,14 +72,23 @@ function Payments() {
         onClick={async () => {
           const paymentWidget = paymentWidgetRef.current;
           try {
+            const res = await fetch(`${API_URL}/reservations/${storeId}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+              },
+              body: JSON.stringify({...form, totalPrice: price})
+            })
+            const json = await res.json();
             // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
             // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-              await paymentWidget?.requestPayment({
+            await paymentWidget?.requestPayment({
               orderId: nanoid(),
-              orderName: "토스 티셔츠 외 2건",
+              orderName: 'ActiOn',
               // customerName: "김토스",
               // customerEmail: "customer123@gmail.com",
-              successUrl: `${window.location.origin}/store/payment/success?reservaionId=6`,
+              successUrl: `${window.location.origin}/store/payment/success?reservationKey=${json.reservationKey}`,
               failUrl: `${window.location.origin}/fail`,
             });
           } catch (error) {

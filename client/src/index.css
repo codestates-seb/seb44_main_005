@@ -57,6 +57,14 @@ body {
   -webkit-text-stroke: 0.5px white;
 }
 
+.arrow-left {
+  animation: arrowLeft 1.5s ease-in-out infinite
+}
+
+.arrow-right {
+  animation: arrowRight 1.5s ease-in-out infinite
+}
+
 .star {
   width: 150px;
   max-width: initial;
@@ -71,11 +79,36 @@ body {
   animation: wheelRotate 1.5s infinite linear;
 }
 
+
 @keyframes wheelRotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes arrowLeft {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes arrowRight {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }

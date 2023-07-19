@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { CategoryDetailState, ReserFormState, totalPrice } from '../../store/categoryDetailAtom';
 import {
@@ -11,33 +12,48 @@ import {
   StoreProfile,
   WishButton
 } from '../../styles/CategoryDetail/PaymentInfo';
+import { isLoginState } from '../../store/userInfoAtom';
 
 function PaymentInfo() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
+  const isLogin = useRecoilValue(isLoginState);
   const data = useRecoilValue(CategoryDetailState);
   const form = useRecoilValue(ReserFormState);
   const total = useRecoilValue(totalPrice);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const reservationPost = async () => {
-    const storeId = location.pathname.substring(10);
-    const accessToken = sessionStorage.getItem('Authorization');
-    try {
-      await fetch(`${API_URL}/reservations/${storeId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': accessToken
-        },
-        body: JSON.stringify({...form, totalPrice: total})
-      })
-      navigate('/store/payment')
+  const storeId = location.pathname.substring(10);
+  
+  const movePayment = async () => {
+    if (!form.reservationName) {
+      return alert('예약자를 입력해주세요.');
     }
-    catch(error) {
-      console.log(error);
+    else if (!form.reservationPhone) {
+      return alert('연락처를 입력해주세요.');
     }
+    else if (!total) {
+      return alert('티켓을 선택해주세요.');
+    }
+    navigate(`/store/payment/${storeId}`);
   }
+
+  const onClickHeart = async () => {
+    console.log(data);
+    if (!isLogin) {
+      return alert(`로그인 상태에서만 등록할 수 있습니다.`);
+    }
+    if (data.isLike) {
+      return alert('이미 위시리스트에 담겨 있습니다.');
+    }
+    const res = await fetch(`${API_URL}/stores/favorites/${storeId}`, {
+      method: 'POST',
+      headers: { Authorization: sessionStorage.getItem('Authorization') },
+    });
+    if (res.ok) {
+      alert('❤️ 위시리스트에 추가되었습니다.');
+      window.location.reload();
+    }
+    }
   
   return (
     <PaymentInfoBox>
@@ -61,8 +77,8 @@ function PaymentInfo() {
             <li>부분 사용 및 부분 취소는 불가능합니다.</li>
           </ul>
         </RuleBox>
-        <PaymentButton type="button" onClick={reservationPost}>{total.toLocaleString('ko-KR')}원 결제하기</PaymentButton>
-        <WishButton type="button">
+        <PaymentButton type="button" onClick={movePayment}>{total.toLocaleString('ko-KR')}원 결제하기</PaymentButton>
+        <WishButton type="button" onClick={onClickHeart}>
           <span className="text-[#4771B7]">♥ </span>
           <span>위시리스트에 담기</span>
         </WishButton>

@@ -7,21 +7,30 @@ import AfterPayment from '../components/PaymentSuccess/AfterPayment';
 function PaymentSuccess() {
   // /reservations/verify
   const API_URL = import.meta.env.VITE_APP_API_URL;
-  const [status, _] = useState('loading');
+  const [status, setStatus] = useState('loading');
   const [searchParams] = useSearchParams();
-  const reservationId = searchParams.get('reservationId');
+  const reservationKey = searchParams.get('reservationKey');
   const orderId = searchParams.get('orderId');
   const accessToken = sessionStorage.getItem('Authorization');
 
   const verifyFetch = async () => {
-    await fetch(`${API_URL}/reservations/verify`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': accessToken
-      },
-      body: JSON.stringify({reservationId, orderId})
-    })
+    try {
+      const res = await fetch(`${API_URL}/reservation/payments?reservationKey=${reservationKey}&orderId=${orderId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': accessToken
+        }
+      })
+      if (res.ok) {
+        setStatus('success')
+      }
+      else if (!res.ok) {
+        setStatus('fail')
+      }
+    }
+    catch(error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

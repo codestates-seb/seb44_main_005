@@ -7,7 +7,6 @@ import Partner from '../pages/Partner';
 import CategoryLayout from '../components/Layout/CategoryLayout';
 import FooterLayout from '../components/Layout/FooterLayout';
 import HeaderLayout from '../components/Layout/HeaderLayout';
-import PaymentSuccess from '../pages/PaymentSuccess';
 
 function MainRouter() {
   return (
@@ -16,7 +15,6 @@ function MainRouter() {
       <Route element={<HeaderLayout />}>
         <Route element={<FooterLayout />}>
           <Route path="/partner" element={<Partner />} />
-          <Route path="/store/payment/success" element={<PaymentSuccess />} />
           <Route element={<CategoryLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
