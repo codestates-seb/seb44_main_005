@@ -1,10 +1,9 @@
 import tw from 'tailwind-styled-components';
 
 export const HaederContainer = tw.header`
+  h-[8vh]
   flex
-  mt-5
   justify-between
-  pb-[15px]
   border-b-[0.5px]
   border-[#4771B7]
   w-full

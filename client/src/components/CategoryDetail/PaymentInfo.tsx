@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { CategoryDetailState, ReserFormState, totalPrice } from '../../store/categoryDetailAtom';
 import {
@@ -18,6 +18,7 @@ function PaymentInfo() {
   const form = useRecoilValue(ReserFormState);
   const total = useRecoilValue(totalPrice);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const reservationPost = async () => {
     const storeId = location.pathname.substring(10);
@@ -31,6 +32,7 @@ function PaymentInfo() {
         },
         body: JSON.stringify({...form, totalPrice: total})
       })
+      navigate('/store/payment')
     }
     catch(error) {
       console.log(error);
