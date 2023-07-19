@@ -13,7 +13,7 @@ function KakaoMap({ marker }: homeMapPropsType) {
         width: "100%",
         height: "600px",
         borderRadius: "10px",
-        border: "1px solid #4771B7"
+        border: "1px solid #4771B7",
       }}
       level={10}
     >

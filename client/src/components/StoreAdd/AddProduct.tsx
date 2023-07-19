@@ -31,7 +31,7 @@ function AddProduct() {
 
   const productAddHandler = () => {
     if (product.itemName === '' || !product.price || !product.totalTicket) {
-      return alert('상품 정보들을 제대로 기입해주세요.')
+      return alert('상품 정보들을 제대로 기입해주세요.');
     }
     setForm((prev) => ({...prev, items: [...prev.items, {...product}]}));
     setProduct({
@@ -39,6 +39,7 @@ function AddProduct() {
       price: 0,
       totalTicket: 0
     })
+    console.log(form);
   }
 
   const productDeleteHandler = (idx) => {

@@ -15,7 +15,7 @@ function TicketCard({ item, itemIdx }) {
   const countClickHandler = (keyword) => {
     const result = [...items];
     const updateItem = {...items[itemIdx]};
-    if (keyword === "plus") {
+    if (keyword === "plus" && updateItem.ticketCount < item.remainingTicket) {
       updateItem.ticketCount += 1;
       setTotal((prev) => prev + item.price);
       console.log(form);
@@ -40,9 +40,19 @@ function TicketCard({ item, itemIdx }) {
       <div className="flex justify-between items-center mb-3">
         <div className="font-semibold text-lg">{item.itemName}</div>
         <div className="flex items-center">
-          <AiOutlineMinusCircle onClick={() => countClickHandler('minus')} size="25" color="#4771B7" />
+          <AiOutlineMinusCircle
+            className="cursor-pointer"
+            onClick={() => countClickHandler('minus')}
+            size="25"
+            color="#4771B7"
+          />
           <div className="mx-3">{update.ticketCount ? update.ticketCount : 0}</div>
-          <AiOutlinePlusCircle onClick={() => countClickHandler('plus')} size="25" color="#4771B7" />
+          <AiOutlinePlusCircle
+            className="cursor-pointer"
+            onClick={() => countClickHandler('plus')}
+            size="25"
+            color="#4771B7"
+          />
         </div>
       </div>
       <div className="flex justify-between items-center">
