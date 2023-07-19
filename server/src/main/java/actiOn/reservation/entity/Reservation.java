@@ -12,7 +12,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,9 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private int totalPrice;
 
+    @Column
+    private LocalDateTime deletedAt;
+
     @Enumerated(EnumType.STRING) // enum 추가
     private ReservationStatus reservationStatus = ReservationStatus.RESERVATION_REQUEST;
 
@@ -62,13 +64,11 @@ public class Reservation extends BaseEntity {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
-    private LocalDateTime deletedAt;
-
     public enum ReservationStatus {
         RESERVATION_REQUEST(1, "예약 대기"),
         RESERVATION_CONFIRM(2, "예약 확정"), //결제 후 예약 확정
-        RESERVATION_USE_COMPLETED(3,"이용 완료"),  // 결제 및 예약 날짜 다음에 이용 완료 처리?? // todo 예약 시간이 현재 시간 보다 크면 이용 완료 처리
-        RESERVATION_CANCLE(4, "예약 취소");
+        RESERVATION_USE_COMPLETED(3, "이용 완료"),  // 결제 및 예약 날짜 다음에 이용 완료 처리?? // todo 예약 시간이 현재 시간 보다 크면 이용 완료 처리
+        RESERVATION_CANCEL(4, "예약 취소");
 
         @Getter
         private int stepNumber;
@@ -80,7 +80,6 @@ public class Reservation extends BaseEntity {
             this.stepNumber = stepNumber;
             this.stepDescription = stepDescription;
         }
-
     }
 
     // 다대다 관계를 위한 편의 메서드

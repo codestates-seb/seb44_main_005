@@ -31,6 +31,3 @@ export const UnLoginContainer = tw.div`
   leading-0
   items-center
 `;
-export const DropdownContainer = tw.div`
-  relative
-`;

@@ -1,5 +1,6 @@
-// import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'aos/dist/aos.css';
 
 import {
   CardContainer,
@@ -33,7 +34,7 @@ function CategoryCard({ data }: CProps) {
     data;
   const url = import.meta.env.VITE_APP_API_URL;
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  // const [isHeart, setIsHeart] = useState(isLike);
+  const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
   // 타이머 변수
   let clickTimer;
@@ -46,38 +47,47 @@ function CategoryCard({ data }: CProps) {
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      // console.log(isLike);
-
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
+      if (res.ok) {
+        setIsHeart(true);
+      }
     }
+    console.log(isLike);
+    toast('❤️ 위시리스트에 추가되었습니다.');
+
+    clickTimer = setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
 
   const onClickNonHeart = async () => {
     if (!isLogin) {
-      alert(`로그인 상태에서만 등록할 수 있습니다.`);
+      toast(`로그인 상태에서만 등록할 수 있습니다.`);
     }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
 
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
       // console.log(isLike);
+      if (res.ok) {
+        setIsHeart(false);
+      }
+      toast('💔 위시리스트에서 제거되었습니다.');
+      console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
     }
   };
-  // console.log(isLike);
+  console.log(data);
   return (
-    <CardContainer>
+    <CardContainer data-aos="fade-up">
       <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">
@@ -93,7 +103,7 @@ function CategoryCard({ data }: CProps) {
         </Text>
         <CardPrice>
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
-          {isLike ? (
+          {isHeart ? (
             <PiHeartFill
               className="cursor-pointer"
               onClick={onClickNonHeart}

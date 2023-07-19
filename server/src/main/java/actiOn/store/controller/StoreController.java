@@ -48,12 +48,12 @@ public class StoreController {
 
     @PostMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
-                                         @RequestPart("images") List<MultipartFile> images,
-                                         @RequestParam("thumbnailImage") MultipartFile thumbnailImage) throws IOException {
+                                         @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                         @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage) throws IOException {
+        storeService.validateImagePost(images,thumbnailImage);
         storeService.storeImageUpload(images, storeId, thumbnailImage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
@@ -64,7 +64,6 @@ public class StoreController {
 
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.OK);
-
     }
 
     @PatchMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
@@ -87,10 +86,12 @@ public class StoreController {
         Store findStore = storeService.findStoreByStoreId(storeId);
         StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
         StoreResponseDto storeResponseDto = storeService.insertWishAtStoreResponseDto(responseDto, findStore.getStoreId());
+        System.out.println("아이템 개수");
+        System.out.println(storeResponseDto.getItems().size());
         return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
     }
 
-    // 업체 삭제 PP_003
+    // 업체 삭제
     @DeleteMapping("/stores/{store-id}") //스토어 삭제
     public ResponseEntity deleteStore(@PathVariable("store-id") @Positive Long storeId) {
         storeService.deleteStore(storeId);
@@ -127,7 +128,5 @@ public class StoreController {
         CategoryResponseDto searchResponseDtoWithLike =
                 storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
         return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
-
-
     }
 }

@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Role, isLoginState, isProfile } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
 import profile from '../../assets/profile.svg';
 import Searchbar from './Searchbar';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   HaederContainer,
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
-  DropdownContainer,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
 import { search, searchKeyword } from '../../store/searchbarAtom';
@@ -31,23 +32,25 @@ function Header() {
 
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/home');
-    setIsSearch(false);
-    setKeyword('');
-  };
-  const onClickPartner = () => {
+  const handlePartner = () => {
     if (!isLogin) {
-      alert(`로그인 상태에서 이용할 수 있는 서비스입니다.`);
+      toast('로그인 상태에서 이용할 수 있는 서비스입니다.');
       navigate('/login');
     } else {
       navigate('/partner');
     }
   };
 
+  const handleClick = () => {
+    navigate('/home');
+    setIsSearch(false);
+    setKeyword('');
+  };
+
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <HaederContainer>
       <LogoContainer>
@@ -61,9 +64,19 @@ function Header() {
       </LogoContainer>
       {!isLogin ? (
         <UnLoginContainer>
-          <div className="cursor-pointer mr-[50px]" onClick={onClickPartner}>
+          <div className="cursor-pointer mr-[50px]" onClick={handlePartner}>
             파트너 등록
           </div>
+          <ToastContainer
+            toastClassName={
+              'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+            }
+            position="top-right"
+            limit={1}
+            closeButton={false}
+            autoClose={2000}
+            hideProgressBar
+          />
           <Link to="/login" className="mr-[50px]">
             로그인
           </Link>
@@ -76,50 +89,26 @@ function Header() {
         </UnLoginContainer>
       ) : (
         <LoginContainer>
-          {role === 'PARTNER' ? ( //&&
-            <>
-              <Link to="/partner" className="mt-1">
-                업체 등록
-              </Link>
-              <DropdownContainer>
-                {}
-                {profileImg == 'default image' ? (
-                  <img
-                    src={profileImg}
-                    className="w-[28px] ml-[20px] rounded-full"
-                    onClick={handleDropdownClick}
-                  />
-                ) : (
-                  <img
-                    src={profile}
-                    className="w-[28px] ml-[20px]"
-                    onClick={handleDropdownClick}
-                  />
-                )}
-                {isOpen && <Dropdown />}
-              </DropdownContainer>
-            </>
+          <Link
+            to={role === 'PARTNER' ? '/store/add' : '/partner'}
+            className="mt-1"
+          >
+            {role === 'PARTNER' ? '업체 등록' : '파트너 등록'}
+          </Link>
+          {profileImg !== 'default image' ? (
+            <img
+              src={profileImg}
+              className="w-[30px] ml-[40px] rounded-full"
+              onClick={handleDropdownClick}
+            />
           ) : (
-            <>
-              <Link to="/partner" className="mt-1">
-                파트너 등록
-              </Link>
-              {profileImg !== 'default image' ? ( // 로직을 하나로 빼두기 ?
-                <img
-                  src={profileImg}
-                  className="w-[30px] ml-[40px] rounded-full"
-                  onClick={handleDropdownClick}
-                />
-              ) : (
-                <img
-                  src={profile}
-                  className="w-[28px] ml-[40px]"
-                  onClick={handleDropdownClick}
-                />
-              )}
-              {isOpen && <Dropdown />}
-            </>
+            <img
+              src={profile}
+              className="w-[30px] ml-[40px]"
+              onClick={handleDropdownClick}
+            />
           )}
+          {isOpen && <Dropdown />}
         </LoginContainer>
       )}
     </HaederContainer>

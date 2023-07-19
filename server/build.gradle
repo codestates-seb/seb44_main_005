@@ -18,7 +18,7 @@ java {
 	sourceCompatibility = '11'
 }
 
-//apply plugin: 'io.spring.dependency-management'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 configurations {
@@ -64,6 +64,9 @@ dependencies {
 	//Querydsl
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
+
+	//mysql
+	implementation 'mysql:mysql-connector-java:8.0.27'
 }
 
 //querydsl 추가

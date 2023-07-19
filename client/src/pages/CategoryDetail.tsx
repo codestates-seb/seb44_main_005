@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import DetailContent from "../components/CategoryDetail/DetailContent";
-import LocationInfo from "../components/CategoryDetail/LocationInfo";
-import PaymentInfo from "../components/CategoryDetail/PaymentInfo";
-import ReservationInfo from "../components/CategoryDetail/ReservationInfo";
-import Review from "../components/CategoryDetail/Review";
-import TicketSelect from "../components/CategoryDetail/TicketSelect";
-import { CategoryDetailState, ReserDateState, ReserFormState } from '../store/categoryDetailAtom';
+import DetailContent from '../components/CategoryDetail/DetailContent';
+import LocationInfo from '../components/CategoryDetail/LocationInfo';
+import PaymentInfo from '../components/CategoryDetail/PaymentInfo';
+import ReservationInfo from '../components/CategoryDetail/ReservationInfo';
+import Review from '../components/CategoryDetail/Review';
+import TicketSelect from '../components/CategoryDetail/TicketSelect';
+import {
+  CategoryDetailState,
+  ReserDateState,
+  ReserFormState,
+} from '../store/categoryDetailAtom';
 import { reserFormType } from '../intefaces/CategoryDetail';
 
 function CategoryDetail() {

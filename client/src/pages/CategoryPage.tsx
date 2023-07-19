@@ -1,5 +1,9 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { ToastContainer } from 'react-toastify';
 
 import CategoryCard from '../components/Categorybar/CategoryCard';
 import {
@@ -8,14 +12,18 @@ import {
   Option,
   Category,
 } from '../styles/Category/CategoryPage';
-import { useRecoilState } from 'recoil';
-
 import { categoryData } from '../store/categoryAtom';
 import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 
 function CategoryPage() {
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      offset: 100,
+    });
+  }, []);
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');
@@ -27,30 +35,32 @@ function CategoryPage() {
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
 
-  // console.log(keywords); // 출력: '함덕'
-
   useEffect(() => {
     const fetchData = async () => {
-      console.log('1');
       let data;
       // 검색 조건이 있을 때
       if (keywords) {
         setIsSearch(true);
         setIsLoading(true);
-        const res = await fetch(`${url}/search?keyword=${keywords}`);
+        const res = await fetch(`${url}/search?keyword=${keywords}`, {
+          headers: { Authorization: sessionStorage.getItem('Authorization') },
+        });
         data = await res.json();
         if (res.status !== 200) throw res;
       } else {
         // 검색 조건이 없을 때
         const res = await fetch(
-          `${url}/stores?category=${categoryName}&sort_field=${sort}`
+          `${url}/stores?category=${categoryName}&sort_field=${sort}`,
+          {
+            headers: { Authorization: sessionStorage.getItem('Authorization') },
+          }
         );
         data = await res.json();
         setIsSearch(false);
         // 에러 처리
         if (res.status !== 200) throw res;
       }
-      // 2초 동안 로딩 표시
+      // 0.5초 동안 로딩 표시
 
       setTimeout(() => {
         setIsLoading(false);
@@ -59,10 +69,20 @@ function CategoryPage() {
     };
 
     fetchData();
-  }, [categoryName, sort]);
+  }, [categoryName, sort, keywords]);
 
   return (
     <Style>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
+        }
+        position="bottom-right"
+        limit={1}
+        closeButton={false}
+        autoClose={2000}
+        hideProgressBar
+      />
       <CategoryContainer style={{ display: isLoading ? 'none' : 'flex' }}>
         <span className="font-semibold text-2xl">
           전체상품 {category.pageInfo[0].storeCount}

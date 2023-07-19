@@ -17,5 +17,5 @@ public interface StoreImgRepository extends JpaRepository<actiOn.Img.storeImg.St
     StoreImg findByStoreAndIsThumbnail(Store store, boolean isThumbnail);
 
     void deleteByLink(String link);
-
+    int countByStore(Store store);
 }

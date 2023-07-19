@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { dummyBio } from '../dummy/mypagedummy';
+import { useEffect, useState } from 'react';
 import Modal from '../components/MyPage/Modal';
 import profile from '../assets/profile.svg';
 
@@ -22,45 +21,89 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
-  // const APIURL = import.meta.env.VITE_APP_API_URL
-  const user = dummyBio[0];
-  const businessCategory = user.stores[0].businessCategory;
+  const APIURL = import.meta.env.VITE_APP_API_URL
   const businessRegi = `스포츠 및 여가관련 서비스업`;
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  // const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [partnerData, setPartnerData] = useState(null);
+  const [_, setAccessDenied] = useState(false);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
-  //     const res = await fetch(`${APIURL}/mypage`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Authorization': ACCESS_TOKEN
-  //       }
-  //     })
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         //응답 데이터처리
-  //       })
-  //   } catch (error) {
-  //     console.error('Error fetching data', error);
-  //   }
-  // };
+  const fetchData = async () => {
+    try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const res = await fetch(`${APIURL}/mypage`, {
+        method: 'GET',
+        headers: {
+          'Authorization': ACCESS_TOKEN
+        }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setUserData(data); // userData 업데이트
+      } else {
+        console.error('Error fetching data', res.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
 
-  // if(!userData) {
-  //   return <p>Loading...</p>;
-  // }
+  useEffect(() => {
+    fetchPartnerData();
+  },[]);
+
+  const fetchPartnerData = async () => {
+    try {
+      const PARTNER_ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const res = await fetch(`${APIURL}/mypage/partner`, {
+        method: 'GET',
+        headers: {
+          'Authorization': PARTNER_ACCESS_TOKEN
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setPartnerData(data);
+        if (data.stores.length === 0) {
+          setAccessDenied(true);
+        } 
+      } else {
+        console.error('Error fetching data', res.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
+
+  if(!userData) {
+    return <p>Loading...</p>;
+  }
+
+  const { nickname, email, phoneNumber } = userData;
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
+    if(!showBusinessSpace) {
+      fetchPartnerData();
+    }
   };
+
+  const handleButtonClick = () => {
+    if(partnerData.stores.length === 0) {
+      alert('접근 권한이 없습니다.');
+    } else {
+      handleBusinessSpaceToggle();
+    }
+  }
 
   const openModal = () => {
     setShowModal(true);
@@ -81,6 +124,14 @@ function MyPage() {
     if (input) {
       input.value='';
     }
+  };
+
+  const handleEditComplete = (updatedUserData) => {
+    setUserData({
+      ...updatedUserData,
+      email: userData.email
+    });
+    setShowModal(false);
   };
 
   return (
@@ -117,44 +168,44 @@ function MyPage() {
                   <PhotoInputStyle>사진 삭제</PhotoInputStyle>
                 </label>
               </MiniButtonGrid>
-              <NicknameAccent>{user.nickname}</NicknameAccent>
+              <NicknameAccent>{nickname}</NicknameAccent>
             </TopSpace>
             <MySpace>
               <UserInfo>
                 <UserInfoTitle>닉네임</UserInfoTitle>
-                <span>{user.nickname}</span>
+                <span>{nickname}</span>
               </UserInfo>
               <UserInfo>
                 <UserInfoTitle>이메일</UserInfoTitle>
-                <span>{user.email}</span>
+                <span>{email}</span>
               </UserInfo>
               <UserInfo>
                 <UserInfoTitle>연락처</UserInfoTitle>
-                <span>{user.phoneNumber}</span>
+                <span>{phoneNumber}</span>
               </UserInfo>
             </MySpace>
           </MySpace>
           <MySpace>
             <ButtonGrid>
-              <ButtonStyle type="button" onClick={handleBusinessSpaceToggle}>등록한 업체보기</ButtonStyle>
+              <ButtonStyle type="button" onClick={handleButtonClick}>등록한 업체보기</ButtonStyle>
             </ButtonGrid>
             {showBusinessSpace && (
               <BusinessSpace>
                 <BusinessCategory>
                   <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-                  {user.stores.map((_, index) => (
+                  {partnerData.stores.map((_, index) => (
                     <span key={index}>{businessRegi}</span>
                   ))}
                 </BusinessCategory>
                 <BusinessCategory>
                   <BusinessCategoryTitle>업종</BusinessCategoryTitle>
-                  {user.stores.map((_, index) => (
-                    <span key={index}>{businessCategory}</span>
+                  {partnerData.stores.map((store, index) => (
+                    <span key={index}>{store.category}</span>
                   ))}
                 </BusinessCategory>
                 <BusinessCategory>
                   <BusinessCategoryTitle>업체명</BusinessCategoryTitle>
-                  {user.stores.map((store, index) => (
+                  {partnerData.stores.map((store, index) => (
                     <span key={index}>{store.storeName}</span>
                   ))}
                 </BusinessCategory>
@@ -163,7 +214,12 @@ function MyPage() {
           </MySpace>
         </MyBioContainer>
       </MyPageContainer>
-      {showModal && <Modal onClick={closeModal} defaultNickname={user.nickname} defaultPhoneNumber={user.phoneNumber} />}
+      {showModal && <Modal 
+        onClick={closeModal}
+        defaultNickname={nickname} 
+        defaultPhoneNumber={phoneNumber} 
+        onEditComplete={handleEditComplete}
+      />}
     </>
   );
 }

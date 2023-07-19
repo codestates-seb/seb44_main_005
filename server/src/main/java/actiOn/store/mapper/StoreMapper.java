@@ -17,8 +17,6 @@ public interface StoreMapper {
 
     Store storePatchDtoToStore(StorePatchDto storePatchDto);
 
-    StoreResponseDto storeToStoreResponseDto(Store store);
-
     StoreIdResponseDto storeToStorePostResponseDto(Store store);
 
     List<Item> storePostDtoItemsToItemEntities(List<Item> itemList);

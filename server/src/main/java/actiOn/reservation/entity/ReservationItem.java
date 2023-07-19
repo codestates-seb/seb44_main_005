@@ -29,4 +29,8 @@ public class ReservationItem extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ITEM_ID")
     private Item item;
+
+    public ReservationItem(int ticketCount) {
+        this.ticketCount = ticketCount;
+    }
 }

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { Role, isLoginState, isProfile } from '../store/userInfoAtom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   InputContainer,
@@ -16,12 +18,9 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
-  // const CLIENT_ID = import.meta.env.VITE_APP_CLIENT_ID;
-  // const GOOGLE_REDIRECT_URI = import.meta.env.VITE_APP_REDIRECT_URI;
 
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
-  // const [accessToken, setAccessToken] = useState('');
 
   //recoil 전역상태
   const setIsLoginState = useSetRecoilState(isLoginState);
@@ -36,84 +35,10 @@ function Login() {
     setPassWord(event.currentTarget.value);
   };
 
-  //구글로그인
-  // const getAccessToken = async (authorizationCode) => {
-  //   // console.log('3');
-  //   // await fetch(`${url}/oauth2/authorization/google`, {
-  //   //   method: 'POST',
-  //   //   body: JSON.stringify({
-  //   //     accesstoken: authorizationCode,
-  //   //   }),
-  //   // });
-  //   // setIsLoginState(true);
-  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  //   const accessToken = parsedHash.get('access_token');
-
-  //   // await url.post('oauth/google', { accessToken });
-  //   await fetch(`${url}/oauth2/authorization/google/success`, {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //       accesstoken: accessToken,
-  //     }),
-  //   });
-  //   // setIsLoginState(true);
-  //   setIsLoginState(true);
-  //   navigate('/home');
-  // };
-  // useEffect(() => {
-  //   // Authorization Server로부터 클라이언트로 리디렉션된 경우, Authorization Code가 함께 전달됩니다.
-  //   // ex) http://localhost:3000/mypage?code=5e52fb85d6a1ed46a51f
-  //   // 4. [Github Auth 서버 ->클라이언트] Redirect + Authorization code 확인
-  //   console.log('3');
-  //   const url = new URL(window.location.href);
-  //   const authorizationCode = url.searchParams.get('code');
-  //   if (authorizationCode) {
-  //     getAccessToken(authorizationCode);
-  //   }
-  // }, []);
-  // const getAccessToken = async (accessToken) => {
-  //   console.log('1');
-  //   try {
-  //     await fetch(`${url}/oauth2/authorization/google`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         accessToken: accessToken,
-  //       }),
-  //     });
-  //     // const { accessToken } = result.data;
-  //     setIsLoginState(true);
-  //     setAccessToken(accessToken);
-  //     navigate('/home');
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-
-  // const handleAccessToken = async () => {
-  //   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  //   console.log('2');
-  //   const accessToken = parsedHash.get('access_token');
-  //   if (accessToken) {
-  //     await getAccessToken(accessToken);
-  //   }
-  // };
-
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
     window.location.href = `${url}/oauth2/authorization/google`;
-    // 'https://accounts.google.com/o/oauth2/auth?' +
-    // `client_id=${CLIENT_ID}&` +
-    // `redirect_uri=${GOOGLE_REDIRECT_URI}&` +
-    // 'response_type=token&' +
-    // 'scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
   };
-
-  // useEffect(() => {
-  //   handleAccessToken();
-  // }, []);
 
   //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
@@ -127,6 +52,7 @@ function Login() {
         }),
       });
       const result1 = await res.json();
+      console.log(result1);
       if (res.status !== 200) throw res;
 
       //헤더에서 멤버아이디와 닉네임을 받아옴
@@ -134,24 +60,42 @@ function Login() {
       const name = result1.nickname;
       const profile = result1.profileImage;
       const role = result1.role;
+      console.log(profile);
       setIsProfile(profile);
       setIsRole(role);
       // 로컬 스토리지에 memberId,토큰 저장
       sessionStorage.setItem('Authorization', Authorization);
       setIsLoginState(true);
-
-      // 헤더에서 데이터를 받았으면 리다이렉트
       if (name) {
-        alert(`${name}님 반갑습니다 !`);
-        navigate('/home');
+        toast(`🌊 ${name}님 반갑습니다 `);
+        setTimeout(() => {
+          navigate('/home');
+        }, 2000);
       }
     } catch (error) {
-      console.error('로그인 요청 중 오류가 발생했습니다', error);
+      console.error(error);
+      toast(`🚨 이메일과 비밀번호를 정확하게 입력해주세요`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
     }
   };
 
   return (
     <StyleContainer>
+      <ToastContainer
+        toastClassName={
+          'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+        }
+        position="top-right"
+        limit={10}
+        closeButton={false}
+        autoClose={2000}
+        hideProgressBar
+      />
       <LoginContainer>
         <img src={headerlogo} className="pl-[30px]" />
         <IntroText>
@@ -176,6 +120,7 @@ function Login() {
               value={password}
               onChange={onPwHandler}
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-3 rounded-md mr-3 p-2"
+              onKeyDown={handleKeyDown}
             />
           </div>
         </InputContainer>
