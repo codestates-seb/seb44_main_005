@@ -14,6 +14,7 @@ import {
   LogoContainer,
   LoginContainer,
   UnLoginContainer,
+  ProfileIcon,
 } from '../../styles/Header/Haeder';
 import Dropdown from './Dropdown';
 import { search, searchKeyword } from '../../store/searchbarAtom';
@@ -96,17 +97,13 @@ function Header() {
             {role === 'PARTNER' ? '업체 등록' : '파트너 등록'}
           </Link>
           {profileImg !== 'default image' ? (
-            <img
+            <ProfileIcon
               src={profileImg}
-              className="w-[30px] ml-[40px] rounded-full"
+              className="rounded-full"
               onClick={handleDropdownClick}
             />
           ) : (
-            <img
-              src={profile}
-              className="w-[30px] ml-[40px]"
-              onClick={handleDropdownClick}
-            />
+            <ProfileIcon src={profile} onClick={handleDropdownClick} />
           )}
           {isOpen && <Dropdown />}
         </LoginContainer>

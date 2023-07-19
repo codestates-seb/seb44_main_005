@@ -18,3 +18,7 @@ export const Menu = tw.li`
   cursor-pointer
   hover:text-[#4771B7]
 `;
+
+export const DropDownContainer = tw.div`
+relative
+`;
