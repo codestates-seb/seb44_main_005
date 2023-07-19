@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from '../components/MyPage/Modal';
-import profile from '../assets/profile.svg';
+import defaultProfileImg from '../assets/profile.svg';
 
 import {
   BusinessCategory,
@@ -21,7 +21,7 @@ import {
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
-  const APIURL = import.meta.env.VITE_APP_API_URL
+  const APIURL = import.meta.env.VITE_APP_API_URL;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
@@ -29,7 +29,8 @@ function MyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
-  const [_, setAccessDenied] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -85,10 +86,14 @@ function MyPage() {
   };
 
   if(!userData) {
-    return <p>Loading...</p>;
+    return (
+      <div className='border-[1px] border-[#4771B7] w-[700px] flex justify-center items-center text-xl font-semibold'>
+        <p>로그인 상태를 확인하여주시기 바랍니다.</p>
+      </div>
+    )
   }
 
-  const { nickname, email, phoneNumber } = userData;
+  const { nickname, email, phoneNumber, profileImg } = userData;
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
@@ -113,16 +118,77 @@ function MyPage() {
     setShowModal(false);
   };
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     setSelectedPhoto(file);
+
+    try  {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log('프로필 업데이트 완료');
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedPhoto(file);
+        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+        fetchData(); // Fetch updated user data after profile update
+      } else {
+        console.error('프로필 업데이트 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 업데이트 에러', error);
+    }
   };
 
-  const handlePhotoRemove = () => {
-    setSelectedPhoto(null);
-    const input = document.getElementById('photoInput') as HTMLInputElement;
-    if (input) {
-      input.value='';
+  const getProfileImage = () => {
+    if (profileImg === 'default image') {
+      return defaultProfileImg;
+    } else if (profileImg) {
+      return profileImg;
+    } else {
+      return defaultProfileImg;
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    setIsDeletingPhoto(true);
+
+    try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+      });
+
+      if (res.ok) {
+        console.log('프로필 사진 삭제 완료');
+        setSelectedPhoto(null);
+        const input = document.getElementById('photoInput') as HTMLInputElement;
+        if (input) {
+          input.value = '';
+        }
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          profileImg: 'default image',
+        }));
+      } else {
+        console.error('프로필 사진 삭제 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 사진 삭제 에러', error);
+    } finally {
+      setIsDeletingPhoto(false);
     }
   };
 
@@ -144,7 +210,7 @@ function MyPage() {
             </ButtonGrid>
             <TopSpace>
               <ImgStyle 
-                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : getProfileImage()}
                 alt="profile img" 
               />
               <MiniButtonGrid>

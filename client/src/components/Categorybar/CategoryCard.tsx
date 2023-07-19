@@ -28,8 +28,9 @@ type CProps = {
     isLike: boolean;
     img: string;
   };
+  handleIsLikeToggle: () => void;
 };
-function CategoryCard({ data }: CProps) {
+function CategoryCard({ data, handleIsLikeToggle }: CProps) {
   const { storeId, img, title, reviewCount, address, rating, price, isLike } =
     data;
   const url = import.meta.env.VITE_APP_API_URL;
@@ -61,6 +62,7 @@ function CategoryCard({ data }: CProps) {
     clickTimer = setTimeout(() => {
       setIsHeartClicked(false);
     }, 5000);
+    handleIsLikeToggle();
   };
 
   const onClickNonHeart = async () => {
@@ -83,6 +85,7 @@ function CategoryCard({ data }: CProps) {
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
+      handleIsLikeToggle();
     }
   };
   console.log(data);
