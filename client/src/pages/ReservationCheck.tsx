@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { reservationCheckdummy } from "../dummy/reservationcheckdummy";
 import {
   ResCheckContainer,
@@ -16,18 +17,47 @@ import {
   ButtonStyle,
   NoButtons,
 } from '../styles/MyPage/ReservationCheck';
+import { Link } from "react-router-dom";
 
 function ReservationCheck() {
-  const { data } = reservationCheckdummy;
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+  const [data, setData] = useState([]);
+  const accessToken = sessionStorage.getItem('Authorization');
+
+  const reservationDelete = async () => {
+    const confirmDelete = confirm("정말 예약을 취소하겠습니까?");
+    confirmDelete && fetch(`${API_URL}/reservations/1`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': accessToken
+      }
+    })
+  }
+
+  const reservationListFetch = async () => {
+    const res = await fetch(`${API_URL}/mypage/reservations`, {
+      method: 'GET',
+      headers: {
+        'Authorization': accessToken
+      }
+    });
+    const json = await res.json();
+    setData(json.data);
+    console.log(json);
+  }
+
+  useEffect(() => {
+    reservationListFetch();
+  }, [])
   
   return (
     <ResCheckContainer>
       <ResCheckTitle>예약 내역 조회</ResCheckTitle>
-      {data.map((reservation) => (
-        <ResCheckCards key={reservation.storeId}>
+      {data && data.map((reservation, idx) => (
+        <ResCheckCards key={idx}>
           <ResImgContainer>
             <ImgResSzing>
-              <ImgStyle src={reservation.storeImage} alt="reservation image" />
+              <ImgStyle src={reservation.storeImg} alt="reservation image" />
             </ImgResSzing>
           </ResImgContainer>
           <ResInfoContainer>
@@ -69,8 +99,10 @@ function ReservationCheck() {
             <ResButtonsContainer>
               {reservation.reservationStatus === "예약 완료" && (
                 <div className="space-x-3">
-                  <ButtonStyle type="button">예약 수정</ButtonStyle>
-                  <ButtonStyle type="button">예약 삭제</ButtonStyle>
+                  <Link to="/my/order/edit?reservationId=1">
+                    <ButtonStyle type="button">예약 수정</ButtonStyle>
+                  </Link>
+                  <ButtonStyle type="button" onClick={reservationDelete}>예약 삭제</ButtonStyle>
                 </div>
               )}
               {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (
