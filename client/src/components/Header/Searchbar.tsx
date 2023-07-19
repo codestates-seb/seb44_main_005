@@ -83,11 +83,11 @@ function Searchbar() {
       <img
         src={search}
         onClick={searchFetch}
-        className="absolute ml-2 w-[30px] top-[5px] left-[452px] cursor-pointer"
+        className="absolute ml-2 w-[30px] top-[5px] left-[452px] cursor-pointer z-50"
       />
       {keyItems.length > 0 && keyword && (
         <AutoSearchContainer>
-          <ul>
+          <ul className="pt-[20px]">
             {keyItems.map((item) => (
               <AutoSearchData
                 key={item.title}

@@ -93,15 +93,21 @@ function ReservationModify() {
 
   //Get
   useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`${url}/reservations/${reservationId}`, {
+    const fetchData = () => {
+      fetch(`${url}/reservations/${reservationId}`, {
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       })
         .then((res) => res.json())
-        .then((data) => setData(data));
+        .then((data) => {
+          setData(data);
+          setName(data.reservationName);
+          setPhone(data.reservationPhone);
+          setEmail(data.reservationEmail);
+        });
     };
     fetchData();
   }, [reservationId]);
+
   return (
     <div className="flex">
       <ReservationContainer>
@@ -110,8 +116,8 @@ function ReservationModify() {
         <SubTitle>1. 결제한 상품</SubTitle>
         {data.reservationItems.map((el) => {
           return (
-            <li className="mb-3 list-none" key={el.item}>
-              {el.item} x <span>{el.ticketCount}</span>
+            <li className="mb-3 list-none" key={el.itemName}>
+              {el.itemName} x <span>{el.ticketCount}</span>
             </li>
           );
         })}
@@ -127,7 +133,6 @@ function ReservationModify() {
                 type="text"
                 value={name}
                 onChange={HandlerName}
-                placeholder={data.reservationName}
               />
               <InputRequire>필수</InputRequire>
             </div>
@@ -140,7 +145,7 @@ function ReservationModify() {
                 value={phone}
                 onChange={HandlerPhone}
                 maxLength={13}
-                placeholder={data.reservationPhone}
+                placeholder="010-0000-0000"
               />
               <InputRequire>필수</InputRequire>
             </div>
@@ -151,7 +156,6 @@ function ReservationModify() {
               type="email"
               value={email}
               onChange={HandlerEmail}
-              placeholder={data.reservationEmail}
             />
           </InputContainer>
         </ReservationInfo>
