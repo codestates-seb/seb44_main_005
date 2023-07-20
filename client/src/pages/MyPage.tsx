@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from '../components/MyPage/Modal';
 import BusinessSpaceSection from '../components/MyPage/BusinessSpaceSection';
+import UserInfoSection from '../components/MyPage/UserInfoSection';
 import defaultProfileImg from '../assets/profile.svg';
 
 import {
@@ -15,7 +16,6 @@ import {
   MyBioContainer,
   PhotoInputStyle,
 } from '../styles/MyPage/MyPage';
-import UserInfoSection from '../components/MyPage/UserInfoSection';
 
 function MyPage() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
@@ -23,9 +23,11 @@ function MyPage() {
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
-  const [_, setAccessDenied] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -113,6 +115,80 @@ function MyPage() {
     setShowModal(false);
   };
 
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files[0];
+    setSelectedPhoto(file);
+
+    try  {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log('프로필 업데이트 완료');
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedPhoto(file);
+        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+        fetchData(); // Fetch updated user data after profile update
+      } else {
+        console.error('프로필 업데이트 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 업데이트 에러', error);
+    }
+  };
+
+  const getProfileImage = () => {
+    if (profileImg === 'default image') {
+      return defaultProfileImg;
+    } else if (profileImg) {
+      return profileImg;
+    } else {
+      return defaultProfileImg;
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    setIsDeletingPhoto(true);
+
+    try {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+      });
+
+      if (res.ok) {
+        console.log('프로필 사진 삭제 완료');
+        setSelectedPhoto(null);
+        const input = document.getElementById('photoInput') as HTMLInputElement;
+        if (input) {
+          input.value = '';
+        }
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          profileImg: 'default image',
+        }));
+      } else {
+        console.error('프로필 사진 삭제 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 사진 삭제 에러', error);
+    } finally {
+      setIsDeletingPhoto(false);
+    }
+  };
+
   const handleEditComplete = (updatedUserData) => {
     setUserData({
       ...updatedUserData,
@@ -120,8 +196,6 @@ function MyPage() {
     });
     setShowModal(false);
   };
-
-  const profileImage = profileImg !== 'default image' ? profileImg : defaultProfileImg;
 
   return (
     <>
@@ -133,7 +207,7 @@ function MyPage() {
             </ButtonGrid>
             <TopSpace>
               <ImgStyle 
-                src={profileImage}
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : getProfileImage()}
                 alt="profile img" 
               />
               <MiniButtonGrid>
@@ -143,6 +217,7 @@ function MyPage() {
                     type='file'
                     accept='image/*'
                     style={{ display: 'none' }}
+                    onChange={handlePhotoChange} 
                   />
                   <PhotoInputStyle>사진 변경</PhotoInputStyle>
                 </label>
@@ -151,6 +226,7 @@ function MyPage() {
                     id='photoRemoveInput'
                     type='button'
                     style={{ display: 'none' }}
+                    onClick={handlePhotoRemove}
                   />
                   <PhotoInputStyle>사진 삭제</PhotoInputStyle>
                 </label>
