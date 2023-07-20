@@ -54,7 +54,7 @@ public interface MemberMapper {
     PartnerResponseDto.StoreDto storeToPartnerResponseDto(Store store);
 
 
-    // 파트너 업체 DTO
+    // 파트너 업체 조회 DTO
     default PartnerStoreResponseDto partnerToPartnerStoreResponseDto(Member partner) {
         PartnerStoreResponseDto.PartnerStoreResponseDtoBuilder builder = PartnerStoreResponseDto.builder();
 
@@ -75,7 +75,17 @@ public interface MemberMapper {
         return partnerStoreDtos;
     }
 
-    PartnerStoreResponseDto.PartnerStoreDto storeToPartnerStoreResponseDto(Store store);
+    default PartnerStoreResponseDto.PartnerStoreDto storeToPartnerStoreResponseDto(Store store) {
+        List<StoreImg> storeImgList = store.getStoreImgList();
+        String storeThumbnailImgLink = findThumbnailImage(storeImgList).getLink();
+
+        return PartnerStoreResponseDto.PartnerStoreDto
+                .builder()
+                .storeId(store.getStoreId())
+                .storeImage(storeThumbnailImgLink)
+                .storeName(store.getStoreName())
+                .build();
+    }
 
     // 예약 내역 조회 DTO
     default MemberReservationResponseDto memberToMemberReservationsDto(Member member) {
