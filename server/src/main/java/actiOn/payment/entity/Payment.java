@@ -2,11 +2,13 @@ package actiOn.payment.entity;
 
 import actiOn.helper.audit.BaseEntity;
 import actiOn.member.entity.Member;
+import actiOn.reservation.entity.Reservation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,11 +22,11 @@ public class Payment extends BaseEntity {
     @Column
     private String paymentKey;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private PayType payType;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private PayMethod payMethod;
 
@@ -34,18 +36,18 @@ public class Payment extends BaseEntity {
     @Column(nullable = false)
     private String orderId;
 
-    @Column(nullable = false)
+    @Column
     private String orderName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private Status status = Status.READY;
 
-    @Column(nullable = false)
-    private String requestedAt;
+    @Column
+    private LocalDateTime requestedAt;
 
-    @Column(nullable = false)
-    private String approvedAt;
+    @Column
+    private LocalDateTime approvedAt;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -53,6 +55,7 @@ public class Payment extends BaseEntity {
 
     @OneToOne(mappedBy = "payment")
     private PaymentCancel cancel;
+
 
     public enum PayType {
         NORMAL,

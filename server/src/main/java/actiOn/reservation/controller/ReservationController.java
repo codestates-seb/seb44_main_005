@@ -2,8 +2,10 @@ package actiOn.reservation.controller;
 
 import actiOn.item.dto.ItemDto;
 import actiOn.item.service.ItemService;
+import actiOn.payment.entity.Payment;
 import actiOn.reservation.dto.ReservationPatchDto;
 import actiOn.reservation.dto.ReservationPostDto;
+import actiOn.reservation.dto.ReservationRedisResponseDto;
 import actiOn.reservation.dto.ReservationResponseDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
@@ -37,12 +39,29 @@ public class ReservationController {
     @PostMapping("/reservations/{store-id}")
     public ResponseEntity postReservation(@Positive @PathVariable("store-id") Long storeId,
                                           @Valid @RequestBody ReservationPostDto requestBody) {
-        Reservation reservation = reservationMapper.reservationPostDtoToReservation(requestBody);
-        List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(requestBody, itemService);
-        reservationService.postReservation(storeId, reservation, reservationItems);
-        //Todo 내용추가 // 예약자 정보 안적었을 때 500
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        String reservationKey = reservationService.redisSaveReservation(storeId,requestBody);
+        return new ResponseEntity<>(new ReservationRedisResponseDto(reservationKey),HttpStatus.OK);
     }
+
+    @PostMapping("/reservation/payments")
+    public ResponseEntity confirmReservationAndPayment(@RequestParam("reservationKey") String reservationKey,
+                                                       @RequestParam("orderId") String orderId) {
+        ReservationPostDto reservationPostDto = reservationService.getReservationPostDtoFromRedis(reservationKey);
+        Reservation reservation = reservationMapper.reservationPostDtoToReservation(reservationPostDto);
+        List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(reservationPostDto, itemService);
+        Payment payment = reservationService.createPaymentByOrderId(orderId);
+        reservationService.postReservation(reservationPostDto.getStoreId(),reservation,reservationItems,payment);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+//    @PostMapping("/reservations/{store-id}")
+//    public ResponseEntity postReservation(@Positive @PathVariable("store-id") Long storeId,
+//                                          @Valid @RequestBody ReservationPostDto requestBody) {
+//        Reservation reservation = reservationMapper.reservationPostDtoToReservation(requestBody);
+//        List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(requestBody, itemService);
+//        reservationService.postReservation(storeId, reservation, reservationItems);
+//        //Todo 내용추가 // 예약자 정보 안적었을 때 500
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 
     // 예약 수정
     @PatchMapping("/reservations/{reservation-id}")
@@ -80,4 +99,11 @@ public class ReservationController {
         reservationService.changeReservationStatus(reservationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @PostMapping("/reservation/save/{store-id}")
+//    public ResponseEntity postReservationToRedis(@PathVariable("store-id") long storeId,
+//                                                 @RequestBody ReservationPostDto reservationPostDto) {
+//        reservationService.
+//    }
+
 }

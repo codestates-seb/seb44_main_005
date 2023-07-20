@@ -3,12 +3,14 @@ package actiOn.reservation.dto;
 import actiOn.helper.validator.NotSpace;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 public class ReservationPostDto {
     @NotSpace(message = "예약자 성함은 필수 값입니다.")
@@ -26,6 +28,8 @@ public class ReservationPostDto {
 
     @Positive
     private int totalPrice;
+
+    private Long storeId;
 
     private List<ReservationItemDto> reservationItems;
 }

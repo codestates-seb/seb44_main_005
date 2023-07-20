@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @Validated
 @AllArgsConstructor
-@RequestMapping("/v1/payments")
+//@RequestMapping("/v1/payments")
 public class PaymentController {
     private final PaymentService paymentService;
     private final TossPaymentsConfiguration configuration;
@@ -51,9 +51,10 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/payments") //임시로 만든 엔드포인트
-    public ResponseEntity successPayment(@RequestParam("order-id") String orderId){
-        paymentService.getPaymentInfoByOrderId(orderId);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+//    @PostMapping("/payments/confirm") //임시로 만든 엔드포인트
+//    public ResponseEntity successPayment(@RequestParam("order-id") String orderId,
+//                                         @RequestParam("")){
+//        paymentService.getPaymentInfoByOrderId(orderId);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 }

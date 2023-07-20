@@ -155,15 +155,5 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/encoded-info")
-    public ResponseEntity getMemberInformation() {
-        EncodedMemberInfoDto memberInfo = memberService.encodingMemberInfo();
-        return new ResponseEntity<>(memberInfo,HttpStatus.OK);
-    }
 
-//    @GetMapping("/decode-info")
-//    public void MemberinformationDecoding(@RequestParam("text") String text){
-//        text = text.replace(" ","+");
-//        System.out.println(memberService.memberInfoDecoding(text));
-//    }
 }
