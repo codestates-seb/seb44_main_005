@@ -20,7 +20,7 @@ function page1() {
       {/* <div className="absolute w-[880px] h-[100vh] bg-cover right-0 top-[-10px]"> */}
       <img
         src={bg3}
-        className="absolute bg-cover w-[720px] rounded-l-full top-0 right-0"
+        className="absolute bg-cover h-[100vh] rounded-l-full top-0 right-0"
       />
       {/* </div> */}
       <img src={logo} className="z-0 absolute w-[200px] left-7 top-5" />

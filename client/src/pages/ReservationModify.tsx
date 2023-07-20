@@ -64,7 +64,10 @@ function ReservationModify() {
     try {
       fetch(`${url}/reservations/${reservationId}`, {
         method: 'PATCH',
-        headers: { Authorization: sessionStorage.getItem('Authorization') },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: sessionStorage.getItem('Authorization')
+        },
         body: JSON.stringify({
           reservationName: name,
           reservationPhone: phone,
@@ -86,6 +89,7 @@ function ReservationModify() {
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
       navigate('/my/order'); // 예약내역 조회 페이지로 이동
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -109,7 +113,7 @@ function ReservationModify() {
   }, [reservationId]);
 
   return (
-    <div className="flex">
+    <div className="flex justify-center">
       <ReservationContainer>
         <ReservationTitle>{data.storeName}</ReservationTitle>
         <Title>예약정보</Title>

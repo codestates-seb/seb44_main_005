@@ -1,11 +1,10 @@
 import tw from 'tailwind-styled-components';
 
 export const ReservationContainer = tw.div`
-  h-[100vh]
+  h-[77vh]
   w-[600px]
-  text-start
-  ml-[300px]
   mt-[80px]
+  mr-16
 `;
 
 export const Title = tw.div`
@@ -46,10 +45,9 @@ export const InputRequire = tw.div`
 `;
 
 export const PaymentInfoBox = tw.section`
-  sticky top-10
   w-[300px] h-[500px]
   border-[1px] border-[#4771B7] rounded-[5px]
-  mt-10 ml-20
+  mt-28
   font-medium
 `;
 

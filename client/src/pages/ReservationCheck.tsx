@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { reservationCheckdummy } from "../dummy/reservationcheckdummy";
 import {
   ResCheckContainer,
   ResCheckTitle,
@@ -23,15 +22,18 @@ function ReservationCheck() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [data, setData] = useState([]);
   const accessToken = sessionStorage.getItem('Authorization');
-
+  console.log(data);
   const reservationDelete = async (reservationId: number) => {
     const confirmDelete = confirm("정말 예약을 취소하겠습니까?");
-    confirmDelete && fetch(`${API_URL}/reservations/${reservationId}`, {
+    const res = confirmDelete && await fetch(`${API_URL}/reservations/${reservationId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': accessToken
       }
-    })
+    });
+    if (res.status === 204) {
+      window.location.reload();
+    }
   }
 
   const reservationListFetch = async () => {
@@ -66,7 +68,7 @@ function ReservationCheck() {
                   `
                     font-medium
                     text-[15px]
-                    ${reservation.reservationStatus === "예약 완료" 
+                    ${reservation.reservationStatus === "예약 확정" 
                       ? "bg-[#4771B7] text-white"
                       : reservation.reservationStatus === "이용 완료"
                       ? "bg-white text-[#4771B7] border-[1px] border-[#4771B7]"
@@ -96,7 +98,7 @@ function ReservationCheck() {
               </div>
             </ResInformation>
             <ResButtonsContainer>
-              {reservation.reservationStatus === "예약 완료" && (
+              {reservation.reservationStatus === "예약 확정" && (
                 <div className="space-x-3">
                   <Link to={`/my/order/edit?reservationId=${reservation.reservationId}`}>
                     <ButtonStyle type="button">예약 수정</ButtonStyle>
