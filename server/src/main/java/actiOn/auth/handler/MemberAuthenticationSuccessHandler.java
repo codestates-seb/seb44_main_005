@@ -39,7 +39,10 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // 리프레시 토큰 HttpOnly 쿠키에 저장
         Cookie cookie = new Cookie(REFRESH.getType(), refreshToken);
-        cookie.setHttpOnly(true);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
         cookie.setMaxAge(2 * 24 * 60 * 60); // 쿠키 유효 기간 설정 (2일)
         response.addCookie(cookie);
 
