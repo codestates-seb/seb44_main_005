@@ -28,9 +28,8 @@ type CProps = {
     isLike: boolean;
     img: string;
   };
-  handleIsLikeToggle: () => void;
 };
-function CategoryCard({ data, handleIsLikeToggle }: CProps) {
+function CategoryCard({ data }: CProps) {
   const { storeId, img, title, reviewCount, address, rating, price, isLike } =
     data;
   const url = import.meta.env.VITE_APP_API_URL;
@@ -62,7 +61,6 @@ function CategoryCard({ data, handleIsLikeToggle }: CProps) {
     clickTimer = setTimeout(() => {
       setIsHeartClicked(false);
     }, 5000);
-    handleIsLikeToggle();
   };
 
   const onClickNonHeart = async () => {
@@ -80,12 +78,11 @@ function CategoryCard({ data, handleIsLikeToggle }: CProps) {
       if (res.ok) {
         setIsHeart(false);
       }
-      toast('💔 위시리스트에서 제거되었습니다.');
+      toast('🩶 위시리스트에서 제거되었습니다.');
       console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);
       }, 5000);
-      handleIsLikeToggle();
     }
   };
   console.log(data);
