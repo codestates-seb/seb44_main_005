@@ -83,7 +83,6 @@ body {
   animation: fadeInRight 2s ease-in-out ;
 }
 
-
 @keyframes wheelRotate {
   0% {
     transform: rotate(0deg);
@@ -92,7 +91,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
 
 @keyframes fadeInRight {
   from {
@@ -105,6 +103,7 @@ body {
     transform: translateX(0px);
   }
 }
+
 @keyframes arrowLeft {
   0% {
     transform: translateX(0);

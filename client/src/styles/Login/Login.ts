@@ -12,6 +12,7 @@ export const StyleContainer = tw.div`
   justify-center 
   items-center
   mb-[50px]
+  min-h-[60vh]
 `;
 
 export const LoginContainer = tw.form`

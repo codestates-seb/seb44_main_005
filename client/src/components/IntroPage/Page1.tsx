@@ -16,11 +16,11 @@ function page1() {
   };
 
   return (
-    <div className="w-full min-h-[100vh] overflow-x-hidden">
+    <div className="w-full min-h-[100vh] overflow-hidden">
       {/* <div className="absolute w-[880px] h-[100vh] bg-cover right-0 top-[-10px]"> */}
       <img
         src={bg3}
-        className="absolute bg-cover w-[800px] rounded-l-full top-0 right-0"
+        className="absolute bg-cover w-[720px] rounded-l-full top-0 right-0"
       />
       {/* </div> */}
       <img src={logo} className="z-0 absolute w-[200px] left-7 top-5" />
@@ -32,7 +32,7 @@ function page1() {
         </Inrto>
         <Button onClick={handleButton}>시작하기</Button>
       </div>
-      <div className="flex flex-col items-center relative justify-center top-[490px]">
+      <div className="flex flex-col items-center relative justify-center top-[450px]">
         <span className="font-semibold text-[25px] ">엑티온 알아보기</span>
         <img src={bottom} className="w-[100px] animate-bounce" />
       </div>
