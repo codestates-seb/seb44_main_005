@@ -79,6 +79,9 @@ body {
   animation: wheelRotate 1.5s infinite linear;
 }
 
+.intro-text {
+  animation: fadeInRight 2s ease-in-out ;
+}
 
 @keyframes wheelRotate {
   0% {
@@ -86,6 +89,18 @@ body {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-500px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0px);
   }
 }
 
