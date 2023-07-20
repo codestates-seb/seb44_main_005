@@ -16,6 +16,7 @@ public class MemberDetails extends Member implements UserDetails {
         setMemberId(member.getMemberId());
         setEmail(member.getEmail());
         setPassword(member.getPassword());
+        setProfileImg(member.getProfileImg());
         setNickname(member.getNickname());
         setPhoneNumber(member.getPhoneNumber());
         setMemberRoles(member.getMemberRoles());

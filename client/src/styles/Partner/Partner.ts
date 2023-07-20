@@ -4,7 +4,7 @@ export const PartnerContainer = tw.div`
     flex
     justify-center
     items-center
-    h-[80%]
+    min-h-[77vh]
 `;
 
 export const RegiContainer =  tw.div`

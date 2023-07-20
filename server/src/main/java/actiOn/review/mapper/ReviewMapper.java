@@ -20,7 +20,7 @@ public class ReviewMapper {
 
     public ReviewResponseDto reviewToReviewResponseDto(Review review){
         return new ReviewResponseDto(
-                review.getMember().getProfileImg().getLink(),
+                review.getMember().getProfileImg(),
                 review.getMember().getNickname(),
                 review.getContent(),
                 review.getRating(),

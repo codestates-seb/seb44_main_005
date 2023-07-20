@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components"
 
 export const AfterPaymentSection = tw.section`
-  w-[600px] h-[70vh]
+  w-[600px] h-[77vh]
   mx-auto
   flex flex-col justify-center items-center
 `;

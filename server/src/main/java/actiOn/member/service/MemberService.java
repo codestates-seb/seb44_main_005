@@ -1,6 +1,5 @@
 package actiOn.member.service;
 
-import actiOn.Img.profileImg.ProfileImg;
 import actiOn.Img.service.ImgService;
 import actiOn.auth.role.MemberRole;
 import actiOn.auth.role.Role;
@@ -32,7 +31,7 @@ public class MemberService {
     private final RoleService roleService;
 
     // 회원 등록
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Member createMember(Member member) {
         // 이메일, 닉네임, 휴대폰 번호 중복 검사
         verifyExistsEmail(member.getEmail());
@@ -48,9 +47,9 @@ public class MemberService {
         List<MemberRole> memberRoles = addedMemberRole(member, userRole);
         member.setMemberRoles(memberRoles);
 
-        // 기본 프로필 이미지 저장
-        ProfileImg profileImg = imgService.setDefaultProfileImage(member);
-        member.setProfileImg(profileImg);
+        // 기본 프로필 이미지 등록
+        String defaultImage = member.getDefaultImageLink();
+        member.setProfileImg(defaultImage);
 
         return memberRepository.save(member);
     }
@@ -98,7 +97,7 @@ public class MemberService {
         Member member = findMemberByEmail(email);
 
         // 프로필 이미지 업로드
-        ProfileImg profileImg = imgService.uploadProfileImage(file, member);
+        String profileImg = imgService.uploadProfileImage(file, member);
         member.setProfileImg(profileImg);
 
         memberRepository.save(member);
@@ -109,12 +108,8 @@ public class MemberService {
     public void deleteProfileImage(String email) {
         Member member = findMemberByEmail(email);
 
-        // 기존 프로필 이미지 status DELETED로 변경
-        imgService.updateProfileImageStatusDeleted(member);
-
-        // 기본 프로필로 변경
-        ProfileImg defaultImage = imgService.getDefaultProfileImage(member);
-        member.setProfileImg(defaultImage);
+        String defaultProfileImg = member.getDefaultImageLink();
+        member.setProfileImg(defaultProfileImg);
 
         memberRepository.save(member);
     }
