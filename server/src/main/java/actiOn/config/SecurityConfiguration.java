@@ -12,6 +12,7 @@ import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,13 +33,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, RoleService roleService, MemberService memberService) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
@@ -57,7 +58,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
 
                 .and()
-                .apply(new CustomFilterConfigurer())
+                .apply(new CustomFilterConfigurer(memberService))
 
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
@@ -71,7 +72,10 @@ public class SecurityConfiguration {
     }
 
     // JwtAuthenticationFilter 구성하는 클래스
+    @AllArgsConstructor
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+        private final MemberService memberService;
+
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager =
@@ -83,7 +87,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(tokenProvider));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider, authorityUtil);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider, authorityUtil, memberService);
 
             // Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
@@ -104,15 +108,15 @@ public class SecurityConfiguration {
                         "http://localhost:5173",
                         "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
                         // TODO S3 엔드포인트 추가 ""
-                        "https://85b2-121-176-132-24.ngrok-free.app" //여기 임시 url
+                        "https://4d54-222-232-33-89.ngrok-free.app" //여기 임시 url
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
 
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(2000L);
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
-        configuration.setExposedHeaders(Arrays.asList("authorization", "refresh"));
+        configuration.setMaxAge(200L);
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

@@ -32,7 +32,7 @@ public class TokenProvider {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    public String encodedBase64SecretKey(String secretKey) {
+    public String encodedBase64SecretKey() {
         return Encoders.BASE64
                 .encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -47,16 +47,16 @@ public class TokenProvider {
         claims.put("roles", member.getRoles());
 
         String subject = member.getEmail();
-        Date expiration = getTokenExpiration(getAccessTokenExpirationMinutes());
-        String base64EncodedSecretKey = encodedBase64SecretKey(getSecretKey());
+        Date expiration = getTokenExpiration(accessTokenExpirationMinutes);
+        String base64EncodedSecretKey = encodedBase64SecretKey();
 
         return generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
     }
 
     public String delegateRefreshToken(Member member) {
         String subject = member.getEmail();
-        Date expiration = getTokenExpiration(getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = encodedBase64SecretKey(getSecretKey());
+        Date expiration = getTokenExpiration(refreshTokenExpirationMinutes);
+        String base64EncodedSecretKey = encodedBase64SecretKey();
 
         return generateRefreshToken(subject, expiration, base64EncodedSecretKey);
     }
@@ -88,6 +88,12 @@ public class TokenProvider {
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
+    }
+
+    // 토큰 만료되었는지 확인
+    public boolean isExpired(Jws<Claims> claims) {
+        Date expiration = claims.getBody().getExpiration();
+        return expiration.before(Calendar.getInstance().getTime());
     }
 
     // 검증 후, Claims를 반환하는 용도
