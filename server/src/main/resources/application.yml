@@ -58,11 +58,11 @@ server: # 모든 response 에 대해 지정된 인코딩 적용(한글 깨짐 �
       force-response: true
 jwt: # JWT 관련 정보
   key: ${JWT_SECRET_KEY}  # 시스템 환경 변수에서 로드
-  access-token-expiration-minutes: 100
+  access-token-expiration-minutes: 10
   refresh-token-expiration-minutes: 200
-#awsParameterStorePropertySource:
-#  enabled: true
 
+remember-me:  # refresh 토큰 재발급 키
+  key: ${REMEMBER_ME_SECRET_KEY}
 
 cloud: # 이거 안하면 host down 에러 발생
   aws:
