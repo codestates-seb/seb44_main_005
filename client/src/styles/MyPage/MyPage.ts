@@ -50,7 +50,9 @@ export const PhotoInputStyle = tw.span`
 
 export const ImgStyle = tw.img`
     w-[100px]
+    h-[100px]
     rounded-full
+    bg-cover
 `;
 
 export const TopSpace = tw.div`
