@@ -15,12 +15,19 @@ import actiOn.wish.mapper.WishMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
+
+import static actiOn.auth.utils.TokenPrefix.REFRESH;
 
 @RestController
 @RequestMapping
@@ -49,6 +56,22 @@ public class MemberController {
 
         LoginResponseDto response = memberMapper.memberGoogleLoginResponseDto(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 로그아웃 (refresh 토큰 삭제)
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse response) {
+        String cookieName = REFRESH.getType();
+        String domain = "localhost"; // TODO 도메인 변경
+        String path = "/";
+
+        Cookie cookie = new Cookie(cookieName, "");
+        cookie.setDomain(domain);
+        cookie.setPath(path);
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 회원 프로필 사진 등록
@@ -145,7 +168,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 마이페이지 - 판매 서비스 관리
+    // 마이페이지 - 파트너 판매 서비스 관리
     @GetMapping("/mystores")
     public ResponseEntity getPartnerStores() {
         String email = AuthUtil.getCurrentMemberEmail();
