@@ -64,31 +64,3 @@ export const NicknameAccent = tw.span`
     font-medium
     text-xl
 `;
-
-export const UserInfo = tw.div`
-    space-x-10
-    text-lg
-`;
-
-export const UserInfoTitle = tw.span`
-    font-medium
-`;
-
-export const BusinessSpace = tw.div`
-    flex
-    flex-row
-    space-x-10
-    justify-center
-`;
-
-export const BusinessCategory = tw.div`
-    flex
-    flex-col
-    space-y-5
-    text-lg
-`;
-
-export const BusinessCategoryTitle = tw.span`
-    font-semibold
-    w-[180px]
-`;

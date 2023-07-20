@@ -38,7 +38,7 @@ function Review() {
     const storeId = location.pathname.substring(10);
     const accessToken = sessionStorage.getItem('Authorization');
     try {
-      await fetch(`${API_URL}/reviews/${storeId}`, {
+      const res = await fetch(`${API_URL}/reviews/${storeId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,6 +46,9 @@ function Review() {
         },
         body: JSON.stringify(form)
       })
+      if (!res.ok) {
+        return alert('리뷰를 등록할 수 없습니다.');
+      }
     }
     catch(error) {
       console.log(error);

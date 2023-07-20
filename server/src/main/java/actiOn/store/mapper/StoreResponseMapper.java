@@ -66,12 +66,11 @@ public class StoreResponseMapper {
         storeResponseDto.setItems(modifiedItems);
         storeResponseDto.setStoreImages(modifiedStoreImgs);
         try {
-            storeResponseDto.setProfileImg(store.getMember().getProfileImg().getLink());
+            storeResponseDto.setProfileImg(store.getMember().getProfileImg());
         } catch (NullPointerException e) {
             storeResponseDto.setProfileImg(null); // null 자리에 기본 이미지 넣을 수 있음
         }
         return storeResponseDto;
-        //
     }
 
 }

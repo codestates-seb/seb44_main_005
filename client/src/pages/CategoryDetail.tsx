@@ -25,9 +25,11 @@ function CategoryDetail() {
   const CategoryDetailFetch = async () => {
     try {
       const storeId = location.pathname.substring(10);
-      const res = await fetch(`${API_URL}/stores/${storeId}`);
+      const res = await fetch(`${API_URL}/stores/${storeId}`, {
+        method: 'GET',
+        headers: { Authorization: sessionStorage.getItem('Authorization') },
+      });
       const json = await res.json();
-      console.log(json);
       delete json.items;
       setData(json);
     } catch (error) {
@@ -39,9 +41,11 @@ function CategoryDetail() {
     const storeId = location.pathname.substring(10);
     try {
       const dateValue = date.split('-').join('');
-      const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
+      const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`, {
+        method: 'GET',
+        headers: { Authorization: sessionStorage.getItem('Authorization') },
+      });
       const json = await res.json();
-      console.log(json);
       setData((prev) => ({ ...prev, items: json }));
     } catch (error) {
       console.log(error);

@@ -46,7 +46,6 @@ function App() {
       }
       navigate('/home');
     }
-    console.log(accessToken);
   };
 
   useEffect(() => {

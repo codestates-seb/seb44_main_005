@@ -8,13 +8,20 @@ export const DetailCategoryName = tw.div`
 export const DetailTitle = tw.div`
   text-3xl font-bold
   border-b-[1px] border-[#4771B7]
-  pb-3 mb-10
+  pb-3 mb-5
 `;
 
 export const ImgBox = tw.div`
   flex flex-wrap justify-between
-  w-[570px]
+  w-[600px]
   mx-auto
+`;
+
+export const DetailImg = tw.img`
+  w-[600px] h-[400px]
+  object-cover
+  rounded-[5px]
+  duration-1000 ease-in-out
 `;
 
 export const ThumbnailImg = tw.img`

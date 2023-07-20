@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,7 +36,13 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
-        response.setHeader(REFRESH.getType(), refreshToken);
+
+        // 리프레시 토큰 HttpOnly 쿠키에 저장
+        Cookie cookie = new Cookie(REFRESH.getType(), refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(2 * 24 * 60 * 60); // 쿠키 유효 기간 설정 (2일)
+        response.addCookie(cookie);
+
         response.getWriter().write(loginResponse);
 
         log.info("# Authenticated Successfully!");
@@ -45,7 +52,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
     private String getLoginResponseJson(Member member) {
         String role = member.getRoleName();
         String nickname = member.getNickname();
-        String profileImage = member.getProfileImgLink();
+        String profileImage = member.getProfileImg();
 
         LoginResponseDto responseDto = new LoginResponseDto(role, nickname, profileImage);
         return JsonUtil.toJson(responseDto, LoginResponseDto.class);

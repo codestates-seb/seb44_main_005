@@ -26,7 +26,7 @@ public interface MemberMapper {
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .profileImg(member.getProfileImgLink())
+                .profileImg(member.getProfileImg())
                 .build();
     }
 
@@ -142,7 +142,7 @@ public interface MemberMapper {
         return LoginResponseDto.builder()
                 .role(member.getRoleName())
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImgLink())
+                .profileImage(member.getProfileImg())
                 .build();
     }
 }
