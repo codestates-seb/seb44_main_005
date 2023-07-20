@@ -1,6 +1,5 @@
 package actiOn.member.entity;
 
-import actiOn.Img.profileImg.ProfileImg;
 import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
@@ -23,6 +22,8 @@ import java.util.stream.Collectors;
 @Setter
 @Entity
 public class Member extends BaseEntity implements Principal {
+    private static final String DEFAULT_LINK = "default image";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -39,16 +40,15 @@ public class Member extends BaseEntity implements Principal {
     @Column
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private ProfileImg profileImg;
-
-    @OneToOne(mappedBy = "member")
-    private Business business;
+    @Column(nullable = false)
+    private String profileImg;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
             cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
     private List<MemberRole> memberRoles = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member")
+    private Business business;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Wish> wishList = new ArrayList<>();
@@ -87,12 +87,7 @@ public class Member extends BaseEntity implements Principal {
     }
 
     // 프로필 이미지 링크 반환
-    public String getProfileImgLink() {
-        // 프로필 사진 null인 경우 기본 이미지 링크 리턴
-        if (this.getProfileImg() == null) {
-            return "default image";
-        }
-
-        return this.getProfileImg().getLink();
+    public String getDefaultImageLink() {
+        return DEFAULT_LINK;
     }
 }

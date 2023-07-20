@@ -20,22 +20,20 @@ function App() {
     const accessToken = searchParams.get('access_token');
     if (accessToken) {
       try {
-        const res = await fetch(`${url}/auth/login`, {
-          method: 'POST',
-          headers: { Authorization: accessToken },
+        const res = await fetch(`${url}/google/login`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
         const result1 = await res.json();
         if (res.status !== 200) throw res;
 
         //헤더에서 멤버아이디와 닉네임을 받아옴
-        const Authorization = res.headers.get('Authorization');
         const name = result1.nickname;
         const profile = result1.profileImage;
         const role = result1.role;
         setIsProfile(profile);
         setIsRole(role);
         // 로컬 스토리지에 memberId,토큰 저장
-        sessionStorage.setItem('Authorization', Authorization);
+        sessionStorage.setItem('Authorization', `Bearer ${accessToken}`);
         setIsLoginState(true);
 
         // 헤더에서 데이터를 받았으면 리다이렉트
@@ -48,7 +46,6 @@ function App() {
       }
       navigate('/home');
     }
-    console.log(accessToken);
   };
 
   useEffect(() => {

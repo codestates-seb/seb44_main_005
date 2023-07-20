@@ -1,7 +1,7 @@
 import tw from 'tailwind-styled-components';
 
 export const HaederContainer = tw.header`
-  h-[80px]
+  h-[8vh]
   flex
   justify-between
   border-b-[0.5px]
@@ -30,4 +30,11 @@ export const UnLoginContainer = tw.div`
   text-sm
   leading-0
   items-center
+`;
+
+export const ProfileIcon = tw.img`
+  w-[30px] 
+  ml-[40px]
+  transition duration-500 ease-in-out
+  focus:translate-y-6
 `;

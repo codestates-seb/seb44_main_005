@@ -19,7 +19,7 @@ function Review() {
   const [form, setForm] = useState({});
   const [data, setData] = useRecoilState(ReviewsState);
 
-  const starClickHandler = (idx) => {
+  const starClickHandler = (idx: number) => {
     const result = [false, false, false, false, false].map((star, starIdx) => {
       if (starIdx <= idx) {
         return true;
@@ -38,7 +38,7 @@ function Review() {
     const storeId = location.pathname.substring(10);
     const accessToken = sessionStorage.getItem('Authorization');
     try {
-      await fetch(`${API_URL}/reviews/${storeId}`, {
+      const res = await fetch(`${API_URL}/reviews/${storeId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,6 +46,9 @@ function Review() {
         },
         body: JSON.stringify(form)
       })
+      if (!res.ok) {
+        return alert('리뷰를 등록할 수 없습니다.');
+      }
     }
     catch(error) {
       console.log(error);
@@ -76,7 +79,8 @@ function Review() {
       </div>
       <div className="flex">
         <ReviewLeftBox>
-          {data.ratingAvg && <div className="text-center text-3xl font-bold mb-2">{data.ratingAvg.toFixed(1)}</div>}
+          {data.ratingAvg ? <div className="text-center text-3xl font-bold mb-2">{data.ratingAvg.toFixed(1)}</div> :
+          <div className="text-center text-3xl font-bold mb-2">{Number(0).toFixed(1)}</div>}
           <div className="relative">
             <img className="absolute max-w-[150px]" src={emptyStar} alt="빈별" />
               <div className="absolute overflow-hidden" style={{ width: `${data.ratingAvg * 10 * 2}%` }}>

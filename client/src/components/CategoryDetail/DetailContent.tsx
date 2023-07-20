@@ -5,6 +5,7 @@ import { FiClock, FiPhone } from 'react-icons/fi';
 
 import {
   DetailCategoryName,
+  DetailImg,
   DetailTitle,
   ImgBox,
   StoreInfoBox,
@@ -37,20 +38,30 @@ function DetailContent() {
       <DetailCategoryName>{data.category}</DetailCategoryName>
       <DetailTitle>{data.storeName}</DetailTitle>
       <ImgBox>
-        <div className="cursor-pointer my-auto" onClick={arrowLeftHandler}>
-          <FaChevronLeft size="50" color="#4771B7" />
-        </div>
-        <div className='w-[450px] h-[320px]'>
-          {data.storeImages && (
-            <>
-              <img className="w-[450px] h-[300px] object-cover rounded-[5px]" src={data.storeImages[current]} alt="업체사진" />
-              <div className="mt-3 text-center font-bold text-[#4771B7]">{current + 1} / {data.storeImages.length}</div>
-            </>
-          )}
-        </div>
-        <div className="cursor-pointer my-auto" onClick={arrowRightHandler}>
-          <FaChevronRight size="50" color="#4771B7" />
-        </div>
+        {data.storeImages && (
+          <div className="overflow-x-hidden">
+            <div
+              className="flex duration-1000 min-w-[1200px] overflow-hidden ease-in-out"
+              style={{
+                transform: `translateX(${current * -600}px)`,
+                width: `${data.storeImages.length * 600}px`
+              }}
+            >
+              {data.storeImages.map((src, idx) => (
+                <DetailImg src={src} alt="업체사진" key={idx} />
+              ))}
+            </div>
+            <div className="flex justify-center items-center mt-3">
+              <div className="cursor-pointer my-auto arrow-left" onClick={arrowLeftHandler}>
+                <FaChevronLeft className="hover:fill-[#9dacc5] duration-500" size="40" color="#4771B7" />
+              </div>
+              <div className="mx-5 text-center text-xl font-bold text-[#4771B7]">{current + 1} / {data.storeImages.length}</div>
+              <div className="cursor-pointer my-auto arrow-right" onClick={arrowRightHandler}>
+                <FaChevronRight className="hover:fill-[#9dacc5] duration-500" size="40" color="#4771B7" />
+              </div>
+            </div>
+          </div>
+        )}
       </ImgBox>
       <StoreInfoBox>
         <div className="flex mb-2">

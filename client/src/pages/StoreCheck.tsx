@@ -89,7 +89,7 @@ function StoreCheck() {
     <StoreCheckContainer>
       <div className='flex flex-row justify-between'>
         <StoreCheckTitle>판매 서비스 관리</StoreCheckTitle>
-        <button className='text-[18px] font-semibold bg-[#4771B7] text-white p-[7px] rounded-lg' type='button' onClick={handleAddClick}>업체 등록</button>
+        <button className='mr-6 text-[18px] font-semibold bg-[#4771B7] text-white p-[7px] rounded-lg' type='button' onClick={handleAddClick}>업체 등록</button>
       </div>
       {storesData.map((store) => (
         <StoreCards key={store.storeId}>

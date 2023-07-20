@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import Modal from '../components/MyPage/Modal';
-import profile from '../assets/profile.svg';
+import BusinessSpaceSection from '../components/MyPage/BusinessSpaceSection';
+import UserInfoSection from '../components/MyPage/UserInfoSection';
+import ConfirmationModal from '../components/MyPage/ConfirmationModal';
+import defaultProfileImg from '../assets/profile.svg';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
-  BusinessCategory,
-  BusinessSpace,
   ButtonGrid,
   ButtonStyle,
   ImgStyle,
@@ -12,16 +15,13 @@ import {
   MySpace,
   NicknameAccent,
   TopSpace,
-  UserInfo,
-  UserInfoTitle,
-  BusinessCategoryTitle,
   MyPageContainer,
   MyBioContainer,
   PhotoInputStyle,
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
-  const APIURL = import.meta.env.VITE_APP_API_URL
+  const APIURL = import.meta.env.VITE_APP_API_URL;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
 
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
@@ -29,7 +29,8 @@ function MyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
-  const [_, setAccessDenied] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -85,10 +86,14 @@ function MyPage() {
   };
 
   if(!userData) {
-    return <p>Loading...</p>;
+    return (
+      <div className='border-[1px] border-[#4771B7] w-[700px] flex justify-center items-center text-xl font-semibold'>
+        <p>로그인 상태를 확인하여주시기 바랍니다.</p>
+      </div>
+    )
   }
 
-  const { nickname, email, phoneNumber } = userData;
+  const { nickname, email, phoneNumber, profileImg } = userData;
   
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
@@ -113,16 +118,94 @@ function MyPage() {
     setShowModal(false);
   };
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     setSelectedPhoto(file);
+
+    try  {
+      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch(`${APIURL}/mypage/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': ACCESS_TOKEN,
+        },
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log('프로필 업데이트 완료');
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedPhoto(file);
+        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+        fetchData(); // Fetch updated user data after profile update
+      } else {
+        console.error('프로필 업데이트 실패', res.status);
+      }
+    } catch (error) {
+      console.error('프로필 업데이트 에러', error);
+    }
   };
 
-  const handlePhotoRemove = () => {
-    setSelectedPhoto(null);
-    const input = document.getElementById('photoInput') as HTMLInputElement;
-    if (input) {
-      input.value='';
+  const getProfileImage = () => {
+    if (profileImg === 'default image') {
+      return defaultProfileImg;
+    } else if (profileImg) {
+      return profileImg;
+    } else {
+      return defaultProfileImg;
+    }
+  };
+
+  const handlePhotoRemove = async () => {
+    const confirmMessage = '사진을 삭제하시겠습니까?';
+    const toastId = toast(<ConfirmationModal message={confirmMessage} onConfirm={onConfirmDelete} onCancel={onCancelDelete} />, {
+      closeOnClick: false,
+    });
+  
+    async function onConfirmDelete() {
+      toast.dismiss(toastId);
+  
+      setIsDeletingPhoto(true);
+  
+      try {
+        const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+        const res = await fetch(`${APIURL}/mypage/profile`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': ACCESS_TOKEN,
+          },
+        });
+  
+        if (res.ok) {
+          console.log('프로필 사진 삭제 완료');
+          setSelectedPhoto(null);
+          const input = document.getElementById('photoInput') as HTMLInputElement;
+          if (input) {
+            input.value = '';
+          }
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            profileImg: 'default image',
+          }));
+  
+          toast('프로필 사진이 삭제되었습니다.');
+        } else {
+          console.error('프로필 사진 삭제 실패', res.status);
+  
+          toast.error('프로필 사진 삭제에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('프로필 사진 삭제 에러', error);
+      } finally {
+        setIsDeletingPhoto(false);
+      }
+    }
+  
+    function onCancelDelete() {
+      toast.dismiss(toastId);
     }
   };
 
@@ -137,6 +220,16 @@ function MyPage() {
   return (
     <>
       <MyPageContainer>
+          <ToastContainer
+            toastClassName={
+              'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+            }
+            position="top-right"
+            limit={1}
+            closeButton={false}
+            autoClose={2000}
+            hideProgressBar
+         />
         <MyBioContainer>
           <MySpace>
             <ButtonGrid>
@@ -144,7 +237,7 @@ function MyPage() {
             </ButtonGrid>
             <TopSpace>
               <ImgStyle 
-                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : profile} 
+                src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : getProfileImage()}
                 alt="profile img" 
               />
               <MiniButtonGrid>
@@ -170,46 +263,14 @@ function MyPage() {
               </MiniButtonGrid>
               <NicknameAccent>{nickname}</NicknameAccent>
             </TopSpace>
-            <MySpace>
-              <UserInfo>
-                <UserInfoTitle>닉네임</UserInfoTitle>
-                <span>{nickname}</span>
-              </UserInfo>
-              <UserInfo>
-                <UserInfoTitle>이메일</UserInfoTitle>
-                <span>{email}</span>
-              </UserInfo>
-              <UserInfo>
-                <UserInfoTitle>연락처</UserInfoTitle>
-                <span>{phoneNumber}</span>
-              </UserInfo>
-            </MySpace>
+            <UserInfoSection nickname={nickname} email={email} phoneNumber={phoneNumber} />
           </MySpace>
           <MySpace>
             <ButtonGrid>
               <ButtonStyle type="button" onClick={handleButtonClick}>등록한 업체보기</ButtonStyle>
             </ButtonGrid>
             {showBusinessSpace && (
-              <BusinessSpace>
-                <BusinessCategory>
-                  <BusinessCategoryTitle>업태</BusinessCategoryTitle>
-                  {partnerData.stores.map((_, index) => (
-                    <span key={index}>{businessRegi}</span>
-                  ))}
-                </BusinessCategory>
-                <BusinessCategory>
-                  <BusinessCategoryTitle>업종</BusinessCategoryTitle>
-                  {partnerData.stores.map((store, index) => (
-                    <span key={index}>{store.category}</span>
-                  ))}
-                </BusinessCategory>
-                <BusinessCategory>
-                  <BusinessCategoryTitle>업체명</BusinessCategoryTitle>
-                  {partnerData.stores.map((store, index) => (
-                    <span key={index}>{store.storeName}</span>
-                  ))}
-                </BusinessCategory>
-              </BusinessSpace>
+              <BusinessSpaceSection partnerData={partnerData} businessRegi={businessRegi} />
             )}
           </MySpace>
         </MyBioContainer>

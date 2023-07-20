@@ -21,7 +21,7 @@ function MyRouter() {
             <Route path="/my/order" element={<ReservationCheck />} />
             <Route path="/my/stores" element={<StoreCheck />} />
           </Route>
-          <Route path="/my/order/:id/edit" element={<ReservationModify />} />
+          <Route path="/my/order/edit" element={<ReservationModify />} />
           <Route path="/store/add" element={<StoreAdd />} />
           <Route path="/store/edit" element={<StoreAdd />} />
         </Route>

@@ -1,40 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import tw from 'tailwind-styled-components';
+import Page1 from '../components/IntroPage/Page1';
+import WelcomeLayout from '../components/Layout/WelcomeLayout';
+import Page2 from '../components/IntroPage/Page2';
 
-import logo from '../assets/logo.svg';
-import welcome from '../assets/welcome.svg';
-import { Button, Blue, Inrto } from '../styles/Welcome/Welcome';
-
-function Welcome() {
-  const navigate = useNavigate();
-
-  const handleButton = () => {
-    setTimeout(() => {
-      navigate('/home');
-    }, 300);
-  };
-
+const Welcome = () => {
   return (
-    <div
-      className="w-screen h-screen bg-cover"
-      style={{
-        backgroundImage: `url(${welcome})`,
-      }}
-    >
-      <header className="absolute">
-        <img src={logo} className="relative left-5 top-5 w-[220px] h-[60px]" />
-      </header>
-      <div>
-        <div className="absolute text-end">
-          <Inrto>
-            다양한 <Blue>레저 서비스</Blue>를 <br />
-            <Blue>연결</Blue>해주는
-            <br /> <Blue>액티온</Blue>입니다.
-          </Inrto>
-          <Button onClick={handleButton}>시작하기</Button>
-        </div>
-      </div>
-    </div>
+    <WelcomeLayout
+      child={
+        <WelcomeContainer>
+          <Page1 />
+          <Page2 />
+        </WelcomeContainer>
+      }
+    />
   );
-}
+};
+
+const WelcomeContainer = tw.div`
+  pt-60px
+`;
 
 export default Welcome;

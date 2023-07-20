@@ -27,7 +27,7 @@ public interface MemberMapper {
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .profileImg(member.getProfileImgLink())
+                .profileImg(member.getProfileImg())
                 .build();
     }
 
@@ -123,6 +123,7 @@ public interface MemberMapper {
         builder.storeName(store.getStoreName());
         builder.reservationDate(reservation.getReservationDate());
         builder.totalPrice(reservation.getTotalPrice());
+        builder.reservationId(reservation.getReservationId());
         builder.itemCount(reservation.getReservationItems().size());
         builder.reservationStatus(reservation.getReservationStatus().getStepDescription());
 
@@ -142,7 +143,7 @@ public interface MemberMapper {
         return LoginResponseDto.builder()
                 .role(member.getRoleName())
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImgLink())
+                .profileImage(member.getProfileImg())
                 .build();
     }
 }

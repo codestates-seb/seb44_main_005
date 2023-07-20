@@ -15,6 +15,8 @@ export const Button = tw.button`
   h-[85px] 
   bg-[#4771B7] 
   text-[#FFFFFF]
+  transition duration-500 ease-in-out
+  hover:bg-[#6787BC] 
 `;
 
 export const Inrto = tw.div`

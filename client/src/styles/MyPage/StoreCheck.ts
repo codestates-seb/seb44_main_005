@@ -6,7 +6,8 @@ export const StoreCheckContainer = tw.div`
     px-[50px]
     py-16
     space-y-5
-    max-h-[800px]
+    w-[902px]
+    h-[800px]
     overflow-y-auto
 `;
 
@@ -19,7 +20,7 @@ export const StoreCheckTitle = tw.span`
 export const StoreCards = tw.div`
     border-[1.5px]
     border-[#4771B7]
-    w-[700px]
+    w-[780px]
     h-[200px]
     rounded-lg
     p-5

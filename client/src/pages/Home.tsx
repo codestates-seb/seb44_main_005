@@ -68,21 +68,21 @@ function Home() {
   return (
     <section>
       <section className="relative overflow-x-hidden">
-        <CarouselBox className={`${moveStyle[current]} carousel-container`}>
+        <CarouselBox className={`${moveStyle[current]}`}>
           {homeData.recommend && homeData.recommend.map((el) => {
             return <Carousel data={el} key={el.storeId} />;
           })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>
-          <FaChevronLeft size="50" color="white" />
+          <FaChevronLeft className="arrow-left" size="60" color="white" />
         </LeftArrow>
         <RightArrow onClick={arrowRightHandler}>
-          <FaChevronRight size="50" color="white" />
+          <FaChevronRight className="arrow-right" size="60" color="white" />
         </RightArrow>
       </section>
-      <section className="w-[80%] mt-10 mx-auto">
+      <section className="w-[70%] mt-10 mx-auto">
         <div className="font-bold text-2xl mb-5">모든 레저 한눈에 보기</div>
-        <div className="rounded-xl h-[600px]">
+        <div className="rounded-xl h-[600px] mb-20">
           {homeData.data && <KakaoMap marker={homeData.data} /> }
         </div>
       </section>

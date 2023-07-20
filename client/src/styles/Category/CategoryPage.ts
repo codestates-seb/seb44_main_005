@@ -4,6 +4,7 @@ export const Style = tw.div`
   flex
   flex-col
   min-h-[80vh]
+  mb-[70px]
 `;
 export const CategoryContainer = tw.section`
   flex

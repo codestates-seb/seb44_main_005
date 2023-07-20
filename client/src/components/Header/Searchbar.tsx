@@ -1,34 +1,79 @@
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import { searchKeyword } from '../../store/searchbarAtom';
 import search from '../../assets/search.svg';
 import {
   SearchbarContainer,
   SearchbarInput,
+  AutoSearchContainer,
+  AutoSearchData,
+  SearchIcon,
 } from '../../styles/Header/Searchbar';
+
+interface AutoData {
+  storeId: number;
+  category: string;
+  title: string;
+  content: string;
+  address: string;
+  rating: number;
+  reviewCount: string;
+  price: number;
+  isLike: boolean;
+  img: string;
+}
 
 function Searchbar() {
   const [keyword, setKeyword] = useRecoilState<string>(searchKeyword);
+  const [keyItems, setKeyItems] = useState<AutoData[]>([]);
   const navigate = useNavigate();
+  const url = import.meta.env.VITE_APP_API_URL;
 
-  const searchFetch = async () => {
+  const autoData = async () => {
     try {
-      await navigate(`/search?keyword=${keyword}`);
+      const res = await fetch(`${url}/search?keyword=${keyword}`, {
+        headers: { Authorization: sessionStorage.getItem('Authorization') },
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const data = await res.json();
+      setKeyItems(data.data);
     } catch (error) {
       console.error(error);
     }
   };
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+
+  const searchFetch = async () => {
+    try {
+      await navigate(`/search?keyword=${keyword}`);
+      setKeyword('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
       searchFetch();
     }
   };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      if (keyword) autoData();
+    }, 100);
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [keyword]);
 
   return (
     <SearchbarContainer>
       <SearchbarInput
         type="text"
+        autoComplete="off"
         id="keyword"
         value={keyword}
         onChange={(e) => setKeyword(e.currentTarget.value)}
@@ -38,8 +83,25 @@ function Searchbar() {
       <img
         src={search}
         onClick={searchFetch}
-        className="ml-2 w-[30px] absolute top-[5px] left-[452px] cursor-pointer"
+        className="absolute ml-2 w-[30px] top-[5px] left-[452px] cursor-pointer z-50"
       />
+      {keyItems.length > 0 && keyword && (
+        <AutoSearchContainer>
+          <ul className="pt-[20px]">
+            {keyItems.map((item) => (
+              <AutoSearchData
+                key={item.title}
+                onClick={() => {
+                  setKeyword(item.title);
+                }}
+              >
+                <SearchIcon src={search} />
+                <a href={`/search?keyword=${keyword}`}>{item.title}</a>
+              </AutoSearchData>
+            ))}
+          </ul>
+        </AutoSearchContainer>
+      )}
     </SearchbarContainer>
   );
 }

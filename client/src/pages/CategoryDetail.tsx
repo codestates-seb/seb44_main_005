@@ -17,15 +17,18 @@ import { reserFormType } from '../intefaces/CategoryDetail';
 
 function CategoryDetail() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
-  const location = useLocation();
   const [data, setData] = useRecoilState(CategoryDetailState);
   const [form, setForm] = useRecoilState(ReserFormState);
   const date = useRecoilValue(ReserDateState);
+  const location = useLocation();
 
   const CategoryDetailFetch = async () => {
     try {
       const storeId = location.pathname.substring(10);
-      const res = await fetch(`${API_URL}/stores/${storeId}`);
+      const res = await fetch(`${API_URL}/stores/${storeId}`, {
+        method: 'GET',
+        headers: { Authorization: sessionStorage.getItem('Authorization') },
+      });
       const json = await res.json();
       delete json.items;
       setData(json);
@@ -38,7 +41,10 @@ function CategoryDetail() {
     const storeId = location.pathname.substring(10);
     try {
       const dateValue = date.split('-').join('');
-      const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`);
+      const res = await fetch(`${API_URL}/items/${storeId}?date=${dateValue}`, {
+        method: 'GET',
+        headers: { Authorization: sessionStorage.getItem('Authorization') },
+      });
       const json = await res.json();
       setData((prev) => ({ ...prev, items: json }));
     } catch (error) {
@@ -58,8 +64,8 @@ function CategoryDetail() {
   }, [form.reservationDate]);
 
   return (
-    <section className="flex justify-center mt-[100px]">
-      {data && (
+    <section className="flex justify-center my-[100px]">
+      {data &&
         <section className="flex flex-col items-center">
           <DetailContent />
           <ReservationInfo />
@@ -67,7 +73,7 @@ function CategoryDetail() {
           <LocationInfo />
           <Review />
         </section>
-      )}
+      }
       <PaymentInfo />
     </section>
   );
