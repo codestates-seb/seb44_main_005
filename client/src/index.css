@@ -80,7 +80,7 @@ body {
 }
 
 .intro-text {
-  animation: fadeInRight 2s ease-in-out ;
+  animation: fadeInRight 1s ease-in-out ;
 }
 
 @keyframes wheelRotate {
