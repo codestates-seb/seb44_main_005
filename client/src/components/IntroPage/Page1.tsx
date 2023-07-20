@@ -25,7 +25,7 @@ function page1() {
     <PageContainer>
       <img
         src={bg3}
-        className="absolute bg-cover h-[100vh] rounded-l-full top-0 right-0"
+        className="absolute bg-cover w-[40vw] h-[100vh] object-cover rounded-l-full top-0 right-0"
       />
       <img src={logo} className="z-0 absolute w-[200px] left-7 top-5" />
       <IntroText>
