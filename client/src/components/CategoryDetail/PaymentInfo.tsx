@@ -1,6 +1,5 @@
 import { useRecoilValue } from 'recoil';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { CategoryDetailState, ReserFormState, totalPrice } from '../../store/categoryDetailAtom';
 import {

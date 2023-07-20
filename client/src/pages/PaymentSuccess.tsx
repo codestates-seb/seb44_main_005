@@ -22,25 +22,25 @@ function PaymentSuccess() {
         }
       })
       if (res.ok) {
-        setStatus('success')
+        setStatus('success');
       }
       else if (!res.ok) {
-        setStatus('fail')
+        setStatus('fail');
       }
     }
     catch(error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     verifyFetch();
-  }, [])
+  }, []);
 
   switch(status) {
     case 'loading':
       return (
-        <div className="h-[70vh] py-[250px] text-center text-2xl font-bold">
+        <div className="h-[77vh] py-[250px] text-center text-2xl font-bold">
           <GiCarWheel className="mx-auto wheel" size="100" color="#4771B7" />
           <div className="mt-5 mb-2">결제 중입니다....</div>
           <div>화면을 벗어나지 마세요.</div>

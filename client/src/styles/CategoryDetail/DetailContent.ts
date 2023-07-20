@@ -21,7 +21,7 @@ export const DetailImg = tw.img`
   w-[600px] h-[400px]
   object-cover
   rounded-[5px]
-  duration-1000 ease-in-out
+  duration-1000
 `;
 
 export const ThumbnailImg = tw.img`

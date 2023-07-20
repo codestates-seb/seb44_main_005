@@ -74,10 +74,10 @@ function Home() {
           })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>
-          <FaChevronLeft size="50" color="white" />
+          <FaChevronLeft className="arrow-left" size="60" color="white" />
         </LeftArrow>
         <RightArrow onClick={arrowRightHandler}>
-          <FaChevronRight size="50" color="white" />
+          <FaChevronRight className="arrow-right" size="60" color="white" />
         </RightArrow>
       </section>
       <section className="w-[70%] mt-10 mx-auto">
