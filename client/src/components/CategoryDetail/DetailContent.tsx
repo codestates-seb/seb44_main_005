@@ -15,7 +15,6 @@ import { CategoryDetailState } from '../../store/categoryDetailAtom';
 
 function DetailContent() {
   const [current, setCurrent] = useState(0);
-  const [moveStyle, setMoveStyle] = useState({});
   const data = useRecoilValue(CategoryDetailState);
 
   const arrowLeftHandler = () => {
@@ -32,7 +31,6 @@ function DetailContent() {
     } else {
       setCurrent(current + 1);
     }
-    console.log(moveStyle[current])
   };
 
   return (
@@ -43,10 +41,10 @@ function DetailContent() {
         {data.storeImages && (
           <div className="overflow-x-hidden">
             <div
-              className="flex duration-1000 min-w-[600px]"
+              className="flex duration-1000 min-w-[1200px] overflow-hidden ease-in-out"
               style={{
                 transform: `translateX(${current * -600}px)`,
-                width: `${data.storeImages.length * 600}`
+                width: `${data.storeImages.length * 600}px`
               }}
             >
               {data.storeImages.map((src, idx) => (
