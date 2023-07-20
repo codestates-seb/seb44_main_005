@@ -24,7 +24,10 @@ function PaymentInfo() {
   const storeId = location.pathname.substring(10);
   
   const movePayment = async () => {
-    if (!form.reservationName) {
+    if (!isLogin) {
+      return alert(`로그인 상태에서만 예약할 수 있습니다.`);
+    }
+    else if (!form.reservationName) {
       return alert('예약자를 입력해주세요.');
     }
     else if (!form.reservationPhone) {
