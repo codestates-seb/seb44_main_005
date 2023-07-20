@@ -21,7 +21,6 @@ public class ReservationPostDto {
             message = "휴대폰 번호는 010(혹은 011)만 가능하며, 하이픈 '-'을 포함하여 작성해주세요.")
     private String reservationPhone;
 
-    @NotSpace
     private String reservationEmail;
 
     private String reservationDate;
