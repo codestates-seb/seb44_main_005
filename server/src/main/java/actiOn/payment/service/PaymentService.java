@@ -125,7 +125,7 @@ public class PaymentService {
             return response;
         }catch (Exception e){
             System.out.println(e);
-            throw new BusinessLogicException(ExceptionCode.NOT_FOUND_PAYMENT);
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND_PAYMENT);//
         }
     }
 
