@@ -86,8 +86,6 @@ public class StoreController {
         Store findStore = storeService.findStoreByStoreId(storeId);
         StoreResponseDto responseDto = responseMapper.storeToStoreResponseDto(findStore);
         StoreResponseDto storeResponseDto = storeService.insertWishAtStoreResponseDto(responseDto, findStore.getStoreId());
-        System.out.println("아이템 개수");
-        System.out.println(storeResponseDto.getItems().size());
         return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
     }
 

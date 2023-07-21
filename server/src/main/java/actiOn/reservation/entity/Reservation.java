@@ -4,6 +4,10 @@ package actiOn.reservation.entity;
 import actiOn.helper.audit.BaseEntity;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -61,6 +65,8 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "STORE_ID")
     private Store store;
 
+    @Column
+    private String paymentKey;
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST)
     private List<ReservationItem> reservationItems = new ArrayList<>();
 
