@@ -72,12 +72,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
             // 새로운 액세스 토큰 재발금
             String accessToken = tokenProvider.delegateAccessToken(member);
-
-            // 리프레시 토큰 HttpOnly 쿠키에 저장
-            response.setHeader("Set-Cookie", "refreshToken=" + refreshToken +
-                    "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
-
             response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
+
+            // 리프레시 토큰 쿠키에 저장
+            response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
+                    "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             // 리프레시 토큰도 만료된 경우
