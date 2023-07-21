@@ -74,19 +74,31 @@ public class ReservationService {
 
 
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void postReservation(long storeId, Reservation reservationFromRedis,List<ReservationItem> reservationItems,Payment payment) {
 
-        confirmReservationWithPayment(reservationFromRedis, payment);
-        Reservation entity = createReservationEntity(storeId,reservationFromRedis,reservationItems);
-        entity.setPaymentKey(payment.getPaymentKey());
-        entity.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CONFIRM);
-        reservationRepository.save(entity);
+        try {
+            confirmReservationWithPayment(reservationFromRedis, payment);
+            Reservation entity = createReservationEntity(storeId, reservationFromRedis, reservationItems);
+            entity.setPaymentKey(payment.getPaymentKey());
+            entity.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CONFIRM);
+            reservationRepository.save(entity);
+        } catch (BusinessLogicException ex) {
+            handleRollback(payment);
+        }
+    }
+    @Transactional
+    public void handleRollback(Payment payment) {
+        paymentService.refund(payment.getPaymentKey(),payment.getTotalAmount());
+        throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
     }
     private void confirmReservationWithPayment(Reservation reservation, Payment payment){
-        if (reservation.getTotalPrice()!=payment.getTotalAmount()) throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
-        System.out.println(payment.getStatus());
+
         if (!payment.getStatus().equals(Payment.Status.DONE)) throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
+        else if (reservation.getTotalPrice()!=payment.getTotalAmount()) {
+                paymentService.refund(payment.getPaymentKey(),payment.getTotalAmount());
+                throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
+        }
     }
     public Payment createPaymentByOrderId(String orderId){
         PaymentInfoDto paymentInfoDto = paymentService.getPaymentInfoByOrderId(orderId);

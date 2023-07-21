@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,7 @@ public class StorePostDto {
     private String address;
 
     @NotBlank(message = "카카오 아이디를 작성해주세요")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "영문과 숫자만 입력 가능합니다.")
     private String kakao;
 
     @NotBlank(message = "연락처를 작성해주세요")
@@ -33,6 +35,7 @@ public class StorePostDto {
     private String category;
 
     @NotEmpty(message = "상품목록을 작성해주세요")
+    @Size(min = 1, message = "상품목록은 최소 1개 이상 작성해야 합니다.")
     private List<Item> items;
 
 }
