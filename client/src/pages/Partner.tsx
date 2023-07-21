@@ -82,8 +82,10 @@ function Partner() {
         console.log('Status', response.status);
         if(response.status === 201) {
           console.log('201 Created');
+          alert('파트너등록이 완료되었습니다. 다시 로그인 해주세요.')
           setIsLogin(false);
-          navigate('/home');
+          sessionStorage.removeItem('Authorization');
+          navigate('/login');
         }
       } else {
         // 등록 실패한 경우 처리
@@ -105,7 +107,7 @@ function Partner() {
             파트너 등록하기
           </RegiTitle>
           <FormContainer>
-            <RepresentativeName 
+            <RepresentativeName
               repreName={repreName}
               handleRepreNameChange={(e) => setRepreName(e.target.value)}
             />
@@ -140,7 +142,7 @@ function Partner() {
               businessSector={businessSector}
               setBusinessSector={setBusinessSector}
             />
-            <FormRegistration 
+            <FormRegistration
               isFormValid={isFormValid}
               handleSubmit={handleSubmit}
             />
