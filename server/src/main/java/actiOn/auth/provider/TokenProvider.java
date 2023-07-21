@@ -11,6 +11,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -88,6 +89,18 @@ public class TokenProvider {
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
+    }
+
+    // TODO 불필요하면 삭제
+    public Cookie generateCookieWithToken(String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setDomain("cf27-222-232-33-89.ngrok-free.app");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(2 * 24 * 60 * 60); // 쿠키 유효 기간 설정 (2일)
+        cookie.setSecure(true); // Secure 속성 추가 (HTTPS 연결에서만 쿠키 전송)
+
+        return cookie;
     }
 
     // 토큰 만료되었는지 확인
