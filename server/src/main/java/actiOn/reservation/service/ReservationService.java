@@ -44,18 +44,20 @@ public class ReservationService {
     private final RedisService redisService;
     private final PaymentMapper paymentMapper;
 
-
+    private List<ReservationItemDto> filterZeroItem(List<ReservationItemDto> reservationItemDtos) {
+        List<ReservationItemDto> reservationItems = new ArrayList<>();
+        for (ReservationItemDto reservationItemDto : reservationItemDtos){
+            if (reservationItemDto.getTicketCount()==0) continue;
+            reservationItems.add(reservationItemDto);
+        }
+        return reservationItems;
+    }
 
 /**    여기서부터는 예약 및 결제를 save 하기 위한 영역입니다.     */
     @Transactional(propagation = Propagation.REQUIRED)
     public String redisSaveReservation(Long storeId, ReservationPostDto reservationPostDto) {
         validateIdentity(storeId);// 신원검증
-        List<ReservationItemDto> reservationItems = new ArrayList<>();
-        for (ReservationItemDto reservationItemDto : reservationPostDto.getReservationItems()){
-            if (reservationItemDto.getTicketCount()==0) continue;
-            reservationItems.add(reservationItemDto);
-        }
-        reservationPostDto.setReservationItems(reservationItems);
+        reservationPostDto.setReservationItems(filterZeroItem(reservationPostDto.getReservationItems()));
 
         reservationPostDto.setStoreId(storeId);
         String redisKey = UUID.randomUUID().toString().replace("-", "")

@@ -43,7 +43,7 @@ public class ReviewService {
         //review 내용 욕설 검증
         BadWordFiltering badWordFiltering = new BadWordFiltering();
         if (badWordFiltering.blankCheck(review.getContent())){
-            throw new IllegalArgumentException("리뷰에 욕설이 포함되어 있습니다.");
+            throw new BusinessLogicException(ExceptionCode.BAD_WORD_NOT_ALLOWED);
         }
 
         //Todo 로그인한 회원의 정보 가져오기
@@ -66,7 +66,7 @@ public class ReviewService {
             review.setMember(findMember);
             review.setStore(store);
         } else {
-            throw new BusinessLogicException(ExceptionCode.REVIEW_CREATE_REJECTED);
+            throw new BusinessLogicException(ExceptionCode.ALREADY_WROTE_A_REVIEW);
         }
         Review saveReview = reviewRepository.save(review);
 
