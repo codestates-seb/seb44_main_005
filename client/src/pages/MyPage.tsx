@@ -225,9 +225,9 @@ function MyPage() {
       <MyPageContainer>
           <ToastContainer
             toastClassName={
-              'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
+              'h-[80px] w-[312px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px] ml-[150px]'
             }
-            position="top-right"
+            position="top-center"
             limit={1}
             closeButton={false}
             autoClose={2000}
