@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -33,5 +34,6 @@ public class StorePatchDto {
     private String category;
 
     @NotEmpty(message = "상품목록을 작성해주세요")
+    @Size(min = 1, message = "상품목록은 최소 1개 이상 작성해야 합니다.")
     private List<Item> items;
 }

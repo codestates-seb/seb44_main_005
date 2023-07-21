@@ -75,7 +75,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
             // 리프레시 토큰 HttpOnly 쿠키에 저장
             response.setHeader("Set-Cookie", "refreshToken=" + refreshToken +
-                    "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600; Domain=.ngrok-free.app");
+                    "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
 
             response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
         } catch (Exception e) {
