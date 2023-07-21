@@ -1,7 +1,13 @@
 import { useState } from 'react';
-import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { Link } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
+import {
+  Map,
+  MapMarker,
+  CustomOverlayMap,
+  ZoomControl,
+  MapTypeControl
+} from 'react-kakao-maps-sdk';
 
 import { homeMapPropsType } from '../../intefaces/Home';
 
@@ -17,17 +23,15 @@ function KakaoMap({ marker }: homeMapPropsType) {
       }}
       level={10}
     >
-    {
-      marker.map((el) => {
-        return (
-            <EventMarkerContainer
-              position={{ lat: el.latitude, lng: el.longitude }}
-              content={el}
-              key={el.storeId}
-            />
-            );
-          })
-        }
+      <MapTypeControl position={kakao.maps.ControlPosition.TOPLEFT}/>
+      <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+      {marker.map((el) => (
+        <EventMarkerContainer
+          position={{ lat: el.latitude, lng: el.longitude }}
+          content={el}
+          key={el.storeId}
+        />
+      ))}
     </Map>
   );
 }

@@ -21,11 +21,15 @@ function page1() {
     }, 300);
   };
 
+  const pageMove = () => {
+    window.scrollTo({ top: 940, left: 0, behavior: 'smooth' });
+  };
+
   return (
     <PageContainer>
       <img
         src={bg3}
-        className="absolute bg-cover object-cover w-[50vw] h-[100vh] rounded-l-full top-0 right-0"
+        className="absolute bg-cover w-[40vw] h-[100vh] object-cover rounded-l-full top-0 right-0"
       />
       <img src={logo} className="z-0 absolute w-[200px] left-7 top-5" />
       <IntroText>
@@ -38,7 +42,11 @@ function page1() {
       </IntroText>
       <ClickContainer>
         <HomeBtn>엑티온 알아보기</HomeBtn>
-        <img src={bottom} className="w-[100px] animate-bounce" />
+        <img
+          src={bottom}
+          className="w-[80px] animate-bounce"
+          onClick={pageMove}
+        />
       </ClickContainer>
     </PageContainer>
   );

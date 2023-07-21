@@ -15,7 +15,7 @@ function AddImages() {
   const [firstImg, setFirstImg] = useRecoilState(FirstImgState);
   const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
   const setSendFirstImg = useSetRecoilState(SendFirstImgState);
-  const setSendDetailImgs = useSetRecoilState(SendDetailImgsState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const [searchParams] = useSearchParams();
   const storeId = searchParams.get('store_id');
   const accessToken = sessionStorage.getItem('Authorization');
@@ -36,19 +36,24 @@ function AddImages() {
       return alert('상세 이미지는 최대 9장까지 업로드 할 수 있습니다.');
     }
     for (let i = 0; i < files.length; i++) {
-      console.log(detailImgs);
       const reader = new FileReader();
       reader.readAsDataURL(files[i]);
       reader.onloadend = () => {
+        const detailImgFilter = detailImgs.filter((img) => img === reader.result);
+        if (detailImgFilter.length) {
+          return alert('같은 이미지는 두 장 이상 업로드 할 수 없습니다.');
+        }
         setDetailImgs((prevImgs) => [...prevImgs, reader.result]);
+        setSendDetailImgs((prevImgs) => [...prevImgs, files[i]]);
       }
     }
-    setSendDetailImgs((prevImgs) => [...prevImgs, ...files]);
+    console.log(detailImgs);
+    console.log(sendDetailImgs);
   }
 
   const detailImgDeleteHandler = (idx: number) => {
     const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
-    const sendResult = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
+    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
     if (searchParams.get('store_id')) {

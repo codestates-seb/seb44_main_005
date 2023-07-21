@@ -39,7 +39,6 @@ function AddProduct() {
       price: 0,
       totalTicket: 0
     })
-    console.log(form);
   }
 
   const productDeleteHandler = (idx) => {

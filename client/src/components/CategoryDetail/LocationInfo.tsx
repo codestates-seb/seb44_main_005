@@ -1,4 +1,4 @@
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 import { useRecoilValue } from 'recoil';
 
 import { CategoryDetailState } from '../../store/categoryDetailAtom';
@@ -19,8 +19,10 @@ function LocationInfo() {
             border: "1px solid #4771B7"
           }}
         >
-        <MapMarker position={{ lat: location.latitude, lng: location.longitude }} />
-      </Map>
+          <MapTypeControl position={kakao.maps.ControlPosition.TOPLEFT}/>
+          <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+          <MapMarker position={{ lat: location.latitude, lng: location.longitude }} />
+        </Map>
       )}
     </section>
   );

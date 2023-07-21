@@ -108,6 +108,7 @@ function StoreAdd() {
       }
       setIsLoading((prev) => !prev);
       navigate(`/category/${json.storeId}`);
+      window.location.reload();
     }
     catch(error) {
       console.log(error);

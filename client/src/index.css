@@ -49,6 +49,17 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  overflow-x: hidden;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgb(168, 168, 168);
+  border-radius: 10px;
 }
 
 .carousel-title {
@@ -80,7 +91,7 @@ body {
 }
 
 .intro-text {
-  animation: fadeInRight 1s ease-in-out ;
+  animation: fadeInRight 0.75s ease-in-out ;
 }
 
 @keyframes wheelRotate {

@@ -31,7 +31,7 @@ function MyPage() {
   const [partnerData, setPartnerData] = useState(null);
   const [accessDenied, setAccessDenied] = useState(false);
   const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
-
+  console.log(accessDenied, isDeletingPhoto);
   useEffect(() => {
     fetchData();
   }, []);

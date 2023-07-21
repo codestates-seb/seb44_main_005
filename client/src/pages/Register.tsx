@@ -33,6 +33,8 @@ function Register() {
   );
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState('비밀번호가 일치하지 않습니다');
+  const [phoneMessage, setPhoneMessage] =
+    useState('전화번호에 -를 포함해주세요');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   //이메일 유효성
@@ -78,15 +80,21 @@ function Register() {
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
     if (password === currentPasswordConfirm) {
-      setPasswordConfirmMessage('비밀번호가 일치합니다');
+      setPasswordConfirmMessage('비밀번호가 일치합니다.');
     } else {
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다');
+      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
     }
   };
 
   const onChangePhone = (e) => {
     const currentPhone = e.target.value;
     setPhone(currentPhone);
+    const phoneRegExp = /^(01[016789]{1})-[0-9]{3,4}-[0-9]{4}$/;
+    if (phoneRegExp.test(currentPhone)) {
+      setPhoneMessage('올바른 전화번호 형식입니다.');
+    } else {
+      setPhoneMessage('전화번호에 -를 추가해주세요.');
+    }
   };
 
   useEffect(() => {
@@ -95,13 +103,20 @@ function Register() {
       emailMessage === '사용 가능한 이메일 입니다.' &&
       nameMessage === '사용 가능한 닉네임 입니다.' &&
       passwordMessage === '안전한 비밀번호 입니다.' &&
-      passwordConfirmMessage === '비밀번호가 일치합니다'
+      passwordConfirmMessage === '비밀번호가 일치합니다.' &&
+      phoneMessage === '올바른 전화번호 형식입니다.'
     ) {
       setIsSubmitDisabled(false);
     } else {
       setIsSubmitDisabled(true);
     }
-  }, [emailMessage, nameMessage, passwordMessage, passwordConfirmMessage]);
+  }, [
+    emailMessage,
+    nameMessage,
+    passwordMessage,
+    passwordConfirmMessage,
+    phoneMessage,
+  ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,7 +160,7 @@ function Register() {
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
         position="top-right"
-        limit={10}
+        limit={1}
         closeButton={false}
         autoClose={3000}
         hideProgressBar
@@ -192,7 +207,7 @@ function Register() {
               onChange={onChangePhone}
               maxLength={13}
             />
-            <Message>전화번호는 - 를 넣고 입력해주세요.</Message>
+            <Message>{phoneMessage}</Message>
           </InputContainer>
         </div>
         <Button
