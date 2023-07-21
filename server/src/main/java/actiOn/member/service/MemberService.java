@@ -9,7 +9,6 @@ import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
 import actiOn.member.repository.MemberRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,12 +22,21 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final ImgService imgService;
     private final RoleService roleService;
+//    @Value("${payment.toss.member-info-secret-key}")
+//    @Getter
+    private String secretKeyString="hS1pY4KBuHjMQaVYj8uJFQ=="; // 테스트옹 임시 키
+    public MemberService(MemberRepository memberRepository, PasswordEncoder encoder, ImgService imgService, RoleService roleService){
+        this.memberRepository = memberRepository;
+        this.encoder = encoder;
+        this.imgService = imgService;
+        this.roleService = roleService;
+    }
+
 
     // 회원 등록
     @Transactional(propagation = Propagation.REQUIRED)
@@ -166,7 +174,6 @@ public class MemberService {
 
     public boolean isExistMember(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-
         return member.isPresent();
     }
 }

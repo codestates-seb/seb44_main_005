@@ -3,6 +3,7 @@ package actiOn.member.entity;
 import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
+import actiOn.payment.entity.Payment;
 import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
@@ -57,6 +58,9 @@ public class Member extends BaseEntity implements Principal {
 
     @OneToMany(mappedBy = "member")
     private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Payment> payments = new ArrayList<>();
 
     @Override
     public String getName() {

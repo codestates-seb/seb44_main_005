@@ -67,6 +67,11 @@ dependencies {
 
 	//mysql
 	implementation 'mysql:mysql-connector-java:8.0.27'
+
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'it.ozimov:embedded-redis:0.7.2'
+
 }
 
 //querydsl 추가

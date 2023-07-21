@@ -154,4 +154,6 @@ public class MemberController {
         PartnerStoreResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 }
