@@ -6,6 +6,7 @@ import UserInfoSection from '../components/MyPage/UserInfoSection';
 import ConfirmationModal from '../components/MyPage/ConfirmationModal';
 import defaultProfileImg from '../assets/profile.svg';
 import 'react-toastify/dist/ReactToastify.css';
+import { PiDotsThreeOutlineBold } from 'react-icons/pi';
 
 import {
   ButtonGrid,
@@ -18,6 +19,7 @@ import {
   MyPageContainer,
   MyBioContainer,
   PhotoInputStyle,
+  ButtonGridEdit,
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
@@ -87,8 +89,9 @@ function MyPage() {
 
   if(!userData) {
     return (
-      <div className='border-[1px] border-[#4771B7] w-[700px] flex justify-center items-center text-xl font-semibold'>
-        <p>로그인 상태를 확인하여주시기 바랍니다.</p>
+      <div className='border-[1px] border-[#4771B7] w-[700px] flex flex-col justify-center items-center text-3xl font-semibold space-y-5'>
+        <PiDotsThreeOutlineBold />
+        <p>로딩중입니다.</p>
       </div>
     )
   }
@@ -232,9 +235,9 @@ function MyPage() {
          />
         <MyBioContainer>
           <MySpace>
-            <ButtonGrid>
+            <ButtonGridEdit>
               <ButtonStyle type="button" onClick={openModal}>편집</ButtonStyle>
-            </ButtonGrid>
+            </ButtonGridEdit>
             <TopSpace>
               <ImgStyle 
                 src={selectedPhoto ? URL.createObjectURL(selectedPhoto) : getProfileImage()}
