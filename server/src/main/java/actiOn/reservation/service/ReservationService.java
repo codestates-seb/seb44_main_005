@@ -13,6 +13,7 @@ import actiOn.payment.entity.Payment;
 import actiOn.payment.mapper.PaymentMapper;
 import actiOn.payment.service.PaymentService;
 import actiOn.redis.service.RedisService;
+import actiOn.reservation.dto.ReservationItemDto;
 import actiOn.reservation.dto.ReservationPostDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
@@ -49,6 +50,12 @@ public class ReservationService {
     @Transactional(propagation = Propagation.REQUIRED)
     public String redisSaveReservation(Long storeId, ReservationPostDto reservationPostDto) {
         validateIdentity(storeId);// 신원검증
+        List<ReservationItemDto> reservationItems = new ArrayList<>();
+        for (ReservationItemDto reservationItemDto : reservationPostDto.getReservationItems()){
+            if (reservationItemDto.getTicketCount()==0) continue;
+            reservationItems.add(reservationItemDto);
+        }
+        reservationPostDto.setReservationItems(reservationItems);
 
         reservationPostDto.setStoreId(storeId);
         String redisKey = UUID.randomUUID().toString().replace("-", "")
@@ -160,6 +167,7 @@ public class ReservationService {
         List<ReservationItem> newReservationItems = new ArrayList<>();
 
         for (ReservationItem reservationItem : reservationItems) {
+            if (reservationItem.getTicketCount()==0) continue;
             reservationItem.setReservation(reservation);
             newReservationItems.add(reservationItem);
         }
