@@ -12,7 +12,6 @@ import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,13 +32,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, RoleService roleService, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
         httpSecurity
                 .headers().frameOptions().sameOrigin()
 
@@ -106,9 +105,9 @@ public class SecurityConfiguration {
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
-                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com"
                         // TODO S3 엔드포인트 추가 ""
-                        "https://4d54-222-232-33-89.ngrok-free.app" //여기 임시 url
+//                        "https://5c36-121-176-132-24.ngrok-free.app" //여기 임시 url
                 )
         );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));

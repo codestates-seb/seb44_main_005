@@ -18,7 +18,7 @@ public enum ExceptionCode {
     INVALID_MEMBER(400, "Invalid member access"),
 
     // BUSINESS
-    BUSINESS_EXISTS(409, "Registration number exists."),
+    BUSINESS_EXISTS(409, "Registration number exists"),
     INVALID_REGISTRATION_NUMBER(400, "Invalid registration number format"),
 
     // STORE
@@ -30,6 +30,7 @@ public enum ExceptionCode {
     UNAUTHORIZED(401, "Unauthorized to update store"),
     INVALID_PARAMETER_VALUE(400, "INVALID_PARAMETER_VALUE"),
 
+    BAD_REQUEST(400,"Bad Request!"),
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
     RESERVATION_MEMBER_NOT_FOUND(404, "Reservation member not match"),
@@ -46,7 +47,13 @@ public enum ExceptionCode {
     WISH_NOT_FOUND(404, "Wish not found"),
 
     // ITEM
-    ITEM_NOT_FOUND(404, "Item not found");
+    ITEM_NOT_FOUND(404, "Item not found"),
+
+    // PAYMENT
+    INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount"),
+    PAYMENT_NOT_FOUND(404, "Payment not found"),
+    NOT_FOUND_PAYMENT(404, "존재하지 않는 결제 정보입니다."),
+    PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match");
 
 
     @Getter

@@ -78,7 +78,7 @@ function CategoryCard({ data }: CProps) {
       if (res.ok) {
         setIsHeart(false);
       }
-      toast('💔 위시리스트에서 제거되었습니다.');
+      toast('🩶 위시리스트에서 제거되었습니다.');
       console.log(isLike);
       clickTimer = setTimeout(() => {
         setIsHeartClicked(false);

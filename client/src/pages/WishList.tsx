@@ -40,20 +40,6 @@ function WishList() {
     }
   };
 
-  const handleIsLikeToggle = (storeId) => {
-   setWishList((prevWishList) => {
-    return prevWishList.map((item) => {
-      if (item.storeId === storeId) {
-        return {
-          ...item,
-          isLike: !item.isLike
-        };
-      }
-      return item;
-    })
-   })
-  };
-
   return (
     <WishContainer>
       {wishlist.length === 0 ? (
@@ -72,7 +58,7 @@ function WishList() {
           {wishlist
             .filter((item) => item.isLike) // Filter out items with isLike: false
             .map((item) => (
-              <CategoryCard key={item.storeId} data={item} handleIsLikeToggle={() => handleIsLikeToggle(item.storeId)} />
+              <CategoryCard key={item.storeId} data={item} />
             ))}
         </div>
       )}

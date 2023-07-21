@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import AOS from 'aos';
@@ -24,6 +24,7 @@ function CategoryPage() {
       offset: 100,
     });
   }, []);
+
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');
@@ -78,7 +79,7 @@ function CategoryPage() {
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
         }
         position="bottom-right"
-        limit={1}
+        limit={10}
         closeButton={false}
         autoClose={2000}
         hideProgressBar

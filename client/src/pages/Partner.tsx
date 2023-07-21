@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from '../store/userInfoAtom';
 import { 
   RepresentativeName, 
   RegistrationNumber, 
@@ -20,7 +22,8 @@ import {
 function Partner() {
   const APIURL = import.meta.env.VITE_APP_API_URL
   const navigate = useNavigate();
-
+  
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const [regiNumber, setRegiNumber] = useState('');
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -79,6 +82,7 @@ function Partner() {
         console.log('Status', response.status);
         if(response.status === 201) {
           console.log('201 Created');
+          setIsLogin(false);
           navigate('/home');
         }
       } else {
