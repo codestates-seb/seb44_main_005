@@ -85,15 +85,24 @@ function Register() {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
     }
   };
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
 
   const onChangePhone = (e) => {
     const currentPhone = e.target.value;
     setPhone(currentPhone);
-    const phoneRegExp = /^(01[016789]{1})-[0-9]{3,4}-[0-9]{4}$/;
-    if (phoneRegExp.test(currentPhone)) {
-      setPhoneMessage('올바른 전화번호 형식입니다.');
-    } else {
-      setPhoneMessage('전화번호에 -를 추가해주세요.');
+    const phoneRegExp = /^(01[016789]{1})-[0-9]{4}-[0-9]{4}$/;
+    let formattedNumber = '';
+    if (currentPhone.length > 0) {
+      formattedNumber = currentPhone.replace(
+        /(\d{3})(\d{4})(\d{4})/,
+        '$1-$2-$3'
+      );
+      setFormattedPhoneNumber(formattedNumber);
+      if (phoneRegExp.test(formattedNumber)) {
+        setPhoneMessage('올바른 전화번호 형식입니다.');
+      } else {
+        setPhoneMessage('전화번호에 -를 추가해주세요.');
+      }
     }
   };
 
@@ -120,7 +129,6 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('hi');
     if (!isSubmitDisabled) {
       try {
         const res = await fetch(`${url}/signup`, {
@@ -203,7 +211,9 @@ function Register() {
           <InputContainer>
             <Input
               id="phone"
-              type="tel"
+              type="text"
+              value={formattedPhoneNumber}
+              pattern="\d{3}-\d{3,4}-\d{4}"
               onChange={onChangePhone}
               maxLength={13}
             />
