@@ -91,7 +91,7 @@ html::-webkit-scrollbar-thumb {
 }
 
 .intro-text {
-  animation: fadeInRight 1s ease-in-out ;
+  animation: fadeInRight 0.75s ease-in-out ;
 }
 
 @keyframes wheelRotate {

@@ -39,10 +39,9 @@ function Home() {
     const res = await fetch(`${API_URL}/main`);
     const json = await res.json();
     setHomeData(json);
-  }
+  };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (homeData.recommend) {
       const interval = setInterval(() => {
         if (current === homeData.recommend.length - 1) {
@@ -60,19 +59,19 @@ function Home() {
   useEffect(() => {
     try {
       homeDataFetch();
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
-  }, [])
+  }, []);
 
   return (
     <section>
       <section className="relative overflow-x-hidden">
         <CarouselBox className={`${moveStyle[current]}`}>
-          {homeData.recommend && homeData.recommend.map((el) => {
-            return <Carousel data={el} key={el.storeId} />;
-          })}
+          {homeData.recommend &&
+            homeData.recommend.map((el) => {
+              return <Carousel data={el} key={el.storeId} />;
+            })}
         </CarouselBox>
         <LeftArrow onClick={arrowLeftHandler}>
           <FaChevronLeft className="arrow-left" size="60" color="white" />
@@ -84,7 +83,7 @@ function Home() {
       <section className="w-[70%] mt-10 mx-auto">
         <div className="font-bold text-2xl mb-5">모든 레저 한눈에 보기</div>
         <div className="rounded-xl h-[600px] mb-20">
-          {homeData.data && <KakaoMap marker={homeData.data} /> }
+          {homeData.data && <KakaoMap marker={homeData.data} />}
         </div>
       </section>
     </section>
