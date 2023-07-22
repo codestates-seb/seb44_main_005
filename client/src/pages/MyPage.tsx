@@ -33,6 +33,8 @@ function MyPage() {
   const [partnerData, setPartnerData] = useState(null);
   const [accessDenied, setAccessDenied] = useState(false);
   const [isDeletingPhoto, setIsDeletingPhoto] = useState(false);
+  const [isDeletingPhotoClicked, setIsDeletingPhotoClicked] = useState(false);
+  const [isToastDisplayed, setIsToastDisplayed] = useState(false);
   console.log(accessDenied, isDeletingPhoto);
   useEffect(() => {
     fetchData();
@@ -163,14 +165,24 @@ function MyPage() {
   };
 
   const handlePhotoRemove = async () => {
+    if(isDeletingPhotoClicked || isToastDisplayed) {
+      return;
+    }
+
+    setIsDeletingPhotoClicked(true);
+
     const confirmMessage = '사진을 삭제하시겠습니까?';
-    const toastId = toast(<ConfirmationModal message={confirmMessage} onConfirm={onConfirmDelete} onCancel={onCancelDelete} />, {
+    const toastId = toast(
+      <ConfirmationModal message={confirmMessage} onConfirm={onConfirmDelete} onCancel={onCancelDelete} />, 
+      {
       closeOnClick: false,
-    });
+      }
+    );
+
+    setIsToastDisplayed(true);
   
     async function onConfirmDelete() {
       toast.dismiss(toastId);
-  
       setIsDeletingPhoto(true);
   
       try {
@@ -194,7 +206,7 @@ function MyPage() {
             profileImg: 'default image',
           }));
   
-          toast('프로필 사진이 삭제되었습니다.');
+          toast.success('프로필 사진이 삭제되었습니다.');
         } else {
           console.error('프로필 사진 삭제 실패', res.status);
   
@@ -204,12 +216,21 @@ function MyPage() {
         console.error('프로필 사진 삭제 에러', error);
       } finally {
         setIsDeletingPhoto(false);
+        setIsDeletingPhotoClicked(false);
+        setIsToastDisplayed(false);
       }
     }
   
     function onCancelDelete() {
       toast.dismiss(toastId);
+      setIsDeletingPhotoClicked(false);
+      setIsToastDisplayed(false);
     }
+    setIsDeletingPhotoClicked(true);
+
+    setTimeout(() => {
+      setIsDeletingPhotoClicked(false);
+    }, 2000);
   };
 
   const handleEditComplete = (updatedUserData) => {
