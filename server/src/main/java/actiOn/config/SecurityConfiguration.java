@@ -67,8 +67,11 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .deleteCookies(REFRESH.getType())
-                .logoutSuccessUrl("/main")
+                .addLogoutHandler(((request, response, authentication) -> {
+                    response.setHeader("Set-Cookie", REFRESH.getType() +
+                            "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
+                }))
+                .logoutSuccessUrl("http://localhost:5173/home")
 
                 .and()
                 .authorizeHttpRequests(this::configureAuthorization)
@@ -142,7 +145,7 @@ public class SecurityConfiguration {
                         "http://localhost:5173",
                         "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
                         // TODO S3 엔드포인트 추가 ""
-                        "https://5c36-121-176-132-24.ngrok-free.app" //여기 임시 url
+                        "https://c054-222-232-33-89.ngrok-free.app" //여기 임시 url
                 )
         );
         configuration.setAllowCredentials(true);
