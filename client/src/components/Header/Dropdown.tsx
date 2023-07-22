@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   StyledContainer,
@@ -10,13 +10,14 @@ import { isLoginState } from '../../store/userInfoAtom';
 
 function Dropdown() {
   const setIsLoginState = useSetRecoilState(isLoginState);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsLoginState(false);
     sessionStorage.removeItem('Authorization');
     sessionStorage.removeItem('memberId');
     sessionStorage.removeItem('access_token');
-    window.location.href = '/home';
+    navigate('/home');
   };
 
   return (
