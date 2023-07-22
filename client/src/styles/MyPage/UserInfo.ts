@@ -11,5 +11,6 @@ export const UserInfoTitle = tw.span`
 
 export const MySpace = tw.div`
     space-y-8
-    p-10
+    px-[96px]
+    py-[24px]
 `;

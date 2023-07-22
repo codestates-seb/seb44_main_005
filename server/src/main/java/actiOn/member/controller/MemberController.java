@@ -54,16 +54,6 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 로그아웃 (refresh 토큰 삭제)
-    @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletResponse response) {
-        // 리프레시 토큰 쿠키에서 삭제
-        response.setHeader("Set-Cookie", REFRESH.getType() + "=; " +
-                "Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     // 회원 프로필 사진 등록
     @PutMapping("/mypage/profile")
     public ResponseEntity uploadProfileImage(@RequestParam("image") MultipartFile profileImage) throws IOException {
@@ -167,6 +157,4 @@ public class MemberController {
         PartnerStoreResponseDto response = memberMapper.partnerToPartnerStoreResponseDto(partner);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }

@@ -4,7 +4,6 @@ export const MyPageContainer = tw.div`
     flex
     flex-row
     justify-center
-    space-x-10
     max-w-[902px]
     min-h-[800px]
 `;
@@ -16,8 +15,15 @@ export const MyBioContainer = tw.div`
 `;
 
 export const MySpace = tw.div`
-    space-y-8
-    p-10
+    space-y-4
+    py-5
+    px-10
+`;
+
+export const ButtonGridEdit = tw.div`
+    grid
+    justify-items-end
+    pt-5
 `;
 
 export const ButtonGrid = tw.div`

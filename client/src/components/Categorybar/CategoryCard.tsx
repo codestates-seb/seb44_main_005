@@ -44,8 +44,7 @@ function CategoryCard({ data }: CProps) {
   const onClickHeart = async () => {
     if (!isLogin) {
       alert(`로그인 상태에서만 등록할 수 있습니다.`);
-    }
-    if (!isHeartClicked) {
+    } else if (!isHeartClicked) {
       setIsHeartClicked(true);
       const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
@@ -53,10 +52,9 @@ function CategoryCard({ data }: CProps) {
       });
       if (res.ok) {
         setIsHeart(true);
+        toast('❤️ 위시리스트에 추가되었습니다.');
       }
     }
-    console.log(isLike);
-    toast('❤️ 위시리스트에 추가되었습니다.');
 
     clickTimer = setTimeout(() => {
       setIsHeartClicked(false);
@@ -64,9 +62,6 @@ function CategoryCard({ data }: CProps) {
   };
 
   const onClickNonHeart = async () => {
-    if (!isLogin) {
-      toast(`로그인 상태에서만 등록할 수 있습니다.`);
-    }
     if (!isHeartClicked) {
       setIsHeartClicked(true);
 
@@ -77,15 +72,13 @@ function CategoryCard({ data }: CProps) {
       // console.log(isLike);
       if (res.ok) {
         setIsHeart(false);
+        toast('🩶 위시리스트에서 제거되었습니다.');
       }
-      toast('🩶 위시리스트에서 제거되었습니다.');
-      console.log(isLike);
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
     }
+    clickTimer = setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
-  console.log(data);
   return (
     <CardContainer data-aos="fade-up">
       <img className="w-[250px] h-[198px] object-cover" src={img} />

@@ -14,6 +14,7 @@ function AfterPayment({ isSuccess }) {
   const [searchParams] = useSearchParams();
   const reservationNumber = searchParams.get('orderId');
   const amount = searchParams.get('amount');
+  const storeId = searchParams.get('storeId');
 
   return (
     <AfterPaymentSection>
@@ -31,10 +32,10 @@ function AfterPayment({ isSuccess }) {
         <div>결제금액: {Number(amount).toLocaleString()}원</div>
       </AfterPaymentContent>
       {isSuccess ?
-        <Link to="/home">
+        <Link to="/my/order">
           <AfterPaymentBtn>결제완료</AfterPaymentBtn>
         </Link> :
-        <Link to="/home">
+        <Link to={`/category/${storeId}`}>
           <AfterPaymentBtn>확인</AfterPaymentBtn>
         </Link>
       }

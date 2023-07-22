@@ -19,6 +19,7 @@ function StoreAddTop({ formChangeHandler }) {
           name="storeName"
           value={form.storeName}
           onChange={formChangeHandler}
+          placeholder="업체명을 기준으로 검색에 노출됩니다."
         />
       </div>
       <div className="flex mb-6">
@@ -37,6 +38,7 @@ function StoreAddTop({ formChangeHandler }) {
           name="kakao"
           value={form.kakao}
           onChange={formChangeHandler}
+          placeholder="영문과 숫자 조합으로 입력해주세요."
         />
       </div>
       <div className="flex mb-6 items-center">
@@ -46,6 +48,7 @@ function StoreAddTop({ formChangeHandler }) {
           name="contact"
           value={form.contact}
           onChange={formChangeHandler}
+          placeholder="'-'를 제외하고 입력해주세요"
         />
       </div>
       <SelectCategory formChangeHandler={formChangeHandler} />

@@ -16,10 +16,11 @@ export const ClickContainer = tw.div`
   items-center 
   relative 
   justify-center 
-  top-[400px]
+  top-[420px]
 `;
 
 export const HomeBtn = tw.span`
   font-semibold 
   text-[25px] 
+  mb-[10px]
 `;

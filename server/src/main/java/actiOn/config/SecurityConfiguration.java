@@ -12,6 +12,7 @@ import actiOn.auth.role.RoleService;
 import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,9 +32,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+import static actiOn.auth.utils.TokenPrefix.REFRESH;
+import static org.springframework.http.HttpMethod.*;
+
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
@@ -60,14 +65,44 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer(memberService))
 
                 .and()
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll() /// Todo URI 권한 레벨 설정
-                )
+                .logout()
+                .logoutUrl("/logout")
+                .deleteCookies(REFRESH.getType())
+                .logoutSuccessUrl("/main")
+
+                .and()
+                .authorizeHttpRequests(this::configureAuthorization)
                 .oauth2Login(oAuth2 -> oAuth2
                         .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
                 );
 
         return httpSecurity.build();
+    }
+
+    // 접근 권한 설정
+    private void configureAuthorization(AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry authorize) {
+        String USER = authorityUtil.getUSER();
+        String PARTNER = authorityUtil.getPARTNER();
+
+        authorize
+                // PARTNER 권한
+                .mvcMatchers(GET, "/mystores").hasRole(PARTNER)
+                .mvcMatchers(GET, "/mypage/partner").hasRole(PARTNER)
+                .mvcMatchers(POST, "/stores").hasRole(PARTNER)
+                .mvcMatchers(PATCH, "/stores/{store-id}").hasRole(PARTNER)
+                .mvcMatchers(DELETE, "/stores").hasRole(PARTNER)
+                .mvcMatchers(POST, "/storeImages/**").hasRole(PARTNER)
+
+                // USER 권한
+                .mvcMatchers(POST, "/stores/favorites/{store-id}").hasRole(USER)
+                .mvcMatchers(DELETE, "/stores/favorites/{store-id}").hasRole(USER)
+                .mvcMatchers("/payments/**").hasRole(USER)
+                .mvcMatchers("/partners/**").hasRole(USER)
+                .mvcMatchers("/reservations/**").hasRole(USER)
+                .mvcMatchers(POST, "/reviews").hasRole(USER)
+                .mvcMatchers(GET, "/mypage/**").hasRole(USER)
+
+                .mvcMatchers("/").permitAll();
     }
 
     // JwtAuthenticationFilter 구성하는 클래스

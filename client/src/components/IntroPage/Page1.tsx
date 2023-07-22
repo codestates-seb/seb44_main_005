@@ -21,6 +21,10 @@ function page1() {
     }, 300);
   };
 
+  const pageMove = () => {
+    window.scrollTo({ top: 940, left: 0, behavior: 'smooth' });
+  };
+
   return (
     <PageContainer>
       <img
@@ -38,7 +42,11 @@ function page1() {
       </IntroText>
       <ClickContainer>
         <HomeBtn>엑티온 알아보기</HomeBtn>
-        <img src={bottom} className="w-[100px] animate-bounce" />
+        <img
+          src={bottom}
+          className="w-[80px] animate-bounce"
+          onClick={pageMove}
+        />
       </ClickContainer>
     </PageContainer>
   );
