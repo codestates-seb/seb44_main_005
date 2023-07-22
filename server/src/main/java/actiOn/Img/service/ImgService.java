@@ -3,6 +3,8 @@ package actiOn.Img.service;
 
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.Img.storeImg.StoreImgRepository;
+import actiOn.exception.BusinessLogicException;
+import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
 import actiOn.store.entity.Store;
 import com.amazonaws.services.s3.AmazonS3;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,7 +39,7 @@ public class ImgService {
     // 프로필 이미지 등록
     public String uploadProfileImage(MultipartFile file, Member member) throws IOException {
         // S3에 이미지 파일 업로드
-        String imageName = generateRandomName(file, Math.toIntExact(member.getMemberId()));
+        String imageName = generateRandomName(member, Math.toIntExact(member.getMemberId()));
         String fileUrl = uploadImage(file, imageName);
 
         return fileUrl;
@@ -61,7 +64,7 @@ public class ImgService {
                 continue;
             }
 
-            String fileName = generateRandomName(file, index);
+            String fileName = generateRandomName(store.getMember(), index);
             String fileUrl = uploadImage(file, fileName);
             StoreImg storeImg = new StoreImg(fileUrl, store);
 
@@ -91,10 +94,10 @@ public class ImgService {
         return s3Client.getUrl(BUCKET_NAME, imageName).toString();
     }
 
-    private String generateRandomName(MultipartFile file, int index) {
+    private String generateRandomName(Member member, int index) {
         String uuid = UUID.randomUUID().toString();
 
-        return uuid + index + "-" + file.getOriginalFilename();
+        return uuid + "-" + index + "-" + member.getMemberId();
     }
 
     private StoreImg StoreThumbnailImgIdGenerator(Store store, StoreImg storeImg) {
@@ -105,6 +108,12 @@ public class ImgService {
     }
 
     public void deleteStoreImage(String link) {
-        storeImgRepository.deleteByLink(link.replace(" ", ""));
+        Optional<StoreImg> storeImg = storeImgRepository.findByLink(link);
+
+        if (storeImg.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.STORE_IMAGE_NOT_FOUND);
+        }
+
+        storeImgRepository.delete(storeImg.get());
     }
 }
