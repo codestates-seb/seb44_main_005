@@ -1,5 +1,6 @@
 import activity from '../../assets/activity.svg';
 import bottom from '../../assets/bottom.svg';
+import top from '../../assets/top.svg';
 
 import {
   PageContainer,
@@ -8,11 +9,19 @@ import {
 } from '../../styles/Welcome/IntroPage/Page2';
 
 function Page2() {
-  const pageMove = () => {
-    window.scrollTo({ top: 1880, left: 0, behavior: 'smooth' });
+  const PageDown = () => {
+    window.scrollTo({ top: 1867, left: 0, behavior: 'smooth' });
+  };
+  const pageUp = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
   return (
     <PageContainer>
+      <img
+        src={top}
+        className="w-[80px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        onClick={pageUp}
+      />
       <MainText
         data-aos="fade-up"
         data-aos-offset="200"
@@ -36,12 +45,12 @@ function Page2() {
         data-aos-easing="ease-in-out"
         data-aos-duration="1000"
         src={activity}
-        className="w-[900px] h-[600px] mb-[20px]"
+        className="w-[800px] h-[500px] mb-[20px]"
       />
       <img
         src={bottom}
-        className="w-[80px] animate-bounce"
-        onClick={pageMove}
+        className="w-[80px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        onClick={PageDown}
       />
     </PageContainer>
   );

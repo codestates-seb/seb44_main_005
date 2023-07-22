@@ -22,7 +22,7 @@ function page1() {
   };
 
   const pageMove = () => {
-    window.scrollTo({ top: 940, left: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 935, left: 0, behavior: 'smooth' });
   };
 
   return (
@@ -44,7 +44,7 @@ function page1() {
         <HomeBtn>엑티온 알아보기</HomeBtn>
         <img
           src={bottom}
-          className="w-[80px] animate-bounce"
+          className="w-[80px] cursor-pointer animate-bounce duration-500 ease-in-out hover:w-[100px]"
           onClick={pageMove}
         />
       </ClickContainer>

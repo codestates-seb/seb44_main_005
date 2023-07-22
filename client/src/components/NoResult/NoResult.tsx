@@ -1,9 +1,9 @@
-import { useRecoilValue } from 'recoil';
 import search from '../../assets/search.svg';
-import { searchKeyword } from '../../store/searchbarAtom';
+import { useSearchParams } from 'react-router-dom';
 
 function NoResult() {
-  const keyword = useRecoilValue(searchKeyword);
+  const [searchParams] = useSearchParams();
+  const keywords = searchParams.get('keyword');
   return (
     <div className="mx-0 my-auto w-[1060px] h-[500px] relative  ml-[300px] mt-[30px]">
       <div className="pt-[40px] pb-[120px] px-0 relative">
@@ -15,8 +15,8 @@ function NoResult() {
             />
             <div className="ml-[15px]">
               <p className="mb-[3px]">
-                <span className="text-[#4771B7] font-medium">{keyword}</span> 의
-                검색결과가 없습니다.
+                <span className="text-[#4771B7] font-medium">{keywords}</span>{' '}
+                의 검색결과가 없습니다.
               </p>
               <p>지역/업체명을 검색해보세요.</p>
             </div>

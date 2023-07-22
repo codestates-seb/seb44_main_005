@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import page3 from '../../assets/page3.svg';
+import w_top from '../../assets/w_top.svg';
 import w_bottom from '../../assets/w_bottom.svg';
 
 import {
@@ -10,14 +11,23 @@ import {
   SubText,
   HomeBtn,
 } from '../../styles/Welcome/IntroPage/Page3';
-
+1867;
 function Page3() {
   const navigate = useNavigate();
-  const pageMove = () => {
+  const pageDown = () => {
     window.scrollTo({ top: 2820, left: 0, behavior: 'smooth' });
+  };
+
+  const pageMTop = () => {
+    window.scrollTo({ top: 935, left: 0, behavior: 'smooth' });
   };
   return (
     <Wrapper>
+      <img
+        src={w_top}
+        className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        onClick={pageMTop}
+      />
       <PageContainer>
         <img
           src={page3}
@@ -57,8 +67,8 @@ function Page3() {
       </PageContainer>
       <img
         src={w_bottom}
-        className="w-[80px] animate-bounce"
-        onClick={pageMove}
+        className="w-[80px] mb-[15px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        onClick={pageDown}
       />
     </Wrapper>
   );

@@ -1,4 +1,5 @@
 import tw from 'tailwind-styled-components';
+import 'tailwindcss/tailwind.css';
 import Page1 from '../components/IntroPage/Page1';
 import WelcomeLayout from '../components/Layout/WelcomeLayout';
 import Page2 from '../components/IntroPage/Page2';
@@ -22,6 +23,7 @@ const Welcome = () => {
 
 const WelcomeContainer = tw.div`
   pt-60px
+  overflow-hidden
 `;
 
 export default Welcome;

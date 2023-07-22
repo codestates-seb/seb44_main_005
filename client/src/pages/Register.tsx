@@ -85,12 +85,20 @@ function Register() {
       setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
     }
   };
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
 
   const onChangePhone = (e) => {
     const currentPhone = e.target.value;
     setPhone(currentPhone);
-    const phoneRegExp = /^(01[016789]{1})-[0-9]{3,4}-[0-9]{4}$/;
-    if (phoneRegExp.test(currentPhone)) {
+    const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
+    let formattedNumber = '';
+
+    formattedNumber = currentPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+
+    setPhone(formattedNumber);
+    setFormattedPhoneNumber(formattedNumber);
+
+    if (phoneRegExp.test(formattedNumber)) {
       setPhoneMessage('올바른 전화번호 형식입니다.');
     } else {
       setPhoneMessage('전화번호에 -를 추가해주세요.');
@@ -117,10 +125,8 @@ function Register() {
     passwordConfirmMessage,
     phoneMessage,
   ]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('hi');
     if (!isSubmitDisabled) {
       try {
         const res = await fetch(`${url}/signup`, {
@@ -135,8 +141,9 @@ function Register() {
             nickname: name,
           }),
         });
+        console.log(res);
         if (res.ok) {
-          toast('회원가입을 성공했습니다 !');
+          alert('회원가입을 성공했습니다 !');
           navigate('/login');
         }
       } catch (error) {
@@ -144,7 +151,7 @@ function Register() {
         toast('회원가입을 실패했습니다');
       }
     } else {
-      toast('🚨 가입조건을 모두 만족해주세요 !');
+      alert('🚨 가입조건을 모두 만족해주세요 !');
     }
   };
 
@@ -203,7 +210,9 @@ function Register() {
           <InputContainer>
             <Input
               id="phone"
-              type="tel"
+              type="text"
+              value={formattedPhoneNumber}
+              pattern="\d{3}-\d{3,4}-\d{4}"
               onChange={onChangePhone}
               maxLength={13}
             />

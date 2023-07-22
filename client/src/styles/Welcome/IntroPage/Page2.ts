@@ -12,12 +12,12 @@ export const PageContainer = tw.div`
 
 export const MainText = tw.div`
   font-semibold 
-  text-[64px] 
+  text-[55px] 
   text-[#4771B7] 
   my-[30px]
 `;
 
 export const SubText = tw.p`
-  text-[36px] 
+  text-[30px] 
   mb-[30px]
 `;
