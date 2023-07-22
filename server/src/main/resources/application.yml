@@ -26,6 +26,7 @@ spring:
         format_sql: true  # SQL pretty print
         jdbc:
           time_zone: Asia/Seoul   # 서버 시간 서울로 변경
+
   security:
     oauth2:
       client:

@@ -19,8 +19,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+
+import static actiOn.auth.utils.TokenPrefix.REFRESH;
 
 @RestController
 @RequestMapping
@@ -49,6 +52,16 @@ public class MemberController {
 
         LoginResponseDto response = memberMapper.memberGoogleLoginResponseDto(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 로그아웃 (refresh 토큰 삭제)
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse response) {
+        // 리프레시 토큰 쿠키에서 삭제
+        response.setHeader("Set-Cookie", REFRESH.getType() + "=; " +
+                "Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 회원 프로필 사진 등록
@@ -145,7 +158,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 마이페이지 - 판매 서비스 관리
+    // 마이페이지 - 파트너 판매 서비스 관리
     @GetMapping("/mystores")
     public ResponseEntity getPartnerStores() {
         String email = AuthUtil.getCurrentMemberEmail();

@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
 
                 .and()
-                .apply(new CustomFilterConfigurer())
+                .apply(new CustomFilterConfigurer(memberService))
 
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
@@ -71,7 +71,10 @@ public class SecurityConfiguration {
     }
 
     // JwtAuthenticationFilter 구성하는 클래스
+    @AllArgsConstructor
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+        private final MemberService memberService;
+
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager =
@@ -83,7 +86,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler(tokenProvider));
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider, authorityUtil);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenProvider, authorityUtil, memberService);
 
             // Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
@@ -102,17 +105,17 @@ public class SecurityConfiguration {
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
-                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com"
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
                         // TODO S3 엔드포인트 추가 ""
-//                        "https://5c36-121-176-132-24.ngrok-free.app" //여기 임시 url
+                        "https://5c36-121-176-132-24.ngrok-free.app" //여기 임시 url
                 )
         );
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
-
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(2000L);
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
-        configuration.setExposedHeaders(Arrays.asList("authorization", "refresh"));
+        configuration.setMaxAge(200L);
+//        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

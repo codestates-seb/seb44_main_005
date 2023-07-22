@@ -50,7 +50,7 @@ function Login() {
           username: email,
           password: password,
         }),
-        credentials: 'include'
+        credentials: 'include',
       });
       const result1 = await res.json();
       console.log(result1);
