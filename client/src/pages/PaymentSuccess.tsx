@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { GiCarWheel } from 'react-icons/gi';
 
 import AfterPayment from '../components/PaymentSuccess/AfterPayment';
@@ -9,6 +9,7 @@ function PaymentSuccess() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [status, setStatus] = useState('loading');
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const reservationKey = searchParams.get('reservationKey');
   const orderId = searchParams.get('orderId');
   const accessToken = sessionStorage.getItem('Authorization');
@@ -34,6 +35,9 @@ function PaymentSuccess() {
   };
 
   useEffect(() => {
+    if (!reservationKey || !orderId || !accessToken) {
+      navigate('/home');
+    }
     verifyFetch();
   }, []);
 

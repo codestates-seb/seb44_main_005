@@ -43,7 +43,6 @@ function PaymentInfo() {
   }
 
   const onClickHeart = async () => {
-    console.log(data);
     if (!isLogin) {
       return alert(`로그인 상태에서만 등록할 수 있습니다.`);
     }
