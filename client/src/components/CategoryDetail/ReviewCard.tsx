@@ -13,8 +13,10 @@ function ReviewCard({ review }) {
           <img src={fillStar} className="card-star" alt="꽉찬별" />
         </div>
       </div>
-      <div className="ml-28 font-medium mb-1">{review.nickname}</div>
-      <div className="text-sm font-medium mb-3">{date}</div>
+      <div className="flex justify-between items-center mb-3">
+        <div className="ml-28 font-medium">{review.nickname}</div>
+        <div className="text-sm font-medium">{date}</div>
+      </div>
       <div className="text-lg">{review.content}</div>
     </section>
   );

@@ -32,7 +32,12 @@ public class StoreResponseMapper {
             int maxCount = item.getTotalTicket();
             int remainingTicketCount = maxCount;
             if (reservationTicketCountInfo.size() != 0) {
-                int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
+                int reservationTicketCount;
+                try{
+                    reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
+                }catch (Exception e) {
+                    reservationTicketCount = 0;
+                }
                 remainingTicketCount = remainingTicketCount - reservationTicketCount;
             }
             if (remainingTicketCount < 0) {
