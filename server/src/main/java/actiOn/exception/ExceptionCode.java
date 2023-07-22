@@ -5,9 +5,9 @@ import lombok.Getter;
 public enum ExceptionCode {
     // MEMBER
     MEMBER_NOT_FOUND(404, "Member not found"),
-    MEMBER_EXISTS(1001, "Member exists"),
-    NICKNAME_EXISTS(1002, "member nickname exists"),
-    PHONE_NUMBER_EXISTS(1003, "member phone number exists"),
+    MEMBER_EXISTS(403, "Member exists"),
+    NICKNAME_EXISTS(409, "member nickname exists"),
+    PHONE_NUMBER_EXISTS(422, "member phone number exists"),
     MEMBER_NOT_AUTHORIZED(403, "Member not authorized"),
     PROFILE_IMAGE_NOT_FOUND(404, "Profile image not found"),
 
