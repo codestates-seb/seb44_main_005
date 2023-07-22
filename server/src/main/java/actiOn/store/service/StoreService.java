@@ -235,8 +235,8 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStoreImgLink(String link, long storeId, Boolean doVerify) {
-        findverifyIdentityStore(storeId); // TODO doVerify 삭제
+    public void deleteStoreImgLink(String link, long storeId) {
+        findverifyIdentityStore(storeId);
 
         imgService.deleteStoreImage(link);
     }

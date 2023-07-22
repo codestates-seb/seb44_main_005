@@ -1,6 +1,20 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import headerlogo from '../../assets/headerlogo.svg';
 import close from '../../assets/close.svg';
+import { 
+  CloseButtonContainer,
+  ModalAllContainer, 
+  ModalBoxContainer ,
+  CloseButton,
+  LogoContainer,
+  Logo,
+  EditContainer,
+  EditInput,
+  EditMessage,
+  EditComplete,
+  EditConfirmButton
+} from '../../styles/MyPage/Modal';
 
 function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete }) {
   const APIURL = import.meta.env.VITE_APP_API_URL;
@@ -32,6 +46,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
 
       if (res.ok) {
         console.log('편집완료');
+        toast.success('편집이 완료되었습니다.');
         onClick();
         onEditComplete({
           nickname: updatedNickname,
@@ -39,6 +54,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
         });
       } else {
         console.error('편집실패', res.status);
+        toast.error('편집에 실패했습니다.');
       }
     } catch (error) {
       console.error('편집 실패', error);
@@ -67,48 +83,45 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
   }
 
   return (
-    <div className='fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-40 z-50' onClick={handleOutsideClick}>
-      <div className='flex flex-col w-[600px] h-[500px] space-y-[20px] rounded-lg bg-white drop-shadow-lg'>
-        <div className='flex justify-end p-2'>
-          <img className='cursor-pointer' src={close} alt='close button' onClick={onClick} />
-        </div>
-        <div className='flex justify-center py-12'>
-          <img className='w-[182px]' src={headerlogo} alt='logo' />
-        </div>
-        <div className='flex flex-row justify-center space-x-[50px]'>
+    <ModalAllContainer onClick={handleOutsideClick}>
+      <ModalBoxContainer>
+        <CloseButtonContainer>
+          <CloseButton src={close} alt='close button' onClick={onClick} />
+        </CloseButtonContainer>
+        <LogoContainer>
+          <Logo src={headerlogo} alt='logo' />
+        </LogoContainer>
+        <EditContainer>
           <p>닉네임</p>
-          <input
-            className='border-[2px] border-[#CCCCCC] rounded p-1'
+          <EditInput
             type='text'
             defaultValue={updatedNickname}
             onChange={handleNicknameChange}
           />
-        </div>
+        </EditContainer>
         {!isNicknameValid && (
-           <div className='flex flex-row justify-center text-sm'>
+           <EditMessage>
              <p className='text-red-500'>닉네임 편집은 영문, 숫자로만 가능합니다.</p>
-          </div>
+          </EditMessage>
         )}
-        <div className='flex flex-row justify-center space-x-[50px]'>
+        <EditContainer>
           <p>연락처</p>
-          <input
-            className='border-[2px] border-[#CCCCCC] rounded p-1'
+          <EditInput
             type='text'
             defaultValue={updatedPhoneNumber}
             onChange={handlePhoneNumberChange}
           />
-        </div>
-        <div className='flex justify-center pt-[70px]'>
-          <button
-            className='bg-[#4771B7] text-white p-3 rounded-lg'
+        </EditContainer>
+        <EditComplete>
+          <EditConfirmButton
             type='button'
             onClick={handleEditComplete}
           >
             편집 완료
-          </button>
-        </div>
-      </div>
-    </div>
+          </EditConfirmButton>
+        </EditComplete>
+      </ModalBoxContainer>
+    </ModalAllContainer>
   );
 }
 

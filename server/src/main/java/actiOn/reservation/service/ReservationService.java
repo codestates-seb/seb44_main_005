@@ -13,6 +13,7 @@ import actiOn.payment.entity.Payment;
 import actiOn.payment.mapper.PaymentMapper;
 import actiOn.payment.service.PaymentService;
 import actiOn.redis.service.RedisService;
+import actiOn.reservation.dto.ReservationItemDto;
 import actiOn.reservation.dto.ReservationPostDto;
 import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
@@ -21,7 +22,9 @@ import actiOn.reservation.repository.ReservationRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.service.StoreService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import com.google.gson.Gson;
+
+import javax.persistence.LockModeType;
+
 @Transactional
 @Service
 @AllArgsConstructor
@@ -44,11 +50,11 @@ public class ReservationService {
     private final PaymentMapper paymentMapper;
 
 
-
 /**    여기서부터는 예약 및 결제를 save 하기 위한 영역입니다.     */
     @Transactional(propagation = Propagation.REQUIRED)
     public String redisSaveReservation(Long storeId, ReservationPostDto reservationPostDto) {
         validateIdentity(storeId);// 신원검증
+        reservationPostDto.setReservationItems(filterZeroItem(reservationPostDto.getReservationItems()));
 
         reservationPostDto.setStoreId(storeId);
         String redisKey = UUID.randomUUID().toString().replace("-", "")
@@ -58,6 +64,15 @@ public class ReservationService {
         redisService.saveDataToRedis(redisKey,json); //redis에 json으로 자동 파싱되어 저장 //불러올때도 엔티티로 자동 파싱
         return redisKey;
     }
+    private List<ReservationItemDto> filterZeroItem(List<ReservationItemDto> reservationItemDtos) {
+        List<ReservationItemDto> reservationItems = new ArrayList<>();
+        for (ReservationItemDto reservationItemDto : reservationItemDtos){
+            if (reservationItemDto.getTicketCount()==0) continue;
+            reservationItems.add(reservationItemDto);
+        }
+        return reservationItems;
+    }
+
     private void validateIdentity(Long storeId){
         memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
         storeService.findStoreByStoreId(storeId);
@@ -73,21 +88,36 @@ public class ReservationService {
 
 
 
-
-    @Transactional(propagation = Propagation.REQUIRED)
+/** transaction 수준을 최고단계로 설정 */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
     public void postReservation(long storeId, Reservation reservationFromRedis,List<ReservationItem> reservationItems,Payment payment) {
 
-        confirmReservationWithPayment(reservationFromRedis, payment);
-        Reservation entity = createReservationEntity(storeId,reservationFromRedis,reservationItems);
-        entity.setPaymentKey(payment.getPaymentKey());
-        entity.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CONFIRM);
-        reservationRepository.save(entity);
+        try {
+            confirmReservationWithPayment(reservationFromRedis, payment);
+            Reservation entity = createReservationEntity(storeId, reservationFromRedis, reservationItems);
+            entity.setPaymentKey(payment.getPaymentKey());
+            entity.setReservationStatus(Reservation.ReservationStatus.RESERVATION_CONFIRM);
+            reservationRepository.save(entity);
+        } catch (BusinessLogicException ex) {
+            handleRollback(payment);
+        }
     }
+    @Transactional
+    public void handleRollback(Payment payment) {
+        paymentService.refund(payment.getPaymentKey(),payment.getTotalAmount());
+        throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
+    }
+
+/**  payment 정보와 예약정보를 이용해서 검증. 결제완료상태이어야 하고, 예약금액과 결제금액이 같아야 함. 다를 경우 환불 실행**/
     private void confirmReservationWithPayment(Reservation reservation, Payment payment){
-        if (reservation.getTotalPrice()!=payment.getTotalAmount()) throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
-        System.out.println(payment.getStatus());
+
         if (!payment.getStatus().equals(Payment.Status.DONE)) throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
+        else if (reservation.getTotalPrice()!=payment.getTotalAmount()) {
+                paymentService.refund(payment.getPaymentKey(),payment.getTotalAmount());
+                throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
+        }
     }
+/** client 에게서 받은 orderId를 이용해 payment save **/
     public Payment createPaymentByOrderId(String orderId){
         PaymentInfoDto paymentInfoDto = paymentService.getPaymentInfoByOrderId(orderId);
         Payment payment = paymentMapper.paymentInfoDtoToPayment(paymentInfoDto);
@@ -99,6 +129,10 @@ public class ReservationService {
 /**    여기서부터는 예약을 수정하기 위한 영역입니다.     */
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateReservation(Long reservationId, Reservation updateReservation) {
+        Reservation.ReservationStatus status = findReservation(reservationId).getReservationStatus();
+        if (status.equals(Reservation.ReservationStatus.RESERVATION_CANCEL) ||
+        status.equals(Reservation.ReservationStatus.RESERVATION_USE_COMPLETED))
+            throw new BusinessLogicException(ExceptionCode.REJECTED_UPDATE);
         //수정할 예약 정보 조회 찾기
         Reservation findReservation = findReservation(reservationId);
 
@@ -148,6 +182,7 @@ public class ReservationService {
         List<ReservationItem> newReservationItems = new ArrayList<>();
 
         for (ReservationItem reservationItem : reservationItems) {
+            if (reservationItem.getTicketCount()==0) continue;
             reservationItem.setReservation(reservation);
             newReservationItems.add(reservationItem);
         }
@@ -266,7 +301,12 @@ public class ReservationService {
         Map<Long, Integer> reservationTickets = reservationTicketCount(store, date);
         for (int i=0; i< store.getItems().size(); i++) {
             Item item = store.getItems().get(i);
-            int requestTicketCount = requestItems.get(i).getTicketCount();
+            int requestTicketCount;
+            try {
+                requestTicketCount = requestItems.get(i).getTicketCount();
+            }catch (Exception e) {
+                requestTicketCount = 0;
+            }
             int remainingTicketCount = getRemainingTicketCount(item,reservationTickets);
             if (requestTicketCount > remainingTicketCount)
                 throw new BusinessLogicException(ExceptionCode.TICKET_QUANTITY_EXCEEDED);

@@ -43,8 +43,7 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String profileImg;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<MemberRole> memberRoles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")

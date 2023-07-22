@@ -53,14 +53,19 @@ body {
 }
 
 html::-webkit-scrollbar {
-  width: 10px;
+  width: 15px;
   background-color: rgb(255, 255, 255);
+}
+
+html::-webkit-scrollbar-track {
+  width: 10px;
 }
 
 html::-webkit-scrollbar-thumb {
   background-color: rgb(168, 168, 168);
   border-radius: 10px;
 } 
+
 
 .carousel-title {
   font-size: xx-large;

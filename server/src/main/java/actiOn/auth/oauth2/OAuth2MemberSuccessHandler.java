@@ -7,6 +7,7 @@ import actiOn.auth.role.RoleService;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -22,6 +23,7 @@ import java.security.SecureRandom;
 import java.util.List;
 
 // OAuth2 인증에 성공하면 호출되는 핸들러
+@Slf4j
 @AllArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final MemberService memberService;
@@ -32,6 +34,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+        String profileImgUrl = String.valueOf(oAuth2User.getAttributes().get("picture"));
+
         Member member;
 
         // 기존 회원인지 확인
@@ -40,6 +44,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         } else { // 신규 회원인 경우 회원 생성 및 저장
             member = createNewMember(email);
             memberService.createMember(member);
+            // 프로필 이미지 등록
+            memberService.registerGoogleProfileImage(profileImgUrl, email);
         }
 
         redirect(request, response, member);
@@ -81,17 +87,20 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     // 프론트로 JWT 전송하기 위해 redirect하는 메서드
     private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
-        String accessToken = tokenProvider.delegateAccessToken(member);
-//        String refreshToken = tokenProvider.delegateRefreshToken(member);
+        // 액세스 토큰 저장 및 리프레시 토큰 쿠키 저장
+        tokenProvider.generateTokenAndCookie(response, member);
 
+        log.info("# Google Authenticated Successfully!");
+
+        String accessToken = tokenProvider.delegateAccessToken(member);
         String uri = createURI(accessToken, member);
+
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     private String createURI(String accessToken, Member member) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
-//        queryParams.add("memberId", member.getMemberId().toString());
         queryParams.add("nickname", member.getNickname());
 
         // 컨트롤러로 보낸 후 프론트로 리다이렉트 시도

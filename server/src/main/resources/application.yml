@@ -17,15 +17,20 @@ spring:
   sql:
     init:
       data-locations: classpath*:db/h2/data.sql
+      encoding: UTF-8
   jpa:
     hibernate:
       ddl-auto: update    # 스키마 자동 생성
     show-sql: false        # SQL 쿼리 출력
     properties:
       hibernate:
+        connection:
+          characterEncoding: UTF-8
+          useUniCode: true
         format_sql: true  # SQL pretty print
         jdbc:
           time_zone: Asia/Seoul   # 서버 시간 서울로 변경
+
   security:
     oauth2:
       client:

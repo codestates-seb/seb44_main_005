@@ -35,7 +35,7 @@ export const ReservationTitle = tw.div`
 
 export const ReservationInput = tw.input`
   border-[1px] border-[#CCCCCC] rounded-[5px]
-  w-[240px] h-[38px]
+  w-[260px] h-[38px]
   p-2
 `;
 
@@ -45,7 +45,7 @@ export const InputRequire = tw.div`
 `;
 
 export const PaymentInfoBox = tw.section`
-  w-[300px] h-[500px]
+  w-[300px] h-[530px]
   border-[1px] border-[#4771B7] rounded-[5px]
   mt-28
   font-medium
@@ -68,9 +68,16 @@ export const RuleBox = tw.div`
 export const PaymentButton = tw.button`
   bg-[#4771B7]
   w-[250px] h-[50px]
-  block mx-auto p-2
+  block mx-auto mb-3 p-2
   text-white
   rounded-[10px]
+`;
+
+export const UseCompleteButton = tw.button`
+  w-[250px] h-[50px]
+  block mx-auto mb-3 p-2
+  text-[#4771B7]
+  border-[1px] border-[#4771B7] rounded-[10px]
 `;
 
 export const InputContainer = tw.div`

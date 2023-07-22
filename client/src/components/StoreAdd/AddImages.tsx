@@ -39,16 +39,10 @@ function AddImages() {
       const reader = new FileReader();
       reader.readAsDataURL(files[i]);
       reader.onloadend = () => {
-        const detailImgFilter = detailImgs.filter((img) => img === reader.result);
-        if (detailImgFilter.length) {
-          return alert('같은 이미지는 두 장 이상 업로드 할 수 없습니다.');
-        }
         setDetailImgs((prevImgs) => [...prevImgs, reader.result]);
         setSendDetailImgs((prevImgs) => [...prevImgs, files[i]]);
       }
     }
-    console.log(detailImgs);
-    console.log(sendDetailImgs);
   }
 
   const detailImgDeleteHandler = (idx: number) => {
@@ -56,7 +50,7 @@ function AddImages() {
     const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
-    if (searchParams.get('store_id')) {
+    if (searchParams.get('store_id') && detailImgs[idx][0] === 'h') {
       fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
         method: 'DELETE',
         headers: {

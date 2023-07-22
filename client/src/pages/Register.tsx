@@ -125,8 +125,6 @@ function Register() {
     passwordConfirmMessage,
     phoneMessage,
   ]);
-  console.log(phone);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isSubmitDisabled) {

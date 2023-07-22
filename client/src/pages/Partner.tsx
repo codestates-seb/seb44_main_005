@@ -42,7 +42,7 @@ function Partner() {
 
   const isRegiNumberValid = regiNumber.match(/^\d{3}-\d{2}-\d{5}$/);
   const isRegiNumberIncomplete = regiNumber.length > 0 && !isRegiNumberValid;
-
+  console.log(isLogin);
   useEffect(() => {
     setIsInputTouched(true);
   }, []);
@@ -74,7 +74,8 @@ function Partner() {
           'Content-Type': 'application/json',
           'Authorization': ACCESS_TOKEN
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: 'include'
       });
 
       if (response.ok) {

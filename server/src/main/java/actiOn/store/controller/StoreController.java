@@ -33,7 +33,6 @@ public class StoreController {
     private final StoreMapper storeMapper;
     private final StoreResponseMapper responseMapper;
     private final CategoryResponseMapper categoryResponseMapper;
-    private final ImgService imgService;
     private final MemberService memberService;
 
     // 업체 등록
@@ -50,7 +49,7 @@ public class StoreController {
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                          @RequestPart(value = "images", required = false) List<MultipartFile> images,
                                          @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage) throws IOException {
-        storeService.validateImagePost(images,thumbnailImage);
+        storeService.validateImagePost(images, thumbnailImage);
         storeService.storeImageUpload(images, storeId, thumbnailImage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -75,10 +74,13 @@ public class StoreController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/storeImages/{store-id}")
-    public void storeImagesDelete(@PathVariable("store-id") long storeId,
-                                  @RequestParam("link") String link){
-        storeService.deleteStoreImgLink(link, storeId, true);
+    @DeleteMapping("/storeImages/{store-id}") // 업체 이미지 삭제
+    public ResponseEntity storeImagesDelete(@PathVariable("store-id") long storeId,
+                                            @RequestParam("link") String link) {
+
+        storeService.deleteStoreImgLink(link, storeId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/stores/{store-id}") // 스토어 상세페이지, 수정페이지 랜더링을 위해 필요한 리소스 응답

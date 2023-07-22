@@ -68,6 +68,7 @@ function ReservationCheck() {
                   `
                     font-medium
                     text-[15px]
+                    pt-[1px]
                     ${reservation.reservationStatus === "예약 확정" 
                       ? "bg-[#4771B7] text-white"
                       : reservation.reservationStatus === "이용 완료"
@@ -90,23 +91,23 @@ function ReservationCheck() {
                 <span className="text-[16px]">{reservation.reservationDate}</span>
               </div>
               <div className="space-x-3">
-                <ResDate>{reservation.storeName}</ResDate>
+                <Link to={`/category/${reservation.storeId}`}><ResDate>{reservation.storeName}</ResDate></Link>
                 <ResItemCount>총 {reservation.itemCount}개 상품 결제</ResItemCount>
               </div>
               <div>
-                <ResTotalPrice>결제금액: {reservation.totalPrice}원</ResTotalPrice>
+                <ResTotalPrice>결제금액: {Number(reservation.totalPrice).toLocaleString()}원</ResTotalPrice>
               </div>
             </ResInformation>
             <ResButtonsContainer>
               {reservation.reservationStatus === "예약 확정" && (
                 <div className="space-x-3">
                   <Link to={`/my/order/edit?reservationId=${reservation.reservationId}`}>
-                    <ButtonStyle type="button">예약 수정</ButtonStyle>
+                    <ButtonStyle type="button">상세 확인</ButtonStyle>
                   </Link>
                   <ButtonStyle
                     type="button"
                     onClick={() => {reservationDelete(reservation.reservationId)}}
-                  >예약 삭제</ButtonStyle>
+                  >예약 취소</ButtonStyle>
                 </div>
               )}
               {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import {
   PaymentWidgetInstance,
@@ -16,6 +16,7 @@ function Payments() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const accessToken = sessionStorage.getItem('Authorization');
   const location = useLocation();
+  const navigate = useNavigate();
   const storeId = location.pathname.substring(15);
   const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
   const paymentMethodsWidgetRef = useRef<ReturnType<
@@ -25,6 +26,9 @@ function Payments() {
   const price = useRecoilValue(totalPrice);
 
   useEffect(() => {
+    if (!price) {
+      return navigate('/home');
+    }
     (async () => {
       // ------  결제위젯 초기화 ------
       // 비회원 결제에는 customerKey 대신 ANONYMOUS를 사용하세요.
@@ -88,8 +92,8 @@ function Payments() {
               orderName: 'ActiOn',
               // customerName: "김토스",
               // customerEmail: "customer123@gmail.com",
-              successUrl: `${window.location.origin}/store/payment/success?reservationKey=${json.reservationKey}`,
-              failUrl: `${window.location.origin}/fail`,
+              successUrl: `${window.location.origin}/store/payment/success?storeId=${storeId}&reservationKey=${json.reservationKey}`,
+              failUrl: `${window.location.origin}/category/${storeId}`,
             });
           } catch (error) {
             // 에러 처리하기
