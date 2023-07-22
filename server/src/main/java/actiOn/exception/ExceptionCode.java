@@ -59,7 +59,9 @@ public enum ExceptionCode {
 
     // REVIEW
     BAD_WORD_NOT_ALLOWED(400, "바른말을 사용해야 합니다."),
-    ALREADY_WROTE_A_REVIEW(409, "이미 리뷰를 작성하셨습니다.");
+    ALREADY_WROTE_A_REVIEW(409, "이미 리뷰를 작성하셨습니다."),
+    REJECTED_UPDATE(400, "업데이트 할 수 있는 상태가 아닙니다.")
+    ;
 
     @Getter
     private int status;
