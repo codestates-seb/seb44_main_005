@@ -1,4 +1,4 @@
-import { FormRegiContainer, FormRegiButton } from '../../styles/Partner/Partner';
+import { FormRegiContainer, FormRegiButton, DisableFormRegiButton } from '../../styles/Partner/Partner';
 
 function FormRegistration ({ isFormValid, handleSubmit, businessSector }) {
   const isSelectedOptionSelected = businessSector === 'select';
@@ -6,13 +6,20 @@ function FormRegistration ({ isFormValid, handleSubmit, businessSector }) {
 
   return (
     <FormRegiContainer>
-      <FormRegiButton
-        type="submit"
-        disabled={!formIsValid}
-        onClick={handleSubmit}
-      >
-        등록하기
-      </FormRegiButton>
+      {!formIsValid ? (
+        <DisableFormRegiButton
+          type='submit'
+        >
+          등록하기
+        </DisableFormRegiButton>
+      ) : (
+        <FormRegiButton
+          type='submit'
+          onClick={handleSubmit}
+        >
+          등록하기
+        </FormRegiButton>
+      )}
     </FormRegiContainer>
   );
 }

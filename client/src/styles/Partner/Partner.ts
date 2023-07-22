@@ -130,6 +130,17 @@ export const FormRegiButton = tw.button`
     text-white
 `;
 
+export const DisableFormRegiButton = tw.button`
+    font-semibold
+    text-xl
+    px-14
+    py-3
+    opacity-50
+    bg-[#4771B7]
+    text-white
+    cursor-default
+`;
+
 export const FormRegiContainer = tw.div`
     flex
     justify-center
