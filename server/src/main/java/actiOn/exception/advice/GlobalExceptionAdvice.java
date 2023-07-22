@@ -43,11 +43,7 @@ public class GlobalExceptionAdvice {
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
 
-        if (e.getExceptionCode().getStatus() > 1000) { // 특수제작 에러코드에 대한 처리
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
-        }
+        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 
     // 특정 URL에 HTTP 메서드 요청이 잘못된 경우 등
