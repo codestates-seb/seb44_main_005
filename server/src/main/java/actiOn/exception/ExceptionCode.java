@@ -23,14 +23,15 @@ public enum ExceptionCode {
 
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
+    STORE_IMAGE_NOT_FOUND(404, "Store Image Not Found"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
     NULL_STORE_IMAGE(404, "Store image is null"),
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
     UNAUTHORIZED(401, "Unauthorized to update store"),
     INVALID_PARAMETER_VALUE(400, "INVALID_PARAMETER_VALUE"),
+    BAD_REQUEST(400, "Bad Request!"),
 
-    BAD_REQUEST(400,"Bad Request!"),
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
     RESERVATION_MEMBER_NOT_FOUND(404, "Reservation member not match"),
@@ -42,6 +43,7 @@ public enum ExceptionCode {
     REQUEST_ITEM_ID_IS_REJECTED(400, "Request itemId is rejected!"),
     REVIEW_CREATE_REJECTED(400, "사용완료 예약건을 초과하여 리뷰를 작성할 수 없습니다."),
     DATE_BAD_REQUEST(400, "날짜형식이 올바르지 않습니다."),
+
     //WISH
     WISH_EXIST(409, "Wish exists"),
     WISH_NOT_FOUND(404, "Wish not found"),
@@ -54,7 +56,6 @@ public enum ExceptionCode {
     PAYMENT_NOT_FOUND(404, "Payment not found"),
     NOT_FOUND_PAYMENT(404, "존재하지 않는 결제 정보입니다."),
     PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match");
-
 
     @Getter
     private int status;
