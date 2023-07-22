@@ -49,6 +49,8 @@ function Review() {
       if (!res.ok) {
         return alert('리뷰를 등록할 수 없습니다.');
       }
+      alert('리뷰가 등록되었습니다.');
+      window.location.reload();
     }
     catch(error) {
       console.log(error);
