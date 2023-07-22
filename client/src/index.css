@@ -60,7 +60,7 @@ html::-webkit-scrollbar {
 html::-webkit-scrollbar-thumb {
   background-color: rgb(168, 168, 168);
   border-radius: 10px;
-}
+} 
 
 .carousel-title {
   font-size: xx-large;
@@ -93,6 +93,43 @@ html::-webkit-scrollbar-thumb {
 .intro-text {
   animation: fadeInRight 0.75s ease-in-out ;
 }
+
+.animate-topbounce {
+  animation: topbounce 1s infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes topbounce {
+
+  0%,
+  100% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(-10%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(-10%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
 
 @keyframes wheelRotate {
   0% {

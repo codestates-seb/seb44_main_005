@@ -69,10 +69,9 @@ function CategoryCard({ data }: CProps) {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      // console.log(isLike);
       if (res.ok) {
         setIsHeart(false);
-        toast('🩶 위시리스트에서 제거되었습니다.');
+        toast('🖤 위시리스트에서 제거되었습니다.');
       }
     }
     clickTimer = setTimeout(() => {
@@ -80,7 +79,7 @@ function CategoryCard({ data }: CProps) {
     }, 5000);
   };
   return (
-    <CardContainer data-aos="fade-up">
+    <CardContainer>
       <img className="w-[250px] h-[198px] object-cover" src={img} />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">

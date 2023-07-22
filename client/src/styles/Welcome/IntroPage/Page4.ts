@@ -1,5 +1,14 @@
 import tw from 'tailwind-styled-components';
 
+export const Wrapper = tw.div`
+  bg-[#ECF1F8] 
+  w-full 
+  h-[100vh] 
+  flex 
+  flex-col
+  items-center
+`;
+
 export const PageContainer = tw.div`
   bg-[#ECF1F8] 
   w-full 
@@ -40,4 +49,5 @@ export const HomeBtn = tw.button`
   bg-white 
   text-center 
   rounded-[30px]
+  cursor-pointer
 `;

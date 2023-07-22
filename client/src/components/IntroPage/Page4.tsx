@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import page4 from '../../assets/page4.svg';
+import top from '../../assets/top.svg';
+import bottom from '../../assets/bottom.svg';
 
 import {
+  Wrapper,
   PageContainer,
   TextContainer,
   MainText,
@@ -11,30 +14,54 @@ import {
 
 function Page4() {
   const navigate = useNavigate();
+  const pageDown = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
+  const pageMTop = () => {
+    window.scrollTo({ top: 1867, left: 0, behavior: 'smooth' });
+  };
   return (
-    <PageContainer>
-      <TextContainer>
-        <MainText>
-          즐기고 싶은 레저를 고르고
-          <br />
-          예약하고 결제까지 진행해 보세요 !
-        </MainText>
-        <SubText>
-          마음에 드는 업체는 위시리스트에 담아두고
-          <br />
-          한눈에 비교해 보세요 !
-        </SubText>
-        <HomeBtn onClick={() => navigate('/home')}>홈으로 이동하기</HomeBtn>
-      </TextContainer>
+    <Wrapper>
       <img
-        src={page4}
-        data-aos="fade-left"
-        data-aos-delay="500"
-        data-aos-easing="ease-in-out"
-        data-aos-duration="1000"
-        className="w-[700px] h-[650px]"
+        src={top}
+        className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        onClick={pageMTop}
       />
-    </PageContainer>
+      <PageContainer>
+        <TextContainer>
+          <MainText>
+            즐기고 싶은 레저를 고르고
+            <br />
+            예약하고 결제까지 진행해 보세요 !
+          </MainText>
+          <SubText>
+            마음에 드는 업체는 위시리스트에 담아두고
+            <br />
+            한눈에 비교해 보세요 !
+          </SubText>
+          <HomeBtn onClick={() => navigate('/home')}>홈으로 이동하기</HomeBtn>
+        </TextContainer>
+        <img
+          src={page4}
+          data-aos="fade-left"
+          data-aos-delay="500"
+          data-aos-easing="ease-in-out"
+          data-aos-duration="1000"
+          className="w-[700px] h-[650px]"
+        />
+      </PageContainer>
+      <div className="flex flex-col items-center mb-[10px]">
+        <div className="font-medium text-[18px] ml-1">
+          다시 감상하려면 누르세요!
+        </div>
+        <img
+          src={bottom}
+          className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+          onClick={pageDown}
+        />
+      </div>
+    </Wrapper>
   );
 }
 

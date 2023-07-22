@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
 import { searchKeyword } from '../../store/searchbarAtom';
 import search from '../../assets/search.svg';
@@ -28,6 +28,8 @@ interface AutoData {
 function Searchbar() {
   const [keyword, setKeyword] = useRecoilState<string>(searchKeyword);
   const [keyItems, setKeyItems] = useState<AutoData[]>([]);
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
 
@@ -49,14 +51,16 @@ function Searchbar() {
   const searchFetch = async () => {
     try {
       await navigate(`/search?keyword=${keyword}`);
-      setKeyword('');
+      setKeyword(keyword);
     } catch (error) {
       console.error(error);
     }
   };
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
+      inputRef.current.blur();
       searchFetch();
+      setOpen(false);
     }
   };
 
@@ -75,17 +79,20 @@ function Searchbar() {
         type="text"
         autoComplete="off"
         id="keyword"
+        ref={inputRef}
         value={keyword}
         onChange={(e) => setKeyword(e.currentTarget.value)}
-        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyDown}
         placeholder="상품을 검색해보세요"
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
       />
       <img
         src={search}
         onClick={searchFetch}
         className="absolute ml-2 w-[30px] top-[5px] left-[452px] cursor-pointer z-50"
       />
-      {keyItems.length > 0 && keyword && (
+      {open && keyItems.length > 0 && (
         <AutoSearchContainer>
           <ul className="pt-[20px]">
             {keyItems.map((item) => (
@@ -95,7 +102,7 @@ function Searchbar() {
                   setKeyword(item.title);
                 }}
               >
-                <SearchIcon src={search} />
+                <SearchIcon src={search} onClick={() => setOpen(false)} />
                 <a href={`/search?keyword=${keyword}`}>{item.title}</a>
               </AutoSearchData>
             ))}

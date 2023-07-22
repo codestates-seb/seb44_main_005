@@ -90,19 +90,18 @@ function Register() {
   const onChangePhone = (e) => {
     const currentPhone = e.target.value;
     setPhone(currentPhone);
-    const phoneRegExp = /^(01[016789]{1})-[0-9]{4}-[0-9]{4}$/;
+    const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
     let formattedNumber = '';
-    if (currentPhone.length > 0) {
-      formattedNumber = currentPhone.replace(
-        /(\d{3})(\d{4})(\d{4})/,
-        '$1-$2-$3'
-      );
-      setFormattedPhoneNumber(formattedNumber);
-      if (phoneRegExp.test(formattedNumber)) {
-        setPhoneMessage('올바른 전화번호 형식입니다.');
-      } else {
-        setPhoneMessage('전화번호에 -를 추가해주세요.');
-      }
+
+    formattedNumber = currentPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+
+    setPhone(formattedNumber);
+    setFormattedPhoneNumber(formattedNumber);
+
+    if (phoneRegExp.test(formattedNumber)) {
+      setPhoneMessage('올바른 전화번호 형식입니다.');
+    } else {
+      setPhoneMessage('전화번호에 -를 추가해주세요.');
     }
   };
 
@@ -126,6 +125,7 @@ function Register() {
     passwordConfirmMessage,
     phoneMessage,
   ]);
+  console.log(phone);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,8 +143,9 @@ function Register() {
             nickname: name,
           }),
         });
+        console.log(res);
         if (res.ok) {
-          toast('회원가입을 성공했습니다 !');
+          alert('회원가입을 성공했습니다 !');
           navigate('/login');
         }
       } catch (error) {
@@ -152,7 +153,7 @@ function Register() {
         toast('회원가입을 실패했습니다');
       }
     } else {
-      toast('🚨 가입조건을 모두 만족해주세요 !');
+      alert('🚨 가입조건을 모두 만족해주세요 !');
     }
   };
 

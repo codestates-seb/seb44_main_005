@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { open } from '../../store/dropdownAtom';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { Role, isLoginState, isProfile } from '../../store/userInfoAtom';
@@ -23,7 +24,7 @@ function Header() {
   //비로그인 상태일때
   //로그인 된 상태일때 -> 1. 파트너 로그인을 한 상태일때 2. 파트너 로그인을 하지 않은 상태일 때
   //UseContainer 안 요소를 다르게 설정해줄 것
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useRecoilState(open);
 
   const setKeyword = useSetRecoilState(searchKeyword);
   const profileImg = useRecoilValue(isProfile);

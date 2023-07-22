@@ -66,7 +66,7 @@ function ReservationModify() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: sessionStorage.getItem('Authorization')
+          Authorization: sessionStorage.getItem('Authorization'),
         },
         body: JSON.stringify({
           reservationName: name,
@@ -83,6 +83,10 @@ function ReservationModify() {
 
   //예약 취소
   const handleCancel = () => {
+    if (confirm('정말로 예약을 취소하시겠습니까?') == true) {
+      //true는 확인버튼을 눌렀을 때 코드 작성
+      navigate('/my/order');
+    }
     try {
       fetch(`${url}/reservations/${reservationId}`, {
         method: 'DELETE',

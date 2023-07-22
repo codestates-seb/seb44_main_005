@@ -78,7 +78,7 @@ function CategoryPage() {
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center shadow-sm'
         }
-        position="bottom-right"
+        position="top-center"
         limit={10}
         closeButton={false}
         autoClose={2000}

@@ -11,7 +11,7 @@ export const Wrapper = tw.div`
 export const PageContainer = tw.div`
   bg-[#4771B7] 
   w-full 
-  h-[100vh] 
+  h-full
   flex 
   items-center 
   justify-around
@@ -48,4 +48,5 @@ export const HomeBtn = tw.button`
   rounded-[30px] 
   shadow-md 
   shadow-[#cdd2d8]
+  cursor-pointer
 `;
