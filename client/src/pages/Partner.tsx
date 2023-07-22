@@ -28,7 +28,7 @@ function Partner() {
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [openingDate, setOpeningDate] = useState('');
-  const [businessSector, setBusinessSector] = useState('');
+  const [selectedBusinessSector, setSelectedBusinessSector] = useState('select');
 
   const [isInputTouched, setIsInputTouched] = useState(false);
   const [isCheckingDuplicate, _] = useState(false);
@@ -53,7 +53,7 @@ function Partner() {
     repreName.length > 0 &&
     companyName.length > 0 &&
     openingDate.length > 0 &&
-    businessSector.length > 0
+    selectedBusinessSector !== 'select'
   );
 
   const handleSubmit = async (e) => {
@@ -63,7 +63,7 @@ function Partner() {
       owner: repreName,
       businessName: companyName,
       registrationNumber: regiNumber,
-      businessCategory: businessSector
+      businessCategory: setSelectedBusinessSector
     };
 
     try {
@@ -140,12 +140,13 @@ function Partner() {
               />
             </OpeningContainer>
             <BusinessComponents
-              businessSector={businessSector}
-              setBusinessSector={setBusinessSector}
+              businessSector={selectedBusinessSector}
+              setBusinessSector={setSelectedBusinessSector}
             />
             <FormRegistration
               isFormValid={isFormValid}
               handleSubmit={handleSubmit}
+              businessSector={selectedBusinessSector}
             />
           </FormContainer>
         </RegiContainer>
