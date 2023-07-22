@@ -17,7 +17,7 @@ function AddProduct() {
 
   const productChangeHandler = (e) => {
     const value = e.target.value;
-    const onlyNumbers = value.replace(/[^0-9]/g, "");
+    const onlyNumbers = Number(value.replace(/[^0-9]/g, ""));
     if (e.target.name === "itemName") {
       setProduct({...product, itemName: value});
     }

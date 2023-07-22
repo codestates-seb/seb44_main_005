@@ -22,7 +22,7 @@ function CategoryDetail() {
   const date = useRecoilValue(ReserDateState);
   const location = useLocation();
 
-  const CategoryDetailFetch = async () => {
+  const categoryDetailFetch = async () => {
     try {
       const storeId = location.pathname.substring(10);
       const res = await fetch(`${API_URL}/stores/${storeId}`, {
@@ -37,7 +37,7 @@ function CategoryDetail() {
     }
   };
 
-  const dateFetch = async () => {
+  const itemsFetch = async () => {
     const storeId = location.pathname.substring(10);
     try {
       const dateValue = date.split('-').join('');
@@ -54,13 +54,20 @@ function CategoryDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setForm({} as reserFormType);
-    CategoryDetailFetch();
-    dateFetch();
+    setForm({
+      reservationName: '',
+      reservationPhone: '',
+      reservationEmail: '',
+      reservationDate: '',
+      reservationItems: [],
+      totalPrice: 0
+    } as reserFormType);
+    categoryDetailFetch();
+    itemsFetch();
   }, []);
 
   useEffect(() => {
-    dateFetch();
+    itemsFetch();
   }, [form.reservationDate]);
 
   return (

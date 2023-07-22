@@ -57,6 +57,7 @@ function Home() {
   }, [current, homeData]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     try {
       homeDataFetch();
     } catch (error) {

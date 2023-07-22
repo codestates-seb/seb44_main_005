@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { CategoryDetailState, ReserFormState, totalPrice } from '../../store/categoryDetailAtom';
@@ -15,9 +15,9 @@ import { isLoginState } from '../../store/userInfoAtom';
 
 function PaymentInfo() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
+  const [form, setForm] = useRecoilState(ReserFormState);
   const isLogin = useRecoilValue(isLoginState);
   const data = useRecoilValue(CategoryDetailState);
-  const form = useRecoilValue(ReserFormState);
   const total = useRecoilValue(totalPrice);
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,7 +25,8 @@ function PaymentInfo() {
   
   const movePayment = async () => {
     if (!isLogin) {
-      return alert(`로그인 상태에서만 예약할 수 있습니다.`);
+      alert(`로그인 상태에서만 예약할 수 있습니다.`);
+      return navigate('/login');
     }
     else if (!form.reservationName) {
       return alert('예약자를 입력해주세요.');
@@ -36,6 +37,8 @@ function PaymentInfo() {
     else if (!total) {
       return alert('티켓을 선택해주세요.');
     }
+    const items = form.reservationItems.filter((item) => item.ticketCount !== 0);
+    setForm((prev) => ({...prev, reservationItems: items}));
     navigate(`/store/payment/${storeId}`);
   }
 
@@ -77,6 +80,7 @@ function PaymentInfo() {
             <li>체험일 4일전 18시이전 100% 환불가능</li>
             <li>체험일 4일전 18시이후~당일 : 환불불가, 날짜 변경 불가</li>
             <li>부분 사용 및 부분 취소는 불가능합니다.</li>
+            <li className="text-red-600">가상으로만 결제되고 실제로 돈이 빠져나가지 않으니 안심하고 마음껏 테스트 해보시길 바랍니다.</li>
           </ul>
         </RuleBox>
         <PaymentButton type="button" onClick={movePayment}>{total.toLocaleString('ko-KR')}원 결제하기</PaymentButton>

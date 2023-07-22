@@ -26,8 +26,15 @@ export const CategoryDetailState = atom({
 })
 
 export const ReserFormState = atom({
-  key: 'ReservationFormState',
-  default: {} as reserFormType,
+  key: 'ReserFormState',
+  default: {
+    reservationName: '',
+    reservationPhone: '',
+    reservationEmail: '',
+    reservationDate: '',
+    reservationItems: [],
+    totalPrice: 0
+  } as reserFormType,
 });
 
 export const itemsState = atom({
