@@ -1,5 +1,7 @@
 package actiOn.auth.provider;
 
+import actiOn.auth.dto.LoginResponseDto;
+import actiOn.helper.util.JsonUtil;
 import actiOn.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -9,15 +11,19 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static actiOn.auth.utils.TokenPrefix.*;
 
 @Component
 public class TokenProvider {
@@ -91,16 +97,30 @@ public class TokenProvider {
                 .compact();
     }
 
-    // TODO 불필요하면 삭제
-    public Cookie generateCookieWithToken(String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setDomain("cf27-222-232-33-89.ngrok-free.app");
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(2 * 24 * 60 * 60); // 쿠키 유효 기간 설정 (2일)
-        cookie.setSecure(true); // Secure 속성 추가 (HTTPS 연결에서만 쿠키 전송)
+    public void generateTokenAndCookie(HttpServletResponse response, Member member) throws IOException {
+        String accessToken = delegateAccessToken(member);
+        String refreshToken = delegateRefreshToken(member);
+        String loginResponse = getLoginResponseJson(member);
 
-        return cookie;
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // 액세스 토큰 저장
+        response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
+
+        // 리프레시 토큰 쿠키에 저장
+        response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
+                "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
+
+        response.getWriter().write(loginResponse);
+    }
+
+    // 로그인 response를 Json 형식으로 반환
+    private String getLoginResponseJson(Member member) {
+        String role = member.getRoleName();
+        String nickname = member.getNickname();
+        String profileImage = member.getProfileImg();
+
+        LoginResponseDto responseDto = new LoginResponseDto(role, nickname, profileImage);
+        return JsonUtil.toJson(responseDto, LoginResponseDto.class);
     }
 
     // 토큰 만료되었는지 확인
