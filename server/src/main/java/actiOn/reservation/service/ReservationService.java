@@ -129,6 +129,10 @@ public class ReservationService {
 /**    여기서부터는 예약을 수정하기 위한 영역입니다.     */
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateReservation(Long reservationId, Reservation updateReservation) {
+        Reservation.ReservationStatus status = findReservation(reservationId).getReservationStatus();
+        if (status.equals(Reservation.ReservationStatus.RESERVATION_CANCEL) ||
+        status.equals(Reservation.ReservationStatus.RESERVATION_USE_COMPLETED))
+            throw new BusinessLogicException(ExceptionCode.REJECTED_UPDATE);
         //수정할 예약 정보 조회 찾기
         Reservation findReservation = findReservation(reservationId);
 
@@ -297,7 +301,12 @@ public class ReservationService {
         Map<Long, Integer> reservationTickets = reservationTicketCount(store, date);
         for (int i=0; i< store.getItems().size(); i++) {
             Item item = store.getItems().get(i);
-            int requestTicketCount = requestItems.get(i).getTicketCount();
+            int requestTicketCount;
+            try {
+                requestTicketCount = requestItems.get(i).getTicketCount();
+            }catch (Exception e) {
+                requestTicketCount = 0;
+            }
             int remainingTicketCount = getRemainingTicketCount(item,reservationTickets);
             if (requestTicketCount > remainingTicketCount)
                 throw new BusinessLogicException(ExceptionCode.TICKET_QUANTITY_EXCEEDED);
