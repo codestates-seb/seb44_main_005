@@ -53,8 +53,12 @@ public enum ExceptionCode {
     INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount"),
     PAYMENT_NOT_FOUND(404, "Payment not found"),
     NOT_FOUND_PAYMENT(404, "존재하지 않는 결제 정보입니다."),
-    PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match");
+    PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match"),
 
+    // Review
+    BAD_WORD_NOT_ALLOWED(400, "바른말을 사용해야 합니다."),
+    ALREADY_WROTE_A_REVIEW(409, "이미 리뷰를 작성하셨습니다.")
+    ;
 
     @Getter
     private int status;
