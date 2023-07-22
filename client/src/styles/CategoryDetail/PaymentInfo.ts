@@ -2,7 +2,7 @@ import tw from "tailwind-styled-components";
 
 export const PaymentInfoBox = tw.section`
   sticky top-10
-  w-[300px] h-[600px]
+  w-[300px] h-[635px]
   border-[1px] border-[#4771B7] rounded-[5px]
   mt-10 ml-20
   font-medium
@@ -16,7 +16,7 @@ export const AmountBox = tw.div`
 `;
 
 export const RuleBox = tw.div`
-  w-[250px] h-[135px]
+  w-[250px] h-[170px]
   bg-[#E7EDF6]
   rounded-[5px]
   mx-5 my-7 p-3
