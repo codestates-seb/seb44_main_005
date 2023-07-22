@@ -28,7 +28,8 @@ public class MemberService {
     private final ImgService imgService;
     private final RoleService roleService;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder encoder, ImgService imgService, RoleService roleService){
+    public MemberService(MemberRepository memberRepository, PasswordEncoder encoder,
+                         ImgService imgService, RoleService roleService) {
         this.memberRepository = memberRepository;
         this.encoder = encoder;
         this.imgService = imgService;
@@ -104,6 +105,17 @@ public class MemberService {
         // 프로필 이미지 업로드
         String profileImg = imgService.uploadProfileImage(file, member);
         member.setProfileImg(profileImg);
+
+        memberRepository.save(member);
+    }
+
+    // 구글 프로필 이미지 등록
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void registerGoogleProfileImage(String profileImgUrl, String email) {
+        Member member = findMemberByEmail(email);
+
+        // 프로필 이미지 업로드
+        member.setProfileImg(profileImgUrl);
 
         memberRepository.save(member);
     }
