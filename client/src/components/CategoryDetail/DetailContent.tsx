@@ -41,7 +41,7 @@ function DetailContent() {
         {data.storeImages && (
           <div className="overflow-x-hidden">
             <div
-              className="flex duration-1000 min-w-[1200px] overflow-hidden ease-in-out"
+              className="flex duration-500 min-w-[1200px] overflow-hidden ease-in-out"
               style={{
                 transform: `translateX(${current * -600}px)`,
                 width: `${data.storeImages.length * 600}px`

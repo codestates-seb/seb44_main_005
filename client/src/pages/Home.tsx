@@ -42,7 +42,6 @@ function Home() {
   }
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (homeData.recommend) {
       const interval = setInterval(() => {
         if (current === homeData.recommend.length - 1) {
@@ -58,6 +57,7 @@ function Home() {
   }, [current, homeData]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     try {
       homeDataFetch();
     }

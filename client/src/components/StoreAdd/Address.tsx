@@ -30,6 +30,7 @@ function Address() {
         type="text"
         name="address"
         value={form.address}
+        placeholder="주소찾기 버튼을 클릭해주세요."
       readOnly/>
       <SearchAddress type="button" onClick={openPostHandler}>주소찾기</SearchAddress>
       {openPostcode && (

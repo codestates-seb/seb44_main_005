@@ -14,67 +14,59 @@ import {
   StoreformState,
   pageTitleState
 } from '../store/storeAddAtom';
+import { StoreAddFormType } from '../intefaces/StoreAdd';
 
 function StoreAdd() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [form, setForm] = useRecoilState(StoreformState);
   const [btnText, setBtnText] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const sendFirstImg = useRecoilValue(SendFirstImgState);
-  const sendDetailImgs = useRecoilValue(SendDetailImgsState);
-  const setPageTitle = useSetRecoilState(pageTitleState);
+  const [sendFirstImg, setSendFirstImg] = useRecoilState(SendFirstImgState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const setFirstImg = useSetRecoilState(FirstImgState);
   const setDetailImgs = useSetRecoilState(DetailImgsState);
+  const setPageTitle = useSetRecoilState(pageTitleState);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const storeId = searchParams.get('store_id');
   const accessToken = sessionStorage.getItem('Authorization');
 
-  const formChangeHandler = (e) => { // 스위치문으로 추천
-    if (e.target.name === "storeName") {
-      setForm({...form, storeName: e.target.value});
-    }
-    else if (e.target.name === "body") {
-      setForm({...form, body: e.target.value});
-    }
-    else if (e.target.name === "kakao") {
-      setForm({...form, kakao: e.target.value});
-    }
-    else if (e.target.name === "contact") {
-      setForm({...form, contact: e.target.value});  
-    }
-    else if (e.target.name === "category") {
-      setForm({...form, category: e.target.value});
+  const formChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => { // 스위치문으로 추천
+    const name = e.target.name;
+    const value = e.target.value;
+    switch(name) {
+      case 'storeName':
+        return setForm({...form, storeName: value});
+      case 'body':
+        return setForm({...form, body: value});
+      case 'kakao':
+        const kakaoVerify = value.replace(/[^a-zA-Z0-9]/g, '');
+        return setForm({...form, kakao: kakaoVerify});
+      case 'contact':
+        const phoneNumberPattern = /(\d{3})(\d{3,4})(\d{4})/;
+        let contactVerify = value.replace(/[^0-9]/g, '');
+        if (contactVerify.length >= 11) {
+          contactVerify = contactVerify.replace(phoneNumberPattern, '$1-$2-$3');
+        }
+        if (contactVerify.length >= 14) {
+          return;
+        }
+        return setForm({...form, contact: contactVerify});
+      case 'category':
+        return setForm({...form, category: value});
     }
   };
 
   const storeAddPost = async () => {
-    if (!form.storeName) {
-      return alert('업체명을 입력해주세요.');
+    const inputVerify = formVerify(form);
+    if (!inputVerify) {
+      return;
     }
-    else if (!form.body) {
-      return alert('소개글을 입력해주세요.');
-    }
-    else if (!form.address) {
-      return alert('주소를 선택해주세요.');
-    }
-    else if (!form.kakao) {
-      return alert('카카오톡 ID를 입력해주세요.');
-    }
-    else if (!form.contact) {
-      return alert('전화번호를 입력해주세요.');
-    }
-    else if (!form.category) {
-      return alert('카테고리를 선택해주세요.');
-    }
-    else if (!form.items.length) {
-      return alert('상품을 1개 이상 등록해주세요.');
-    }
-    else if (!sendFirstImg) {
+    if (!sendFirstImg) {
       return alert('대표사진을 등록해주세요.');
     }
-    else if (sendDetailImgs.length < 3) {
+    if (sendDetailImgs.length < 3) {
       return alert('상세 이미지를 최소 3장 이상 등록해 주세요.');
     }
     const imgForm = new FormData();
@@ -137,6 +129,10 @@ function StoreAdd() {
   }
 
   const storeEditPatch = async (storeId: string) => {
+    const inputVerify = formVerify(form);
+    if (!inputVerify) {
+      return;
+    }
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
     imgForm.append('thumbnailImage', sendFirstImg);
@@ -173,6 +169,19 @@ function StoreAdd() {
   }
 
   useEffect(() => {
+    setForm({
+      storeName: '',
+      body: '',
+      address: '',
+      kakao: '',
+      contact: '',
+      category: '',
+      items: []
+    })
+    setFirstImg(null);
+    setDetailImgs([])
+    setSendFirstImg(null);
+    setSendDetailImgs([])
     const path = location.pathname.substring(6);
     if (path === '/edit') {
       setPageTitle('업체 수정하기');
@@ -204,3 +213,35 @@ function StoreAdd() {
 }
 
 export default StoreAdd;
+
+const formVerify = (form: StoreAddFormType) => {
+  if (!form.storeName) {
+    alert('업체명을 입력해주세요.');
+    return false;
+  }
+  else if (!form.body) {
+    alert('소개글을 입력해주세요.');
+    return false;
+  }
+  else if (!form.address) {
+    alert('주소를 선택해주세요.');
+    return false;
+  }
+  else if (!form.kakao) {
+    alert('카카오톡 ID를 입력해주세요.');
+    return false;
+  }
+  else if (!form.contact || form.contact.length !== 13) {
+    alert('전화번호를 입력해주세요.');
+    return false;
+  }
+  else if (!form.category) {
+    alert('카테고리를 선택해주세요.');
+    return false;
+  }
+  else if (!form.items.length) {
+    alert('상품을 1개 이상 등록해주세요.');
+    return false;
+  }
+  return true;
+}

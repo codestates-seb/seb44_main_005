@@ -88,8 +88,8 @@ function Payments() {
               orderName: 'ActiOn',
               // customerName: "김토스",
               // customerEmail: "customer123@gmail.com",
-              successUrl: `${window.location.origin}/store/payment/success?reservationKey=${json.reservationKey}`,
-              failUrl: `${window.location.origin}/fail`,
+              successUrl: `${window.location.origin}/store/payment/success?storeId=${storeId}&reservationKey=${json.reservationKey}`,
+              failUrl: `${window.location.origin}/category/${storeId}`,
             });
           } catch (error) {
             // 에러 처리하기
