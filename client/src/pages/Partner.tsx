@@ -21,10 +21,8 @@ import {
 
 function Partner() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
-  const navigate = useNavigate();
-
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-  console.log(isLogin);
+  const navigate = useNavigate();  
+  const [_, setIsLogin] = useRecoilState(isLoginState);
   const [regiNumber, setRegiNumber] = useState('');
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
