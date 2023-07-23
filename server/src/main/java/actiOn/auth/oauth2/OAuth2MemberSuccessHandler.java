@@ -8,6 +8,7 @@ import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.List;
+
+import static actiOn.auth.utils.TokenPrefix.*;
 
 // OAuth2 인증에 성공하면 호출되는 핸들러
 @Slf4j
@@ -49,6 +52,29 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         }
 
         redirect(request, response, member);
+    }
+
+    // 프론트로 JWT 전송하기 위해 redirect하는 메서드
+    private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
+
+        String accessToken = tokenProvider.delegateAccessToken(member);
+        String refreshToken = tokenProvider.delegateRefreshToken(member);
+        String loginResponse = tokenProvider.getLoginResponseJson(member);
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // 액세스 토큰 저장
+        response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
+
+        // 리프레시 토큰 쿠키에 저장
+        response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
+                "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
+
+        response.getWriter().write(loginResponse);
+
+        String uri = createURI(accessToken, member);
+
+        log.info("# Google Authenticated Successfully!");
+        getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     private Member createNewMember(String email) {
@@ -83,19 +109,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private String generateNicknameFromEmail(String email) {
         String nickname = email.split("@")[0];
         return nickname;
-    }
-
-    // 프론트로 JWT 전송하기 위해 redirect하는 메서드
-    private void redirect(HttpServletRequest request, HttpServletResponse response, Member member) throws IOException {
-        // 액세스 토큰 저장 및 리프레시 토큰 쿠키 저장
-        tokenProvider.generateTokenAndCookie(response, member);
-
-        log.info("# Google Authenticated Successfully!");
-
-        String accessToken = tokenProvider.delegateAccessToken(member);
-        String uri = createURI(accessToken, member);
-
-        getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     private String createURI(String accessToken, Member member) {
