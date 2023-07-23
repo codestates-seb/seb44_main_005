@@ -5,7 +5,7 @@ import Modal from '../components/MyPage/Modal';
 import BusinessSpaceSection from '../components/MyPage/BusinessSpaceSection';
 import UserInfoSection from '../components/MyPage/UserInfoSection';
 import ProfileImageSection from '../components/MyPage/ProfileImageSection';
-import LoadingComponent from '../components/MyPage/LoadingComponent';
+import LoadingComponent from '../components/Loading/LoadingComponent';
 import defaultProfileImg from '../assets/profile.svg';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,6 +18,7 @@ import {
   MyPageContainer,
   MyBioContainer,
   ButtonGridEdit,
+  LoadingContainer,
 } from '../styles/MyPage/MyPage';
 
 function MyPage() {
@@ -80,7 +81,11 @@ function MyPage() {
 
   // 로딩 컴포넌트 채은님이 만든걸로 사용하기
   if (!userData) {
-    return <LoadingComponent />;
+    return (
+      <LoadingContainer>
+        <LoadingComponent />
+      </LoadingContainer>
+    );
   }
 
   const { nickname, email, phoneNumber } = userData;
