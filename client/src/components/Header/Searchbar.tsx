@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
 import { searchKeyword } from '../../store/searchbarAtom';

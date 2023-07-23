@@ -16,17 +16,11 @@ function page1() {
   const navigate = useNavigate();
 
   const handleButton = () => {
-    setTimeout(() => {
-      navigate('/home');
-    }, 300);
-  };
-
-  const pageMove = () => {
-    window.scrollTo({ top: 935, left: 0, behavior: 'smooth' });
+    navigate('/home');
   };
 
   return (
-    <PageContainer>
+    <PageContainer id="page1">
       <img
         src={bg3}
         className="absolute bg-cover w-[40vw] h-[100vh] object-cover rounded-l-full top-0 right-0"
@@ -42,11 +36,12 @@ function page1() {
       </IntroText>
       <ClickContainer>
         <HomeBtn>엑티온 알아보기</HomeBtn>
-        <img
-          src={bottom}
-          className="w-[80px] cursor-pointer animate-bounce duration-500 ease-in-out hover:w-[100px]"
-          onClick={pageMove}
-        />
+        <a href="#page2">
+          <img
+            src={bottom}
+            className="w-[80px] cursor-pointer animate-bounce duration-500 ease-in-out hover:w-[100px]"
+          />
+        </a>
       </ClickContainer>
     </PageContainer>
   );

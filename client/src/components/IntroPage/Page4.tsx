@@ -14,20 +14,15 @@ import {
 
 function Page4() {
   const navigate = useNavigate();
-  const pageDown = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  };
 
-  const pageMTop = () => {
-    window.scrollTo({ top: 1867, left: 0, behavior: 'smooth' });
-  };
   return (
-    <Wrapper>
-      <img
-        src={top}
-        className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-        onClick={pageMTop}
-      />
+    <Wrapper id="page4">
+      <a href="#page3">
+        <img
+          src={top}
+          className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
       <PageContainer>
         <TextContainer>
           <MainText>
@@ -55,11 +50,12 @@ function Page4() {
         <div className="font-medium text-[18px] ml-1">
           다시 감상하려면 누르세요!
         </div>
-        <img
-          src={bottom}
-          className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-          onClick={pageDown}
-        />
+        <a href="#page1">
+          <img
+            src={bottom}
+            className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+          />
+        </a>
       </div>
     </Wrapper>
   );
