@@ -35,6 +35,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    implementation 'redis.clients:jedis:3.6.1'
+
     // 파라미터 스토어
     implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 
