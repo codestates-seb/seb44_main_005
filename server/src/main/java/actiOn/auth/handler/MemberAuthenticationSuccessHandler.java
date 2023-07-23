@@ -34,10 +34,11 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         // 액세스 토큰 저장
         response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
+        response.setHeader("Access-Control-Allow-Origin", "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com");
 
         // 리프레시 토큰 쿠키에 저장
         response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
-                "; Path=/; HttpOnly; SameSite=None; Max-Age=3600;");
+                "; Path=/; Secure; HttpOnly; SameSite=None; Max-Age=3600;");
 
         response.getWriter().write(loginResponse);
 

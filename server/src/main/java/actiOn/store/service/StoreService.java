@@ -307,11 +307,17 @@ public class StoreService {
     public void storeImageUpload(List<MultipartFile> images, long storeId, MultipartFile thumbnailImage) throws IOException {
         findverifyIdentityStore(storeId); // 본인 검증
         Store findStore = findStoreByStoreId(storeId); // 스토어 찾기
-        if (images == null) images = new ArrayList<>();
-        images.add(0, null);
-        if (thumbnailImage != null) images.add(0, thumbnailImage);
 
-        imgService.uploadStoreImage(images, findStore, thumbnailImage); // 업로드 //
+        List<MultipartFile> newImages = new ArrayList<>();
+        if (thumbnailImage != null) {
+            newImages.add(0, thumbnailImage);
+        } else {
+            newImages.add(0, null);
+        }
+
+        newImages.addAll(images);
+
+        imgService.uploadStoreImage(newImages, findStore, thumbnailImage); // 업로드 //
     }
 
     public void validateImagePost(List<MultipartFile> images, MultipartFile thumbnailImage) {
