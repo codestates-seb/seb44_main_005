@@ -72,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .addLogoutHandler(((request, response, authentication) -> {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
-                            "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
+                            "=; Path=/; HttpOnly; SameSite=None; Max-Age=0;");
                 }))
                 .logoutSuccessUrl("http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/home")
 
@@ -146,14 +146,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "http://localhost:3000",
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
-                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
+                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080",
                         "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
                 )
         );
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(200L);
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
-//        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setMaxAge(2000L);
+//        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
 

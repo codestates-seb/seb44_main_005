@@ -9,8 +9,11 @@ import actiOn.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE STORE SET deleted_at = CURRENT_TIMESTAMP where store_id = ?")
+@Where(clause = "deleted_at IS NULL")
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +66,9 @@ public class Store extends BaseEntity {
     //가격
     @Column(nullable = false)
     private int lowPrice;
+
+    @Column
+    private LocalDateTime deletedAt;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
