@@ -67,7 +67,7 @@ function Searchbar() {
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (keyword) autoData();
-    }, 1000);
+    }, 100);
     return () => {
       clearTimeout(debounce);
     };
