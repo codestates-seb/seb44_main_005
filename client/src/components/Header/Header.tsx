@@ -1,7 +1,7 @@
 import { open } from '../../store/dropdownAtom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { Role, isLoginState, isProfile } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
@@ -68,16 +68,6 @@ function Header() {
           <div className="cursor-pointer mr-[50px]" onClick={handlePartner}>
             파트너 등록
           </div>
-          <ToastContainer
-            toastClassName={
-              'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
-            }
-            position="top-right"
-            limit={1}
-            closeButton={false}
-            autoClose={2000}
-            hideProgressBar
-          />
           <Link to="/login" className="mr-[50px]">
             로그인
           </Link>

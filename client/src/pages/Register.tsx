@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import {
   StyleContainer,
@@ -23,6 +22,8 @@ function Register() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
+  const [isClicked, setIClicked] = useState(false);
 
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] =
@@ -101,7 +102,7 @@ function Register() {
     if (phoneRegExp.test(formattedNumber)) {
       setPhoneMessage('올바른 전화번호 형식입니다.');
     } else {
-      setPhoneMessage('전화번호에 -를 추가해주세요.');
+      setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
     }
   };
 
@@ -127,6 +128,10 @@ function Register() {
   ]);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIClicked(true);
+    if (isClicked) {
+      return;
+    }
     if (!isSubmitDisabled) {
       try {
         const res = await fetch(`${url}/signup`, {
@@ -143,15 +148,37 @@ function Register() {
         });
         console.log(res);
         if (res.ok) {
-          alert('회원가입을 성공했습니다 !');
-          navigate('/login');
+          toast('회원가입을 성공했습니다 !');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else if (res.status === 403) {
+          toast('🚨 중복된 이메일입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
+        } else if (res.status === 409) {
+          toast('🚨 중복된 닉네임입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
+        } else if (res.status === 422) {
+          toast('🚨 중복된 전화번호입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
         }
       } catch (error) {
         console.error('회원가입 요청 중 오류가 발생했습니다', error);
-        toast('회원가입을 실패했습니다');
+        setTimeout(() => {
+          setIClicked(false);
+        }, 3000);
       }
     } else {
       alert('🚨 가입조건을 모두 만족해주세요 !');
+      setTimeout(() => {
+        setIClicked(false);
+      }, 3000);
     }
   };
 
@@ -160,13 +187,19 @@ function Register() {
     window.location.href = `${url}/oauth2/authorization/google`;
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <StyleContainer>
       <ToastContainer
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
-        position="top-right"
+        position="top-center"
         limit={1}
         closeButton={false}
         autoClose={3000}
@@ -176,21 +209,36 @@ function Register() {
         <div className="flex pt-2">
           <Label htmlFor="email">이메일</Label>
           <InputContainer>
-            <Input id="email" type="email" onChange={onChangeEmail} />
+            <Input
+              id="email"
+              type="email"
+              onChange={onChangeEmail}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{emailMessage}</Message>
           </InputContainer>
         </div>
         <div className="flex pt-2">
           <Label htmlFor="name">닉네임</Label>
           <InputContainer>
-            <Input id="name" type="text" onChange={onChangeName} />
+            <Input
+              id="name"
+              type="text"
+              onChange={onChangeName}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{nameMessage}</Message>
           </InputContainer>
         </div>
         <div className="flex pt-2 pr-[12px]">
           <Label htmlFor="password">비밀번호</Label>
           <InputContainer>
-            <Input id="password" type="password" onChange={onChangePassword} />
+            <Input
+              id="password"
+              type="password"
+              onChange={onChangePassword}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{passwordMessage}</Message>
           </InputContainer>
         </div>
@@ -201,6 +249,7 @@ function Register() {
               id="passwordConfirm"
               type="password"
               onChange={onChangePasswordConfirm}
+              onKeyDown={handleKeyDown}
             />
             <Message>{passwordConfirmMessage}</Message>
           </InputContainer>
@@ -214,6 +263,7 @@ function Register() {
               value={formattedPhoneNumber}
               pattern="\d{3}-\d{3,4}-\d{4}"
               onChange={onChangePhone}
+              onKeyDown={handleKeyDown}
               maxLength={13}
             />
             <Message>{phoneMessage}</Message>
@@ -233,7 +283,7 @@ function Register() {
           bgColor="#4771B7"
           color="#FFFFFF"
           clickHandler={handleSubmit}
-          // disabled={isSubmitDisabled}
+          disabled={isClicked}
         >
           <span className="font-medium">가입 진행하기</span>
         </Button>
