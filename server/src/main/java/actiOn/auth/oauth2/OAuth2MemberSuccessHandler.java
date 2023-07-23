@@ -120,8 +120,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder.newInstance()
                 // 프론트 도메인
                 .scheme("http")
-                .host("localhost") // TODO 엔드포인트
-                .port(5173)
+                .host("ac-ti-on.s3-website.ap-northeast-2.amazonaws.com") // s3 엔드포인트
+//                .port(5173)
                 .path("/oauth2/authorization/google/success")
                 .queryParams(queryParams)
                 .build().toUri()

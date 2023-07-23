@@ -56,7 +56,6 @@ public class Payment extends BaseEntity {
     @OneToOne(mappedBy = "payment")
     private PaymentCancel cancel;
 
-
     public enum PayType {
         NORMAL,
         BILLING,

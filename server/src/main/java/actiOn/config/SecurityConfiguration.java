@@ -74,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
                             "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
                 }))
-                .logoutSuccessUrl("https://acti-on.netlify.app/home")
+                .logoutSuccessUrl("http://acti-on.s3-website-ap-southeast-2.amazonaws.com/home")
 
                 .and()
                 .authorizeRequests(this::configureAuthorization)
@@ -147,8 +147,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
                         "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
-                        // TODO S3 엔드포인트 추가 ""
-                        "https://c054-222-232-33-89.ngrok-free.app" //여기 임시 url
+                        "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
                 )
         );
         configuration.setAllowCredentials(true);

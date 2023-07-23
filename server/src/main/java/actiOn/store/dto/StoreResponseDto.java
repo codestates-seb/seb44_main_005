@@ -25,12 +25,4 @@ public class StoreResponseDto {
     private LocalDateTime createdAt;
     private List<ItemDto> items;
     private List<String> storeImages;
-
-//    public boolean getIsLike() {
-//        return isLike;
-//    }
-//
-//    public void setIsLike(boolean isLike) {
-//        isLike = isLike;
-//    }
 }
