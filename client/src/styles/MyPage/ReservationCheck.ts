@@ -112,3 +112,13 @@ export const ButtonReview = tw.button`
 export const NoButtons = tw.p`
     h-[38.5px]
 `;
+
+export const NoReservation = tw.div`
+    flex
+    flex-col
+    justify-center
+    items-center
+    space-y-5
+    p-20
+    h-[600px]
+`;
