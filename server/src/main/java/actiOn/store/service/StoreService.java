@@ -85,6 +85,7 @@ public class StoreService {
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
         Store shapedStore = shapingStore(store);
+
         Member storeCreator = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
         shapedStore.setMember(storeCreator);
         return storeRepository.save(shapedStore);

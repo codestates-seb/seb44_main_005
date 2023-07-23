@@ -30,13 +30,12 @@ public class StoreController {
     private final StoreMapper storeMapper;
     private final StoreResponseMapper responseMapper;
     private final CategoryResponseMapper categoryResponseMapper;
-    private final MemberService memberService;
 
     // 업체 등록
     @PostMapping("/stores") // 스토어 생성
     public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = storeMapper.storePostDtoToStore(storePostDto); // dto를 store로 변환
-        store.setMember(memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail())); //store에 맴버 주입
+
         Store savedStore = storeService.createStore(store); // 스토어 생성
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(savedStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.CREATED);

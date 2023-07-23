@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 import static actiOn.auth.utils.TokenPrefix.REFRESH;
 import static org.springframework.http.HttpMethod.*;
 
+@Lazy
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
