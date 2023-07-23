@@ -97,24 +97,8 @@ public class TokenProvider {
                 .compact();
     }
 
-    public void generateTokenAndCookie(HttpServletResponse response, Member member) throws IOException {
-        String accessToken = delegateAccessToken(member);
-        String refreshToken = delegateRefreshToken(member);
-        String loginResponse = getLoginResponseJson(member);
-
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        // 액세스 토큰 저장
-        response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
-
-        // 리프레시 토큰 쿠키에 저장
-        response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
-                "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
-
-        response.getWriter().write(loginResponse);
-    }
-
     // 로그인 response를 Json 형식으로 반환
-    private String getLoginResponseJson(Member member) {
+    public String getLoginResponseJson(Member member) {
         String role = member.getRoleName();
         String nickname = member.getNickname();
         String profileImage = member.getProfileImg();
