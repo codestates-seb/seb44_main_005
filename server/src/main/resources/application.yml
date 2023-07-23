@@ -4,8 +4,6 @@ spring:
     redis:
       time-to-live: 600 # 데이터 유지 시간(sec)
       cache-null-values: true # null 캐싱 여부
-      host: localhost
-      port: 6379
   h2:
     console:
       enabled: true
@@ -96,9 +94,4 @@ payment: # 토스 페이먼츠 관련
   toss:
     test-client-key: ${TOSS_CLIENT_KEY}
     test-secret-key: ${TOSS_SECRET_KEY}
-    success-url: "http://localhost:8080/payments/toss/success"
-    failure-url: "http://localhost:8080/payments/toss/fail"
     url: "https://api.tosspayments.com/v1/payments"
-
-config:
-  domain: "https://acti-on.netlify.app"

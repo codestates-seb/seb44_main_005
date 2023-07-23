@@ -73,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
                             "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
                 }))
-                .logoutSuccessUrl("http://localhost:5173/home")
+                .logoutSuccessUrl("https://acti-on.netlify.app/home")
 
                 .and()
                 .authorizeRequests(this::configureAuthorization)
