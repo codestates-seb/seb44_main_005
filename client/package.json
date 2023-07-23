@@ -40,5 +40,6 @@
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
-  }
+  },
+  "proxy": "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
 }

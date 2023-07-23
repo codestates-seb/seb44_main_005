@@ -19,6 +19,7 @@ function Login() {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
 
+  // const [isClicked, setIClicked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
 
@@ -35,13 +36,12 @@ function Login() {
     setPassWord(event.currentTarget.value);
   };
 
-  const handleGoogleLogin = async (e) => {
-    e.preventDefault();
-    window.location.href = `${url}/oauth2/authorization/google`;
-  };
-
   //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
+    // setIClicked(true);
+    // if (isClicked) {
+    //   return;
+    // }
     //true
     e.preventDefault();
     try {
@@ -53,20 +53,23 @@ function Login() {
         }),
         credentials: 'include',
       });
+      const result1 = await res.json();
+
+      //헤더에서 멤버아이디와 닉네임을 받아옴
+      const Authorization = res.headers.get('Authorization');
+      const name = result1.nickname;
+      const profile = result1.profileImage;
+      const role = result1.role;
       if (res.ok) {
         setIsLoginState(true);
-        navigate('/home');
-        alert(`🌊 로그인 성공 ! 반갑습니다 `);
-        //false
+        toast(`🌊 로그인 성공 ! ${name}반갑습니다 `);
+        setTimeout(() => {
+          navigate('/home');
+          setIsLoginState(true);
+        }, 2000);
 
-        const result1 = await res.json();
-        console.log(result1);
+        // //헤더에서 멤버아이디와 닉네임을 받아옴
 
-        //헤더에서 멤버아이디와 닉네임을 받아옴
-        const Authorization = res.headers.get('Authorization');
-        // const name = result1.nickname;
-        const profile = result1.profileImage;
-        const role = result1.role;
         // 받아온 데이터 전역에 저장
         setIsProfile(profile);
         setIsRole(role);
@@ -74,17 +77,28 @@ function Login() {
         sessionStorage.setItem('Authorization', Authorization);
       } else if (res.status === 401) {
         toast('🚨 이메일과 비밀번호를 정확하게 입력해주세요');
+        // setIClicked(false);
       }
     } catch (error) {
       console.error(error);
       toast(`🚨 로그인에 실패했습니다!`);
+      // setIClicked(false);
     }
   };
 
   const handleKeyDown = (e) => {
+    // setIClicked(true);
     if (e.key === 'Enter') {
+      // if (isClicked) {
+      //   return;
+      // }
       handleLogin(e);
     }
+  };
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    window.location.href = `${url}/oauth2/authorization/google`;
   };
 
   return (
@@ -93,7 +107,7 @@ function Login() {
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
-        position="top-right"
+        position="top-center"
         limit={1}
         closeButton={false}
         autoClose={2000}
@@ -138,7 +152,12 @@ function Login() {
             <span className="font-medium">구글로 로그인하기</span>
           </div>
         </Button>
-        <Button bgColor="#4771B7" color="#FFFFFF" clickHandler={handleLogin}>
+        <Button
+          bgColor="#4771B7"
+          color="#FFFFFF"
+          clickHandler={handleLogin}
+          // disabled={isClicked}
+        >
           <span className="font-medium">로그인</span>
         </Button>
       </LoginContainer>
