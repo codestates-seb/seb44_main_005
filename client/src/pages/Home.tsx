@@ -41,7 +41,7 @@ function Home() {
     setHomeData(json);
   };
 
-  useEffect(() => {
+  useEffect(() => { // 바깥으로 로직 분리시켜보기
     if (homeData.recommend) {
       const interval = setInterval(() => {
         if (current === homeData.recommend.length - 1) {
