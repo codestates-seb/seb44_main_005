@@ -1,8 +1,6 @@
 package actiOn.store.controller;
 
-import actiOn.Img.service.ImgService;
 import actiOn.auth.utils.AuthUtil;
-import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.store.dto.*;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
