@@ -18,8 +18,8 @@ spring:
     database: mysql   # mysql 설정
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: update    # 스키마 자동 생성
-    show-sql: false        # SQL 쿼리 출력
+      ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         connection:
