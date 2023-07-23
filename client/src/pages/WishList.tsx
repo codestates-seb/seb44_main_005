@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
-import CategoryCard from '../components/Categorybar/CategoryCard'; // Import the CategoryCard component
+import CategoryCard from '../components/Categorybar/CategoryCard'; 
+import NothingComponent from '../components/MyPage/NothingComponent';
 
 import search from '../assets/search.svg';
 
 import {
   NoWishList,
-  NoWishImgSize,
-  NoWishTitle,
   WishContainer,
   WishCountTitle,
+  NoWishImgSize,
 } from '../styles/MyPage/WishList';
 
 function WishList() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [wishlist, setWishList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchWishList();
@@ -37,16 +38,22 @@ function WishList() {
       }
     } catch (error) {
       console.error('에러가 발생했습니다.', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <WishContainer>
-      {wishlist.length === 0 ? (
+      {loading ? (
+        <div>로딩중입니다...</div>
+      ) : wishlist.length === 0 ? (
         <NoWishList>
-          <NoWishImgSize src={search} alt="search" />
-          <NoWishTitle>아직 담긴 위시리스트가 없네요!</NoWishTitle>
-          <p>관심가는 상품을 찾아 ♡를 눌러 위시리스트에 차곡차곡 쌓아볼까요?</p>
+          <NoWishImgSize src={search} alt="nothingimg" />
+          <NothingComponent 
+            title='아직 담긴 위시리스트가 없네요!'
+            description='관심가는 상품을 찾아 ♡를 눌러 위시리스트에 차곡차곡 쌓아볼까요?'
+          />
         </NoWishList>
       ) : (
         <div className='flex flex-col space-y-5'>

@@ -1,8 +1,6 @@
 package actiOn.store.controller;
 
-import actiOn.Img.service.ImgService;
 import actiOn.auth.utils.AuthUtil;
-import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.store.dto.*;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,13 +30,12 @@ public class StoreController {
     private final StoreMapper storeMapper;
     private final StoreResponseMapper responseMapper;
     private final CategoryResponseMapper categoryResponseMapper;
-    private final MemberService memberService;
 
     // 업체 등록
     @PostMapping("/stores") // 스토어 생성
     public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = storeMapper.storePostDtoToStore(storePostDto); // dto를 store로 변환
-        store.setMember(memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail())); //store에 맴버 주입
+
         Store savedStore = storeService.createStore(store); // 스토어 생성
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(savedStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.CREATED);
@@ -128,5 +124,24 @@ public class StoreController {
         CategoryResponseDto searchResponseDtoWithLike =
                 storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
         return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
+    }
+
+    // 찜 등록
+    @PostMapping("/stores/favorites/{store-id}")
+    public ResponseEntity registerWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.registerWish(storeId, email);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    // 찜 취소
+    @DeleteMapping("/stores/favorites/{store-id}")
+    public ResponseEntity cancelWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.deleteWish(storeId, email);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

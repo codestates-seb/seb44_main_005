@@ -45,23 +45,47 @@ public class StoreService {
     private final ItemService itemService;
     private final ImgService imgService;
 
-    private Store shapingStore(Store store) {
-        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
-        store.setLatitude(Double.parseDouble(location.getLatitude()));
-        store.setLongitude(Double.parseDouble(location.getLongitude()));
-        List<Item> items = store.getItems();
-        int lowPrice = 0;
-        for (Item item : items) {
-            item.setStore(store);
-            int itemPrice = item.getPrice();
-            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
-        }
-        store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
-        return store;
+    // 업체 찜 개수 추가
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Store registerWish(long storeId, String email) {
+        Member member = memberService.findMemberByEmail(email);
+
+        // Store 존재 여부 확인
+        Store store = findStoreByStoreId(storeId);
+
+        // 이미 좋아요 있으면 에러 반환
+        wishService.isNotExistWish(member, store);
+
+        // Wish 등록
+        wishService.generateWish(member, store);
+
+        // 찜 개수 추가
+        store.addLikeCount();
+        return storeRepository.save(store);
+    }
+
+    // 업체 찜 개수 빼기
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Store deleteWish(long storeId, String email) {
+        Member member = memberService.findMemberByEmail(email);
+
+        // Store 존재 여부 확인
+        Store store = findStoreByStoreId(storeId);
+
+        // wish가 존재하지 않으면 에러 반환
+        Wish wish = wishService.isExistWish(member, store);
+
+        // wish 삭제
+        wishService.deleteWish(wish);
+
+        // 찜 개수 -1
+        store.subLikeCount();
+        return storeRepository.save(store);
     }
 
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
         Store shapedStore = shapingStore(store);
+
         Member storeCreator = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
         shapedStore.setMember(storeCreator);
         return storeRepository.save(shapedStore);
@@ -100,6 +124,21 @@ public class StoreService {
         }
 
         return lowPrice;
+    }
+
+    private Store shapingStore(Store store) {
+        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
+        store.setLatitude(Double.parseDouble(location.getLatitude()));
+        store.setLongitude(Double.parseDouble(location.getLongitude()));
+        List<Item> items = store.getItems();
+        int lowPrice = 0;
+        for (Item item : items) {
+            item.setStore(store);
+            int itemPrice = item.getPrice();
+            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
+        }
+        store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
+        return store;
     }
 
     // 위도, 경도, 주소 설정
@@ -219,7 +258,6 @@ public class StoreService {
             responseDto.setIsLike(true);
         }
         return responseDto;
-
     }
 
     public CategoryResponseDto insertWishAtCategoryResponseDto(CategoryResponseDto categoryResponseDto) {
@@ -239,6 +277,14 @@ public class StoreService {
         findverifyIdentityStore(storeId);
 
         imgService.deleteStoreImage(link);
+    }
+
+    // 평균 별점, 리뷰 개수 업데이트
+    public void updateRatingAndReviewCount(Store store, Double avgRating) {
+        store.setRating(avgRating);
+        store.addReviewCount();
+
+        storeRepository.save(store);
     }
 
     public Store findverifyIdentityStore(long storeId) {

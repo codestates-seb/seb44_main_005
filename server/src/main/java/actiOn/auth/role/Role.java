@@ -1,6 +1,5 @@
 package actiOn.auth.role;
 
-import actiOn.helper.audit.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "ROLES")
-public class Role extends BaseEntity {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;

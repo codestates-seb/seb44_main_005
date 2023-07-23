@@ -78,7 +78,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
                     "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=3600;");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             // 리프레시 토큰도 만료된 경우
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("refresh token이 만료되었습니다. 다시 로그인해주세요.");

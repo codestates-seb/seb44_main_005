@@ -13,6 +13,7 @@ import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,12 +42,12 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
-    private final MemberService memberService;
-    private final RoleService roleService;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        ApplicationContext context = getApplicationContext();
+
+        httpSecurity
                 .headers().frameOptions().sameOrigin()
 
                 .and()
@@ -64,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
 
                 .and()
-                .apply(new CustomFilterConfigurer(memberService))
+                .apply(new CustomFilterConfigurer(context.getBean(MemberService.class)))
 
                 .and()
                 .logout()
@@ -73,16 +74,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
                             "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
                 }))
-                .logoutSuccessUrl("https://acti-on.netlify.app/home")
+                .logoutSuccessUrl("http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/home")
 
                 .and()
                 .authorizeRequests(this::configureAuthorization)
                 .oauth2Login(oAuth2 -> oAuth2
-                        .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
+                        .successHandler(new OAuth2MemberSuccessHandler(
+                                context.getBean(MemberService.class), context.getBean(RoleService.class), tokenProvider)
+                        )
                 );
     }
 
-    private void configureAuthorization(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize) {
+    private void configureAuthorization
+            (ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize) {
         String USER = authorityUtil.getUSER();
         String PARTNER = authorityUtil.getPARTNER();
 
@@ -143,14 +147,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "https://acti-on.netlify.app",
                         "http://localhost:5173",
                         "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com",
-                        // TODO S3 엔드포인트 추가 ""
-                        "https://c054-222-232-33-89.ngrok-free.app" //여기 임시 url
+                        "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
                 )
         );
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(200L);
-//        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
+//        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
 

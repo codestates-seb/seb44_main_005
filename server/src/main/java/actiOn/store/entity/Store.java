@@ -77,4 +77,16 @@ public class Store extends BaseEntity {
 
     @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<StoreImg> storeImgList = new ArrayList<>();
+
+    public void addLikeCount() {
+        this.likeCount++;
+    }
+
+    public void subLikeCount() {
+        this.likeCount--;
+    }
+
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
 }

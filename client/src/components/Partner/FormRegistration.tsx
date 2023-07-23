@@ -8,13 +8,13 @@ function FormRegistration ({ isFormValid, handleSubmit, businessSector, isDuplic
     <FormRegiContainer>
       {!formIsValid ? (
         <DisableFormRegiButton
-          type='submit'
+          type='button'
         >
           등록하기
         </DisableFormRegiButton>
       ) : (
         <FormRegiButton
-          type='submit'
+          type='button'
           onClick={handleSubmit}
         >
           등록하기

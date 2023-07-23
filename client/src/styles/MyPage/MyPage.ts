@@ -72,3 +72,17 @@ export const NicknameAccent = tw.span`
     font-medium
     text-xl
 `;
+
+export const LoadingContainer = tw.div`
+  border-[1px]
+  border-[#4771B7]
+  w-[902px]
+  h-[800px]
+  flex
+  flex-col
+  justify-center
+  items-center
+  text-3xl
+  font-semibold
+  space-y-5
+`;

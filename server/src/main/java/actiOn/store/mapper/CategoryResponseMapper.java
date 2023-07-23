@@ -25,23 +25,20 @@ public class CategoryResponseMapper {
             CategoryStoreDto categoryStoreDto = new CategoryStoreDto();
 
             //여기서부터 이미지 관련
-            try {
-                String img = originStore.getStoreImgList().isEmpty() ? null : originStore.getStoreImgList().get(0).getLink();
-                for (StoreImg storeImg : originStore.getStoreImgList()) {
-                    if (storeImg.getIsThumbnail()) {
-                        img = storeImg.getLink();
-                        break;
-                    }
+            String img = originStore.getStoreImgList().isEmpty() ? null : originStore.getStoreImgList().get(0).getLink();
+
+            for (StoreImg storeImg : originStore.getStoreImgList()) {
+                if (storeImg.getIsThumbnail()) {
+                    img = storeImg.getLink();
+                    break;
                 }
-                if (img == null) {
-                    throw new IllegalArgumentException("스토어의 이미지가 존재하지 않습니다.");
-                }
-                categoryStoreDto.setImg(img);
-            } catch (IllegalArgumentException e) {
             }
 
-            //위에까지가 이미지 관련
+            if (img == null) {
+                throw new IllegalArgumentException("스토어의 이미지가 존재하지 않습니다.");
+            }
 
+            categoryStoreDto.setImg(img);
             categoryStoreDto.setStoreId(originStore.getStoreId());
             categoryStoreDto.setCategory(originStore.getCategory());
             categoryStoreDto.setTitle(originStore.getStoreName());
@@ -53,6 +50,7 @@ public class CategoryResponseMapper {
 
             categoryStoreDtos.add(categoryStoreDto);
         }
+
         int storeCount = categoryStoreDtos.size();
 
         Map<String, Integer> storeCountMap = new HashMap<>();
@@ -63,6 +61,7 @@ public class CategoryResponseMapper {
 
         categoryResponseDto.setPageInfo(pageInfo);
         categoryResponseDto.setData(categoryStoreDtos);
+
         return categoryResponseDto;
     }
 }

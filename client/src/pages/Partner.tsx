@@ -67,7 +67,7 @@ function Partner() {
       owner: repreName,
       businessName: companyName,
       registrationNumber: regiNumber,
-      businessCategory: setSelectedBusinessSector,
+      businessCategory: selectedBusinessSector,
     };
 
     try {
