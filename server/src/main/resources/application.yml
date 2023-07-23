@@ -32,7 +32,7 @@ spring:
   datasource:
       #url: jdbc:h2:mem:test
     driver-class-name: com.mysql.cj.jdbc.Driver   # RDS mysql 설정
-
+    initialization-mode: always
   security:
     oauth2:
       client:
@@ -46,11 +46,11 @@ spring:
               - profile
               - email
   servlet:
-    multipart:
+    multipart:    # 파일 업로드 관련 설정
       enabled: true
       file-size-threshold: 2KB
-      max-file-size: 150MB
-      max-request-size: 150MB
+      max-file-size: 100MB
+      max-request-size: 100MB
       resolve-lazily: false
 
 logging:
