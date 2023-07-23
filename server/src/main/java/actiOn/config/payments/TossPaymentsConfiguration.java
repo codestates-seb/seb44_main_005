@@ -13,12 +13,6 @@ public class TossPaymentsConfiguration {
     @Value("${payment.toss.test-secret-key}")
     private String testSecretKey;
 
-    @Value("${payment.toss.success-url}")
-    private String successUrl;
-
-    @Value("${payment.toss.failure-url}")
-    private String failureUrl;
-
     @Value("${payment.toss.url}")
     private String url;
 }

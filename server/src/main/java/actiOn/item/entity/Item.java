@@ -12,9 +12,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class Item {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_ID")
     private Long itemId;
 
@@ -34,12 +33,6 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
-
-    public void validateTicketCount(int ticketCount) {
-        if (ticketCount > this.totalTicket) {
-            throw new IllegalArgumentException("티켓 수가 최대 허용량을 초과했습니다.");
-        }
-    }
 
     public enum ItemStatus {
         SAVED, DELETED

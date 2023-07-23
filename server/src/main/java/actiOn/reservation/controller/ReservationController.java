@@ -11,14 +11,12 @@ import actiOn.reservation.entity.Reservation;
 import actiOn.reservation.entity.ReservationItem;
 import actiOn.reservation.mapper.ReservationMapper;
 import actiOn.reservation.service.ReservationService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,33 +33,26 @@ public class ReservationController {
         this.itemService = itemService;
     }
 
-    //Todo RS_002 예약 등록(완료 직전, 테스트 필요)
+    // 예약 등록
     @PostMapping("/reservations/{store-id}")
     public ResponseEntity postReservation(@Positive @PathVariable("store-id") Long storeId,
                                           @Valid @RequestBody ReservationPostDto requestBody) {
-        String reservationKey = reservationService.redisSaveReservation(storeId,requestBody);
-        return new ResponseEntity<>(new ReservationRedisResponseDto(reservationKey),HttpStatus.OK);
+        String reservationKey = reservationService.redisSaveReservation(storeId, requestBody);
+        return new ResponseEntity<>(new ReservationRedisResponseDto(reservationKey), HttpStatus.OK);
     }
 
+    // 예약 완료 이후 결제정보 저장 (검증)
     @PostMapping("/reservation/payments")
     public ResponseEntity confirmReservationAndPayment(@RequestParam("reservationKey") String reservationKey,
                                                        @RequestParam("orderId") String orderId) {
         ReservationPostDto reservationPostDto = reservationService.getReservationPostDtoFromRedis(reservationKey);
         Reservation reservation = reservationMapper.reservationPostDtoToReservation(reservationPostDto);
         List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(reservationPostDto, itemService);
+
         Payment payment = reservationService.createPaymentByOrderId(orderId);
-        reservationService.postReservation(reservationPostDto.getStoreId(),reservation,reservationItems,payment);
+        reservationService.postReservation(reservationPostDto.getStoreId(), reservation, reservationItems, payment);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-//    @PostMapping("/reservations/{store-id}")
-//    public ResponseEntity postReservation(@Positive @PathVariable("store-id") Long storeId,
-//                                          @Valid @RequestBody ReservationPostDto requestBody) {
-//        Reservation reservation = reservationMapper.reservationPostDtoToReservation(requestBody);
-//        List<ReservationItem> reservationItems = reservationMapper.reservationItemsDtoToReservationItem(requestBody, itemService);
-//        reservationService.postReservation(storeId, reservation, reservationItems);
-//        //Todo 내용추가 // 예약자 정보 안적었을 때 500
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
 
     // 예약 수정
     @PatchMapping("/reservations/{reservation-id}")
@@ -72,7 +63,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //Todo RS_001 예약 수정 페이지 렌더(완료, 테스트 필요)
+    // 예약 수정 페이지 렌더
     @GetMapping("/reservations/{reservation-id}")
     public ResponseEntity getReservations(@Positive @PathVariable("reservation-id") Long reservationId) {
         Reservation findReservation = reservationService.getReservations(reservationId);
@@ -80,7 +71,7 @@ public class ReservationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //Todo RS_004 예약 취소(완료, 테스트 필요)
+    // 예약 취소
     @DeleteMapping("/reservations/{reservation-id}")
     public ResponseEntity cancelReservation(@Positive @PathVariable("reservation-id") long reservationId) {
         reservationService.cancelReservation(reservationId);
@@ -95,15 +86,8 @@ public class ReservationController {
     }
 
     @PostMapping("/reservationsUsed/{reservation-id}")
-    public ResponseEntity doneReservation(@PathVariable("reservation-id")@Positive Long reservationId){
+    public ResponseEntity doneReservation(@PathVariable("reservation-id") @Positive Long reservationId) {
         reservationService.changeReservationStatus(reservationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    @PostMapping("/reservation/save/{store-id}")
-//    public ResponseEntity postReservationToRedis(@PathVariable("store-id") long storeId,
-//                                                 @RequestBody ReservationPostDto reservationPostDto) {
-//        reservationService.
-//    }
-
 }

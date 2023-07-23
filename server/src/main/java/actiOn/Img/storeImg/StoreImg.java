@@ -32,6 +32,4 @@ public class StoreImg {
         this.link = link;
         this.store = store;
     }
-
-
 }

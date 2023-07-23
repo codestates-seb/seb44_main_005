@@ -3,7 +3,6 @@ package actiOn.payment.service;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
-import actiOn.map.response.KakaoMapResponse;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.payment.dto.PaymentCancelDto;
@@ -11,14 +10,12 @@ import actiOn.payment.dto.PaymentConfirmDto;
 import actiOn.payment.dto.PaymentInfoDto;
 import actiOn.payment.entity.Payment;
 import actiOn.payment.entity.PaymentCancel;
-import actiOn.payment.mapper.PaymentMapper;
 import actiOn.payment.repository.PaymentCancelRepository;
 import actiOn.payment.repository.PaymentRepository;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,27 +26,22 @@ import java.util.Base64;
 import java.util.Optional;
 
 @Service
-//@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final MemberService memberService;
     private final PaymentCancelRepository paymentCancelRepository;
 
-    public PaymentService(PaymentRepository paymentRepository,
-                          MemberService memberService,
-                          PaymentCancelRepository paymentCancelRepository){
-        this.paymentRepository = paymentRepository;
-        this.memberService = memberService;
-        this.paymentCancelRepository = paymentCancelRepository;
-    }
-
     @Value("${TOSS_CLIENT_KEY}")
     @Getter
     private String clientKey;
+
     @Value("${TOSS_SECRET_KEY}")
     @Getter
     private String secretKey;
-    private String tossPaymentURL = "https://api.tosspayments.com/v1/payments/";
+
+    @Value("{payment.toss.url}")
+    private String tossPaymentURL;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Payment requestPayment(String email, Payment payment) {
@@ -71,7 +63,6 @@ public class PaymentService {
         verifyTotalAmount(payment, totalAmount);
 
         payment.setCustomer(customer);
-
     }
 
     // 존재하는 결제인지 확인
@@ -91,23 +82,25 @@ public class PaymentService {
         }
     }
 
-
     /**    =========================================================   */
-    /** 여기부터는 토스페이먼츠로 거래 내역을 불러오는 기능을 담당합니다. **/
-    private String generateAuthToBase64(){
+    /**
+     * 여기부터는 토스페이먼츠로 거래 내역을 불러오는 기능을 담당합니다.
+     **/
+    private String generateAuthToBase64() {
         //Todo base64를 이용해서, secretKey를 인코딩 해야함
-        byte[] secretKeyBytes = (secretKey+":").getBytes(StandardCharsets.UTF_8);
+        byte[] secretKeyBytes = (secretKey + ":").getBytes(StandardCharsets.UTF_8);
         String encodedSecretKey = Base64.getEncoder().encodeToString(secretKeyBytes);
         return encodedSecretKey;
     }
 
-    private HttpHeaders createHeaders(){
+    private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Basic " + generateAuthToBase64());
         return headers;
     }
-    public PaymentInfoDto getPaymentInfoByOrderId(String orderId){  //private 으로 바꿔야 함
+
+    public PaymentInfoDto getPaymentInfoByOrderId(String orderId) {  //private 으로 바꿔야 함
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = createHeaders();
@@ -123,7 +116,7 @@ public class PaymentService {
 
             }
             return response;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             throw new BusinessLogicException(ExceptionCode.NOT_FOUND_PAYMENT);//
         }
@@ -141,8 +134,11 @@ public class PaymentService {
         String url = tossPaymentURL + "/confirm"; // 요청보낼 곳
         return restTemplate.postForEntity(url, requestEntity, PaymentInfoDto.class); // 요청
     }
+
 /**    =========================================================   */
-/** 여기부터는 결제정보를 디비에 저장하는 역할을 합니다. 결제에 실패하거나 잘못된 요청이더라도 일단 결제 정보를 저장해야만 합니다.    */
+    /**
+     * 여기부터는 결제정보를 디비에 저장하는 역할을 합니다. 결제에 실패하거나 잘못된 요청이더라도 일단 결제 정보를 저장해야만 합니다.
+     */
     public Payment saveToPaymentRepository(Payment payment) {
         Member member = memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail());
         payment.setCustomer(member);
@@ -150,9 +146,10 @@ public class PaymentService {
     }
 
     /**    =========================================================   */
-    /**    여기부터는 환불기능을 담당합니다.   */
-
-    public void refund(String paymentKey,Long cancelAmount) {
+    /**
+     * 여기부터는 환불기능을 담당합니다.
+     */
+    public void refund(String paymentKey, Long cancelAmount) {
         Payment payment = paymentRepository.findByPaymentKey(paymentKey);
         if (payment == null) {
             throw new BusinessLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
@@ -174,7 +171,8 @@ public class PaymentService {
             throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
         }
     }
-    public void refundUpdateRepository(Payment payment) throws BusinessLogicException{
+
+    public void refundUpdateRepository(Payment payment) throws BusinessLogicException {
         PaymentCancel paymentCancel = new PaymentCancel();
         paymentCancel.setPayment(payment);
         paymentCancelRepository.save(paymentCancel);
