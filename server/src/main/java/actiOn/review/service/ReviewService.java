@@ -87,7 +87,7 @@ public class ReviewService {
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         //Todo Store 기준 모든 리뷰 조회
-        List<Review> reviews = reviewRepository.findAllByStore(store);
+        List<Review> reviews = reviewRepository.findAllByStoreOrderByCreatedAtDesc(store);
 
         //Todo 조회한 리뷰를 리뷰 DTO로 매핑
         List<ReviewResponseDto> reviewResponseDtos = reviewMapper.reviewsToReviewsResponseDto(reviews);

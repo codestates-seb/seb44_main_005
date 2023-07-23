@@ -10,10 +10,9 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> , ReviewCustomRepository{
 
-    List<Review> findAllByStore(Store store);
+    List<Review> findAllByStoreOrderByCreatedAtDesc(Store store);
 
     int countByStoreAndMember(Store store, Member member);
-//    @Query(value = "SELECT count(r) FROM Review r WHERE r.store.storeId = ?1")
-//    long countByStore(Store store);
+
 
 }
