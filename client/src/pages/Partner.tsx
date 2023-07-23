@@ -29,7 +29,6 @@ function Partner() {
   const [companyName, setCompanyName] = useState('');
   const [openingDate, setOpeningDate] = useState('');
   const [selectedBusinessSector, setSelectedBusinessSector] = useState('select');
-
   const [isInputTouched, setIsInputTouched] = useState(false);
 
   const handleRegiNumberChange = (e) => {
@@ -41,7 +40,8 @@ function Partner() {
 
   const isRegiNumberValid = regiNumber.match(/^\d{3}-\d{2}-\d{5}$/);
   const isRegiNumberIncomplete = regiNumber.length > 0 && !isRegiNumberValid;
-  console.log(isLogin);
+  const currentDate = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
     setIsInputTouched(true);
   }, []);
@@ -134,6 +134,7 @@ function Partner() {
                 placeholder="2023-00-00"
                 type="date"
                 value={openingDate}
+                max={currentDate}
                 onChange={(e) => setOpeningDate(e.target.value)}
               />
             </OpeningContainer>
