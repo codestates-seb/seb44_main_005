@@ -22,6 +22,7 @@ function Dropdown() {
         headers: {
           'Content-Type': 'application/json',
           Authorization: sessionStorage.getItem('Authorization'),
+          'Access-Control-Allow-Origin': '*',
         },
         credentials: 'include',
       });
