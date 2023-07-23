@@ -1,9 +1,9 @@
+//wishlist
 import { useEffect, useState } from 'react';
 import CategoryCard from '../components/Categorybar/CategoryCard'; 
 import NothingComponent from '../components/MyPage/NothingComponent';
-
+import LoadingComponent from '../components/Loading/LoadingComponent';
 import search from '../assets/search.svg';
-
 import {
   NoWishList,
   WishContainer,
@@ -46,7 +46,9 @@ function WishList() {
   return (
     <WishContainer>
       {loading ? (
-        <div>로딩중입니다...</div>
+        <div className='flex flex-col justify-center items-center h-[800px] w-[902px]'>
+          <LoadingComponent />
+        </div>
       ) : wishlist.length === 0 ? (
         <NoWishList>
           <NoWishImgSize src={search} alt="nothingimg" />
@@ -56,7 +58,7 @@ function WishList() {
           />
         </NoWishList>
       ) : (
-        <div className='flex flex-col space-y-5'>
+        <div className='flex flex-col space-y-5 overflow-y-auto'>
           <div>
             <WishCountTitle>
               위시 상품 {wishlist.length}개

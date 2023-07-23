@@ -39,9 +39,7 @@ function StoreCheck() {
       if(res.ok) {
         const data = await res.json();
         setStoresData(data.stores);
-      } else {
-        console.error('데이터가 없습니다.', res.status);
-      }
+      } 
     } catch (error) {
       console.error('에러가 발생했습니다.', error);
     } finally {
@@ -87,7 +85,7 @@ function StoreCheck() {
   };
 
   const handleDeleteClick = (storeId) => {
-    if (window.confirm('정말 삭제하시겠습니가?')) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
       deleteStore(storeId);
     }
   };
