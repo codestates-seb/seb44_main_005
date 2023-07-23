@@ -152,8 +152,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         );
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(200L);
-//        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
+//        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
 
