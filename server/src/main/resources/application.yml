@@ -12,13 +12,13 @@ spring:
       path: /h2
       settings:
         web-allow-others: true
-  datasource:
-    url: jdbc:h2:mem:test
-  sql:
-    init:
-      data-locations: classpath*:db/h2/data.sql
-      encoding: UTF-8
+#  sql:
+#    init:
+#      data-locations: classpath*:db/h2/data.sql
+#      encoding: UTF-8
   jpa:
+    database: mysql   # mysql 설정
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update    # 스키마 자동 생성
     show-sql: false        # SQL 쿼리 출력
@@ -30,6 +30,10 @@ spring:
         format_sql: true  # SQL pretty print
         jdbc:
           time_zone: Asia/Seoul   # 서버 시간 서울로 변경
+
+  datasource:
+      #url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver   # RDS mysql 설정
 
   security:
     oauth2:
@@ -95,5 +99,6 @@ payment: # 토스 페이먼츠 관련
     success-url: "http://localhost:8080/payments/toss/success"
     failure-url: "http://localhost:8080/payments/toss/fail"
     url: "https://api.tosspayments.com/v1/payments"
-#    member-info-secret-key: ${MEMBER_ENCODING_SECRET_KEY}
 
+config:
+  domain: "https://acti-on.netlify.app"
