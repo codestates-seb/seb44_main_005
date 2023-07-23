@@ -9,19 +9,14 @@ import {
 } from '../../styles/Welcome/IntroPage/Page2';
 
 function Page2() {
-  const PageDown = () => {
-    window.scrollTo({ top: 1867, left: 0, behavior: 'smooth' });
-  };
-  const pageUp = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  };
   return (
-    <PageContainer>
-      <img
-        src={top}
-        className="w-[80px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-        onClick={pageUp}
-      />
+    <PageContainer id="page2">
+      <a href="#page1">
+        <img
+          src={top}
+          className="w-[80px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
       <MainText
         data-aos="fade-up"
         data-aos-offset="200"
@@ -47,11 +42,12 @@ function Page2() {
         src={activity}
         className="w-[800px] h-[500px] mb-[20px]"
       />
-      <img
-        src={bottom}
-        className="w-[80px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-        onClick={PageDown}
-      />
+      <a href="#page3">
+        <img
+          src={bottom}
+          className="w-[80px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
     </PageContainer>
   );
 }

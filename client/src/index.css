@@ -66,6 +66,10 @@ html::-webkit-scrollbar-thumb {
   border-radius: 10px;
 } 
 
+html {
+  scroll-behavior: smooth;
+}
+
 
 .carousel-title {
   font-size: xx-large;

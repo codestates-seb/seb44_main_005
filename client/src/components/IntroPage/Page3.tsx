@@ -14,20 +14,15 @@ import {
 1867;
 function Page3() {
   const navigate = useNavigate();
-  const pageDown = () => {
-    window.scrollTo({ top: 2820, left: 0, behavior: 'smooth' });
-  };
 
-  const pageMTop = () => {
-    window.scrollTo({ top: 935, left: 0, behavior: 'smooth' });
-  };
   return (
-    <Wrapper>
-      <img
-        src={w_top}
-        className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-        onClick={pageMTop}
-      />
+    <Wrapper id="page3">
+      <a href="#page2">
+        <img
+          src={w_top}
+          className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
       <PageContainer>
         <img
           src={page3}
@@ -65,11 +60,12 @@ function Page3() {
           </HomeBtn>
         </TextContainer>
       </PageContainer>
-      <img
-        src={w_bottom}
-        className="w-[80px] mb-[15px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-        onClick={pageDown}
-      />
+      <a href="#page4">
+        <img
+          src={w_bottom}
+          className="w-[80px] mb-[15px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
     </Wrapper>
   );
 }
