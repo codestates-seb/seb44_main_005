@@ -35,10 +35,6 @@ function MyPage() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    fetchPartnerData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
