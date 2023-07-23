@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StoreRepository extends JpaRepository<Store, Long> , StoreCustomRepository{
+public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findAll(Sort sort);
 
     List<Store> findByCategory(String category, Sort sort);
@@ -16,4 +16,10 @@ public interface StoreRepository extends JpaRepository<Store, Long> , StoreCusto
     List<Store> findTop4ByOrderByLikeCountDesc();
 
     List<Store> findByStoreNameContainingOrderByRatingDesc(String keyword);
+
+    void addLikeCount(Store store);
+
+    void subLikeCount(Store store);
+
+    void addReviewCount(Store store);
 }
