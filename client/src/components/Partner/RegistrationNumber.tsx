@@ -24,12 +24,18 @@ function RegistrationNumber({
       const res = await fetch(`${APIURL}/partners/verify?number=${regiNumber}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': ACCESS_TOKEN,
         },
       });
-      const data = await res.json();
-      setIsDuplicate(data.duplicate);
+      if (res.ok) {
+        if(res.status === 200) {
+          console.log('200 OK');
+          alert('사용 가능한 사업자등록번호입니다.');
+        };
+      } else {
+        console.log('중복된 번호', res.status);
+        alert('중복된 사업자 등록번호입니다.');
+      }
     } catch (error) {
       console.log('중복확인 중 에러가 발생했습니다.', error);
     }
@@ -62,6 +68,7 @@ function RegistrationNumber({
           {isDuplicate && (
             <RegiNumberWrong>사업자 등록번호가 중복되었습니다.</RegiNumberWrong>
           )}
+          
         </div>
         <button
           className={`rounded-md px-4 h-7 w-28 bg-[#4771B7] text-white ${
