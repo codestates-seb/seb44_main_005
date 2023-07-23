@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 function ReservationCheck() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const accessToken = sessionStorage.getItem('Authorization');
   console.log(data);
   const reservationDelete = async (reservationId: number) => {
@@ -48,6 +49,7 @@ function ReservationCheck() {
     });
     const json = await res.json();
     setData(json.data);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -57,7 +59,9 @@ function ReservationCheck() {
   return (
     <ResCheckContainer>
       <ResCheckTitle>예약 내역 조회</ResCheckTitle>
-      {data.length === 0 ? (
+      {loading ? (
+        <div>로딩중입니다.....</div>
+      ) : data.length === 0 ? (
         <NoReservation>
           <GiBoatHorizon style={{ fontSize: '100px', color: '#4771B7'}} />
           <NothingComponent 

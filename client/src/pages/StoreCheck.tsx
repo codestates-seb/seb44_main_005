@@ -20,6 +20,7 @@ import NothingComponent from '../components/MyPage/NothingComponent';
 function StoreCheck() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [storesData, setStoresData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStores();
@@ -43,6 +44,8 @@ function StoreCheck() {
       }
     } catch (error) {
       console.error('에러가 발생했습니다.', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,7 +98,9 @@ function StoreCheck() {
         <StoreCheckTitle>판매 서비스 관리</StoreCheckTitle>
         <button className='mr-6 text-[18px] font-semibold bg-[#4771B7] text-white p-[7px] rounded-lg' type='button' onClick={handleAddClick}>업체 등록</button>
       </div>
-      {storesData.length === 0 ? (
+      {loading ? (
+        <div>로딩중입니다....</div>
+      ) : storesData.length === 0 ? (
         <NoStores>
           <MdOutlineAddHome style={{ fontSize: '100px', color: '#4771B7'}} />
           <NothingComponent 

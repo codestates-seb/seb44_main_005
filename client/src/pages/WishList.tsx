@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import CategoryCard from '../components/Categorybar/CategoryCard'; // Import the CategoryCard component
+import CategoryCard from '../components/Categorybar/CategoryCard'; 
+import NothingComponent from '../components/MyPage/NothingComponent';
 
 import search from '../assets/search.svg';
 
@@ -9,11 +10,11 @@ import {
   WishCountTitle,
   NoWishImgSize,
 } from '../styles/MyPage/WishList';
-import NothingComponent from '../components/MyPage/NothingComponent';
 
 function WishList() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [wishlist, setWishList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchWishList();
@@ -37,12 +38,16 @@ function WishList() {
       }
     } catch (error) {
       console.error('에러가 발생했습니다.', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <WishContainer>
-      {wishlist.length === 0 ? (
+      {loading ? (
+        <div>로딩중입니다...</div>
+      ) : wishlist.length === 0 ? (
         <NoWishList>
           <NoWishImgSize src={search} alt="nothingimg" />
           <NothingComponent 
