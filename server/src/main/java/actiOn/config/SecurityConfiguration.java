@@ -13,9 +13,9 @@ import actiOn.auth.utils.MemberAuthorityUtil;
 import actiOn.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,19 +36,18 @@ import java.util.Arrays;
 import static actiOn.auth.utils.TokenPrefix.REFRESH;
 import static org.springframework.http.HttpMethod.*;
 
-@Lazy
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
-    private final MemberService memberService;
-    private final RoleService roleService;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        ApplicationContext context = getApplicationContext();
+
+        httpSecurity
                 .headers().frameOptions().sameOrigin()
 
                 .and()
@@ -66,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
 
                 .and()
-                .apply(new CustomFilterConfigurer(memberService))
+                .apply(new CustomFilterConfigurer(context.getBean(MemberService.class)))
 
                 .and()
                 .logout()
@@ -80,11 +79,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests(this::configureAuthorization)
                 .oauth2Login(oAuth2 -> oAuth2
-                        .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
+                        .successHandler(new OAuth2MemberSuccessHandler(
+                                context.getBean(MemberService.class), context.getBean(RoleService.class), tokenProvider)
+                        )
                 );
     }
 
-    private void configureAuthorization(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize) {
+    private void configureAuthorization
+            (ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize) {
         String USER = authorityUtil.getUSER();
         String PARTNER = authorityUtil.getPARTNER();
 
