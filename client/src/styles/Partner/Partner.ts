@@ -67,6 +67,11 @@ export const RegiNumberCorrect = tw.p`
     text-green-500
 `;
 
+export const RegiNumberConfirm = tw.p`
+    pt-1
+    text-amber-600
+`;
+
 export const RegiNumberWrong = tw.p`
     pt-1
     text-red-500
@@ -128,6 +133,17 @@ export const FormRegiButton = tw.button`
     py-3
     bg-[#4771B7]
     text-white
+`;
+
+export const DisableFormRegiButton = tw.button`
+    font-semibold
+    text-xl
+    px-14
+    py-3
+    opacity-50
+    bg-[#4771B7]
+    text-white
+    cursor-default
 `;
 
 export const FormRegiContainer = tw.div`

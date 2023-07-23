@@ -28,10 +28,9 @@ function Partner() {
   const [repreName, setRepreName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [openingDate, setOpeningDate] = useState('');
-  const [businessSector, setBusinessSector] = useState('');
-
+  const [selectedBusinessSector, setSelectedBusinessSector] = useState('select');
   const [isInputTouched, setIsInputTouched] = useState(false);
-  const [isCheckingDuplicate, _] = useState(false);
+  const [isDuplicateChecked,setIsDuplicateChecked] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -42,7 +41,8 @@ function Partner() {
 
   const isRegiNumberValid = regiNumber.match(/^\d{3}-\d{2}-\d{5}$/);
   const isRegiNumberIncomplete = regiNumber.length > 0 && !isRegiNumberValid;
-  console.log(isLogin);
+  const currentDate = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
     setIsInputTouched(true);
   }, []);
@@ -53,7 +53,7 @@ function Partner() {
     repreName.length > 0 &&
     companyName.length > 0 &&
     openingDate.length > 0 &&
-    businessSector.length > 0
+    selectedBusinessSector !== 'select'
   );
 
   const handleSubmit = async (e) => {
@@ -63,7 +63,7 @@ function Partner() {
       owner: repreName,
       businessName: companyName,
       registrationNumber: regiNumber,
-      businessCategory: businessSector
+      businessCategory: setSelectedBusinessSector
     };
 
     try {
@@ -119,7 +119,8 @@ function Partner() {
               isRegiNumberValid={isRegiNumberValid}
               isRegiNumberIncomplete={isRegiNumberIncomplete}
               setIsInputTouched={setIsInputTouched}
-              isCheckingDuplicate={isCheckingDuplicate}
+              isDuplicateChecked={isDuplicateChecked}
+              setIsDuplicateChecked={setIsDuplicateChecked}
             />
             <CompanyName>
               <label>업체명</label>
@@ -136,16 +137,19 @@ function Partner() {
                 placeholder="2023-00-00"
                 type="date"
                 value={openingDate}
+                max={currentDate}
                 onChange={(e) => setOpeningDate(e.target.value)}
               />
             </OpeningContainer>
             <BusinessComponents
-              businessSector={businessSector}
-              setBusinessSector={setBusinessSector}
+              businessSector={selectedBusinessSector}
+              setBusinessSector={setSelectedBusinessSector}
             />
             <FormRegistration
               isFormValid={isFormValid}
               handleSubmit={handleSubmit}
+              businessSector={selectedBusinessSector}
+              isDuplicateChecked={isDuplicateChecked}
             />
           </FormContainer>
         </RegiContainer>
