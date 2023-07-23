@@ -18,13 +18,6 @@ import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 
 function CategoryPage() {
-  useEffect(() => {
-    AOS.init({
-      duration: 700,
-      offset: 100,
-    });
-  }, []);
-
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get('category_name');

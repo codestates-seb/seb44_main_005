@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import {
   StyleContainer,
@@ -23,6 +22,8 @@ function Register() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
+  const [isClicked, setIClicked] = useState(false);
 
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] =
@@ -101,7 +102,7 @@ function Register() {
     if (phoneRegExp.test(formattedNumber)) {
       setPhoneMessage('올바른 전화번호 형식입니다.');
     } else {
-      setPhoneMessage('전화번호에 -를 추가해주세요.');
+      setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
     }
   };
 
@@ -127,6 +128,10 @@ function Register() {
   ]);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIClicked(true);
+    if (isClicked) {
+      return;
+    }
     if (!isSubmitDisabled) {
       try {
         const res = await fetch(`${url}/signup`, {
@@ -143,15 +148,37 @@ function Register() {
         });
         console.log(res);
         if (res.ok) {
-          alert('회원가입을 성공했습니다 !');
-          navigate('/login');
+          toast('회원가입을 성공했습니다 !');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else if (res.status === 403) {
+          toast('🚨 중복된 이메일입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
+        } else if (res.status === 409) {
+          toast('🚨 중복된 닉네임입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
+        } else if (res.status === 422) {
+          toast('🚨 중복된 전화번호입니다.');
+          setTimeout(() => {
+            setIClicked(false);
+          }, 3000);
         }
       } catch (error) {
         console.error('회원가입 요청 중 오류가 발생했습니다', error);
-        toast('회원가입을 실패했습니다');
+        setTimeout(() => {
+          setIClicked(false);
+        }, 3000);
       }
     } else {
       alert('🚨 가입조건을 모두 만족해주세요 !');
+      setTimeout(() => {
+        setIClicked(false);
+      }, 3000);
     }
   };
 
@@ -172,7 +199,7 @@ function Register() {
         toastClassName={
           'h-[20px] rounded-md text-sm font-medium bg-[#EDF1F8] text-[#4771B7] text-center mt-[70px]'
         }
-        position="top-right"
+        position="top-center"
         limit={1}
         closeButton={false}
         autoClose={3000}
@@ -256,7 +283,7 @@ function Register() {
           bgColor="#4771B7"
           color="#FFFFFF"
           clickHandler={handleSubmit}
-          // disabled={isSubmitDisabled}
+          disabled={isClicked}
         >
           <span className="font-medium">가입 진행하기</span>
         </Button>
