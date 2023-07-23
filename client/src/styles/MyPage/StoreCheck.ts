@@ -77,3 +77,13 @@ export const StoreButtonStyle = tw.button`
     p-2
     rounded-lg
 `;
+
+export const NoStores = tw.div`
+    flex
+    flex-col
+    justify-center
+    items-center
+    space-y-5
+    p-20
+    h-[600px]
+`;

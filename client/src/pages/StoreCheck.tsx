@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MdOutlineAddHome } from 'react-icons/md';
 import {
   StoreButtonStyle,
   ButtonsContainer,
@@ -11,7 +12,10 @@ import {
   StoreCheckTitle,
   StoreInfoContainer,
   StoreName,
+  NoStores,
 } from '../styles/MyPage/StoreCheck';
+import NothingComponent from '../components/MyPage/NothingComponent';
+// import Loading from '../components/Loading/Loading';
 
 function StoreCheck() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
@@ -91,26 +95,36 @@ function StoreCheck() {
         <StoreCheckTitle>판매 서비스 관리</StoreCheckTitle>
         <button className='mr-6 text-[18px] font-semibold bg-[#4771B7] text-white p-[7px] rounded-lg' type='button' onClick={handleAddClick}>업체 등록</button>
       </div>
-      {storesData.map((store) => (
-        <StoreCards key={store.storeId}>
-          <ImgContainer>
-            <ImgInnerContainer>
-              <ImgStyle src={store.storeImage} alt="store image" />
-            </ImgInnerContainer>
-          </ImgContainer>
-          <StoreInfoContainer>
-            <div className="pt-5">
-              <StoreName onClick={() => handleStoreNameClick(store.storeId)}>{store.storeName}</StoreName>
-            </div>
-            <ButtonsContainer>
-              <StoreButtonStyle type="button" onClick={() => handleEditClick(store.storeId)}>업체 수정</StoreButtonStyle>
-              <StoreButtonStyle type="button" onClick={() => handleDeleteClick(store.storeId)}>
-                업체 삭제
-              </StoreButtonStyle>
-            </ButtonsContainer>
-          </StoreInfoContainer>
-        </StoreCards>
-      ))}
+      {storesData.length === 0 ? (
+        <NoStores>
+          <MdOutlineAddHome style={{ fontSize: '100px', color: '#4771B7'}} />
+          <NothingComponent 
+            title='아직 등록된 업체가 없네요!'
+            description='업체를 차곡차곡 쌓아볼까요?'
+          />
+        </NoStores>
+      ) : (
+        storesData.map((store) => (
+          <StoreCards key={store.storeId}>
+            <ImgContainer>
+              <ImgInnerContainer>
+                <ImgStyle src={store.storeImage} alt="store image" />
+              </ImgInnerContainer>
+            </ImgContainer>
+            <StoreInfoContainer>
+              <div className="pt-5">
+                <StoreName onClick={() => handleStoreNameClick(store.storeId)}>{store.storeName}</StoreName>
+              </div>
+              <ButtonsContainer>
+                <StoreButtonStyle type="button" onClick={() => handleEditClick(store.storeId)}>업체 수정</StoreButtonStyle>
+                <StoreButtonStyle type="button" onClick={() => handleDeleteClick(store.storeId)}>
+                  업체 삭제
+                </StoreButtonStyle>
+              </ButtonsContainer>
+            </StoreInfoContainer>
+          </StoreCards>
+        ))
+      )}
     </StoreCheckContainer>
   );
 }
