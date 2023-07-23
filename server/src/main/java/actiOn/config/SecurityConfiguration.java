@@ -74,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
                             "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
                 }))
-                .logoutSuccessUrl("http://acti-on.s3-website-ap-southeast-2.amazonaws.com/home")
+                .logoutSuccessUrl("http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/home")
 
                 .and()
                 .authorizeRequests(this::configureAuthorization)
