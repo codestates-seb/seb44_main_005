@@ -37,6 +37,9 @@ function PaymentInfo() {
     else if (!total) {
       return alert('티켓을 선택해주세요.');
     }
+    else if (form.reservationPhone.substring(0, 3) !== '010' || form.reservationPhone.substring(0, 3) !== '011') {
+      return alert('연락처를 다시 확인해주세요.');
+    }
     const items = form.reservationItems.filter((item) => item.ticketCount !== 0);
     setForm((prev) => ({...prev, reservationItems: items}));
     navigate(`/store/payment/${storeId}`);
