@@ -19,13 +19,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,13 +38,15 @@ import static org.springframework.http.HttpMethod.*;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final MemberAuthorityUtil authorityUtil;
+    private final MemberService memberService;
+    private final RoleService roleService;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, MemberService memberService, RoleService roleService) throws Exception {
-        httpSecurity
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
                 .headers().frameOptions().sameOrigin()
 
                 .and()
@@ -74,16 +76,13 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("http://localhost:5173/home")
 
                 .and()
-                .authorizeHttpRequests(this::configureAuthorization)
+                .authorizeRequests(this::configureAuthorization)
                 .oauth2Login(oAuth2 -> oAuth2
                         .successHandler(new OAuth2MemberSuccessHandler(memberService, roleService, tokenProvider))
                 );
-
-        return httpSecurity.build();
     }
 
-    // 접근 권한 설정
-    private void configureAuthorization(AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry authorize) {
+    private void configureAuthorization(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorize) {
         String USER = authorityUtil.getUSER();
         String PARTNER = authorityUtil.getPARTNER();
 
