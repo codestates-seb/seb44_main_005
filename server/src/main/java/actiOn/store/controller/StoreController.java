@@ -126,4 +126,23 @@ public class StoreController {
                 storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
         return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
     }
+
+    // 찜 등록
+    @PostMapping("/stores/favorites/{store-id}")
+    public ResponseEntity registerWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.registerWish(storeId, email);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    // 찜 취소
+    @DeleteMapping("/stores/favorites/{store-id}")
+    public ResponseEntity cancelWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.deleteWish(storeId, email);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 }

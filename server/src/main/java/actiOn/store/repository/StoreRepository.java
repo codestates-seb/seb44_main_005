@@ -16,10 +16,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findTop4ByOrderByLikeCountDesc();
 
     List<Store> findByStoreNameContainingOrderByRatingDesc(String keyword);
-
-    void addLikeCount(Store store);
-
-    void subLikeCount(Store store);
-
-    void addReviewCount(Store store);
 }
