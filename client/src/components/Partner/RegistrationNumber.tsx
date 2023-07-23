@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   RegiNumberContainer,
   RegiNumberInput,
@@ -50,6 +50,10 @@ function RegistrationNumber({
       console.log('중복확인 중 에러가 발생했습니다.', error);
     }
   };
+
+  useEffect(() => {
+    setIsDuplicateChecked(false);
+  }, [regiNumber]);
 
   return (
     <RegiNumberContainer>
