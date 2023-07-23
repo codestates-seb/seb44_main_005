@@ -4,7 +4,8 @@ import {
   RegiNumberInput,
   RegiNumberNoWrite,
   RegiNumberCorrect,
-  RegiNumberWrong
+  RegiNumberWrong,
+  RegiNumberConfirm
 } from "../../styles/Partner/Partner";
 
 function RegistrationNumber({
@@ -14,9 +15,12 @@ function RegistrationNumber({
   isRegiNumberIncomplete,
   isRegiNumberValid,
   setIsInputTouched,
+  isDuplicateChecked,
+  setIsDuplicateChecked
 }) {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [duplicateMessage, setDuplicateMessage] = useState('');
 
   const handleDuplicateCheck = async () => {
     try {
@@ -30,10 +34,16 @@ function RegistrationNumber({
       if (res.ok) {
         if(res.status === 200) {
           console.log('200 OK');
+          setIsDuplicate(false);
+          setDuplicateMessage('사용 가능한 사업자 등록번호입니다.');
+          setIsDuplicateChecked(true);
           alert('사용 가능한 사업자등록번호입니다.');
         };
       } else {
         console.log('중복된 번호', res.status);
+        setIsDuplicate(true);
+        setDuplicateMessage('중복된 사업자 등록번호입니다.')
+        setIsDuplicateChecked(true);
         alert('중복된 사업자 등록번호입니다.');
       }
     } catch (error) {
@@ -52,21 +62,22 @@ function RegistrationNumber({
             value={regiNumber}
             onChange={handleRegiNumberChange}
             maxLength={12}
-            onBlur={() => {
-              setIsInputTouched(true);
-            }}
+            onBlur={() => setIsInputTouched(true)}
           />
           {isInputTouched && !regiNumber && (
             <RegiNumberNoWrite>숫자만 입력해주세요.</RegiNumberNoWrite>
           )}
-          {isRegiNumberValid && (
-            <RegiNumberCorrect>올바른 입력입니다.</RegiNumberCorrect>
+          {!isDuplicateChecked && isRegiNumberValid && (
+            <RegiNumberConfirm>중복확인을 진행해주세요.</RegiNumberConfirm>
+          )}
+          {isRegiNumberValid && isDuplicateChecked && (
+            <RegiNumberCorrect>{duplicateMessage}</RegiNumberCorrect>
           )}
           {isRegiNumberIncomplete && (
             <RegiNumberWrong>사업자 등록번호는 10자리로 입력되어야 합니다.</RegiNumberWrong>
           )}
-          {isDuplicate && (
-            <RegiNumberWrong>사업자 등록번호가 중복되었습니다.</RegiNumberWrong>
+          {isDuplicate && isDuplicateChecked && (
+            <RegiNumberWrong>{duplicateMessage}</RegiNumberWrong>
           )}
           
         </div>

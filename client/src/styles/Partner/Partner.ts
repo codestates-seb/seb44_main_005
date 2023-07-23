@@ -67,6 +67,11 @@ export const RegiNumberCorrect = tw.p`
     text-green-500
 `;
 
+export const RegiNumberConfirm = tw.p`
+    pt-1
+    text-amber-600
+`;
+
 export const RegiNumberWrong = tw.p`
     pt-1
     text-red-500

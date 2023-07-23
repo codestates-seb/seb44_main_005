@@ -30,6 +30,7 @@ function Partner() {
   const [openingDate, setOpeningDate] = useState('');
   const [selectedBusinessSector, setSelectedBusinessSector] = useState('select');
   const [isInputTouched, setIsInputTouched] = useState(false);
+  const [isDuplicateChecked,setIsDuplicateChecked] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -118,6 +119,8 @@ function Partner() {
               isRegiNumberValid={isRegiNumberValid}
               isRegiNumberIncomplete={isRegiNumberIncomplete}
               setIsInputTouched={setIsInputTouched}
+              isDuplicateChecked={isDuplicateChecked}
+              setIsDuplicateChecked={setIsDuplicateChecked}
             />
             <CompanyName>
               <label>업체명</label>
@@ -146,6 +149,7 @@ function Partner() {
               isFormValid={isFormValid}
               handleSubmit={handleSubmit}
               businessSector={selectedBusinessSector}
+              isDuplicateChecked={isDuplicateChecked}
             />
           </FormContainer>
         </RegiContainer>

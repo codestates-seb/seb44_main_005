@@ -1,8 +1,8 @@
 import { FormRegiContainer, FormRegiButton, DisableFormRegiButton } from '../../styles/Partner/Partner';
 
-function FormRegistration ({ isFormValid, handleSubmit, businessSector }) {
+function FormRegistration ({ isFormValid, handleSubmit, businessSector, isDuplicateChecked }) {
   const isSelectedOptionSelected = businessSector === 'select';
-  const formIsValid = isFormValid && !isSelectedOptionSelected;
+  const formIsValid = isFormValid && !isSelectedOptionSelected && isDuplicateChecked;
 
   return (
     <FormRegiContainer>
