@@ -31,7 +31,6 @@ function Partner() {
   const [selectedBusinessSector, setSelectedBusinessSector] = useState('select');
 
   const [isInputTouched, setIsInputTouched] = useState(false);
-  const [isCheckingDuplicate, _] = useState(false);
 
   const handleRegiNumberChange = (e) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -119,7 +118,6 @@ function Partner() {
               isRegiNumberValid={isRegiNumberValid}
               isRegiNumberIncomplete={isRegiNumberIncomplete}
               setIsInputTouched={setIsInputTouched}
-              isCheckingDuplicate={isCheckingDuplicate}
             />
             <CompanyName>
               <label>업체명</label>
