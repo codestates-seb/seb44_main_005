@@ -1,7 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ToastContainer } from 'react-toastify';
 

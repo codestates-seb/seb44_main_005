@@ -19,7 +19,7 @@ function Login() {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
 
-  const [isClicked, setIClicked] = useState(false);
+  // const [isClicked, setIClicked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
 
@@ -38,10 +38,10 @@ function Login() {
 
   //일반로그인 -> 공통으로 뺄 것.....axios
   const handleLogin = async (e) => {
-    setIClicked(true);
-    if (isClicked) {
-      return;
-    }
+    // setIClicked(true);
+    // if (isClicked) {
+    //   return;
+    // }
     //true
     e.preventDefault();
     try {
@@ -77,21 +77,21 @@ function Login() {
         sessionStorage.setItem('Authorization', Authorization);
       } else if (res.status === 401) {
         toast('🚨 이메일과 비밀번호를 정확하게 입력해주세요');
-        setIClicked(false);
+        // setIClicked(false);
       }
     } catch (error) {
       console.error(error);
       toast(`🚨 로그인에 실패했습니다!`);
-      setIClicked(false);
+      // setIClicked(false);
     }
   };
 
   const handleKeyDown = (e) => {
-    setIsLoginState(true);
+    // setIClicked(true);
     if (e.key === 'Enter') {
-      if (isClicked) {
-        return;
-      }
+      // if (isClicked) {
+      //   return;
+      // }
       handleLogin(e);
     }
   };
@@ -156,7 +156,7 @@ function Login() {
           bgColor="#4771B7"
           color="#FFFFFF"
           clickHandler={handleLogin}
-          disabled={isClicked}
+          // disabled={isClicked}
         >
           <span className="font-medium">로그인</span>
         </Button>

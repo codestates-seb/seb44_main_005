@@ -1,7 +1,7 @@
 import { open } from '../../store/dropdownAtom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { Role, isLoginState, isProfile } from '../../store/userInfoAtom';
 import headerlogo from '../../assets/headerlogo.svg';
