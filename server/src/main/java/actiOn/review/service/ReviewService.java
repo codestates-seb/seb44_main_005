@@ -49,7 +49,7 @@ public class ReviewService {
         //해당 예약에 리뷰 이력이 없을 것 + reservation에서 스토어와 멤버에 해당하는게 있는지 확인
         //Todo countReservation()를 이용해서 예약숫자 조회 // 그리고 조건에 맞는 리뷰카운트 해서 여유있으면 리뷰 남기게 해주기
         int reservationCount = reservationService.countReservation(store, findMember);
-        int nowReviewCount = reviewRepository.countByStoreAndMember(store, findMember);
+        long nowReviewCount = reviewRepository.countByStore(store);
 
         if (reservationCount > nowReviewCount) {
             review.setMember(findMember);
@@ -57,10 +57,18 @@ public class ReviewService {
         } else {
             throw new BusinessLogicException(ExceptionCode.ALREADY_WROTE_A_REVIEW);
         }
+
         Review saveReview = reviewRepository.save(review);
 
+        // 지금 해당 업체의 총점
+        double nowTotalRating = nowReviewCount * store.getRating();
+        // 더해진 업체의 총점
+        double addedTotalRating = nowTotalRating + review.getRating();
+
+        // 업데이트되어야하는 업체의 평점
+        double avgRating = addedTotalRating / (nowReviewCount + 1);
+
         // 전체 평점의 평균 저장 및 리뷰 개수 추가
-        Double avgRating = reviewRepository.avgStoreRating(store);
         storeService.updateRatingAndReviewCount(store, avgRating);
 
         return saveReview;
