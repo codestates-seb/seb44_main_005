@@ -73,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(((request, response, authentication) -> {
                     response.setHeader("Set-Cookie", REFRESH.getType() +
                             "=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0;");
-                    response.setHeader("Access-Control-Allow-Origin", "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com");
+                    response.setHeader("Access-Control-Allow-Origin", "*");
                 }))
                 .logoutSuccessUrl("http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/home")
 
@@ -144,11 +144,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         configuration.setAllowedOrigins(
                 Arrays.asList(
-                        "http://localhost:3000",
-                        "https://acti-on.netlify.app",
-                        "http://localhost:5173",
-                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080",
-                        "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
+                        "*"
+//                        "http://localhost:3000",
+//                        "https://acti-on.netlify.app",
+//                        "http://localhost:5173",
+//                        "http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080",
+//                        "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com"
                 )
         );
         configuration.setAllowCredentials(true);
