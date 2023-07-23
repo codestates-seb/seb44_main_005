@@ -8,7 +8,6 @@ export const ResCheckContainer = tw.div`
     space-y-5
     w-[902px]
     h-[800px]
-    overflow-y-auto
 `;
 
 export const ResCheckTitle = tw.p`
