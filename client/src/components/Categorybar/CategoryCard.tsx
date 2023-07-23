@@ -80,7 +80,11 @@ function CategoryCard({ data }: CProps) {
   };
   return (
     <CardContainer>
-      <img className="w-[250px] h-[198px] object-cover" src={img} />
+      <img
+        className="w-[250px] h-[198px] object-cover"
+        src={img}
+        loading="lazy"
+      />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">
           {title}

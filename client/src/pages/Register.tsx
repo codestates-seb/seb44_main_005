@@ -160,6 +160,12 @@ function Register() {
     window.location.href = `${url}/oauth2/authorization/google`;
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <StyleContainer>
       <ToastContainer
@@ -176,21 +182,36 @@ function Register() {
         <div className="flex pt-2">
           <Label htmlFor="email">이메일</Label>
           <InputContainer>
-            <Input id="email" type="email" onChange={onChangeEmail} />
+            <Input
+              id="email"
+              type="email"
+              onChange={onChangeEmail}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{emailMessage}</Message>
           </InputContainer>
         </div>
         <div className="flex pt-2">
           <Label htmlFor="name">닉네임</Label>
           <InputContainer>
-            <Input id="name" type="text" onChange={onChangeName} />
+            <Input
+              id="name"
+              type="text"
+              onChange={onChangeName}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{nameMessage}</Message>
           </InputContainer>
         </div>
         <div className="flex pt-2 pr-[12px]">
           <Label htmlFor="password">비밀번호</Label>
           <InputContainer>
-            <Input id="password" type="password" onChange={onChangePassword} />
+            <Input
+              id="password"
+              type="password"
+              onChange={onChangePassword}
+              onKeyDown={handleKeyDown}
+            />
             <Message>{passwordMessage}</Message>
           </InputContainer>
         </div>
@@ -201,6 +222,7 @@ function Register() {
               id="passwordConfirm"
               type="password"
               onChange={onChangePasswordConfirm}
+              onKeyDown={handleKeyDown}
             />
             <Message>{passwordConfirmMessage}</Message>
           </InputContainer>
@@ -214,6 +236,7 @@ function Register() {
               value={formattedPhoneNumber}
               pattern="\d{3}-\d{3,4}-\d{4}"
               onChange={onChangePhone}
+              onKeyDown={handleKeyDown}
               maxLength={13}
             />
             <Message>{phoneMessage}</Message>
