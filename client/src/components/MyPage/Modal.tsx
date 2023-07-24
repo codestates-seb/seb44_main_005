@@ -51,7 +51,11 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
           nickname: updatedNickname,
           phoneNumber: updatedPhoneNumber
         });
-      } 
+      } else if(res.status === 409) {
+        alert('중복된 닉네임입니다.');
+      } else if(res.status === 422) {
+        alert('중복된 전화번호입니다.');
+      }
     } catch (error) {
       console.error('편집 실패', error);
     }
@@ -97,7 +101,7 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
         </EditContainer>
         {!isNicknameValid && (
            <EditMessage>
-             <p className='text-red-500'>닉네임 편집은 영문, 숫자로만 가능합니다.</p>
+             <p className='text-red-500'>닉네임 편집은 영문 또는 숫자로만 가능합니다.</p>
           </EditMessage>
         )}
         <EditContainer>
