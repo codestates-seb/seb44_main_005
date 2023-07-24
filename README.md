@@ -29,7 +29,7 @@
 
 <br>
 
-## 🫂 팀원소개
+## 👨‍👨‍👧‍👧 팀원소개
 |![김태우](https://github.com/TaeWooKim-SCH.png)|![김민지](https://github.com/kminvita.png)|![현채은](https://github.com/chen4023.png)|![강동우](https://github.com/developer-DongWoo.png)|![신이수](https://github.com/isu-nice.png)|
 |---|---|---|---|---|
 |[김태우](https://github.com/TaeWooKim-SCH)|[김민지](https://github.com/kminvita)|[현채은](https://github.com/chen4023)|[강동우](https://github.com/developer-DongWoo)|[신이수](https://github.com/isu-nice)|
