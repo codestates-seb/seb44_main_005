@@ -35,7 +35,7 @@ function Page4() {
             <br />
             한눈에 비교해 보세요 !
           </SubText>
-          <HomeBtn onClick={() => navigate('/home')}>홈으로 이동하기</HomeBtn>
+          <HomeBtn onClick={() => navigate('/home')}>업체 보러가기</HomeBtn>
         </TextContainer>
         <img
           src={page4}
@@ -46,17 +46,12 @@ function Page4() {
           className="w-[700px] h-[650px]"
         />
       </PageContainer>
-      <div className="flex flex-col items-center mb-[10px]">
-        <div className="font-medium text-[18px] ml-1">
-          다시 감상하려면 누르세요!
-        </div>
-        <a href="#page1">
-          <img
-            src={bottom}
-            className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
-          />
-        </a>
-      </div>
+      <a href="#page5">
+        <img
+          src={bottom}
+          className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+        />
+      </a>
     </Wrapper>
   );
 }
