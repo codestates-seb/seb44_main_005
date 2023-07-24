@@ -28,8 +28,9 @@ function Register() {
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] =
     useState('올바른 이메일 형식이 아닙니다.');
-  const [nameMessage, setNameMessage] =
-    useState('영문과 숫자로만 입력해주세요.');
+  const [nameMessage, setNameMessage] = useState(
+    '영문, 숫자로만 4자 이상으로 입력해주세요.'
+  );
   const [passwordMessage, setPasswordMessage] = useState(
     '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
   );
@@ -61,7 +62,7 @@ function Register() {
     if (nameRegExp.test(currentName)) {
       setNameMessage('사용 가능한 닉네임 입니다.');
     } else {
-      setNameMessage('영문과 숫자로만 입력해주세요.');
+      setNameMessage('영문, 숫자로만 4자 이상으로 입력해주세요.');
     }
   };
 
@@ -215,7 +216,15 @@ function Register() {
               onChange={onChangeEmail}
               onKeyDown={handleKeyDown}
             />
-            <Message>{emailMessage}</Message>
+            <Message
+              className={
+                emailMessage === '사용 가능한 이메일 입니다.'
+                  ? 'text-[#21C55D]'
+                  : 'text-red-600'
+              }
+            >
+              {emailMessage}
+            </Message>
           </InputContainer>
         </div>
         <div className="flex pt-2">
@@ -227,7 +236,15 @@ function Register() {
               onChange={onChangeName}
               onKeyDown={handleKeyDown}
             />
-            <Message>{nameMessage}</Message>
+            <Message
+              className={
+                nameMessage === '사용 가능한 닉네임 입니다.'
+                  ? 'text-[#21C55D]'
+                  : 'text-red-600'
+              }
+            >
+              {nameMessage}
+            </Message>
           </InputContainer>
         </div>
         <div className="flex pt-2 pr-[12px]">
@@ -239,7 +256,15 @@ function Register() {
               onChange={onChangePassword}
               onKeyDown={handleKeyDown}
             />
-            <Message>{passwordMessage}</Message>
+            <Message
+              className={
+                passwordMessage === '안전한 비밀번호 입니다.'
+                  ? 'text-[#21C55D]'
+                  : 'text-red-600'
+              }
+            >
+              {passwordMessage}
+            </Message>
           </InputContainer>
         </div>
         <div className="flex pt-2 pr-[50px]">
@@ -251,7 +276,15 @@ function Register() {
               onChange={onChangePasswordConfirm}
               onKeyDown={handleKeyDown}
             />
-            <Message>{passwordConfirmMessage}</Message>
+            <Message
+              className={
+                passwordConfirmMessage === '비밀번호가 일치합니다.'
+                  ? 'text-[#21C55D]'
+                  : 'text-red-600'
+              }
+            >
+              {passwordConfirmMessage}
+            </Message>
           </InputContainer>
         </div>
         <div className="flex pt-2 pr-[15px] mb-[30px]">
@@ -266,7 +299,15 @@ function Register() {
               onKeyDown={handleKeyDown}
               maxLength={13}
             />
-            <Message>{phoneMessage}</Message>
+            <Message
+              className={
+                phoneMessage === '올바른 전화번호 형식입니다.'
+                  ? 'text-[#21C55D]'
+                  : 'text-red-600'
+              }
+            >
+              {phoneMessage}
+            </Message>
           </InputContainer>
         </div>
         <Button

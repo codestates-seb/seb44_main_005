@@ -14,7 +14,7 @@ export const MainText = tw.div`
   font-semibold 
   text-[55px] 
   text-[#4771B7] 
-  my-[30px]
+  my-[20px]
 `;
 
 export const SubText = tw.p`
