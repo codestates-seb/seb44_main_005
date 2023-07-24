@@ -28,7 +28,6 @@ function ReservationCheck() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const accessToken = sessionStorage.getItem('Authorization');
-  console.log(data);
   const reservationDelete = async (reservationId: number) => {
     const confirmDelete = confirm("정말 예약을 취소하겠습니까?");
     const res = confirmDelete && await fetch(`${API_URL}/reservations/${reservationId}`, {

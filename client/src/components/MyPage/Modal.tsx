@@ -45,17 +45,13 @@ function Modal({ onClick, defaultNickname, defaultPhoneNumber, onEditComplete })
       });
 
       if (res.ok) {
-        console.log('편집완료');
         toast.success('편집이 완료되었습니다.');
         onClick();
         onEditComplete({
           nickname: updatedNickname,
           phoneNumber: updatedPhoneNumber
         });
-      } else {
-        console.error('편집실패', res.status);
-        toast.error('편집에 실패했습니다.');
-      }
+      } 
     } catch (error) {
       console.error('편집 실패', error);
     }

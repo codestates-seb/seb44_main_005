@@ -33,21 +33,19 @@ function RegistrationNumber({
       });
       if (res.ok) {
         if(res.status === 200) {
-          console.log('200 OK');
           setIsDuplicate(false);
           setDuplicateMessage('사용 가능한 사업자 등록번호입니다.');
           setIsDuplicateChecked(true);
           alert('사용 가능한 사업자등록번호입니다.');
         };
       } else {
-        console.log('중복된 번호', res.status);
         setIsDuplicate(true);
         setDuplicateMessage('중복된 사업자 등록번호입니다.')
         setIsDuplicateChecked(true);
         alert('중복된 사업자 등록번호입니다.');
       }
     } catch (error) {
-      console.log('중복확인 중 에러가 발생했습니다.', error);
+      console.error('중복확인 중 에러가 발생했습니다.', error);
     }
   };
 
