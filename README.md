@@ -42,7 +42,10 @@
 </p>
 
  <br>
+ ## 👩🏻‍💻 
 
+<img width="1358" alt="스크린샷 2023-07-24 오후 11 08 21" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/2e6f4fcb-54d4-414c-8e8a-2c1576f34b39">
+ <br>
 
 ## 📂 Documents
 ### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
