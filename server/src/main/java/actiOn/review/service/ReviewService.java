@@ -73,7 +73,7 @@ public class ReviewService {
     // 업체의 모든 리뷰 탐색
     public List<Review> getAllReviews(Long storeId) {
         // 업체 존재 여부 확인 -> 리팩토링 필요
-        Store store = storeService.findverifyIdentityStore(storeId);
+        Store store = storeService.findStoreByStoreId(storeId);
 
         // Store 기준 모든 리뷰 조회
         List<Review> reviews = reviewRepository.findAllByStoreOrderByCreatedAtDesc(store);
@@ -82,7 +82,7 @@ public class ReviewService {
     }
 
     public double getStoreAvgRating(long storeId) {
-        Store store = storeService.findverifyIdentityStore(storeId);
+        Store store = storeService.findStoreByStoreId(storeId);
 
         return store.getRating();
     }
