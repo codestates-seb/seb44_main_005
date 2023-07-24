@@ -30,10 +30,16 @@
 <img width="90%" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/cc413283-d1eb-43ab-88e2-1c3264648ae2.gif">
 </p>
 
+ 
+ |---|---|
+ |![기능1](https://github.com/codestates-seb/seb44_main_005/assets/106866926/d95f4411-b1ba-4bea-9f8b-d5667eba1c30)|![기능2](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c54ff1bf-ea0a-467c-8d4e-a4ce2fbcbce0)|
+  |---|---|
+ |![기능3](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c6e377af-f7b8-49cc-bd4f-b680512ce913)|![기능4](https://github.com/codestates-seb/seb44_main_005/assets/106866926/5cc6a39a-cb41-4354-897d-7b26510d95ac)|
 
  <br>
  <br>
  <br>
+
 
 ## 🛠️ Stack
 
@@ -56,6 +62,8 @@
  <br>
  <br>
  <br>
+
+ 
 
 ## 📂 Documents
 ### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
