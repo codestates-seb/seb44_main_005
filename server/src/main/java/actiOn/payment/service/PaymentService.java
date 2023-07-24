@@ -32,15 +32,15 @@ public class PaymentService {
     private final MemberService memberService;
     private final PaymentCancelRepository paymentCancelRepository;
 
-    @Value("${TOSS_CLIENT_KEY}")
+    @Value("${payment.toss.test-client-key}")
     @Getter
     private String clientKey;
 
-    @Value("${TOSS_SECRET_KEY}")
+    @Value("${payment.toss.test-secret-key}")
     @Getter
     private String secretKey;
 
-    @Value("{payment.toss.url}")
+    @Value("${payment.toss.url}")
     private String tossPaymentURL;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -109,15 +109,15 @@ public class PaymentService {
             ResponseEntity<PaymentInfoDto> responseEntity =
                     restTemplate.exchange(url, HttpMethod.GET, requestEntity, PaymentInfoDto.class);
             PaymentInfoDto response = responseEntity.getBody();
+
             if (response.getStatus().equals(Payment.Status.IN_PROGRESS)) {
                 response = confirmPayment(response.getOrderId(),
                         response.getPaymentKey(),
                         response.getTotalAmount()).getBody();
-
             }
             return response;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             throw new BusinessLogicException(ExceptionCode.NOT_FOUND_PAYMENT);//
         }
     }
@@ -167,7 +167,7 @@ public class PaymentService {
             refundUpdateRepository(payment);
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
         }
     }

@@ -38,7 +38,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         // 리프레시 토큰 쿠키에 저장
         response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
-                "; Path=/; Secure; HttpOnly; SameSite=None; Max-Age=3600;");
+                "; Path=/; HttpOnly; Max-Age=3600;");
 
         response.getWriter().write(loginResponse);
 
