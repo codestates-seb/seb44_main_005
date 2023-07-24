@@ -5,15 +5,19 @@
 </p>
 
 
-
-
 ### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
 
 ### 🏝️ 배포 링크 : [Acti-On](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
 
 
-
 <br>
+
+## 👥 팀원소개
+|![김태우](https://github.com/TaeWooKim-SCH.png)|![김민지](https://github.com/kminvita.png)|![현채은](https://github.com/chen4023.png)|![강동우](https://github.com/developer-DongWoo.png)|![신이수](https://github.com/isu-nice.png)|
+|---|---|---|---|---|
+|[김태우](https://github.com/TaeWooKim-SCH)|[김민지](https://github.com/kminvita)|[현채은](https://github.com/chen4023)|[강동우](https://github.com/developer-DongWoo)|[신이수](https://github.com/isu-nice)|
+|FE 팀장|FE 팀원|FE 팀원|BE 부팀장|BE 팀원|
+
 <br>
 <br>
 
@@ -25,15 +29,6 @@
 <p>
 <img width="90%" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/cc413283-d1eb-43ab-88e2-1c3264648ae2.gif">
 </p>
-
-
-<br>
-
-## 👥 팀원소개
-|![김태우](https://github.com/TaeWooKim-SCH.png)|![김민지](https://github.com/kminvita.png)|![현채은](https://github.com/chen4023.png)|![강동우](https://github.com/developer-DongWoo.png)|![신이수](https://github.com/isu-nice.png)|
-|---|---|---|---|---|
-|[김태우](https://github.com/TaeWooKim-SCH)|[김민지](https://github.com/kminvita)|[현채은](https://github.com/chen4023)|[강동우](https://github.com/developer-DongWoo)|[신이수](https://github.com/isu-nice)|
-|FE 팀장|FE 팀원|FE 팀원|BE 부팀장|BE 팀원|
 
 
 <br>
