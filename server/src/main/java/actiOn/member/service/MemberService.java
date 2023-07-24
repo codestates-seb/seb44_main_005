@@ -36,7 +36,9 @@ public class MemberService {
         // 이메일, 닉네임, 휴대폰 번호 중복 검사
         verifyExistsEmail(member.getEmail());
         verifyExistsNickname(member.getNickname());
-        verifyExistsPhoneNumber(member.getPhoneNumber());
+        if (member.getPhoneNumber() != null) {
+            verifyExistsPhoneNumber(member.getPhoneNumber());
+        }
 
         // Password 단방향 암호화
         String encryptedPW = encoder.encode(member.getPassword());
