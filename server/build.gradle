@@ -35,6 +35,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'it.ozimov:embedded-redis:0.7.2'
     implementation 'redis.clients:jedis:3.6.1'
 
     // 파라미터 스토어
@@ -57,11 +60,6 @@ dependencies {
 
     //aws s3 의존
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
-    //redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'it.ozimov:embedded-redis:0.7.2'
-
 }
 
 dependencyManagement {
