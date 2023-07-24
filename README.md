@@ -1,4 +1,4 @@
-## 🐋 액티온(ActiOn) 
+# 🐋 액티온(ActiOn) 
 <p align="center">
 <img width="700" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
 
@@ -7,9 +7,9 @@
 
 
 
-### 개발기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
+### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
 
-### 배포주소 : [http://seb39-main-019-front.s3-website.ap-northeast-2.amazonaws.com/](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
+### 🏝️ 배포 링크 : [Acti-On](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
 
 
 
