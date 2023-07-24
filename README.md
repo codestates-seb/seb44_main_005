@@ -44,6 +44,10 @@
  <br>
  
  ## 👩🏻‍💻 프론트 담당 파트
+ 
+ |프론트 담당파트|백엔드 담당파트|
+ |---|---|
+ |![프론트](https://github.com/codestates-seb/seb44_main_005/assets/106866926/ec1d30c8-a5d0-403a-aa13-0cea83c96701)|![백엔드](https://github.com/codestates-seb/seb44_main_005/assets/106866926/232f70d0-e3dd-4260-8563-45dc75fcb710)|
 
 <img width="841" alt="스크린샷 2023-07-24 오후 11 10 41" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/ec1d30c8-a5d0-403a-aa13-0cea83c96701">
 
