@@ -30,6 +30,8 @@
 <img width="90%" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/cc413283-d1eb-43ab-88e2-1c3264648ae2.gif">
 </p>
 
+<br>
+<br>
  
 
  |![기능1](https://github.com/codestates-seb/seb44_main_005/assets/106866926/d95f4411-b1ba-4bea-9f8b-d5667eba1c30)|![기능2](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c54ff1bf-ea0a-467c-8d4e-a4ce2fbcbce0)|
