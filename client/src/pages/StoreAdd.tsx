@@ -101,8 +101,7 @@ function StoreAdd() {
         return alert('업체 이미지 등록에 실패했습니다.');
       }
       setIsLoading((prev) => !prev);
-      navigate(`/category/${json.storeId}`);
-      window.location.reload();
+      window.location.href = `/category/${json.storeId}`;
     } catch (error) {
       console.log(error);
     }
@@ -162,7 +161,8 @@ function StoreAdd() {
         setIsLoading((prev) => !prev);
         return alert('업체 등록에 실패했습니다.');
       }
-      navigate(`/category/${storeId}`);
+      setIsLoading((prev) => !prev);
+      window.location.href = `/category/${storeId}`;
     } catch (error) {
       console.log(error);
     }

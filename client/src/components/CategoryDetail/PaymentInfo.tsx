@@ -1,6 +1,7 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import defaultImg from '../../assets/profile.svg';
 import { CategoryDetailState, ReserFormState, totalPrice } from '../../store/categoryDetailAtom';
 import {
   AmountBox,
@@ -22,7 +23,7 @@ function PaymentInfo() {
   const location = useLocation();
   const navigate = useNavigate();
   const storeId = location.pathname.substring(10);
-  
+  console.log(data);
   const movePayment = async () => {
     if (!isLogin) {
       alert(`로그인 상태에서만 예약할 수 있습니다.`);
@@ -93,7 +94,7 @@ function PaymentInfo() {
         </WishButton>
       </div>
       <InquiryBox>
-        <StoreProfile src={data.profileImg} alt="업체 프로필" />
+        <StoreProfile src={data.profileImg === 'default image' ? defaultImg : data.profileImg} alt="업체 프로필" />
         <div>
           <div className="font-semibold">{data.storeName}</div>
           <div className="text-xs">[문의] 카카오톡 아이디: {data.kakao}</div>
