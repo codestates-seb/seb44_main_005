@@ -8,7 +8,6 @@ import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.reservation.service.ReservationService;
 import actiOn.review.entity.Review;
-import actiOn.review.mapper.ReviewMapper;
 import actiOn.review.repository.ReviewRepository;
 import actiOn.store.entity.Store;
 import actiOn.store.service.StoreService;
@@ -24,7 +23,6 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreService storeService;
-    private final ReviewMapper reviewMapper;
     private final MemberService memberService;
     private final ReservationService reservationService;
 
