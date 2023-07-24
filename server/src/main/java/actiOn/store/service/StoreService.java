@@ -149,19 +149,8 @@ public class StoreService {
         findStore.setLongitude(Double.parseDouble(location.getLongitude()));
     }
 
-    @Transactional
     public void deleteStore(Long storeId) {
-        Store findStore = this.findStoreByStoreId(storeId);
-
-        //Todo member가 올린 스토어인지 확인 필요
-        String loginUserEmail = AuthUtil.getCurrentMemberEmail();
-        Member findMember = memberService.findMemberByEmail(loginUserEmail);
-
-        if (!findStore.getMember().getMemberId().equals(findMember.getMemberId())) {
-            throw new IllegalArgumentException("업체를 등록한 파트너만이 업체 삭제가 가능합니다.");
-        }
-
-        //Todo 업체를 삭제할 때 사업체 등록번호를 체크한다든지, 비밀번호를 받는 기능이 추가되면 어떨까?
+        Store findStore = findverifyIdentityStore(storeId);
 
         storeRepository.delete(findStore);
     }
