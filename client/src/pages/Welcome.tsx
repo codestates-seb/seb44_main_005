@@ -5,6 +5,7 @@ import WelcomeLayout from '../components/Layout/WelcomeLayout';
 import Page2 from '../components/IntroPage/Page2';
 import Page3 from '../components/IntroPage/Page3';
 import Page4 from '../components/IntroPage/Page4';
+import Page5 from '../components/IntroPage/Page5';
 
 const Welcome = () => {
   return (
@@ -15,6 +16,7 @@ const Welcome = () => {
           <Page2 />
           <Page3 />
           <Page4 />
+          <Page5 />
         </WelcomeContainer>
       }
     />
