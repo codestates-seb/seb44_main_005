@@ -14,4 +14,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findAllByStoreOrderByCreatedAtDesc(Store store);
 
     Long countByStoreAndMember(Store store, Member member);
+
+    int countByStore(Store store);
 }

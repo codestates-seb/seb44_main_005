@@ -74,76 +74,74 @@ function ReservationCheck() {
         </NoReservation>
       ) : (
         data && data.map((reservation, idx) => (
-          <div className="overflow-y-auto">
-            <ResCheckCards key={idx}>
-              <ResImgContainer>
-                <ImgResSzing>
-                  <ImgStyle src={reservation.storeImg} alt="reservation image" />
-                </ImgResSzing>
-              </ResImgContainer>
-              <ResInfoContainer>
-                <StatusContainer>
-                  <div 
-                    className={
-                      `
-                        font-medium
-                        text-[15px]
-                        pt-[1px]
-                        ${reservation.reservationStatus === "예약 확정" 
-                          ? "bg-[#4771B7] text-white"
-                          : reservation.reservationStatus === "이용 완료"
-                          ? "bg-white text-[#4771B7] border-[1px] border-[#4771B7]"
-                          : "bg-[#DD3535] text-white"
-                        } 
-                        w-[77px]
-                        h-[27px]
-                        flex
-                        justify-center
-                        items-center
-                      `
-                    }
-                  >
-                    <span>{reservation.reservationStatus}</span>
-                  </div>
-                </StatusContainer>
-                <ResInformation>
-                  <div>
-                    <span className="text-[16px]">{reservation.reservationDate}</span>
-                  </div>
+          <ResCheckCards key={idx}>
+            <ResImgContainer>
+              <ImgResSzing>
+                <ImgStyle src={reservation.storeImg} alt="reservation image" />
+              </ImgResSzing>
+            </ResImgContainer>
+            <ResInfoContainer>
+              <StatusContainer>
+                <div 
+                  className={
+                    `
+                      font-medium
+                      text-[15px]
+                      pt-[1px]
+                      ${reservation.reservationStatus === "예약 확정" 
+                        ? "bg-[#4771B7] text-white"
+                        : reservation.reservationStatus === "이용 완료"
+                        ? "bg-white text-[#4771B7] border-[1px] border-[#4771B7]"
+                        : "bg-[#DD3535] text-white"
+                      } 
+                      w-[77px]
+                      h-[27px]
+                      flex
+                      justify-center
+                      items-center
+                    `
+                  }
+                >
+                  <span>{reservation.reservationStatus}</span>
+                </div>
+              </StatusContainer>
+              <ResInformation>
+                <div>
+                  <span className="text-[16px]">{reservation.reservationDate}</span>
+                </div>
+                <div className="space-x-3">
+                  <Link to={`/category/${reservation.storeId}`}><ResDate>{reservation.storeName}</ResDate></Link>
+                  <ResItemCount>총 {reservation.itemCount}개 상품 결제</ResItemCount>
+                </div>
+                <div>
+                  <ResTotalPrice>결제금액: {Number(reservation.totalPrice).toLocaleString()}원</ResTotalPrice>
+                </div>
+              </ResInformation>
+              <ResButtonsContainer>
+                {reservation.reservationStatus === "예약 확정" && (
                   <div className="space-x-3">
-                    <Link to={`/category/${reservation.storeId}`}><ResDate>{reservation.storeName}</ResDate></Link>
-                    <ResItemCount>총 {reservation.itemCount}개 상품 결제</ResItemCount>
-                  </div>
-                  <div>
-                    <ResTotalPrice>결제금액: {Number(reservation.totalPrice).toLocaleString()}원</ResTotalPrice>
-                  </div>
-                </ResInformation>
-                <ResButtonsContainer>
-                  {reservation.reservationStatus === "예약 확정" && (
-                    <div className="space-x-3">
-                      <Link to={`/my/order/edit?reservationId=${reservation.reservationId}`}>
-                        <ButtonStyle type="button">상세 확인</ButtonStyle>
-                      </Link>
-                      <ButtonStyle
-                        type="button"
-                        onClick={() => {reservationDelete(reservation.reservationId)}}
-                      >예약 취소</ButtonStyle>
-                    </div>
-                  )}
-                  {reservation.reservationStatus === "예약 취소" && (
-                    <div>
-                      <NoButtons></NoButtons>
-                    </div>
-                  )}
-                  {reservation.reservationStatus === "이용 완료" && (
-                    <Link to={`/category/${reservation.storeId}`}>
-                      <ButtonReview>리뷰 작성</ButtonReview>
+                    <Link to={`/my/order/edit?reservationId=${reservation.reservationId}`}>
+                      <ButtonStyle type="button">상세 확인</ButtonStyle>
                     </Link>
-                  )}
-                </ResButtonsContainer>
-              </ResInfoContainer>
-            </ResCheckCards>
-          </div>
+                    <ButtonStyle
+                      type="button"
+                      onClick={() => {reservationDelete(reservation.reservationId)}}
+                    >예약 취소</ButtonStyle>
+                  </div>
+                )}
+                {reservation.reservationStatus === "예약 취소" && (
+                  <div>
+                    <NoButtons></NoButtons>
+                  </div>
+                )}
+                {reservation.reservationStatus === "이용 완료" && (
+                  <Link to={`/category/${reservation.storeId}`}>
+                    <ButtonReview>리뷰 작성</ButtonReview>
+                  </Link>
+                )}
+              </ResButtonsContainer>
+            </ResInfoContainer>
+          </ResCheckCards>
         ))
       )}
     </ResCheckContainer>
