@@ -1,1 +1,71 @@
-# seb44_main_005
+# 🐋 액티온(ActiOn) 
+<p align="center">
+<img width="700" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
+
+</p>
+
+
+
+
+### 개발기간: 2023.06.07 ~ 2023.07.24?
+
+### 배포주소 : [http://seb39-main-019-front.s3-website.ap-northeast-2.amazonaws.com/](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
+
+
+
+<br>
+<br>
+<br>
+
+## 🐋 액티온(ActiOn)에서는 어떤 서비스를 이용할 수 있나요 ?
+
+ ### 액티온(ActiOn)은 제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드리고 있습니다.
+<br>
+
+<p>
+<img width="90%" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/cc413283-d1eb-43ab-88e2-1c3264648ae2.gif">
+</p>
+
+
+<br>
+
+## 🫂 팀원소개
+|![김태우]()|![김민지]()|![현채은]()|![강동우]()|![신이수]()|
+|---|---|---|---|---|
+|[김태우]()|[김민지]()|[현채은]()|[강동우]()|[신이수]()|
+|FE 팀장|FE|FE|BE 부팀장|BE|
+
+
+<br>
+
+## 📂 Stack
+
+<p align="center">
+  <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/fd3fd2be-c6e7-4c74-bf5d-eaa201305c6c">
+  
+
+</p>
+
+ <br>
+
+
+## :memo: Documents
+### [사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
+### [API 명세서]([https://github.com/codestates-seb/seb39_main_019/wiki/API-%EB%AC%B8%EC%84%9C](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4))
+### [테이블 명세서](https://github.com/codestates-seb/seb39_main_019/wiki/ERD)
+### [화면 정의서]([https://github.com/codestates-seb/seb39_main_019/wiki/User-Flow](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1))
+
+<br>
+
+
+## ✨Git Commit & PR Message
+
+| 태그이름 | 설명                                                  |
+| -------- | ----------------------------------------------------- |
+| feat     | 새로운 기능 추가                                      |
+| fix      | 버그 수정                                             |
+| design   | CSS 등 UI 수정                                 |
+| style    | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우 |
+| refactor | 코드 리팩토링                                         |
+| docs     | 문서 수정                                  |
+| test     | 테스트 코드를 생성하거나 수정 하는 경우               |
