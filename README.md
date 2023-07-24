@@ -45,15 +45,15 @@
 
 
 ## 📂 Documents
-### [✏️ 사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
-### [✏️ API 명세서](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
-### [✏️ 테이블 명세서](https://www.notion.so/codestates/d430e319bba240ddb988b9254ff79bc0?pvs=4)
+### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
+### [✏️  API 명세서](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
+### [✏️  ERD]()
 <hr>
   <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/a2d7e5bc-261d-4bec-8b04-4e095c1f23a6">
 <br>
 <br>
 
-### [✏️ 화면 정의서](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1)
+### [✏️  화면 정의서](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1)
 <hr>
 <img width="1000" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
 
