@@ -33,7 +33,7 @@ function CategoryDetail() {
       delete json.items;
       setData(json);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -48,7 +48,7 @@ function CategoryDetail() {
       const json = await res.json();
       setData((prev) => ({ ...prev, items: json }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -23,7 +23,7 @@ function PaymentInfo() {
   const location = useLocation();
   const navigate = useNavigate();
   const storeId = location.pathname.substring(10);
-  console.log(data);
+
   const movePayment = async () => {
     if (!isLogin) {
       alert(`로그인 상태에서만 예약할 수 있습니다.`);
@@ -39,7 +39,6 @@ function PaymentInfo() {
       return alert('티켓을 선택해주세요.');
     }
     else if (form.reservationPhone.substring(0, 3) !== '010') {
-      console.log(form.reservationPhone.substring(0, 3));
       return alert('연락처를 다시 확인해주세요.');
     }
     const items = form.reservationItems.filter((item) => item.ticketCount !== 0);

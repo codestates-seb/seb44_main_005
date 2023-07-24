@@ -102,7 +102,7 @@ function StoreAdd() {
       setIsLoading((prev) => !prev);
       window.location.href = `/category/${json.storeId}`;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -122,7 +122,7 @@ function StoreAdd() {
       setFirstImg(json.storeImages[0]);
       setDetailImgs(json.storeImages.slice(1));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -163,7 +163,7 @@ function StoreAdd() {
       setIsLoading((prev) => !prev);
       window.location.href = `/category/${storeId}`;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
