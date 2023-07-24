@@ -51,8 +51,8 @@
 
 ## :memo: Documents
 ### [사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
-### [API 명세서]([https://github.com/codestates-seb/seb39_main_019/wiki/API-%EB%AC%B8%EC%84%9C](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4))
-### [테이블 명세서](https://github.com/codestates-seb/seb39_main_019/wiki/ERD)
+### [API 명세서]([https://github.com/codestates-seb/seb39_main_019/wiki/API-%EB%AC%B8%EC%84%9C](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
+### [테이블 명세서]()
 ### [화면 정의서]([https://github.com/codestates-seb/seb39_main_019/wiki/User-Flow](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1))
 
 <br>
