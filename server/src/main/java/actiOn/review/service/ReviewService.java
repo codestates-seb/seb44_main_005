@@ -49,7 +49,7 @@ public class ReviewService {
         //해당 예약에 리뷰 이력이 없을 것 + reservation에서 스토어와 멤버에 해당하는게 있는지 확인
         //Todo countReservation()를 이용해서 예약숫자 조회 // 그리고 조건에 맞는 리뷰카운트 해서 여유있으면 리뷰 남기게 해주기
         int reservationCount = reservationService.countReservation(store, findMember);
-        long nowReviewCount = reviewRepository.countByStore(store);
+        long nowReviewCount = reviewRepository.countByStoreAndMember(store,findMember);
 
         if (reservationCount > nowReviewCount) {
             review.setMember(findMember);
