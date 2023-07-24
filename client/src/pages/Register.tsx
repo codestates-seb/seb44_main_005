@@ -28,7 +28,9 @@ function Register() {
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] =
     useState('올바른 이메일 형식이 아닙니다.');
-  const [nameMessage, setNameMessage] = useState('영문 숫자로만 입력해주세요.');
+  const [nameMessage, setNameMessage] = useState(
+    '영문과 숫자를 모두 포함해서 입력해주세요.'
+  );
   const [passwordMessage, setPasswordMessage] = useState(
     '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
   );

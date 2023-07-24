@@ -144,7 +144,7 @@ function ReservationModify() {
   }, [reservationId]);
 
   return (
-    <div className="flex justify-center h-[90vh]">
+    <div className="flex justify-center">
       <ReservationContainer>
         <ReservationTitle>{data.storeName}</ReservationTitle>
         <Title>예약정보</Title>
