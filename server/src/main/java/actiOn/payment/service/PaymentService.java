@@ -131,7 +131,7 @@ public class PaymentService {
         paymentConfirmDto.setOrderId(orderId);
 
         HttpEntity<PaymentConfirmDto> requestEntity = new HttpEntity<>(paymentConfirmDto, headers); // 헤더와 바디를 합쳐서 객체 생성
-        String url = tossPaymentURL + "/confirm"; // 요청보낼 곳
+        String url = tossPaymentURL + "confirm"; // 요청보낼 곳
         return restTemplate.postForEntity(url, requestEntity, PaymentInfoDto.class); // 요청
     }
 

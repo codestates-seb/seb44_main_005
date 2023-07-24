@@ -97,4 +97,4 @@ payment: # 토스 페이먼츠 관련
   toss:
     test-client-key: ${TOSS_CLIENT_KEY}
     test-secret-key: ${TOSS_SECRET_KEY}
-    url: "https://api.tosspayments.com/v1/payments"
+    url: "https://api.tosspayments.com/v1/payments/"

@@ -9,7 +9,6 @@ import actiOn.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -22,7 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "STORE")
-@SQLDelete(sql = "UPDATE STORE SET deleted_at = CURRENT_TIMESTAMP where store_id = ?")
+//@SQLDelete(sql = "UPDATE STORE SET deleted_at = CURRENT_TIMESTAMP where store_id = ?")
 @Where(clause = "deleted_at IS NULL")
 public class Store extends BaseEntity {
     @Id

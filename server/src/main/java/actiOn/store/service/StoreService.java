@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,6 +84,7 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
+    // 업체 등록
     public Store createStore(Store store) { // store를 받아서, 주소를 가져온 다음, 그 주소를 카카오로 보내서 좌표를 받아옴
         Store shapedStore = shapingStore(store);
 
@@ -91,6 +93,7 @@ public class StoreService {
         return storeRepository.save(shapedStore);
     }
 
+    // 업체 수정
     @Transactional(propagation = Propagation.REQUIRED)
     public Store updateStore(Store store, long storeId) {
         Store findStore = findverifyIdentityStore(storeId);
@@ -115,44 +118,13 @@ public class StoreService {
         return storeRepository.save(findStore);
     }
 
-    private int computeLowPrice(List<Item> items) {
-        int lowPrice = 0;
-
-        for (Item item : items) {
-            int itemPrice = item.getPrice();
-            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
-        }
-
-        return lowPrice;
-    }
-
-    private Store shapingStore(Store store) {
-        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
-        store.setLatitude(Double.parseDouble(location.getLatitude()));
-        store.setLongitude(Double.parseDouble(location.getLongitude()));
-        List<Item> items = store.getItems();
-        int lowPrice = 0;
-        for (Item item : items) {
-            item.setStore(store);
-            int itemPrice = item.getPrice();
-            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
-        }
-        store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
-        return store;
-    }
-
-    // 위도, 경도, 주소 설정
-    private void shapingFindStore(Store findStore, Store store) {
-        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
-        findStore.setAddress(store.getAddress());
-        findStore.setLatitude(Double.parseDouble(location.getLatitude()));
-        findStore.setLongitude(Double.parseDouble(location.getLongitude()));
-    }
-
-    public void deleteStore(Long storeId) {
+    // 업체 삭제
+    public void deleteStore(long storeId) {
         Store findStore = findverifyIdentityStore(storeId);
 
-        storeRepository.delete(findStore);
+        // soft delete
+        findStore.setDeletedAt(LocalDateTime.now());
+        storeRepository.save(findStore);
     }
 
     public List<Long> getWishStoreIdList(Member member) {
@@ -170,15 +142,6 @@ public class StoreService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
     }
 
-    private void isValidValue(String category, String sortField) {
-        List<String> categoryList = Arrays.asList("all", "스노클링/다이빙", "수상레저", "서핑", "승마", "ATV");
-        List<String> sortFieldList = Arrays.asList("likeCount", "rating", "lowPrice", "highPrice", "reviewCount");
-
-        if (!categoryList.contains(category) || !sortFieldList.contains(sortField)) {
-            throw new BusinessLogicException(ExceptionCode.INVALID_PARAMETER_VALUE);
-        }
-    }
-
     public List<Store> findStoreByCategory(String category, String sortFiled) {
         isValidValue(category, sortFiled);
         Sort.Direction sortOption = Sort.Direction.DESC;
@@ -192,7 +155,7 @@ public class StoreService {
         return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
     }
 
-    //메인페이지
+    // 메인페이지
     public MainPageResponseDto getMainPage() {
 
         MainPageResponseDto mainPageResponseDto = new MainPageResponseDto();
@@ -313,5 +276,48 @@ public class StoreService {
         System.out.println(thumbnailImage);
         if (images == null) throw new BusinessLogicException(ExceptionCode.IMAGE_LIST_IS_EMPTY);
         if (thumbnailImage == null) throw new BusinessLogicException(ExceptionCode.THUMBNAIL_IS_NULL);
+    }
+
+    // 위도, 경도, 주소 설정
+    private void shapingFindStore(Store findStore, Store store) {
+        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
+        findStore.setAddress(store.getAddress());
+        findStore.setLatitude(Double.parseDouble(location.getLatitude()));
+        findStore.setLongitude(Double.parseDouble(location.getLongitude()));
+    }
+
+    private void isValidValue(String category, String sortField) {
+        List<String> categoryList = Arrays.asList("all", "스노클링/다이빙", "수상레저", "서핑", "승마", "ATV");
+        List<String> sortFieldList = Arrays.asList("likeCount", "rating", "lowPrice", "highPrice", "reviewCount");
+
+        if (!categoryList.contains(category) || !sortFieldList.contains(sortField)) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_PARAMETER_VALUE);
+        }
+    }
+
+    private int computeLowPrice(List<Item> items) {
+        int lowPrice = 0;
+
+        for (Item item : items) {
+            int itemPrice = item.getPrice();
+            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
+        }
+
+        return lowPrice;
+    }
+
+    private Store shapingStore(Store store) {
+        GeoLocation location = kakaoMapService.addressToLocation(store.getAddress());
+        store.setLatitude(Double.parseDouble(location.getLatitude()));
+        store.setLongitude(Double.parseDouble(location.getLongitude()));
+        List<Item> items = store.getItems();
+        int lowPrice = 0;
+        for (Item item : items) {
+            item.setStore(store);
+            int itemPrice = item.getPrice();
+            if (lowPrice == 0 || itemPrice < lowPrice) lowPrice = itemPrice;
+        }
+        store.setLowPrice(lowPrice); // 0으로 나오는 문제 해결 필요
+        return store;
     }
 }

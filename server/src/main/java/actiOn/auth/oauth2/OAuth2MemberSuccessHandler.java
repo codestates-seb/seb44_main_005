@@ -67,7 +67,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         // 리프레시 토큰 쿠키에 저장
         response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
-                "; Path=/; HttpOnly; Max-Age=3600;");
+                "; Path=/; Secure; SameSite=None; HttpOnly; Max-Age=3600;");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         response.getWriter().write(loginResponse);
 
