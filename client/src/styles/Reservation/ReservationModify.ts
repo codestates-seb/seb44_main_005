@@ -4,7 +4,7 @@ export const ReservationContainer = tw.div`
   w-[600px]
   mt-[80px]
   mr-16
-  mb-80px
+  mb-[80px]
 `;
 
 export const Title = tw.div`
