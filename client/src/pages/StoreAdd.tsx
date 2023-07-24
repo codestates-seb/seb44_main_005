@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { AddBtn, StoreAddSection } from '../styles/StoreAdd/StoreAdd';
@@ -28,7 +28,6 @@ function StoreAdd() {
   const setDetailImgs = useSetRecoilState(DetailImgsState);
   const setPageTitle = useSetRecoilState(pageTitleState);
   const location = useLocation();
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const storeId = searchParams.get('store_id');
   const accessToken = sessionStorage.getItem('Authorization');
