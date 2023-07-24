@@ -31,7 +31,9 @@
 </p>
 
 
-<br>
+ <br>
+ <br>
+ <br>
 
 ## 🛠️ Stack
 
@@ -42,6 +44,8 @@
 </p>
 
  <br>
+ <br>
+ <br>
  
  ## 👩🏻‍💻 담당 파트
  
@@ -49,7 +53,9 @@
  |---|---|
  |![프론트](https://github.com/codestates-seb/seb44_main_005/assets/106866926/ec1d30c8-a5d0-403a-aa13-0cea83c96701)|![백엔드](https://github.com/codestates-seb/seb44_main_005/assets/106866926/232f70d0-e3dd-4260-8563-45dc75fcb710)|
 
-
+ <br>
+ <br>
+ <br>
 
 ## 📂 Documents
 ### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
