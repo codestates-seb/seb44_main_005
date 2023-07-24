@@ -7,7 +7,7 @@
 
 
 
-### 개발기간: 2023.06.07 ~ 2023.07.24?
+### 개발기간: 2023.07.06 ~ 2023.07.24
 
 ### 배포주소 : [http://seb39-main-019-front.s3-website.ap-northeast-2.amazonaws.com/](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
 
