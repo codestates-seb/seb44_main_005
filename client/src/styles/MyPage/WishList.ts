@@ -4,10 +4,10 @@ export const WishContainer = tw.div`
     border-[1px]
     border-[#4771B7]
     py-16
-    px-[50px]
-    min-h-[800px]
+    px-[35px]
+    h-[800px]
     w-[902px]
-    overflow-y-scroll
+    overflow-y-auto
 `;
 
 export const NoWishList = tw.div`

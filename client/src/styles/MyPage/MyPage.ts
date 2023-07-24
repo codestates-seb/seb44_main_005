@@ -16,7 +16,8 @@ export const MyBioContainer = tw.div`
 
 export const MySpace = tw.div`
     space-y-4
-    py-5
+    pt-5
+    pb-10
     px-10
 `;
 
