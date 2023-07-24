@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "STORE")
 @SQLDelete(sql = "UPDATE STORE SET deleted_at = CURRENT_TIMESTAMP where store_id = ?")
 @Where(clause = "deleted_at IS NULL")
 public class Store extends BaseEntity {
