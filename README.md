@@ -33,7 +33,7 @@
 |![김태우]()|![김민지]()|![현채은]()|![강동우]()|![신이수]()|
 |---|---|---|---|---|
 |[김태우](https://github.com/TaeWooKim-SCH)|[김민지](https://github.com/kminvita)|[현채은](https://github.com/chen4023)|[강동우](https://github.com/developer-DongWoo)|[신이수](https://github.com/isu-nice)|
-|FE 팀장|FE|FE|BE 부팀장|BE|
+|FE 팀장|FE 팀원|FE 팀원|BE 부팀장|BE 팀원|
 
 
 <br>
