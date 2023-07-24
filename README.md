@@ -34,7 +34,7 @@
  |---|---|
  |![기능1](https://github.com/codestates-seb/seb44_main_005/assets/106866926/d95f4411-b1ba-4bea-9f8b-d5667eba1c30)|![기능2](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c54ff1bf-ea0a-467c-8d4e-a4ce2fbcbce0)|
   |---|---|
- |![기능3](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c6e377af-f7b8-49cc-bd4f-b680512ce913)|![기능4](https://github.com/codestates-seb/seb44_main_005/assets/106866926/5cc6a39a-cb41-4354-897d-7b26510d95ac)|
+ |![기능3](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c6e377af-f7b8-49cc-bd4f-b680512ce913)|![기능4](https://github.com/codestates-seb/seb44_main_005/assets/106866926/6d5a652d-d54c-4743-9e25-96e2f7156f96)|
 
  <br>
  <br>
