@@ -42,9 +42,12 @@
 </p>
 
  <br>
- ## 👩🏻‍💻 
+ 
+ ## 👩🏻‍💻 프론트 팀원 별 맡은 역할
 
-<img width="1358" alt="스크린샷 2023-07-24 오후 11 08 21" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/2e6f4fcb-54d4-414c-8e8a-2c1576f34b39">
+<img width="841" alt="스크린샷 2023-07-24 오후 11 10 41" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/ec1d30c8-a5d0-403a-aa13-0cea83c96701">
+
+
  <br>
 
 ## 📂 Documents
