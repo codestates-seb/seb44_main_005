@@ -28,10 +28,7 @@ public class ReviewService {
 
     public Review createReview(Long storeId, Review review) {
         //review 내용 욕설 검증
-        BadWordFiltering badWordFiltering = new BadWordFiltering();
-        if (badWordFiltering.blankCheck(review.getContent())) {
-            throw new BusinessLogicException(ExceptionCode.BAD_WORD_NOT_ALLOWED);
-        }
+        verifyBadWord(review);
 
         // store 검증
         String email = AuthUtil.getCurrentMemberEmail();
@@ -43,11 +40,12 @@ public class ReviewService {
 //        boolean hasReservationEmail = reservationList.stream()
 //                .anyMatch(reservation -> reservation.getReservationId() == (findMember.getMemberId()));
         //해당 예약에 리뷰 이력이 없을 것 + reservation에서 스토어와 멤버에 해당하는게 있는지 확인
-        //Todo countReservation()를 이용해서 예약숫자 조회 // 그리고 조건에 맞는 리뷰카운트 해서 여유있으면 리뷰 남기게 해주기
-        int reservationCount = reservationService.countReservation(store, findMember);
-        long nowReviewCount = reviewRepository.countByStoreAndMember(store,findMember);
 
-        if (reservationCount > nowReviewCount) {
+        // countReservation()를 이용해서 예약숫자 조회 // 그리고 조건에 맞는 리뷰카운트 해서 여유있으면 리뷰 남기게 해주기
+        int reservationCount = reservationService.countReservation(store, findMember);
+        long myReviewCount = reviewRepository.countByStoreAndMember(store,findMember);
+
+        if (reservationCount > myReviewCount) {
             review.setMember(findMember);
             review.setStore(store);
         } else {
@@ -56,18 +54,27 @@ public class ReviewService {
 
         Review saveReview = reviewRepository.save(review);
 
+        int totalReviewCount = reviewRepository.countByStore(store);
         // 지금 해당 업체의 총점
-        double nowTotalRating = nowReviewCount * store.getRating();
+        double nowTotalRating = totalReviewCount * store.getRating();
         // 더해진 업체의 총점
         double addedTotalRating = nowTotalRating + review.getRating();
 
         // 업데이트되어야하는 업체의 평점
-        double avgRating = addedTotalRating / (nowReviewCount + 1);
+        double avgRating = addedTotalRating / totalReviewCount;
 
         // 전체 평점의 평균 저장 및 리뷰 개수 추가
         storeService.updateRatingAndReviewCount(store, avgRating);
 
         return saveReview;
+    }
+
+    private void verifyBadWord(Review review) {
+        BadWordFiltering badWordFiltering = new BadWordFiltering();
+
+        if (badWordFiltering.blankCheck(review.getContent())) {
+            throw new BusinessLogicException(ExceptionCode.BAD_WORD_NOT_ALLOWED);
+        }
     }
 
     // 업체의 모든 리뷰 탐색

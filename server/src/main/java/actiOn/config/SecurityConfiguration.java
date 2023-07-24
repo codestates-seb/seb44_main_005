@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -51,9 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .csrf().disable()
-                .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource())
-                )
+                .cors(Customizer.withDefaults())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -154,10 +153,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         );
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(2000L);
-//        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Refresh", "Set-Cookie"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(
+                Arrays.asList("Cache-Control", "Connection", "Keep-Alive", "Origin", "Accept",
+                        "X-Requested-With", "Content-Type", "Authorization", "Refresh", "Set-Cookie"
+                )
+        );
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh", "Set-Cookie"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
