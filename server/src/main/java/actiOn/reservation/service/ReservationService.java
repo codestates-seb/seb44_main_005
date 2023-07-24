@@ -230,6 +230,7 @@ public class ReservationService {
         Store findStore = storeService.findStoreByStoreId(storeId);
         List<Item> findItems = findStore.getItems();
         Map<Long, Integer> reservationTickets = reservationTicketCount(findStore, date);
+
         for (Item item : findItems) {
             if (item.getStatus().equals(Item.ItemStatus.DELETED)) continue;
             int remainingTicketCount = getRemainingTicketCount(item, reservationTickets);
@@ -250,14 +251,16 @@ public class ReservationService {
      * 여기서부터는 선택한 날짜와 스토어에 속해있는 아이템들을 대상으로 몇 개의 예약이 적용되어있는지 확인하는 역할입니다. remainingTicket 을 계산하는데 사용됩니다.
      */
     public Map<Long, Integer> reservationTicketCount(Store store, LocalDate currentDate) throws BusinessLogicException {
-        //Todo 리펙토링하기
+        //Todo 리팩토링 필요
         //선택한 업체와 날짜의 예약들을 가져옴
         List<Reservation> currentDateReservations =
                 reservationRepository.findByReservationDateAndStore(currentDate, store);
         Map<Long, Integer> remainingTicketInfo = new HashMap<>();
+
         for (Reservation reservation : currentDateReservations) {
             //취소된 예약은 셈하지 않는다.
             if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.RESERVATION_CANCEL)) continue;
+
             List<ReservationItem> reservationItems = reservation.getReservationItems();
             for (ReservationItem reservationItem : reservationItems) {
                 long itemId = reservationItem.getItem().getItemId();
@@ -354,7 +357,6 @@ public class ReservationService {
         return count;
     }
 
-
     /**
      * 여기서부터는 예약 상태를, 사용완료로 변경하는 역할과 관련이 있습니다.
      */
@@ -362,7 +364,6 @@ public class ReservationService {
         Reservation findReservation = findReservation(reservationId);
         findReservation.setReservationStatus(Reservation.ReservationStatus.RESERVATION_USE_COMPLETED);
     }
-
 
     /**
      * 여기서부터는 아이템을 검증합니다.
