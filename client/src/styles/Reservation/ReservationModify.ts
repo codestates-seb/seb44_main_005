@@ -1,10 +1,10 @@
 import tw from 'tailwind-styled-components';
 
 export const ReservationContainer = tw.div`
-  h-[77vh]
   w-[600px]
   mt-[80px]
   mr-16
+  mb-80px
 `;
 
 export const Title = tw.div`

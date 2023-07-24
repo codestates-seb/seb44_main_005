@@ -60,7 +60,7 @@ function Register() {
     if (nameRegExp.test(currentName)) {
       setNameMessage('사용 가능한 닉네임 입니다.');
     } else {
-      setNameMessage('영문 숫자로만 입력해주세요.');
+      setNameMessage('영문과 숫자를 모두 포함해서 입력해주세요.');
     }
   };
 
