@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import page4 from '../../assets/page4.svg';
+import page4 from '../../assets/page4(2).svg';
 import top from '../../assets/top.svg';
 import bottom from '../../assets/bottom.svg';
 

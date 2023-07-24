@@ -836,7 +836,8 @@ relative
     w-[902px]
 `,Qg=b.div`
     space-y-4
-    py-5
+    pt-5
+    pb-10
     px-10
 `,T8=b.div`
     grid
@@ -961,10 +962,10 @@ relative
     border-[1px]
     border-[#4771B7]
     py-16
-    px-[50px]
-    min-h-[800px]
+    px-[35px]
+    h-[800px]
     w-[902px]
-    overflow-y-scroll
+    overflow-y-auto
 `,G8=b.div`
     flex
     flex-col
@@ -1082,7 +1083,7 @@ relative
                         flex
                         justify-center
                         items-center
-                      `,children:u.jsx("span",{children:l.reservationStatus})})}),u.jsxs(oM,{children:[u.jsx("div",{children:u.jsx("span",{className:"text-[16px]",children:l.reservationDate})}),u.jsxs("div",{className:"space-x-3",children:[u.jsx(we,{to:`/category/${l.storeId}`,children:u.jsx(sM,{children:l.storeName})}),u.jsxs(iM,{children:["총 ",l.itemCount,"개 상품 결제"]})]}),u.jsx("div",{children:u.jsxs(aM,{children:["결제금액: ",Number(l.totalPrice).toLocaleString(),"원"]})})]}),u.jsxs(lM,{children:[l.reservationStatus==="예약 확정"&&u.jsxs("div",{className:"space-x-3",children:[u.jsx(we,{to:`/my/order/edit?reservationId=${l.reservationId}`,children:u.jsx(nv,{type:"button",children:"상세 확인"})}),u.jsx(nv,{type:"button",onClick:()=>{i(l.reservationId)},children:"예약 취소"})]}),l.reservationStatus==="예약 취소"&&u.jsx("div",{children:u.jsx(uM,{})}),l.reservationStatus==="이용 완료"&&u.jsx(we,{to:`/category/${l.storeId}`,children:u.jsx(cM,{children:"리뷰 작성"})})]})]})]},c)}))]})}function pM(){const e="http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080",[t,n]=x.useState([]),[r,o]=x.useState(!0);x.useEffect(()=>{s()},[]);const s=async()=>{try{const i=sessionStorage.getItem("Authorization"),a=await fetch(`${e}/mypage/wishlist`,{method:"GET",headers:{Authorization:i}});if(a.ok){const l=await a.json();n(l.stores)}else console.error("위시리스트 불러오기에 실패했습니다.",a.status)}catch(i){console.error("에러가 발생했습니다.",i)}finally{o(!1)}};return u.jsx(H8,{children:r?u.jsx("div",{className:"flex flex-col justify-center items-center h-[800px] w-[902px]",children:u.jsx(zp,{})}):t.length===0?u.jsxs(G8,{children:[u.jsx(K8,{src:fl,alt:"nothingimg"}),u.jsx(Fp,{title:"아직 담긴 위시리스트가 없네요!",description:"관심가는 상품을 찾아 ♡를 눌러 위시리스트에 차곡차곡 쌓아볼까요?"})]}):u.jsxs("div",{className:"flex flex-col space-y-5 overflow-hidden",children:[u.jsx("div",{children:u.jsxs(Q8,{children:["위시 상품 ",t.length,"개"]})}),t.filter(i=>i.isLike).map(i=>u.jsx(tS,{data:i},i.storeId))]})})}function hM(e){return Je({tag:"svg",attr:{viewBox:"0 0 24 24"},child:[{tag:"path",attr:{fill:"none",d:"M0 0h24v24H0z"}},{tag:"path",attr:{d:"M12 5.5l6 4.5v1c.7 0 1.37.1 2 .29V9l-8-6-8 6v12h7.68c-.3-.62-.5-1.29-.6-2H6v-9l6-4.5z"}},{tag:"path",attr:{d:"M18 13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm3 5.5h-2.5V21h-1v-2.5H15v-1h2.5V15h1v2.5H21v1z"}}]})(e)}const mM=b.div`
+                      `,children:u.jsx("span",{children:l.reservationStatus})})}),u.jsxs(oM,{children:[u.jsx("div",{children:u.jsx("span",{className:"text-[16px]",children:l.reservationDate})}),u.jsxs("div",{className:"space-x-3",children:[u.jsx(we,{to:`/category/${l.storeId}`,children:u.jsx(sM,{children:l.storeName})}),u.jsxs(iM,{children:["총 ",l.itemCount,"개 상품 결제"]})]}),u.jsx("div",{children:u.jsxs(aM,{children:["결제금액: ",Number(l.totalPrice).toLocaleString(),"원"]})})]}),u.jsxs(lM,{children:[l.reservationStatus==="예약 확정"&&u.jsxs("div",{className:"space-x-3",children:[u.jsx(we,{to:`/my/order/edit?reservationId=${l.reservationId}`,children:u.jsx(nv,{type:"button",children:"상세 확인"})}),u.jsx(nv,{type:"button",onClick:()=>{i(l.reservationId)},children:"예약 취소"})]}),l.reservationStatus==="예약 취소"&&u.jsx("div",{children:u.jsx(uM,{})}),l.reservationStatus==="이용 완료"&&u.jsx(we,{to:`/category/${l.storeId}`,children:u.jsx(cM,{children:"리뷰 작성"})})]})]})]},c)}))]})}function pM(){const e="http://ec2-52-78-205-102.ap-northeast-2.compute.amazonaws.com:8080",[t,n]=x.useState([]),[r,o]=x.useState(!0);x.useEffect(()=>{s()},[]);const s=async()=>{try{const i=sessionStorage.getItem("Authorization"),a=await fetch(`${e}/mypage/wishlist`,{method:"GET",headers:{Authorization:i}});if(a.ok){const l=await a.json();n(l.stores)}else console.error("위시리스트 불러오기에 실패했습니다.",a.status)}catch(i){console.error("에러가 발생했습니다.",i)}finally{o(!1)}};return u.jsx(H8,{children:r?u.jsx("div",{className:"flex flex-col justify-center items-center h-[800px] w-[902px]",children:u.jsx(zp,{})}):t.length===0?u.jsxs(G8,{children:[u.jsx(K8,{src:fl,alt:"nothingimg"}),u.jsx(Fp,{title:"아직 담긴 위시리스트가 없네요!",description:"관심가는 상품을 찾아 ♡를 눌러 위시리스트에 차곡차곡 쌓아볼까요?"})]}):u.jsxs("div",{className:"flex flex-col space-y-5 h-[100%]",children:[u.jsx("div",{children:u.jsxs(Q8,{children:["위시 상품 ",t.length,"개"]})}),t.filter(i=>i.isLike).map(i=>u.jsx(tS,{data:i},i.storeId))]})})}function hM(e){return Je({tag:"svg",attr:{viewBox:"0 0 24 24"},child:[{tag:"path",attr:{fill:"none",d:"M0 0h24v24H0z"}},{tag:"path",attr:{d:"M12 5.5l6 4.5v1c.7 0 1.37.1 2 .29V9l-8-6-8 6v12h7.68c-.3-.62-.5-1.29-.6-2H6v-9l6-4.5z"}},{tag:"path",attr:{d:"M18 13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm3 5.5h-2.5V21h-1v-2.5H15v-1h2.5V15h1v2.5H21v1z"}}]})(e)}const mM=b.div`
     border-[1px]
     border-[#4771B7]
     px-[50px]
