@@ -5,7 +5,7 @@
 </p>
 
 
-### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
+### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)[![End](https://img.shields.io/badge/since-2023.07.24-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
 
 ### 🏝️ 배포 링크 : [Acti-On](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
 
