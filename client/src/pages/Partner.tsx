@@ -82,9 +82,7 @@ function Partner() {
 
       if (response.ok) {
         // 성공적으로 등록된 경우 처리
-        console.log('Status', response.status);
         if (response.status === 201) {
-          console.log('201 Created');
           alert('파트너등록이 완료되었습니다. 다시 로그인 해주세요.');
           setIsLogin(false);
           sessionStorage.removeItem('Authorization');
@@ -92,12 +90,11 @@ function Partner() {
         }
       } else {
         // 등록 실패한 경우 처리
-        console.log('Status', response.status);
         alert('파트너 등록에 실패했습니다.');
       }
     } catch (error) {
       // 예외 처리
-      console.log('네트워크 오류: 파트너 등록에 실패하였습니다.');
+      console.error('네트워크 오류: 파트너 등록에 실패하였습니다.', error);
     }
   };
 

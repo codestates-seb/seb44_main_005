@@ -49,9 +49,7 @@ function MyPage() {
       if (res.ok) {
         const data = await res.json();
         setUserData(data); // userData 업데이트
-      } else {
-        console.error('Error fetching data', res.status);
-      }
+      } 
     } catch (error) {
       console.error('Error fetching data', error);
     }
@@ -70,9 +68,7 @@ function MyPage() {
       if (res.ok) {
         const data = await res.json();
         setPartnerData(data);
-      } else {
-        console.error('Error fetching data', res.status);
-      }
+      } 
     } catch (error) {
       console.error('Error fetching data', error);
     }
@@ -130,7 +126,6 @@ function MyPage() {
       });
 
       if (res.ok) {
-        console.log('프로필 업데이트 완료');
         const imageUrl = URL.createObjectURL(file);
         sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
         setProfileImageUrl(imageUrl);
@@ -155,7 +150,6 @@ function MyPage() {
         },
       });
        if (res.ok) {
-        console.log('프로필 사진 삭제 완료');
         const imageUrl = defaultProfileImg;
         sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
         setProfileImageUrl(imageUrl);
