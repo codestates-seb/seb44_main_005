@@ -146,7 +146,6 @@ function Register() {
             nickname: name,
           }),
         });
-        console.log(res);
         if (res.ok) {
           toast('회원가입을 성공했습니다 !');
           setTimeout(() => {
