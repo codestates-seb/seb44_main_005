@@ -1,14 +1,16 @@
 package actiOn.review.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Getter
-public class ReviewDto {
-
+@Builder
+@AllArgsConstructor
+public class ReviewPostDto {
     @NotBlank
     private String content;
 
