@@ -47,28 +47,28 @@ function StoreCheck() {
     }
   };
 
-  const deleteStore = async (storeId) => {
-    try {
-      const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
-      const res = await fetch(`${APIURL}/stores/${storeId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': ACCESS_TOKEN
-        }
-      });
+  // const deleteStore = async (storeId) => {
+  //   try {
+  //     const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
+  //     const res = await fetch(`${APIURL}/stores/${storeId}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Authorization': ACCESS_TOKEN
+  //       }
+  //     });
 
-      if(res.ok) {
-        console.log('업체 삭제 완료');
-        setStoresData((prevStoresData) => 
-          prevStoresData.filter((store) => store.storeId !== storeId)
-        );
-      } else {
-        console.error('업체 삭제 실패', res.status);
-      }
-    } catch (error) {
-      console.error('에러가 발생했습니다.', error);
-    }
-  };
+  //     if(res.ok) {
+  //       console.log('업체 삭제 완료');
+  //       setStoresData((prevStoresData) => 
+  //         prevStoresData.filter((store) => store.storeId !== storeId)
+  //       );
+  //     } else {
+  //       console.error('업체 삭제 실패', res.status);
+  //     }
+  //   } catch (error) {
+  //     console.error('에러가 발생했습니다.', error);
+  //   }
+  // };
 
   const navigate = useNavigate();
 
@@ -84,10 +84,11 @@ function StoreCheck() {
     navigate(`/category/${storeId}`);
   };
 
-  const handleDeleteClick = (storeId) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      deleteStore(storeId);
-    }
+  const handleDeleteClick = () => {
+    alert('업체 삭제는 파트너 센터에 문의주시기 바랍니다.');
+    // if (window.confirm('정말 삭제하시겠습니까?')) {
+    //   deleteStore(storeId);
+    // }
   };
 
   return (
@@ -120,7 +121,7 @@ function StoreCheck() {
               </div>
               <ButtonsContainer>
                 <StoreButtonStyle type="button" onClick={() => handleEditClick(store.storeId)}>업체 수정</StoreButtonStyle>
-                <StoreButtonStyle type="button" onClick={() => handleDeleteClick(store.storeId)}>
+                <StoreButtonStyle type="button" onClick={() => handleDeleteClick()}>
                   업체 삭제
                 </StoreButtonStyle>
               </ButtonsContainer>
