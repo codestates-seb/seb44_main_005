@@ -1,4 +1,4 @@
-# 🐋 액티온(ActiOn) 
+## 🐋 액티온(ActiOn) 
 <p align="center">
 <img width="700" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
 
