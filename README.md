@@ -60,7 +60,7 @@
 
 ### [✏️ 화면 정의서](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1)
 <hr>
-<img width="839" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
+<img width="1000" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
 
 <br>
 <br>
