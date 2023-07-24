@@ -12,7 +12,7 @@
 
 <br>
 
-## 👥 팀원소개
+## 👥 팀원 소개
 |![김태우](https://github.com/TaeWooKim-SCH.png)|![김민지](https://github.com/kminvita.png)|![현채은](https://github.com/chen4023.png)|![강동우](https://github.com/developer-DongWoo.png)|![신이수](https://github.com/isu-nice.png)|
 |---|---|---|---|---|
 |[김태우](https://github.com/TaeWooKim-SCH)|[김민지](https://github.com/kminvita)|[현채은](https://github.com/chen4023)|[강동우](https://github.com/developer-DongWoo)|[신이수](https://github.com/isu-nice)|
@@ -23,7 +23,7 @@
 
 ## 🐋 액티온(ActiOn)에서는 어떤 서비스를 이용할 수 있나요 ?
 
- ### 제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드리고 있습니다.
+ ### 제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드립니다
 <br>
 
 <p>
