@@ -1,0 +1,35 @@
+export const storecheckdummy = {
+    "stores":
+    [
+        {
+            "storeId":1,
+            "storeImage":"https://i.pinimg.com/564x/50/26/9b/50269b9f5568fe624274a54e141c0bdb.jpg",
+            "storeName":"슈퍼마켓입니다1",
+        },
+        {
+            "storeId":2,
+            "storeImage":"https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+            "storeName":"슈퍼마켓입니다2",
+        },
+        {
+            "storeId":3,
+            "storeImage":"https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+            "storeName":"슈퍼마켓입니다3",
+        },
+        {
+            "storeId":4,
+            "storeImage":"https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+            "storeName":"슈퍼마켓입니다4",
+        },
+        {
+            "storeId":5,
+            "storeImage":"https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+            "storeName":"슈퍼마켓입니다5",
+        },
+        {
+            "storeId":6,
+            "storeImage":"https://i.pinimg.com/564x/3b/22/13/3b22139c738310de4838cfa994b7606a.jpg",
+            "storeName":"슈퍼마켓입니다6",
+        },
+    ]
+};
