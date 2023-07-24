@@ -19,6 +19,7 @@ import {
   ButtonStyle,
   NoButtons,
   NoReservation,
+  ButtonReview,
 } from '../styles/MyPage/ReservationCheck';
 import { Link } from "react-router-dom";
 
@@ -130,10 +131,15 @@ function ReservationCheck() {
                       >예약 취소</ButtonStyle>
                     </div>
                   )}
-                  {(reservation.reservationStatus === "예약 취소" || reservation.reservationStatus === "이용 완료") && (
+                  {reservation.reservationStatus === "예약 취소" && (
                     <div>
                       <NoButtons></NoButtons>
                     </div>
+                  )}
+                  {reservation.reservationStatus === "이용 완료" && (
+                    <Link to={`/category/${reservation.storeId}`}>
+                      <ButtonReview>리뷰 작성</ButtonReview>
+                    </Link>
                   )}
                 </ResButtonsContainer>
               </ResInfoContainer>
