@@ -59,7 +59,7 @@ function Review() {
       window.location.reload();
     }
     catch(error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -71,7 +71,7 @@ function Review() {
       setData(json);
     }
     catch(error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
