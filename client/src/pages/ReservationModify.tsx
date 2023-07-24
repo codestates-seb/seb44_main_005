@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import { reservation } from '../dummy/reservation';
+
 import {
   ReservationContainer,
   ReservationTitle,
@@ -120,7 +120,7 @@ function ReservationModify() {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      window.location.href = '/my/order'
+      window.location.href = '/my/order';
     } catch (error) {
       console.error(error);
     }
