@@ -26,7 +26,9 @@ public class ReviewController {
     public ResponseEntity createReview(@Positive @PathVariable("store-id") Long storeId,
                                        @Valid @RequestBody ReviewPostDto requestBody) {
         Review review = reviewMapper.reviewPostDtoToReview(requestBody);
-        reviewService.createReview(storeId, review);
+
+        Review savedReview = reviewService.createReview(storeId, review);
+        reviewService.updateStoreReviewCounting(storeId, savedReview);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

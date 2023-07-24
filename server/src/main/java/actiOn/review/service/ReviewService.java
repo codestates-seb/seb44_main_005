@@ -26,6 +26,8 @@ public class ReviewService {
     private final MemberService memberService;
     private final ReservationService reservationService;
 
+    // 리뷰 생성
+    @Transactional
     public Review createReview(Long storeId, Review review) {
         //review 내용 욕설 검증
         verifyBadWord(review);
@@ -43,7 +45,7 @@ public class ReviewService {
 
         // countReservation()를 이용해서 예약숫자 조회 // 그리고 조건에 맞는 리뷰카운트 해서 여유있으면 리뷰 남기게 해주기
         int reservationCount = reservationService.countReservation(store, findMember);
-        long myReviewCount = reviewRepository.countByStoreAndMember(store,findMember);
+        long myReviewCount = reviewRepository.countByStoreAndMember(store, findMember);
 
         if (reservationCount > myReviewCount) {
             review.setMember(findMember);
@@ -52,21 +54,28 @@ public class ReviewService {
             throw new BusinessLogicException(ExceptionCode.ALREADY_WROTE_A_REVIEW);
         }
 
-        Review saveReview = reviewRepository.save(review);
+        return reviewRepository.save(review);
+    }
 
-        int totalReviewCount = reviewRepository.countByStore(store);
-        // 지금 해당 업체의 총점
+    // 업체에 리뷰 개수 등록
+    @Transactional
+    public void updateStoreReviewCounting(Long storeId, Review review) {
+        Store store = storeService.findStoreByStoreId(storeId);
+
+        // 해당 업체의 리뷰 개수
+        int totalReviewCount = store.getReviewCount();
+
+        // 해당 업체의 총점
         double nowTotalRating = totalReviewCount * store.getRating();
+
         // 더해진 업체의 총점
         double addedTotalRating = nowTotalRating + review.getRating();
 
         // 업데이트되어야하는 업체의 평점
-        double avgRating = addedTotalRating / totalReviewCount;
+        double avgRating = addedTotalRating / (totalReviewCount + 1);
 
         // 전체 평점의 평균 저장 및 리뷰 개수 추가
         storeService.updateRatingAndReviewCount(store, avgRating);
-
-        return saveReview;
     }
 
     private void verifyBadWord(Review review) {

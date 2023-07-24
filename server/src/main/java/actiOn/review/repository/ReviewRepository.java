@@ -15,5 +15,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Long countByStoreAndMember(Store store, Member member);
 
-    int countByStore(Store store);
 }
