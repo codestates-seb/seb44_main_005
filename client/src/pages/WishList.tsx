@@ -58,7 +58,7 @@ function WishList() {
           />
         </NoWishList>
       ) : (
-        <div className='flex flex-col space-y-5 overflow-y-auto'>
+        <div className='flex flex-col space-y-5 overflow-hidden'>
           <div>
             <WishCountTitle>
               위시 상품 {wishlist.length}개
