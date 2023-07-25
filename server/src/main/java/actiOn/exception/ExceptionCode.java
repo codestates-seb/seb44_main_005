@@ -60,7 +60,7 @@ public enum ExceptionCode {
     // REVIEW
     BAD_WORD_NOT_ALLOWED(400, "바른말을 사용해야 합니다."),
     ONLY_RESERVED_MEMBER_REVIEW(404, "Only members using the store can review"),
-    BEFORE_STORE_USE_COMPLETE(400, "이용 완료 전입니다."),
+    BEFORE_STORE_USE_COMPLETE(422, "이용 완료 전입니다."),
     ALREADY_WROTE_A_REVIEW(409, "이미 리뷰를 작성하셨습니다."),
     REJECTED_UPDATE(400, "업데이트 할 수 있는 상태가 아닙니다.")
     ;
