@@ -101,8 +101,7 @@ function Searchbar() {
                 onMouseDown={(e) => {
                   e.stopPropagation();
                   setKeyword(item.title);
-                  searchFetch();
-                  setOpen(false);
+                  navigate(`/search?keyword=${item.title}`);
                 }}
               >
                 <SearchIcon src={search} onClick={() => setOpen(false)} />
