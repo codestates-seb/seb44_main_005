@@ -130,6 +130,7 @@ function MyPage() {
         const imageUrl = data.imageUrl;
         sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
         setProfileImageUrl(imageUrl);
+        fetchData();
       } else {
         console.error('프로필 업데이트 실패', res.status);
       }
