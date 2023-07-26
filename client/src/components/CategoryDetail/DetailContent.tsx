@@ -56,7 +56,7 @@ function DetailContent() {
               className="flex duration-500 min-w-[1200px] overflow-hidden ease-in-out"
               style={{
                 transform: `translateX(${current * -600}px)`,
-                width: `${data.storeImages.length * 600}px`
+                width: `${data.storeImages.length * 600}px`,
               }}
             >
               {data.storeImages.map((src, idx) => (
@@ -64,12 +64,28 @@ function DetailContent() {
               ))}
             </div>
             <div className="flex justify-center items-center mt-3">
-              <div className="cursor-pointer my-auto arrow-left" onClick={arrowLeftHandler}>
-                <FaChevronLeft className="hover:fill-[#9dacc5] duration-500" size="40" color="#4771B7" />
+              <div
+                className="cursor-pointer my-auto arrow-left"
+                onClick={arrowLeftHandler}
+              >
+                <FaChevronLeft
+                  className="hover:fill-[#9dacc5] duration-500"
+                  size="40"
+                  color="#4771B7"
+                />
               </div>
-              <div className="mx-5 text-center text-xl font-bold text-[#4771B7]">{current + 1} / {data.storeImages.length}</div>
-              <div className="cursor-pointer my-auto arrow-right" onClick={arrowRightHandler}>
-                <FaChevronRight className="hover:fill-[#9dacc5] duration-500" size="40" color="#4771B7" />
+              <div className="mx-5 text-center text-xl font-bold text-[#4771B7]">
+                {current + 1} / {data.storeImages.length}
+              </div>
+              <div
+                className="cursor-pointer my-auto arrow-right"
+                onClick={arrowRightHandler}
+              >
+                <FaChevronRight
+                  className="hover:fill-[#9dacc5] duration-500"
+                  size="40"
+                  color="#4771B7"
+                />
               </div>
             </div>
           </div>

@@ -348,21 +348,21 @@ public class ReservationService {
 
     // 회원이 해당 업체를 예약한 내역이 있는지 확인
     public void verifyReservationByMemberAndStore(Member member, Store store) {
-        Optional<Reservation> reservation =
-                reservationRepository.findReservationByMemberAndStore(member, store);
+        long reservationCount =
+                reservationRepository.countByMemberAndStore(member, store);
 
-        if (reservation.isEmpty()) {
+        if (reservationCount == 0) {
             throw new BusinessLogicException(ExceptionCode.ONLY_RESERVED_MEMBER_REVIEW);
         }
     }
 
     // 사용자가 회원이 해당 스토어를 이용완료 했는지 확인
     public void verifyReservationByReservationStatus(Member member, Store store) {
-        Optional<Reservation> reservation =
-                reservationRepository.findReservationByMemberAndStoreAndReservationStatus(
+        long reservation =
+                reservationRepository.countByMemberAndStoreAndReservationStatus(
                         member, store, Reservation.ReservationStatus.RESERVATION_USE_COMPLETED);
 
-        if (reservation.isEmpty()) {
+        if (reservation == 0) {
             throw new BusinessLogicException(ExceptionCode.BEFORE_STORE_USE_COMPLETE);
         }
     }

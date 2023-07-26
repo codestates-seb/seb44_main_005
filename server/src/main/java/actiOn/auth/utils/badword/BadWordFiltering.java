@@ -3,12 +3,14 @@ package actiOn.auth.utils.badword;
 import actiOn.auth.utils.badword.method.ReadFile;
 import actiOn.auth.utils.badword.method.ReadURL;
 import actiOn.auth.utils.badword.words.BadWords;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor
 public class BadWordFiltering implements BadWords, ReadFile, ReadURL {
     private final Set<String> set = new HashSet<>(List.of(koreaWord1));
     private String substituteValue = "*";
@@ -18,8 +20,6 @@ public class BadWordFiltering implements BadWords, ReadFile, ReadURL {
     public BadWordFiltering(String substituteValue) {
         this.substituteValue = substituteValue;
     }
-
-    public BadWordFiltering() {}
 
     //특정 문자 추가, 삭제
     @Override
