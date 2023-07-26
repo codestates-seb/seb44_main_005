@@ -36,7 +36,7 @@ function DetailContent() {
 
   const addressCopyHandler = () => {
     window.navigator.clipboard.writeText(data.address);
-    return toast('주소가 클립보드에 복사되었습니다.');;
+    return toast('주소가 클립보드에 복사되었습니다.');
   }
 
   return (
