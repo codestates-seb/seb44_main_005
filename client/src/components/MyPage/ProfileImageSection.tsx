@@ -4,18 +4,10 @@ import defaultProfileImg from '../../assets/profile.svg';
 function ProfileImageSection({ profileImageUrl, handlePhotoChange, handlePhotoRemove }) {
   return (
     <>
-      {profileImageUrl !== 'default image' ? (
-        <ImgStyle 
-          key={profileImageUrl}
-          src={profileImageUrl}
-          alt="profile img"
-        />
-      ) : (
-        <ImgStyle 
-          src={defaultProfileImg}
-          alt='profile img'
-        />
-      )}
+      <ImgStyle 
+        src={profileImageUrl !== 'default image' ? profileImageUrl : defaultProfileImg}
+        alt="profile img"
+      />
       <MiniButtonGrid>
         <label htmlFor="photoInput">
           <input
