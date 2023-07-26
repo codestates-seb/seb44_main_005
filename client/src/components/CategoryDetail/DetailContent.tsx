@@ -3,6 +3,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { RiMapPinLine } from 'react-icons/ri';
 import { FiClock, FiPhone } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
+import { CopyToClipboard } from "react-copy-to-clipboard/src";
 
 import {
   DetailCategoryName,
@@ -32,11 +33,6 @@ function DetailContent() {
     } else {
       setCurrent(current + 1);
     }
-  };
-
-  const addressCopyHandler = () => {
-    window.navigator.clipboard.writeText(data.address);
-    return toast('주소가 클립보드에 복사되었습니다.');
   };
 
   return (
@@ -99,12 +95,11 @@ function DetailContent() {
         <div className="flex mb-2">
           <RiMapPinLine color="#4771B7" size="25" />
           <div className="ml-2 mr-5">{data.address}</div>
-          <button
-            className="bg-[#4771B7] rounded-[5px] text-white text-xs px-3 py-1"
-            onClick={addressCopyHandler}
-          >
-            주소복사
-          </button>
+          <CopyToClipboard text={data.address} onCopy={() => toast("클립보드에 복사되었습니다.")}>
+            <button
+              className="bg-[#4771B7] rounded-[5px] text-white text-xs px-3 py-1"
+            >주소복사</button>
+          </CopyToClipboard>
         </div>
         <div className="flex mb-2">
           <FiClock color="#4771B7" size="23" />
