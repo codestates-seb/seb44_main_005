@@ -125,11 +125,15 @@ function MyPage() {
 
       if (res.ok) {
         const data = await res.json();
-        const imageUrl = data.imageUrl;
-        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
-        setProfileImageUrl(imageUrl);
-        fetchData();
-        console.log('fetchData', fetchData);
+        if(data && data.imageUrl) {
+          sessionStorage.setItem('selectedPhoto', JSON.stringify(data.imageUrl));
+          setProfileImageUrl(data.imageUrl);
+        }
+        // const imageUrl = data.imageUrl;
+        // sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+        // setProfileImageUrl(imageUrl);
+        // fetchData();
+        // console.log('fetchData', fetchData);
       } else {
         console.error('프로필 업데이트 실패', res.status);
       }
