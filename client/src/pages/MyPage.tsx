@@ -107,7 +107,8 @@ function MyPage() {
         },
         body: formData,
       });
-
+      const json = await res.json();
+      console.log(json);
       if (res.ok) {
         const reader = new FileReader();
         reader.onloadend = () => {
