@@ -52,6 +52,9 @@ function AddImages() {
       if (detailImgs.length <= 3) {
         return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
       }
+      console.log(idx);
+      console.log(sendDetailImgs);
+      console.log(detailImgs);
       const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 1));
       setSendDetailImgs(sendResult);
       if (detailImgs[idx][0] === 'h') {
@@ -63,6 +66,7 @@ function AddImages() {
         });
         return setDetailImgs(result);
       }
+      return setDetailImgs(result);
     }
     const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
