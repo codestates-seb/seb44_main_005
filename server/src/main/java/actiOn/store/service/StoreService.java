@@ -29,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,7 +154,10 @@ public class StoreService {
     }
 
     public List<Store> searchEnginOnStoreNameByKeyword(String keyword) {
-        return storeRepository.findByStoreNameContainingOrderByRatingDesc(keyword);
+        // 검색어 디코딩
+        String decodedKeyword = URLDecoder.decode(keyword, StandardCharsets.UTF_8);
+
+        return storeRepository.findByStoreNameContainingOrderByRatingDesc(decodedKeyword);
     }
 
     // 메인페이지
