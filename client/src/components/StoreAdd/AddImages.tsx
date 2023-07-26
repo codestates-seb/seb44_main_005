@@ -51,9 +51,6 @@ function AddImages({ fetchImgsCount }) {
       if (detailImgs.length <= 3) {
         return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
       }
-      console.log(idx);
-      console.log(sendDetailImgs);
-      console.log(detailImgs);
       if (detailImgs[idx][0] === 'h') {
         fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
           method: 'DELETE',
