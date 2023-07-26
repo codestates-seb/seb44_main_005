@@ -46,21 +46,25 @@ function AddImages() {
   }
 
   const detailImgDeleteHandler = (idx: number) => {
-    if (detailImgs.length <= 3) {
-      return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
-    }
+    const path = location.pathname.substring(6);
     const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
-    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
-    setDetailImgs(result);
-    setSendDetailImgs(sendResult);
-    if (searchParams.get('store_id') && detailImgs[idx][0] === 'h') {
-      fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
+    if (path === '/edit' && detailImgs[idx][0] === 'h') {
+      if (detailImgs.length <= 3) {
+        return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
+      }
+      const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 1));
+      setDetailImgs(result);
+      setSendDetailImgs(sendResult);
+      return fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
         method: 'DELETE',
         headers: {
           'Authorization': accessToken
         }
       });
     }
+    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
+    setDetailImgs(result);
+    setSendDetailImgs(sendResult);
   }
 
   return (
