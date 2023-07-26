@@ -48,19 +48,21 @@ function AddImages() {
   const detailImgDeleteHandler = (idx: number) => {
     const path = location.pathname.substring(6);
     const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
-    if (path === '/edit' && detailImgs[idx][0] === 'h') {
+    if (path === '/edit') {
       if (detailImgs.length <= 3) {
         return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
       }
       const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 1));
-      setDetailImgs(result);
       setSendDetailImgs(sendResult);
-      return fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': accessToken
-        }
-      });
+      if (detailImgs[idx][0] === 'h') {
+        fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': accessToken
+          }
+        });
+        return setDetailImgs(result);
+      }
     }
     const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);
