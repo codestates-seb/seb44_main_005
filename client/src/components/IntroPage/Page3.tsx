@@ -17,10 +17,10 @@ function Page3() {
 
   return (
     <Wrapper id="page3">
-      <a href="#page2">
+      <a className="absolute top-5 left-[50%] translate-x-[-50%] z-50" href="#page2">
         <img
           src={w_top}
-          className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
+          className="w-[80px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
         />
       </a>
       <PageContainer>
@@ -29,7 +29,7 @@ function Page3() {
           data-aos="fade-right"
           data-aos-easing="ease-in-out"
           data-aos-duration="1000"
-          className="w-[700px] h-[650px]"
+          className="w-[600px] h-[700px] mt-10"
         />
         <TextContainer>
           <MainText
@@ -60,7 +60,7 @@ function Page3() {
           </HomeBtn>
         </TextContainer>
       </PageContainer>
-      <a href="#page4">
+      <a className="absolute bottom-5 left-[50%] translate-x-[-50%] z-50" href="#page4">
         <img
           src={w_bottom}
           className="w-[80px] mb-[15px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
