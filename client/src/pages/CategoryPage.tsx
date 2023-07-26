@@ -70,32 +70,6 @@ function CategoryPage() {
     fetchData();
   }, [categoryName, sort, keywords]);
 
-  //토큰 만료시 로그아웃처리
-  // const handleToken = async () => {
-  //   const accessToken = sessionStorage.getItem('Authorization');
-  //   if (!accessToken) {
-  //     await fetch(`/logout`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: sessionStorage.getItem('Authorization'),
-  //         'Access-Control-Allow-Origin': '*',
-  //       },
-  //       credentials: 'include',
-  //     });
-  //     setIsOpen(false);
-  //     setIsLoginState(false);
-  //     localStorage.removeItem('recoil-persist');
-  //     sessionStorage.removeItem('Authorization');
-  //     sessionStorage.removeItem('memberId');
-  //     sessionStorage.removeItem('access_token');
-  //     window.location.href = '/home';
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleToken();
-  // });
-
   return (
     <Style>
       <ToastContainer

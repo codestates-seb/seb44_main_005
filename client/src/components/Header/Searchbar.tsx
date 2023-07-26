@@ -35,9 +35,12 @@ function Searchbar() {
 
   const autoData = async () => {
     try {
-      const res = await fetch(`${url}/search?keyword=${keyword}`, {
-        headers: { Authorization: sessionStorage.getItem('Authorization') },
-      });
+      const res = await fetch(
+        `${url}/search?keyword=${encodeURIComponent(keyword)}`,
+        {
+          headers: { Authorization: sessionStorage.getItem('Authorization') },
+        }
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -50,7 +53,7 @@ function Searchbar() {
 
   const searchFetch = async () => {
     try {
-      await navigate(`/search?keyword=${keyword}`);
+      await navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
       setKeyword(keyword);
     } catch (error) {
       console.error(error);
@@ -101,11 +104,13 @@ function Searchbar() {
                 onMouseDown={(e) => {
                   e.stopPropagation();
                   setKeyword(item.title);
-                  navigate(`/search?keyword=${item.title}`);
+                  navigate(`/search?keyword=${encodeURIComponent(item.title)}`);
                 }}
               >
                 <SearchIcon src={search} onClick={() => setOpen(false)} />
-                <a href={`/search?keyword=${keyword}`}>{item.title}</a>
+                <a href={`/search?keyword=${encodeURIComponent(keyword)}`}>
+                  {item.title}
+                </a>
               </AutoSearchData>
             ))}
           </ul>
