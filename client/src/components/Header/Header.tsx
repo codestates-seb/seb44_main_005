@@ -87,11 +87,7 @@ function Header() {
             {role === 'PARTNER' ? '업체 등록' : '파트너 등록'}
           </Link>
           {profileImg !== 'default image' ? (
-            <ProfileIcon
-              src={profileImg}
-              className="rounded-full object-cover"
-              onClick={handleDropdownClick}
-            />
+            <ProfileIcon src={profileImg} onClick={handleDropdownClick} />
           ) : (
             <ProfileIcon src={profile} onClick={handleDropdownClick} />
           )}
