@@ -131,7 +131,7 @@ function StoreAdd() {
       return;
     }
     if (detailImgs.length < 3) {
-      return('상세 이미지를 최소 3장 이상 등록해 주세요.');
+      return alert('상세 이미지를 최소 3장 이상 등록해 주세요.');
     }
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
