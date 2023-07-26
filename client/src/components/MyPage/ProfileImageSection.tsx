@@ -5,7 +5,7 @@ function ProfileImageSection({ profileImageUrl, handlePhotoChange, handlePhotoRe
   return (
     <>
       <ImgStyle 
-        src={profileImageUrl !== 'default image' ? profileImageUrl : defaultProfileImg}
+        src={`${profileImageUrl !== 'default image' ? profileImageUrl : defaultProfileImg}?${Date.now()}`}
         alt="profile img"
       />
       <MiniButtonGrid>
