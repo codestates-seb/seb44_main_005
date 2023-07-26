@@ -55,7 +55,7 @@ function AddImages() {
       console.log(idx);
       console.log(sendDetailImgs);
       console.log(detailImgs);
-      const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 1));
+      const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 2));
       setSendDetailImgs(sendResult);
       if (detailImgs[idx][0] === 'h') {
         fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
