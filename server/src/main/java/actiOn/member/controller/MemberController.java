@@ -1,5 +1,6 @@
 package actiOn.member.controller;
 
+import actiOn.Img.dto.ProfileImgDto;
 import actiOn.auth.dto.LoginResponseDto;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.business.dto.BusinessDto;
@@ -55,9 +56,10 @@ public class MemberController {
     @PutMapping("/mypage/profile")
     public ResponseEntity uploadProfileImage(@RequestParam("image") MultipartFile profileImage) throws IOException {
         String email = AuthUtil.getCurrentMemberEmail();
-        memberService.registerProfileImage(profileImage, email);
+        Member member = memberService.registerProfileImage(profileImage, email);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        ProfileImgDto response = memberMapper.profileImgResponseDto(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 회원 프로필 사진 삭제
