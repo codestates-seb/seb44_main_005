@@ -106,7 +106,7 @@ function Register() {
       setPhoneMessage('');
       return;
     }
-    const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
+    const phoneRegExp = /^[0-1]{3}-[0-9]{4}-[0-9]{4}$/;
     let formattedNumber = '';
 
     formattedNumber = currentPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
