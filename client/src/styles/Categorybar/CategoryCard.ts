@@ -7,8 +7,6 @@ export const CardContainer = tw.div`
   border
   my-6
   border-[#AEC1DF]
-  hover:shadow-[0_0_10px3px#A6C7FF]
-  duration-500
 `;
 export const CardText = tw.div`
   flex

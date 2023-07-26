@@ -1,16 +1,14 @@
 import tw from 'tailwind-styled-components';
 
 export const Wrapper = tw.div`
-  relative
   bg-[#4771B7] 
-  w-[100vw]
+  w-full 
   h-[100vh] 
   flex 
   flex-col
-  items-center justify-center
+  items-center
 `;
 export const PageContainer = tw.div`
-  mb-10
   bg-[#4771B7] 
   w-full 
   h-full

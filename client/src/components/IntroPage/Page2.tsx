@@ -11,7 +11,7 @@ import {
 function Page2() {
   return (
     <PageContainer id="page2">
-      <a className="absolute top-5 left-[50%] translate-x-[-50%] z-50" href="#page1">
+      <a href="#page1">
         <img
           src={top}
           className="w-[80px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
@@ -42,7 +42,7 @@ function Page2() {
         src={activity}
         className="w-[800px] h-[500px] mb-[20px]"
       />
-      <a className="absolute bottom-5 left-[50%] translate-x-[-50%] z-50" href="#page3">
+      <a href="#page3">
         <img
           src={bottom}
           className="w-[80px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
