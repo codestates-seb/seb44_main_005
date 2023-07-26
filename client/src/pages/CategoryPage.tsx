@@ -41,9 +41,12 @@ function CategoryPage() {
       if (keywords) {
         setIsSearch(true);
         setIsLoading(true);
-        const res = await fetch(`${url}/search?keyword=${keywords}`, {
-          headers: { Authorization: sessionStorage.getItem('Authorization') },
-        });
+        const res = await fetch(
+          `${url}/search?keyword=${encodeURIComponent(keywords)}`,
+          {
+            headers: { Authorization: sessionStorage.getItem('Authorization') },
+          }
+        );
         data = await res.json();
         if (res.status !== 200) throw res;
       } else {
