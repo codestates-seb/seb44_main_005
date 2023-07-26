@@ -65,11 +65,7 @@ html::-webkit-scrollbar-thumb {
   background-color: rgb(168, 168, 168);
   border-radius: 10px;
   border: 2px solid white;
-}
-
-html::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(136, 136, 136);
-}
+} 
 
 html {
   scroll-behavior: smooth;

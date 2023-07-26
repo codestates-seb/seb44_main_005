@@ -98,7 +98,7 @@ function CategoryCard({ data }: CProps) {
           <span className="w-[20px] mr-[5px] mt-[2px]">
             <BsFillStarFill size="18" color="#4771B7" />
           </span>
-          <span className="mr-[2px]">{rating.toFixed(1)}</span>
+          <span className="mr-[2px]">{rating}</span>
           <span className="mr-[12px]">({reviewCount})</span>
           <span>{address}</span>
         </Text>
