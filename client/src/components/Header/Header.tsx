@@ -89,7 +89,7 @@ function Header() {
           {profileImg !== 'default image' ? (
             <ProfileIcon
               src={profileImg}
-              className="rounded-full"
+              className="rounded-full object-cover"
               onClick={handleDropdownClick}
             />
           ) : (

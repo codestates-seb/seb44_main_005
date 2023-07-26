@@ -193,7 +193,6 @@ function Register() {
       handleSubmit(e);
     }
   };
-
   return (
     <StyleContainer>
       <ToastContainer
