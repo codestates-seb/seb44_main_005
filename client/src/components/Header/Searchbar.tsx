@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
 import { searchKeyword } from '../../store/searchbarAtom';
@@ -29,7 +29,6 @@ function Searchbar() {
   const [keyword, setKeyword] = useRecoilState<string>(searchKeyword);
   const [keyItems, setKeyItems] = useState<AutoData[]>([]);
   const [open, setOpen] = useState(false);
-  const [searchParams] = useSearchParams();
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const url = import.meta.env.VITE_APP_API_URL;
