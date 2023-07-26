@@ -10,7 +10,7 @@ import {
   SendFirstImgState
 } from "../../store/storeAddAtom";
 
-function AddImages() {
+function AddImages({ fetchImgsCount }) {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [firstImg, setFirstImg] = useRecoilState(FirstImgState);
   const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
@@ -47,7 +47,6 @@ function AddImages() {
 
   const detailImgDeleteHandler = (idx: number) => {
     const path = location.pathname.substring(6);
-    const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
     if (path === '/edit') {
       if (detailImgs.length <= 3) {
         return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
@@ -55,8 +54,6 @@ function AddImages() {
       console.log(idx);
       console.log(sendDetailImgs);
       console.log(detailImgs);
-      const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - (detailImgs.length - 2));
-      setSendDetailImgs(sendResult);
       if (detailImgs[idx][0] === 'h') {
         fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
           method: 'DELETE',
@@ -64,13 +61,13 @@ function AddImages() {
             'Authorization': accessToken
           }
         });
-        return setDetailImgs(result);
       }
-      return setDetailImgs(result);
     }
-    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
+    const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
+    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - fetchImgsCount);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
+    
   }
 
   return (
