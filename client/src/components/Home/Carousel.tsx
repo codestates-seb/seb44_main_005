@@ -11,7 +11,7 @@ function Carousel({ data }) {
         <div className="font-bold text-lg mb-[30px]">{data.body}</div>
         <Link
           to={`/category/${data.storeId}`}
-          className="bg-white px-[10px] py-[8px] font-bold rounded-[10px] shadow-[2px_2px_2px_2px_#00000067]"
+          className="bg-white px-[10px] py-[8px] font-bold rounded-[10px]"
         >
           자세히 보기
         </Link>

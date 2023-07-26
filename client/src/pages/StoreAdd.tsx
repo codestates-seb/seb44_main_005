@@ -19,11 +19,11 @@ import { StoreAddFormType } from '../intefaces/StoreAdd';
 function StoreAdd() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [form, setForm] = useRecoilState(StoreformState);
+  const [fetchImgsCount, setFetchImgsCount] = useState(0);
   const [btnText, setBtnText] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [sendFirstImg, setSendFirstImg] = useRecoilState(SendFirstImgState);
-  const [sendDetailImgs, setSendDetailImgs] =
-    useRecoilState(SendDetailImgsState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const setFirstImg = useSetRecoilState(FirstImgState);
   const setDetailImgs = useSetRecoilState(DetailImgsState);
   const setPageTitle = useSetRecoilState(pageTitleState);
@@ -121,6 +121,7 @@ function StoreAdd() {
       });
       setFirstImg(json.storeImages[0]);
       setDetailImgs(json.storeImages.slice(1));
+      setFetchImgsCount(json.storeImages.slice(1).length);
     } catch (error) {
       console.error(error);
     }
@@ -199,7 +200,7 @@ function StoreAdd() {
         <>
           <StoreAddTop formChangeHandler={formChangeHandler} />
           <AddProduct />
-          <AddImages />
+          <AddImages fetchImgsCount={fetchImgsCount} />
           <AddBtn
             type="button"
             onClick={() => {

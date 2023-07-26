@@ -1,5 +1,6 @@
 package actiOn.member.mapper;
 
+import actiOn.Img.dto.ProfileImgDto;
 import actiOn.Img.storeImg.StoreImg;
 import actiOn.auth.dto.LoginResponseDto;
 import actiOn.exception.BusinessLogicException;
@@ -152,6 +153,14 @@ public interface MemberMapper {
     default LoginResponseDto memberGoogleLoginResponseDto(Member member) {
         return LoginResponseDto.builder()
                 .role(member.getRoleName())
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImg())
+                .build();
+    }
+
+    // 프로필 이미지 수정 시 response
+    default ProfileImgDto profileImgResponseDto(Member member) {
+        return ProfileImgDto.builder()
                 .nickname(member.getNickname())
                 .profileImage(member.getProfileImg())
                 .build();

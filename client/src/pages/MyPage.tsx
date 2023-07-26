@@ -8,7 +8,6 @@ import ProfileImageSection from '../components/MyPage/ProfileImageSection';
 import LoadingComponent from '../components/Loading/LoadingComponent';
 import defaultProfileImg from '../assets/profile.svg';
 import 'react-toastify/dist/ReactToastify.css';
-
 import {
   ButtonGrid,
   ButtonStyle,
@@ -20,22 +19,18 @@ import {
   ButtonGridEdit,
   LoadingContainer,
 } from '../styles/MyPage/MyPage';
-
 function MyPage() {
   const APIURL = import.meta.env.VITE_APP_API_URL;
   const businessRegi = `스포츠 및 여가관련 서비스업`;
   const role = useRecoilValue(Role);
-
   const [showBusinessSpace, setShowBusinessSpace] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [userData, setUserData] = useState(null);
   const [partnerData, setPartnerData] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useRecoilState(isProfile);
-
   useEffect(() => {
     fetchData();
   }, []);
-
   const fetchData = async () => {
     try {
       const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
@@ -45,7 +40,6 @@ function MyPage() {
           Authorization: ACCESS_TOKEN,
         },
       });
-
       if (res.ok) {
         const data = await res.json();
         setUserData(data); // userData 업데이트
@@ -54,7 +48,6 @@ function MyPage() {
       console.error('Error fetching data', error);
     }
   };
-
   const fetchPartnerData = async () => {
     try {
       const PARTNER_ACCESS_TOKEN = sessionStorage.getItem('Authorization');
@@ -64,7 +57,6 @@ function MyPage() {
           Authorization: PARTNER_ACCESS_TOKEN,
         },
       });
-
       if (res.ok) {
         const data = await res.json();
         setPartnerData(data);
@@ -73,9 +65,7 @@ function MyPage() {
       console.error('Error fetching data', error);
     }
   };
-
-
-  // 로딩 컴포넌트 채은님이 만든걸로 사용하기
+  
   if (!userData) {
     return (
       <LoadingContainer>
@@ -83,16 +73,13 @@ function MyPage() {
       </LoadingContainer>
     );
   }
-
   const { nickname, email, phoneNumber } = userData;
-
   const handleBusinessSpaceToggle = () => {
     setShowBusinessSpace(!showBusinessSpace);
     if (!showBusinessSpace) {
       fetchPartnerData();
     }
   };
-
   const handleButtonClick = () => {
     if (role !== 'PARTNER') {
       alert('접근 권한이 없습니다.');
@@ -100,18 +87,14 @@ function MyPage() {
       handleBusinessSpaceToggle();
     }
   };
-
   const openModal = () => {
     setShowModal(true);
   };
-
   const closeModal = () => {
     setShowModal(false);
   };
-
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
-
     try {
       const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
       const formData = new FormData();
@@ -126,10 +109,19 @@ function MyPage() {
       });
 
       if (res.ok) {
-        const imageUrl = URL.createObjectURL(file);
-        sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
-        setProfileImageUrl(imageUrl);
-        fetchData(); 
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const imageUrl = reader.result;
+          sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
+          setProfileImageUrl(imageUrl);
+        }
+        reader.readAsDataURL(file)
+      // if (res.ok) {
+      //   const data = await res.json();
+      //   if(data && data.imageUrl) {
+      //     sessionStorage.setItem('selectedPhoto', JSON.stringify(data.imageUrl));
+      //     setProfileImageUrl(data.imageUrl);
+      //   }
       } else {
         console.error('프로필 업데이트 실패', res.status);
       }
@@ -137,10 +129,8 @@ function MyPage() {
       console.error('프로필 업데이트 에러', error);
     }
   };
-
   const handlePhotoRemove = async () => {
     alert('사진을 삭제하시겠습니까?');
-
     try {
       const ACCESS_TOKEN = sessionStorage.getItem('Authorization');
       const res = await fetch(`${APIURL}/mypage/profile`, {
@@ -163,7 +153,6 @@ function MyPage() {
       console.error('프로필 사진 삭제 에러', error);
     } 
   };
-
   const handleEditComplete = (updatedUserData) => {
     setUserData({
       ...updatedUserData,
@@ -171,7 +160,6 @@ function MyPage() {
     });
     setShowModal(false);
   };
-
   return (
     <>
       <MyPageContainer>
@@ -222,5 +210,4 @@ function MyPage() {
     </>
   );
 }
-
 export default MyPage;

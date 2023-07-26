@@ -1,6 +1,6 @@
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import 'aos/dist/aos.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -15,10 +15,14 @@ import { categoryData } from '../store/categoryAtom';
 import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
+import top from '../assets/w_top.svg';
+import { isLoginState } from '../store/userInfoAtom';
+import { open } from '../store/dropdownAtom';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const categoryName = searchParams.get('category_name');
   const sort = searchParams.get('sort');
   const keywords = searchParams.get('keyword');
@@ -27,6 +31,8 @@ function CategoryPage() {
   const [isSearch, setIsSearch] = useRecoilState(search);
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
+  const setIsLoginState = useSetRecoilState(isLoginState);
+  const setIsOpen = useSetRecoilState(open);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +70,32 @@ function CategoryPage() {
     fetchData();
   }, [categoryName, sort, keywords]);
 
+  //토큰 만료시 로그아웃처리
+  const handleToken = async () => {
+    const accessToken = sessionStorage.getItem('Authorization');
+    if (!accessToken) {
+      await fetch(`/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: sessionStorage.getItem('Authorization'),
+          'Access-Control-Allow-Origin': '*',
+        },
+        credentials: 'include',
+      });
+      setIsOpen(false);
+      setIsLoginState(false);
+      localStorage.removeItem('recoil-persist');
+      sessionStorage.removeItem('Authorization');
+      sessionStorage.removeItem('memberId');
+      sessionStorage.removeItem('access_token');
+      window.location.href = '/home';
+    }
+  };
+  useEffect(() => {
+    handleToken();
+  });
+
   return (
     <Style>
       <ToastContainer
@@ -83,36 +115,73 @@ function CategoryPage() {
         <Option>
           {!isSearch && (
             <>
-              <Link
+              <NavLink
                 to={`/category?category_name=${categoryName}&sort=likeCount`}
-                className="mr-[25px]"
+                className={() => {
+                  const url = new URLSearchParams(location.search);
+                  const getTag = url.get('sort');
+
+                  let className = 'mr-[25px]';
+                  if (getTag === 'likeCount')
+                    className += ' text-[#4771B7] font-medium';
+
+                  return className;
+                }}
               >
                 • 관심순
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to={`/category?category_name=${categoryName}&sort=rating`}
-                className="mr-[25px]"
+                className={() => {
+                  const url = new URLSearchParams(location.search);
+                  const getTag = url.get('sort');
+                  let className = 'mr-[25px]';
+                  if (getTag === 'rating')
+                    className += ' text-[#4771B7] font-medium';
+                  return className;
+                }}
               >
                 • 높은 평점순
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to={`/category?category_name=${categoryName}&sort=lowPrice`}
-                className="mr-[25px]"
+                className={() => {
+                  const url = new URLSearchParams(location.search);
+                  const getTag = url.get('sort');
+                  let className = 'mr-[25px]';
+                  if (getTag === 'lowPrice')
+                    className += ' text-[#4771B7] font-medium';
+                  return className;
+                }}
               >
                 • 낮은 가격순
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to={`/category?category_name=${categoryName}&sort=highPrice`}
-                className="mr-[25px]"
+                className={() => {
+                  const url = new URLSearchParams(location.search);
+                  const getTag = url.get('sort');
+                  let className = 'mr-[25px]';
+                  if (getTag === 'highPrice')
+                    className += ' text-[#4771B7] font-medium';
+                  return className;
+                }}
               >
                 • 높은 가격순
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to={`/category?category_name=${categoryName}&sort=reviewCount`}
-                className="mr-[25px]"
+                className={() => {
+                  const url = new URLSearchParams(location.search);
+                  const getTag = url.get('sort');
+                  let className = 'mr-[25px]';
+                  if (getTag === 'reviewCount')
+                    className += ' text-[#4771B7] font-medium';
+                  return className;
+                }}
               >
                 • 리뷰 많은순
-              </Link>
+              </NavLink>
             </>
           )}
         </Option>
@@ -128,6 +197,17 @@ function CategoryPage() {
       ) : isSearch ? (
         <NoResult />
       ) : null}
+      <div className="flex flex-col items-center">
+        <button
+          className="fixed right-[30px] bottom-[40px] w-[50px] h-[50px] rounded-full text-white bg-[#4771B7] animate-topbounce"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <img
+            src={top}
+            className="w-[50px] cursor-pointer duration-500 ease-in-out "
+          />
+        </button>
+      </div>
     </Style>
   );
 }

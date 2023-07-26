@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'aos/dist/aos.css';
 
@@ -33,12 +33,14 @@ function CategoryCard({ data }: CProps) {
   const { storeId, img, title, reviewCount, address, rating, price, isLike } =
     data;
   const url = import.meta.env.VITE_APP_API_URL;
+  const navigate = useNavigate();
   const [isHeartClicked, setIsHeartClicked] = useState(false);
   const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
 
   // 상태코드 보고 UI 변경시키기 ..
-  const onClickHeart = async () => {
+  const onClickHeart = async (e) => {
+    e.stopPropagation();
     setIsHeartClicked(true);
     if (isHeartClicked) {
       return;
@@ -61,7 +63,8 @@ function CategoryCard({ data }: CProps) {
     }, 5000);
   };
 
-  const onClickNonHeart = async () => {
+  const onClickNonHeart = async (e) => {
+    e.stopPropagation();
     setIsHeartClicked(true);
     if (isHeartClicked) {
       return;
@@ -81,7 +84,7 @@ function CategoryCard({ data }: CProps) {
     }, 5000);
   };
   return (
-    <CardContainer>
+    <CardContainer onClick={() => navigate(`/category/${storeId}`)}>
       <img
         className="w-[250px] h-[198px] object-cover"
         src={img}
@@ -103,14 +106,14 @@ function CategoryCard({ data }: CProps) {
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
           {isHeart ? (
             <PiHeartFill
-              className="cursor-pointer"
+              className="hover:cursor-pointer"
               onClick={onClickNonHeart}
               size="24"
               color="#4771B7"
             />
           ) : (
             <PiHeart
-              className="cursor-pointer"
+              className="hover:cursor-pointer"
               onClick={onClickHeart}
               size="24"
               color="#4771B7"

@@ -20,14 +20,14 @@ import markerRed from '../../assets/marker/marker-red.png';
 function KakaoMap({ marker }: homeMapPropsType) {
   return (
     <Map
-      center={{ lat: 33.39, lng: 126.53439149999889 }}
+      center={{ lat: 33.35910359999967, lng: 126.53439149999889 }}
       style={{
         width: "100%",
         height: "600px",
         borderRadius: "10px",
         border: "1px solid #4771B7",
       }}
-      level={9}
+      level={10}
     >
       <MapTypeControl position={kakao.maps.ControlPosition.TOPLEFT}/>
       <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT} />
@@ -45,7 +45,7 @@ function KakaoMap({ marker }: homeMapPropsType) {
 export default KakaoMap;
 
 const EventMarkerContainer = ({ position, content }) => {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const EventMarkerContainer = ({ position, content }) => {
         }}
       />
       {isVisible && (
-        <CustomOverlayMap position={position} yAnchor={1.6}>
+        <CustomOverlayMap position={position} yAnchor={1}>
           <OverlaySection>
             <div>
               <div className="mb-1 font-medium text-xs text-gray-400">{content.category}</div>
