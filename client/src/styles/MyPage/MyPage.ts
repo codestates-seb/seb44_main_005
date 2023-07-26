@@ -59,7 +59,7 @@ export const ImgStyle = tw.img`
     w-[100px]
     h-[100px]
     rounded-full
-    object-cover
+    bg-cover
 `;
 
 export const TopSpace = tw.div`
