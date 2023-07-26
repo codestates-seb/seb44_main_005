@@ -74,8 +74,6 @@ function MyPage() {
     }
   };
 
-
-  // 로딩 컴포넌트 채은님이 만든걸로 사용하기
   if (!userData) {
     return (
       <LoadingContainer>
@@ -131,6 +129,7 @@ function MyPage() {
         sessionStorage.setItem('selectedPhoto', JSON.stringify(imageUrl));
         setProfileImageUrl(imageUrl);
         fetchData();
+        console.log('fetchData', fetchData);
       } else {
         console.error('프로필 업데이트 실패', res.status);
       }
