@@ -119,7 +119,7 @@ function Register() {
     } else {
       setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
     }
-    console.log(currentPhone);
+    console.log(formattedPhoneNumber);
   };
 
   useEffect(() => {
