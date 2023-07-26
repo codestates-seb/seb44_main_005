@@ -95,14 +95,14 @@ public class MemberService {
 
     // 프로필 이미지 등록
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerProfileImage(MultipartFile file, String email) throws IOException {
+    public Member registerProfileImage(MultipartFile file, String email) throws IOException {
         Member member = findMemberByEmail(email);
 
         // 프로필 이미지 업로드
         String profileImg = imgService.uploadProfileImage(file, member);
         member.setProfileImg(profileImg);
 
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
     // 구글 프로필 이미지 등록
