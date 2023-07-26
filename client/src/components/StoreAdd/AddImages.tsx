@@ -46,6 +46,9 @@ function AddImages() {
   }
 
   const detailImgDeleteHandler = (idx: number) => {
+    if (detailImgs.length <= 3) {
+      return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
+    }
     const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
     const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx);
     setDetailImgs(result);

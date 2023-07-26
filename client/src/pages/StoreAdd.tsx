@@ -24,7 +24,7 @@ function StoreAdd() {
   const [sendFirstImg, setSendFirstImg] = useRecoilState(SendFirstImgState);
   const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const setFirstImg = useSetRecoilState(FirstImgState);
-  const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
+  const setDetailImgs = useSetRecoilState(DetailImgsState);
   const setPageTitle = useSetRecoilState(pageTitleState);
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -129,9 +129,6 @@ function StoreAdd() {
     const inputVerify = formVerify(form);
     if (!inputVerify) {
       return;
-    }
-    if (detailImgs.length < 3) {
-      return alert('상세 이미지를 최소 3장 이상 등록해 주세요.');
     }
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
