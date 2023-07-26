@@ -36,8 +36,9 @@ function Register() {
   );
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState('비밀번호가 일치하지 않습니다');
-  const [phoneMessage, setPhoneMessage] =
-    useState('전화번호에 -를 포함해주세요');
+  const [phoneMessage, setPhoneMessage] = useState(
+    '전화번호에 -를 제외하고 입력해 주세요.'
+  );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   //이메일 유효성
