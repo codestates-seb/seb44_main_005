@@ -53,7 +53,7 @@ function Review() {
         body: JSON.stringify(form)
       })
       if (res.status === 422) {
-        return alert ('이용완료 후에 리뷰를 작성하실 수 있습니다.\n (이용완료 처리 방법: 마이페이지 > 예약내역조회 > 상세보기 > 이용완료 버튼 클릭)');
+        return alert ('이용완료 후에 리뷰를 작성하실 수 있습니다.\n\n(이용완료 처리 방법: 마이페이지 > 예약내역조회 > 상세보기 > 이용완료 버튼 클릭)');
       }
       if (res.status === 409) {
         return alert ('이미 리뷰를 작성하였습니다.');
