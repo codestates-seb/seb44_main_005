@@ -22,10 +22,9 @@ function StoreAdd() {
   const [btnText, setBtnText] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [sendFirstImg, setSendFirstImg] = useRecoilState(SendFirstImgState);
-  const [sendDetailImgs, setSendDetailImgs] =
-    useRecoilState(SendDetailImgsState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const setFirstImg = useSetRecoilState(FirstImgState);
-  const setDetailImgs = useSetRecoilState(DetailImgsState);
+  const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
   const setPageTitle = useSetRecoilState(pageTitleState);
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -130,6 +129,9 @@ function StoreAdd() {
     const inputVerify = formVerify(form);
     if (!inputVerify) {
       return;
+    }
+    if (detailImgs.length < 3) {
+      return('상세 이미지를 최소 3장 이상 등록해 주세요.');
     }
     const imgForm = new FormData();
     sendDetailImgs.forEach((img) => imgForm.append(`images`, img));
