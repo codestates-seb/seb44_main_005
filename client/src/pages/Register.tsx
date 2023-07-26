@@ -26,19 +26,11 @@ function Register() {
   const [isClicked, setIClicked] = useState(false);
 
   // 오류메세지 상태 저장
-  const [emailMessage, setEmailMessage] =
-    useState('올바른 이메일 형식이 아닙니다.');
-  const [nameMessage, setNameMessage] = useState(
-    '영문, 숫자로만 4자 이상으로 입력해주세요.'
-  );
-  const [passwordMessage, setPasswordMessage] = useState(
-    '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
-  );
-  const [passwordConfirmMessage, setPasswordConfirmMessage] =
-    useState('비밀번호가 일치하지 않습니다');
-  const [phoneMessage, setPhoneMessage] = useState(
-    '전화번호에 -를 제외하고 입력해 주세요.'
-  );
+  const [emailMessage, setEmailMessage] = useState('');
+  const [nameMessage, setNameMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
+  const [phoneMessage, setPhoneMessage] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   //이메일 유효성
@@ -46,9 +38,13 @@ function Register() {
   const onChangeEmail = (e) => {
     const currentEmail = e.target.value;
     setEmail(currentEmail);
+    if (!currentEmail) {
+      setEmailMessage('');
+      return;
+    }
     const emailRegExp =
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-    if (emailRegExp.test(currentEmail)) {
+    if (currentEmail && emailRegExp.test(currentEmail)) {
       setEmailMessage('사용 가능한 이메일 입니다.');
     } else {
       setEmailMessage('올바른 이메일 형식이 아닙니다.');
@@ -58,6 +54,10 @@ function Register() {
   const onChangeName = (e) => {
     const currentName = e.target.value;
     setName(currentName);
+    if (!currentName) {
+      setNameMessage('');
+      return;
+    }
     const nameRegExp = /^[a-zA-Z0-9]{4,}$/;
 
     if (nameRegExp.test(currentName)) {
@@ -70,6 +70,10 @@ function Register() {
   const onChangePassword = (e) => {
     const currentPassword = e.target.value;
     setPassword(currentPassword);
+    if (!currentPassword) {
+      setPasswordMessage('');
+      return;
+    }
     const passwordRegExp =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (passwordRegExp.test(currentPassword)) {
@@ -83,6 +87,10 @@ function Register() {
 
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
+    if (!currentPasswordConfirm) {
+      setPasswordConfirmMessage('');
+      return;
+    }
     if (password === currentPasswordConfirm) {
       setPasswordConfirmMessage('비밀번호가 일치합니다.');
     } else {
@@ -94,6 +102,10 @@ function Register() {
   const onChangePhone = (e) => {
     const currentPhone = e.target.value;
     setPhone(currentPhone);
+    if (!currentPhone) {
+      setPhoneMessage('');
+      return;
+    }
     const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
     let formattedNumber = '';
 
