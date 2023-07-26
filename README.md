@@ -5,7 +5,7 @@
 </p>
 
 
-### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
+### 🏖️ 개발 기간: [![Since](https://img.shields.io/badge/since-2023.07.06-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005) ~ [![End](https://img.shields.io/badge/end-2023.07.24-D1B6E1.svg?&edge_flat=false)](https://github.com/codestates-seb/seb44_main_005)
 
 ### 🏝️ 배포 링크 : [Acti-On](http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com/)
 
@@ -30,8 +30,18 @@
 <img width="90%" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/cc413283-d1eb-43ab-88e2-1c3264648ae2.gif">
 </p>
 
-
 <br>
+<br>
+ 
+
+ |![기능1](https://github.com/codestates-seb/seb44_main_005/assets/106866926/d95f4411-b1ba-4bea-9f8b-d5667eba1c30)|![기능2](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c54ff1bf-ea0a-467c-8d4e-a4ce2fbcbce0)|
+  |---|---|
+ |![기능3](https://github.com/codestates-seb/seb44_main_005/assets/106866926/c6e377af-f7b8-49cc-bd4f-b680512ce913)|![기능4](https://github.com/codestates-seb/seb44_main_005/assets/106866926/6d5a652d-d54c-4743-9e25-96e2f7156f96)|
+
+ <br>
+ <br>
+ <br>
+
 
 ## 🛠️ Stack
 
@@ -42,7 +52,20 @@
 </p>
 
  <br>
+ <br>
+ <br>
+ 
+ ## ⚙️ 담당 파트
+ 
+ |프론트 담당파트|백엔드 담당파트|
+ |---|---|
+ |![프론트](https://github.com/codestates-seb/seb44_main_005/assets/106866926/ec1d30c8-a5d0-403a-aa13-0cea83c96701)|![백엔드](https://github.com/codestates-seb/seb44_main_005/assets/106866926/232f70d0-e3dd-4260-8563-45dc75fcb710)|
 
+ <br>
+ <br>
+ <br>
+
+ 
 
 ## 📂 Documents
 ### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)

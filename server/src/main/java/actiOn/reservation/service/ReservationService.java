@@ -346,6 +346,27 @@ public class ReservationService {
         }
     }
 
+    // 회원이 해당 업체를 예약한 내역이 있는지 확인
+    public void verifyReservationByMemberAndStore(Member member, Store store) {
+        Optional<Reservation> reservation =
+                reservationRepository.findReservationByMemberAndStore(member, store);
+
+        if (reservation.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.ONLY_RESERVED_MEMBER_REVIEW);
+        }
+    }
+
+    // 사용자가 회원이 해당 스토어를 이용완료 했는지 확인
+    public void verifyReservationByReservationStatus(Member member, Store store) {
+        Optional<Reservation> reservation =
+                reservationRepository.findReservationByMemberAndStoreAndReservationStatus(
+                        member, store, Reservation.ReservationStatus.RESERVATION_USE_COMPLETED);
+
+        if (reservation.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.BEFORE_STORE_USE_COMPLETE);
+        }
+    }
+
     /**
      * 여기서부터는 리뷰를 작성할 자격이 있는지 검증하기 위해, 사용자가 해당 스토어에 몇개의 예약을 했는지 확인하기 위한 기능과 관련이 있습니다.
      * 예를 들어, 예약을 2개를 했다면 사용자는 2개의 리뷰를 남길 수 있습니다.

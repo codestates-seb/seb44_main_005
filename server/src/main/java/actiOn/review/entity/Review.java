@@ -11,7 +11,8 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 public class Review extends BaseEntity {
 
@@ -33,9 +34,4 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
     private Store store;
-
-    public Review(String content, Integer rating){
-        this.content = content;
-        this.rating = rating;
-    }
 }
