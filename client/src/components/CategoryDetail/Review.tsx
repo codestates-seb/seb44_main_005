@@ -52,13 +52,7 @@ function Review() {
         },
         body: JSON.stringify(form)
       })
-      if (res.status === 404) {
-        return alert ('예약한 회원만 리뷰를 작성할 수 있습니다.');
-      }
-      else if (res.status === 422) {
-        return alert ('레저를 이용하신 후에 리뷰를 작성할 수 있습니다. (이용완료 처리 방법: 마이페이지 > 예약내역조회 > 예약상세 보기 > 이용완료 버튼 클릭)');
-      }
-      else if (res.status === 409) {
+      if (res.status === 409) {
         return alert ('이미 리뷰를 작성하였습니다.');
       }
       else if (res.status === 400) {

@@ -17,7 +17,7 @@ function Page3() {
 
   return (
     <Wrapper id="page5">
-      <a className="absolute top-5 left-[50%] translate-x-[-50%] z-50" href="#page4">
+      <a href="#page4">
         <img
           src={w_top}
           className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
@@ -29,7 +29,7 @@ function Page3() {
           data-aos="fade-right"
           data-aos-easing="ease-in-out"
           data-aos-duration="1000"
-          className="w-[600px] h-[650px]"
+          className="w-[700px] h-[650px]"
         />
         <TextContainer>
           <MainText
@@ -60,7 +60,7 @@ function Page3() {
           </HomeBtn>
         </TextContainer>
       </PageContainer>
-      <div className="flex flex-col items-center mb-[10px] absolute bottom-5 left-[50%] translate-x-[-50%] z-50">
+      <div className="flex flex-col items-center mb-[10px]">
         <div className="font-medium text-white text-[18px] ml-1">
           다시 감상하려면 누르세요!
         </div>
