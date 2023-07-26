@@ -1,4 +1,4 @@
-import { useSearchParams, Link, NavLink, useLocation } from 'react-router-dom';
+import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import 'aos/dist/aos.css';
@@ -64,12 +64,7 @@ function CategoryPage() {
     };
 
     fetchData();
-    console.log(location);
   }, [categoryName, sort, keywords]);
-
-  const activeStyle = {
-    color: '#4771B7',
-  };
 
   return (
     <Style>
@@ -95,11 +90,11 @@ function CategoryPage() {
                 className={() => {
                   const url = new URLSearchParams(location.search);
                   const getTag = url.get('sort');
-                  console.log(getTag);
+
                   let className = 'mr-[25px]';
                   if (getTag === 'likeCount')
                     className += ' text-[#4771B7] font-medium';
-                  console.log(className);
+
                   return className;
                 }}
               >
@@ -110,11 +105,9 @@ function CategoryPage() {
                 className={() => {
                   const url = new URLSearchParams(location.search);
                   const getTag = url.get('sort');
-                  console.log(getTag);
                   let className = 'mr-[25px]';
                   if (getTag === 'rating')
                     className += ' text-[#4771B7] font-medium';
-                  console.log(className);
                   return className;
                 }}
               >
@@ -125,11 +118,9 @@ function CategoryPage() {
                 className={() => {
                   const url = new URLSearchParams(location.search);
                   const getTag = url.get('sort');
-                  console.log(getTag);
                   let className = 'mr-[25px]';
                   if (getTag === 'lowPrice')
                     className += ' text-[#4771B7] font-medium';
-                  console.log(className);
                   return className;
                 }}
               >
@@ -140,11 +131,9 @@ function CategoryPage() {
                 className={() => {
                   const url = new URLSearchParams(location.search);
                   const getTag = url.get('sort');
-                  console.log(getTag);
                   let className = 'mr-[25px]';
                   if (getTag === 'highPrice')
                     className += ' text-[#4771B7] font-medium';
-                  console.log(className);
                   return className;
                 }}
               >
@@ -155,11 +144,9 @@ function CategoryPage() {
                 className={() => {
                   const url = new URLSearchParams(location.search);
                   const getTag = url.get('sort');
-                  console.log(getTag);
                   let className = 'mr-[25px]';
                   if (getTag === 'reviewCount')
                     className += ' text-[#4771B7] font-medium';
-                  console.log(className);
                   return className;
                 }}
               >

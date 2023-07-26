@@ -12,6 +12,7 @@ import {
 import Button from '../components/Button/Button';
 import google from '../assets/google.svg';
 import { useNavigate } from 'react-router-dom';
+import { current } from '@reduxjs/toolkit';
 
 function Register() {
   const url = import.meta.env.VITE_APP_API_URL;
@@ -194,7 +195,6 @@ function Register() {
       handleSubmit(e);
     }
   };
-
   return (
     <StyleContainer>
       <ToastContainer
