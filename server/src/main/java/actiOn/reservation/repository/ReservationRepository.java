@@ -13,9 +13,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByReservationDateAndStore(LocalDate reservationDate, Store store);
 
-    Optional<Reservation> findReservationByMemberAndStore(Member member, Store store);
+//    Optional<Reservation> findReservationByMemberAndStore(Member member, Store store);
+    long countByMemberAndStore(Member member, Store store);
 
-    Optional<Reservation> findReservationByMemberAndStoreAndReservationStatus(
+    long countByMemberAndStoreAndReservationStatus(
             Member member, Store store, Reservation.ReservationStatus reservationStatus);
 
     int countByStoreAndMemberAndReservationStatus(Store store, Member member, Reservation.ReservationStatus reservationStatus);
