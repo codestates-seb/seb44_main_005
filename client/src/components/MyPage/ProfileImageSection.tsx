@@ -6,6 +6,7 @@ function ProfileImageSection({ profileImageUrl, handlePhotoChange, handlePhotoRe
     <>
       {profileImageUrl !== 'default image' ? (
         <ImgStyle 
+          key={profileImageUrl}
           src={profileImageUrl}
           alt="profile img"
         />
