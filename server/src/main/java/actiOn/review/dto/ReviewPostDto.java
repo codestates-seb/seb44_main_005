@@ -14,6 +14,5 @@ public class ReviewPostDto {
     private String content;
 
     @Range(min = 0, max = 5)
-    @NotSpace
     private Integer rating;
 }
