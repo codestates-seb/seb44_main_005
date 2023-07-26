@@ -16,7 +16,7 @@ import {
 function Review() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [stars, setStars] = useState([false, false, false, false, false]);
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ rating: 0, content: '' });
   const [data, setData] = useRecoilState(ReviewsState);
 
   const starClickHandler = (idx: number) => {
@@ -35,6 +35,12 @@ function Review() {
   };
 
   const reviewPost = async () => {
+    if (!form.rating) {
+      return alert('별점을 클릭해주세요.');
+    }
+    else if (!form.content) {
+      return alert('리뷰 글을 작성해주세요.');
+    }
     const storeId = location.pathname.substring(10);
     const accessToken = sessionStorage.getItem('Authorization');
     try {

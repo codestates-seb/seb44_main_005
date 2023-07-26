@@ -1,8 +1,9 @@
 import tw from 'tailwind-styled-components';
 
 export const Wrapper = tw.div`
+  relative
   bg-[#ECF1F8] 
-  w-full 
+  w-[100vw] 
   h-[100vh] 
   flex 
   flex-col

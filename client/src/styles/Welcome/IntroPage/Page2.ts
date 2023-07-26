@@ -1,8 +1,9 @@
 import tw from 'tailwind-styled-components';
 
 export const PageContainer = tw.div`
+  relative
   bg-[#ECF1F8] 
-  w-full 
+  w-[100vw]
   h-[100vh] 
   flex 
   flex-col 
@@ -12,7 +13,7 @@ export const PageContainer = tw.div`
 
 export const MainText = tw.div`
   font-semibold 
-  text-[55px] 
+  text-[3rem]
   text-[#4771B7] 
   my-[30px]
 `;
