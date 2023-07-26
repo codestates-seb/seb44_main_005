@@ -56,7 +56,7 @@ function Header() {
     <HaederContainer>
       <LogoContainer>
         <img
-          className="w-[140px] h-[40px] cursor-pointer"
+          className="w-[140px] h-[40px] cursor-pointer object-cover"
           alt="logo"
           src={headerlogo}
           onClick={handleClick}

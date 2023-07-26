@@ -96,7 +96,7 @@ function CategoryCard({ data }: CProps) {
             <BsFillStarFill size="18" color="#4771B7" />
           </span>
           <span className="mr-[2px]">{rating.toFixed(1)}</span>
-          <span className="mr-[12px]">({reviewCount})</span>
+          <span className="mr-[12px]">{reviewCount}</span>
           <span>{address}</span>
         </Text>
         <CardPrice>
