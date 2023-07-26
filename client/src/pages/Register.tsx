@@ -119,6 +119,7 @@ function Register() {
     } else {
       setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
     }
+    console.log(formattedPhoneNumber);
   };
 
   useEffect(() => {
@@ -307,7 +308,6 @@ function Register() {
               id="phone"
               type="text"
               value={formattedPhoneNumber}
-              pattern="\d{3}-\d{3,4}-\d{4}"
               onChange={onChangePhone}
               onKeyDown={handleKeyDown}
               maxLength={13}
