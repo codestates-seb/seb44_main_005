@@ -2,8 +2,7 @@ import tw from 'tailwind-styled-components';
 
 export const PageContainer = tw.div`
   w-full 
-  min-h-[100vh] 
-  overflow-hidden
+  h-[100vh] 
 `;
 
 export const IntroText = tw.div`

@@ -16,6 +16,12 @@ function App() {
   const setIsRole = useSetRecoilState(Role);
   const url = import.meta.env.VITE_APP_API_URL;
 
+  const handleLoginState = () => {
+    if (!sessionStorage.getItem('Authorization')) {
+      setIsLoginState(false);
+    }
+  };
+
   const handleAccessToken = async () => {
     const accessToken = searchParams.get('access_token');
     if (accessToken) {
@@ -50,6 +56,7 @@ function App() {
 
   useEffect(() => {
     handleAccessToken();
+    handleLoginState();
   }, []);
 
   return (
