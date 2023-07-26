@@ -98,8 +98,11 @@ function Searchbar() {
             {keyItems.map((item) => (
               <AutoSearchData
                 key={item.title}
-                onClick={() => {
+                onMouseDown={(e) => {
+                  e.stopPropagation();
                   setKeyword(item.title);
+                  searchFetch();
+                  setOpen(false);
                 }}
               >
                 <SearchIcon src={search} onClick={() => setOpen(false)} />
