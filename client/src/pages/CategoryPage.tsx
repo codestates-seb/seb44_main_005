@@ -1,6 +1,6 @@
 import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import 'aos/dist/aos.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -16,8 +16,8 @@ import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 import top from '../assets/w_top.svg';
-import { isLoginState } from '../store/userInfoAtom';
-import { open } from '../store/dropdownAtom';
+// import { isLoginState } from '../store/userInfoAtom';
+// import { open } from '../store/dropdownAtom';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
@@ -31,8 +31,8 @@ function CategoryPage() {
   const [isSearch, setIsSearch] = useRecoilState(search);
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
-  const setIsLoginState = useSetRecoilState(isLoginState);
-  const setIsOpen = useSetRecoilState(open);
+  // const setIsLoginState = useSetRecoilState(isLoginState);
+  // const setIsOpen = useSetRecoilState(open);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,32 +69,6 @@ function CategoryPage() {
 
     fetchData();
   }, [categoryName, sort, keywords]);
-
-  //토큰 만료시 로그아웃처리
-  const handleToken = async () => {
-    const accessToken = sessionStorage.getItem('Authorization');
-    if (!accessToken) {
-      await fetch(`/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: sessionStorage.getItem('Authorization'),
-          'Access-Control-Allow-Origin': '*',
-        },
-        credentials: 'include',
-      });
-      setIsOpen(false);
-      setIsLoginState(false);
-      localStorage.removeItem('recoil-persist');
-      sessionStorage.removeItem('Authorization');
-      sessionStorage.removeItem('memberId');
-      sessionStorage.removeItem('access_token');
-      // window.location.href = '/home';
-    }
-  };
-  useEffect(() => {
-    handleToken();
-  });
 
   return (
     <Style>

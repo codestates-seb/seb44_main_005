@@ -33,8 +33,11 @@ export const UnLoginContainer = tw.div`
 `;
 
 export const ProfileIcon = tw.img`
-  w-[30px] 
+  w-[30px]
+  h-[30px]
   ml-[40px]
   transition duration-500 ease-in-out
   focus:translate-y-6
+  rounded-full 
+  object-cover
 `;
