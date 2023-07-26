@@ -17,7 +17,7 @@ function Page4() {
 
   return (
     <Wrapper id="page4">
-      <a href="#page3">
+      <a className="absolute top-5 left-[50%] translate-x-[-50%] z-50" href="#page3">
         <img
           src={top}
           className="w-[80px] mt-[15px] animate-topbounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"
@@ -43,10 +43,10 @@ function Page4() {
           data-aos-delay="500"
           data-aos-easing="ease-in-out"
           data-aos-duration="1000"
-          className="w-[700px] h-[650px]"
+          className="w-[600px] h-[650px]"
         />
       </PageContainer>
-      <a href="#page5">
+      <a className="absolute bottom-5 left-[50%] translate-x-[-50%] z-50" href="#page5">
         <img
           src={bottom}
           className="w-[80px] mt-[5px] animate-bounce cursor-pointer duration-500 ease-in-out hover:w-[100px]"

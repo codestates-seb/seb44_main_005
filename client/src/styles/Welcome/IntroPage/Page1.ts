@@ -1,21 +1,26 @@
 import tw from 'tailwind-styled-components';
 
 export const PageContainer = tw.div`
-  w-full 
+  relative
+  w-[100vw]
   h-[100vh] 
 `;
 
 export const IntroText = tw.div`
-  intro-text relative top-5 max-w-full
+  h-full
+  flex flex-col justify-center
+  ml-[150px]
 `;
 
 export const ClickContainer = tw.div`
   flex 
   flex-col 
   items-center 
-  relative 
-  justify-center 
-  top-[420px]
+  justify-center
+  absolute
+  left-[50%]
+  bottom-5
+  translate-x-[-50%]
 `;
 
 export const HomeBtn = tw.span`
