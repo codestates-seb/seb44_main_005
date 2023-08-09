@@ -18,13 +18,15 @@ function Register() {
   const navigate = useNavigate();
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
   //useRef ->객체관리....
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-
   const [isClicked, setIClicked] = useState(false);
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
 
+  const [form, setForm] = useState({
+    name: '',
+    password: '',
+    email: '',
+    phone: '',
+  });
   // 오류메세지 상태 저장
   const [emailMessage, setEmailMessage] = useState('');
   const [nameMessage, setNameMessage] = useState('');
@@ -33,92 +35,74 @@ function Register() {
   const [phoneMessage, setPhoneMessage] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-  //이메일 유효성
+  // onChange 함수
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'name') {
+      if (!value) {
+        setNameMessage('');
+        return;
+      }
+      const nameRegExp = /^[a-zA-Z0-9]{4,}$/;
+      if (nameRegExp.test(value)) {
+        setNameMessage('사용 가능한 닉네임 입니다.');
+      } else {
+        setNameMessage('영문, 숫자로만 4자 이상으로 입력해주세요.');
+      }
+    } else if (name === 'email') {
+      if (!value) {
+        setEmailMessage('');
+        return;
+      }
+      const emailRegExp =
+        /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+      if (value && emailRegExp.test(value)) {
+        setEmailMessage('사용 가능한 이메일 입니다.');
+      } else {
+        setEmailMessage('올바른 이메일 형식이 아닙니다.');
+      }
+    } else if (name === 'password') {
+      if (!value) {
+        setPasswordMessage('');
+        return;
+      }
+      const passwordRegExp =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      if (passwordRegExp.test(value)) {
+        setPasswordMessage('안전한 비밀번호 입니다.');
+      } else {
+        setPasswordMessage(
+          '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
+        );
+      }
+    } else if (name === 'passwordConfirm') {
+      if (!value) {
+        setPasswordConfirmMessage('');
+        return;
+      }
+      if (form.password === value) {
+        setPasswordConfirmMessage('비밀번호가 일치합니다.');
+      } else {
+        setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
+      }
+    } else if (name === 'phone') {
+      if (!value) {
+        setPhoneMessage('');
+        return;
+      }
+      const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
+      let formattedNumber = '';
 
-  const onChangeEmail = (e) => {
-    const currentEmail = e.target.value;
-    setEmail(currentEmail);
-    if (!currentEmail) {
-      setEmailMessage('');
-      return;
-    }
-    const emailRegExp =
-      /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-    if (currentEmail && emailRegExp.test(currentEmail)) {
-      setEmailMessage('사용 가능한 이메일 입니다.');
-    } else {
-      setEmailMessage('올바른 이메일 형식이 아닙니다.');
-    }
-  };
+      formattedNumber = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+      setFormattedPhoneNumber(formattedNumber);
 
-  const onChangeName = (e) => {
-    const currentName = e.target.value;
-    setName(currentName);
-    if (!currentName) {
-      setNameMessage('');
-      return;
+      if (phoneRegExp.test(formattedNumber)) {
+        setPhoneMessage('올바른 전화번호 형식입니다.');
+      } else {
+        setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
+      }
     }
-    const nameRegExp = /^[a-zA-Z0-9]{4,}$/;
-
-    if (nameRegExp.test(currentName)) {
-      setNameMessage('사용 가능한 닉네임 입니다.');
-    } else {
-      setNameMessage('영문, 숫자로만 4자 이상으로 입력해주세요.');
-    }
-  };
-
-  const onChangePassword = (e) => {
-    const currentPassword = e.target.value;
-    setPassword(currentPassword);
-    if (!currentPassword) {
-      setPasswordMessage('');
-      return;
-    }
-    const passwordRegExp =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    if (passwordRegExp.test(currentPassword)) {
-      setPasswordMessage('안전한 비밀번호 입니다.');
-    } else {
-      setPasswordMessage(
-        '영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.'
-      );
-    }
-  };
-
-  const onChangePasswordConfirm = (e) => {
-    const currentPasswordConfirm = e.target.value;
-    if (!currentPasswordConfirm) {
-      setPasswordConfirmMessage('');
-      return;
-    }
-    if (password === currentPasswordConfirm) {
-      setPasswordConfirmMessage('비밀번호가 일치합니다.');
-    } else {
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
-    }
-  };
-  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
-
-  const onChangePhone = (e) => {
-    const currentPhone = e.target.value;
-    setPhone(currentPhone);
-    if (!currentPhone) {
-      setPhoneMessage('');
-      return;
-    }
-    const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
-    let formattedNumber = '';
-
-    formattedNumber = currentPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-
-    setPhone(formattedNumber);
-    setFormattedPhoneNumber(formattedNumber);
-
-    if (phoneRegExp.test(formattedNumber)) {
-      setPhoneMessage('올바른 전화번호 형식입니다.');
-    } else {
-      setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
-    }
+    setForm({ ...form, [name]: value });
   };
 
   useEffect(() => {
@@ -155,10 +139,10 @@ function Register() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
-            phoneNumber: phone,
-            nickname: name,
+            email: form.email,
+            password: form.password,
+            phoneNumber: form.phone,
+            nickname: form.name,
           }),
         });
         if (res.ok) {
@@ -225,8 +209,10 @@ function Register() {
           <InputContainer>
             <Input
               id="email"
+              name="email"
               type="email"
-              onChange={onChangeEmail}
+              value={form.email}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
             />
             <Message
@@ -245,8 +231,10 @@ function Register() {
           <InputContainer>
             <Input
               id="name"
+              name="name"
               type="text"
-              onChange={onChangeName}
+              value={form.name}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
             />
             <Message
@@ -265,8 +253,10 @@ function Register() {
           <InputContainer>
             <Input
               id="password"
+              name="password"
               type="password"
-              onChange={onChangePassword}
+              value={form.password}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
             />
             <Message
@@ -285,8 +275,9 @@ function Register() {
           <InputContainer>
             <Input
               id="passwordConfirm"
+              name="passwordConfirm"
               type="password"
-              onChange={onChangePasswordConfirm}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
             />
             <Message
@@ -306,8 +297,9 @@ function Register() {
             <Input
               id="phone"
               type="text"
+              name="phone"
               value={formattedPhoneNumber}
-              onChange={onChangePhone}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
               maxLength={13}
             />
