@@ -20,20 +20,16 @@ function Login() {
   const url = import.meta.env.VITE_APP_API_URL;
 
   const [isClicked, setIClicked] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassWord] = useState('');
+  const [form, setForm] = useState({ email: '', password: '' });
 
   //recoil 전역상태
   const setIsLoginState = useSetRecoilState(isLoginState);
   const setIsProfile = useSetRecoilState(isProfile);
   const setIsRole = useSetRecoilState(Role);
 
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const onPwHandler = (event) => {
-    setPassWord(event.currentTarget.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   //일반로그인 -> 공통으로 뺄 것.....axios
@@ -42,15 +38,14 @@ function Login() {
     if (isClicked) {
       return;
     }
-    //true
     e.preventDefault();
     try {
       const res = await fetch(`${url}/auth/login`, {
         method: 'POST',
         headers: { 'Access-Control-Allow-Origin': '*' },
         body: JSON.stringify({
-          username: email,
-          password: password,
+          username: form.email,
+          password: form.password,
         }),
         credentials: 'include',
       });
@@ -68,8 +63,6 @@ function Login() {
           navigate('/home');
           setIsLoginState(true);
         }, 2000);
-
-        // //헤더에서 멤버아이디와 닉네임을 받아옴
 
         // 받아온 데이터 전역에 저장
         setIsProfile(profile);
@@ -127,21 +120,29 @@ function Login() {
         </IntroText>
         <InputContainer>
           <div>
-            <label className="font-medium">이메일</label>
+            <label htmlFor="email" className="font-medium">
+              이메일
+            </label>
             <input
+              id="email"
+              name="email"
               type="text"
-              value={email}
-              onChange={onEmailHandler}
+              value={form.email}
+              onChange={handleChange}
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-4 rounded-md mb-3 p-2"
               onKeyDown={handleKeyDown}
             />
           </div>
           <div>
-            <label className="font-medium">비밀번호</label>
+            <label htmlFor="password" className="font-medium">
+              비밀번호
+            </label>
             <input
+              id="password"
+              name="password"
               type="password"
-              value={password}
-              onChange={onPwHandler}
+              value={form.password}
+              onChange={handleChange}
               className="border border-[#9A9A9A] text-[13px] h-[30px] w-[200px] ml-3 rounded-md mr-3 p-2"
               onKeyDown={handleKeyDown}
             />
