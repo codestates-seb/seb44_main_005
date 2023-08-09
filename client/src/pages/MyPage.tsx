@@ -107,8 +107,7 @@ function MyPage() {
         },
         body: formData,
       });
-      const json = await res.json();
-      console.log(json);
+
       if (res.ok) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -130,6 +129,7 @@ function MyPage() {
       console.error('프로필 업데이트 에러', error);
     }
   };
+  
   const handlePhotoRemove = async () => {
     alert('사진을 삭제하시겠습니까?');
     try {

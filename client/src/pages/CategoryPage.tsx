@@ -1,6 +1,6 @@
 import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import 'aos/dist/aos.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -10,14 +10,14 @@ import {
   CategoryContainer,
   Option,
   Category,
+  TopBtn,
+  BtnWrapper,
 } from '../styles/Category/CategoryPage';
 import { categoryData } from '../store/categoryAtom';
 import { loading, search } from '../store/searchbarAtom';
 import Loading from '../components/Loading/Loading';
 import NoResult from '../components/NoResult/NoResult';
 import top from '../assets/w_top.svg';
-import { isLoginState } from '../store/userInfoAtom';
-import { open } from '../store/dropdownAtom';
 
 function CategoryPage() {
   const url = import.meta.env.VITE_APP_API_URL;
@@ -31,8 +31,6 @@ function CategoryPage() {
   const [isSearch, setIsSearch] = useRecoilState(search);
   const [isLoading, setIsLoading] = useRecoilState(loading);
   const [category, setCategory] = useRecoilState(categoryData);
-  const setIsLoginState = useSetRecoilState(isLoginState);
-  const setIsOpen = useSetRecoilState(open);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,9 +39,12 @@ function CategoryPage() {
       if (keywords) {
         setIsSearch(true);
         setIsLoading(true);
-        const res = await fetch(`${url}/search?keyword=${keywords}`, {
-          headers: { Authorization: sessionStorage.getItem('Authorization') },
-        });
+        const res = await fetch(
+          `${url}/search?keyword=${encodeURIComponent(keywords)}`,
+          {
+            headers: { Authorization: sessionStorage.getItem('Authorization') },
+          }
+        );
         data = await res.json();
         if (res.status !== 200) throw res;
       } else {
@@ -69,32 +70,6 @@ function CategoryPage() {
 
     fetchData();
   }, [categoryName, sort, keywords]);
-
-  //토큰 만료시 로그아웃처리
-  const handleToken = async () => {
-    const accessToken = sessionStorage.getItem('Authorization');
-    if (!accessToken) {
-      await fetch(`/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: sessionStorage.getItem('Authorization'),
-          'Access-Control-Allow-Origin': '*',
-        },
-        credentials: 'include',
-      });
-      setIsOpen(false);
-      setIsLoginState(false);
-      localStorage.removeItem('recoil-persist');
-      sessionStorage.removeItem('Authorization');
-      sessionStorage.removeItem('memberId');
-      sessionStorage.removeItem('access_token');
-      // window.location.href = '/home';
-    }
-  };
-  useEffect(() => {
-    handleToken();
-  });
 
   return (
     <Style>
@@ -197,17 +172,14 @@ function CategoryPage() {
       ) : isSearch ? (
         <NoResult />
       ) : null}
-      <div className="flex flex-col items-center">
-        <button
-          className="fixed right-[30px] bottom-[40px] w-[50px] h-[50px] rounded-full text-white bg-[#4771B7] animate-topbounce"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
+      <BtnWrapper>
+        <TopBtn onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img
             src={top}
             className="w-[50px] cursor-pointer duration-500 ease-in-out "
           />
-        </button>
-      </div>
+        </TopBtn>
+      </BtnWrapper>
     </Style>
   );
 }
