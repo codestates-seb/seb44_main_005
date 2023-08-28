@@ -39,36 +39,30 @@ function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'name') {
+      const nameRegExp = /^[a-zA-Z0-9]{4,}$/;
       if (!value) {
         setNameMessage('');
-        return;
-      }
-      const nameRegExp = /^[a-zA-Z0-9]{4,}$/;
-      if (nameRegExp.test(value)) {
+      } else if (nameRegExp.test(value)) {
         setNameMessage('사용 가능한 닉네임 입니다.');
       } else {
         setNameMessage('영문, 숫자로만 4자 이상으로 입력해주세요.');
       }
     } else if (name === 'email') {
-      if (!value) {
-        setEmailMessage('');
-        return;
-      }
       const emailRegExp =
         /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-      if (value && emailRegExp.test(value)) {
+      if (!value) {
+        setEmailMessage('');
+      } else if (value && emailRegExp.test(value)) {
         setEmailMessage('사용 가능한 이메일 입니다.');
       } else {
         setEmailMessage('올바른 이메일 형식이 아닙니다.');
       }
     } else if (name === 'password') {
-      if (!value) {
-        setPasswordMessage('');
-        return;
-      }
       const passwordRegExp =
         /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-      if (passwordRegExp.test(value)) {
+      if (!value) {
+        setPasswordMessage('');
+      } else if (passwordRegExp.test(value)) {
         setPasswordMessage('안전한 비밀번호 입니다.');
       } else {
         setPasswordMessage(
@@ -79,24 +73,21 @@ function Register() {
       if (!value) {
         setPasswordConfirmMessage('');
         return;
-      }
-      if (form.password === value) {
+      } else if (form.password === value) {
         setPasswordConfirmMessage('비밀번호가 일치합니다.');
       } else {
         setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
       }
     } else if (name === 'phone') {
-      if (!value) {
-        setPhoneMessage('');
-        return;
-      }
       const phoneRegExp = /^(010)-[0-9]{4}-[0-9]{4}$/;
       let formattedNumber = '';
 
       formattedNumber = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
       setFormattedPhoneNumber(formattedNumber);
 
-      if (phoneRegExp.test(formattedNumber)) {
+      if (!value) {
+        setPhoneMessage('');
+      } else if (phoneRegExp.test(formattedNumber)) {
         setPhoneMessage('올바른 전화번호 형식입니다.');
       } else {
         setPhoneMessage('전화번호에 -를 제외하고 입력해 주세요.');
@@ -125,6 +116,7 @@ function Register() {
     passwordConfirmMessage,
     phoneMessage,
   ]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIClicked(true);
