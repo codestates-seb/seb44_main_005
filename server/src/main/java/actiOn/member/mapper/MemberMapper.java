@@ -1,6 +1,8 @@
 package actiOn.member.mapper;
 
+import actiOn.Img.dto.ProfileImgDto;
 import actiOn.Img.storeImg.StoreImg;
+import actiOn.auth.dto.LoginResponseDto;
 import actiOn.exception.BusinessLogicException;
 import actiOn.exception.ExceptionCode;
 import actiOn.member.dto.*;
@@ -20,12 +22,13 @@ public interface MemberMapper {
 
     Member memberPatchDtoToMember(MemberPatchDto requestBody);
 
+
     default MemberResponseDto memberToMemberResponseDto(Member member) {
         return MemberResponseDto.builder()
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .profileImg(member.getProfileImgLink())
+                .profileImg(member.getProfileImg())
                 .build();
     }
 
@@ -53,7 +56,7 @@ public interface MemberMapper {
     PartnerResponseDto.StoreDto storeToPartnerResponseDto(Store store);
 
 
-    // 파트너 업체 DTO
+    // 파트너 업체 조회 DTO
     default PartnerStoreResponseDto partnerToPartnerStoreResponseDto(Member partner) {
         PartnerStoreResponseDto.PartnerStoreResponseDtoBuilder builder = PartnerStoreResponseDto.builder();
 
@@ -74,7 +77,17 @@ public interface MemberMapper {
         return partnerStoreDtos;
     }
 
-    PartnerStoreResponseDto.PartnerStoreDto storeToPartnerStoreResponseDto(Store store);
+    default PartnerStoreResponseDto.PartnerStoreDto storeToPartnerStoreResponseDto(Store store) {
+        List<StoreImg> storeImgList = store.getStoreImgList();
+        String storeThumbnailImgLink = findThumbnailImage(storeImgList).getLink();
+
+        return PartnerStoreResponseDto.PartnerStoreDto
+                .builder()
+                .storeId(store.getStoreId())
+                .storeImage(storeThumbnailImgLink)
+                .storeName(store.getStoreName())
+                .build();
+    }
 
     // 예약 내역 조회 DTO
     default MemberReservationResponseDto memberToMemberReservationsDto(Member member) {
@@ -121,6 +134,7 @@ public interface MemberMapper {
         builder.storeName(store.getStoreName());
         builder.reservationDate(reservation.getReservationDate());
         builder.totalPrice(reservation.getTotalPrice());
+        builder.reservationId(reservation.getReservationId());
         builder.itemCount(reservation.getReservationItems().size());
         builder.reservationStatus(reservation.getReservationStatus().getStepDescription());
 
@@ -133,5 +147,22 @@ public interface MemberMapper {
                 .filter(StoreImg::getIsThumbnail)
                 .findAny()
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.THUMBNAIL_NOT_FOUND));
+    }
+
+    // 구글 로그인 이후 response
+    default LoginResponseDto memberGoogleLoginResponseDto(Member member) {
+        return LoginResponseDto.builder()
+                .role(member.getRoleName())
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImg())
+                .build();
+    }
+
+    // 프로필 이미지 수정 시 response
+    default ProfileImgDto profileImgResponseDto(Member member) {
+        return ProfileImgDto.builder()
+                .nickname(member.getNickname())
+                .profileImage(member.getProfileImg())
+                .build();
     }
 }

@@ -1,15 +1,25 @@
-import { FormRegiContainer, FormRegiButton } from '../../styles/Partner/Partner';
+import { FormRegiContainer, FormRegiButton, DisableFormRegiButton } from '../../styles/Partner/Partner';
 
-function FormRegistration ({ isFormValid, handleSubmit }) {
+function FormRegistration ({ isFormValid, handleSubmit, businessSector, isDuplicateChecked }) {
+  const isSelectedOptionSelected = businessSector === 'select';
+  const formIsValid = isFormValid && !isSelectedOptionSelected && isDuplicateChecked;
+
   return (
     <FormRegiContainer>
-      <FormRegiButton
-        type="submit"
-        disabled={!isFormValid}
-        onClick={handleSubmit}
-      >
-        등록하기
-      </FormRegiButton>
+      {!formIsValid ? (
+        <DisableFormRegiButton
+          type='button'
+        >
+          등록하기
+        </DisableFormRegiButton>
+      ) : (
+        <FormRegiButton
+          type='button'
+          onClick={handleSubmit}
+        >
+          등록하기
+        </FormRegiButton>
+      )}
     </FormRegiContainer>
   );
 }

@@ -1,8 +1,6 @@
 package actiOn.store.controller;
 
-import actiOn.Img.service.ImgService;
 import actiOn.auth.utils.AuthUtil;
-import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import actiOn.store.dto.*;
 import actiOn.store.dto.mainrep.MainPageResponseDto;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,14 +30,12 @@ public class StoreController {
     private final StoreMapper storeMapper;
     private final StoreResponseMapper responseMapper;
     private final CategoryResponseMapper categoryResponseMapper;
-    private final ImgService imgService;
-    private final MemberService memberService;
 
     // 업체 등록
     @PostMapping("/stores") // 스토어 생성
     public ResponseEntity postStore(@RequestBody @Valid StorePostDto storePostDto) {
         Store store = storeMapper.storePostDtoToStore(storePostDto); // dto를 store로 변환
-        store.setMember(memberService.findMemberByEmail(AuthUtil.getCurrentMemberEmail())); //store에 맴버 주입
+
         Store savedStore = storeService.createStore(store); // 스토어 생성
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(savedStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.CREATED);
@@ -50,11 +45,10 @@ public class StoreController {
     public ResponseEntity storeImgUpload(@PathVariable("store-id") long storeId,
                                          @RequestPart(value = "images", required = false) List<MultipartFile> images,
                                          @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage) throws IOException {
-        storeService.validateImagePost(images,thumbnailImage);
+        storeService.validateImagePost(images, thumbnailImage);
         storeService.storeImageUpload(images, storeId, thumbnailImage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
     // 업체 수정
     @PatchMapping("/stores/{store-id}") // 스토어 글 수정
@@ -65,7 +59,6 @@ public class StoreController {
 
         StoreIdResponseDto storeIdResponseDto = storeMapper.storeToStorePostResponseDto(patchStore);
         return new ResponseEntity<>(storeIdResponseDto, HttpStatus.OK);
-
     }
 
     @PatchMapping("/storeImages/{store-id}") // 스토어 이미지 업로드
@@ -77,10 +70,13 @@ public class StoreController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/storeImages/{store-id}")
-    public void storeImagesDelete(@PathVariable("store-id") long storeId,
-                                  @RequestParam("link") String link){
-        storeService.deleteStoreImgLink(link, storeId, true);
+    @DeleteMapping("/storeImages/{store-id}") // 업체 이미지 삭제
+    public ResponseEntity storeImagesDelete(@PathVariable("store-id") long storeId,
+                                            @RequestParam("link") String link) {
+
+        storeService.deleteStoreImgLink(link, storeId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/stores/{store-id}") // 스토어 상세페이지, 수정페이지 랜더링을 위해 필요한 리소스 응답
@@ -91,7 +87,7 @@ public class StoreController {
         return new ResponseEntity<>(storeResponseDto, HttpStatus.OK);
     }
 
-    // 업체 삭제 PP_003
+    // 업체 삭제
     @DeleteMapping("/stores/{store-id}") //스토어 삭제
     public ResponseEntity deleteStore(@PathVariable("store-id") @Positive Long storeId) {
         storeService.deleteStore(storeId);
@@ -128,5 +124,24 @@ public class StoreController {
         CategoryResponseDto searchResponseDtoWithLike =
                 storeService.insertWishAtCategoryResponseDto(searchResultTransformDto);
         return new ResponseEntity<>(searchResponseDtoWithLike, HttpStatus.OK);
+    }
+
+    // 찜 등록
+    @PostMapping("/stores/favorites/{store-id}")
+    public ResponseEntity registerWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.registerWish(storeId, email);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    // 찜 취소
+    @DeleteMapping("/stores/favorites/{store-id}")
+    public ResponseEntity cancelWish(@Positive @PathVariable("store-id") Long storeId) {
+        String email = AuthUtil.getCurrentMemberEmail();
+
+        storeService.deleteWish(storeId, email);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

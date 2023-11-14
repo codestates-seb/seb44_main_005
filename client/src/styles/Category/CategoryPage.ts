@@ -4,6 +4,7 @@ export const Style = tw.div`
   flex
   flex-col
   min-h-[80vh]
+  mb-[70px]
 `;
 export const CategoryContainer = tw.section`
   flex
@@ -28,4 +29,22 @@ export const Category = tw.div`
   flex-col
   items-center
   relative
+`;
+
+export const TopBtn = tw.div`
+  fixed 
+  right-[30px] 
+  bottom-[40px] 
+  w-[50px] 
+  h-[50px] 
+  rounded-full 
+  text-white 
+  bg-[#4771B7] 
+  animate-topbounce
+`;
+
+export const BtnWrapper = tw.div`
+  flex 
+  flex-col 
+  items-center
 `;

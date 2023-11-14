@@ -1,8 +1,6 @@
 package actiOn.auth.handler;
 
-import actiOn.auth.dto.LoginResponseDto;
 import actiOn.auth.provider.TokenProvider;
-import actiOn.helper.util.JsonUtil;
 import actiOn.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,23 +29,20 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String accessToken = tokenProvider.delegateAccessToken(member);
         String refreshToken = tokenProvider.delegateRefreshToken(member);
-        String loginResponse = getLoginResponseJson(member);
+        String loginResponse = tokenProvider.getLoginResponseJson(member);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        // 액세스 토큰 저장
         response.setHeader(AUTHORIZATION.getType(), BEARER.getType() + accessToken);
-        response.setHeader(REFRESH.getType(), refreshToken);
+
+        // 리프레시 토큰 쿠키에 저장
+        response.setHeader("Set-Cookie", REFRESH.getType() + "=" + refreshToken +
+                "; Path=/; Secure; SameSite=None; HttpOnly; Max-Age=3600;");
+        response.setHeader("Access-Control-Allow-Origin", "http://ac-ti-on.s3-website.ap-northeast-2.amazonaws.com");
+
+
         response.getWriter().write(loginResponse);
 
         log.info("# Authenticated Successfully!");
-    }
-
-    // 로그인 response를 Json 형식으로 반환
-    private String getLoginResponseJson(Member member) {
-        String role = member.getRoleName();
-        String nickname = member.getNickname();
-        String profileImage = member.getProfileImgLink();
-
-        LoginResponseDto responseDto = new LoginResponseDto(role, nickname, profileImage);
-        return JsonUtil.toJson(responseDto, LoginResponseDto.class);
     }
 }

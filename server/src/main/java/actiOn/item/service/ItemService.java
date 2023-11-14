@@ -30,6 +30,7 @@ public class ItemService {
     public List<Item> updateItems(List<Item> findItems, List<Item> newItems) {
         Store parentStore = findItems.get(0).getStore();
         itemStatusChange(findItems);
+
         List<Item> items = new ArrayList<>();
         for (Item item : newItems) {
             Item newItem = new Item();

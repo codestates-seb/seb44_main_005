@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
 const recoilPersistConfig = {
   key: 'recoil-persist', // 로컬 스토리지에 저장될 키
@@ -12,10 +13,12 @@ const recoilPersistConfig = {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
-    <React.Suspense fallback={<div>Loading...</div>}>
-      <RecoilRoot {...recoilPersistConfig}>
-        <App />
-      </RecoilRoot>
-    </React.Suspense>
+    <AnimatePresence>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <RecoilRoot {...recoilPersistConfig}>
+          <App />
+        </RecoilRoot>
+      </React.Suspense>
+    </AnimatePresence>
   </BrowserRouter>
 );

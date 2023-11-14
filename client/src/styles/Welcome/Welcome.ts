@@ -5,9 +5,7 @@ export const Blue = tw.span`
 `;
 
 export const Button = tw.button`
-  relative 
-  top-[320px] 
-  left-[140px] 
+  mt-10
   rounded-[20px] 
   text-[40px] 
   font-semibold 
@@ -15,12 +13,11 @@ export const Button = tw.button`
   h-[85px] 
   bg-[#4771B7] 
   text-[#FFFFFF]
+  transition duration-500 ease-in-out
+  hover:bg-[#6787BC] 
 `;
 
 export const Inrto = tw.div`
-  relative 
-  top-[280px] 
-  left-[150px] 
   font-semibold 
   text-[64px]
 `;

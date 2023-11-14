@@ -16,10 +16,10 @@ import {
 function Review() {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [stars, setStars] = useState([false, false, false, false, false]);
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ rating: 0, content: '' });
   const [data, setData] = useRecoilState(ReviewsState);
 
-  const starClickHandler = (idx) => {
+  const starClickHandler = (idx: number) => {
     const result = [false, false, false, false, false].map((star, starIdx) => {
       if (starIdx <= idx) {
         return true;
@@ -35,10 +35,16 @@ function Review() {
   };
 
   const reviewPost = async () => {
+    if (!form.rating) {
+      return alert('별점을 클릭해주세요.');
+    }
+    else if (!form.content) {
+      return alert('리뷰 글을 작성해주세요.');
+    }
     const storeId = location.pathname.substring(10);
     const accessToken = sessionStorage.getItem('Authorization');
     try {
-      await fetch(`${API_URL}/reviews/${storeId}`, {
+      const res = await fetch(`${API_URL}/reviews/${storeId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,9 +52,23 @@ function Review() {
         },
         body: JSON.stringify(form)
       })
+      if (res.status === 422) {
+        return alert ('이용완료 후에 리뷰를 작성하실 수 있습니다.\n\n(이용완료 처리 방법: 마이페이지 > 예약내역조회 > 상세보기 > 이용완료 버튼 클릭)');
+      }
+      if (res.status === 409) {
+        return alert ('이미 리뷰를 작성하였습니다.');
+      }
+      else if (res.status === 400) {
+        return alert ('비속어가 포함되어 있습니다.');
+      }
+      else if (!res.ok) {
+        return alert('리뷰를 등록할 수 없습니다.');
+      }
+      alert('리뷰가 등록되었습니다.');
+      window.location.reload();
     }
     catch(error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -60,7 +80,7 @@ function Review() {
       setData(json);
     }
     catch(error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -76,7 +96,8 @@ function Review() {
       </div>
       <div className="flex">
         <ReviewLeftBox>
-          {data.ratingAvg && <div className="text-center text-3xl font-bold mb-2">{data.ratingAvg.toFixed(1)}</div>}
+          {data.ratingAvg ? <div className="text-center text-3xl font-bold mb-2">{data.ratingAvg.toFixed(1)}</div> :
+          <div className="text-center text-3xl font-bold mb-2">{Number(0).toFixed(1)}</div>}
           <div className="relative">
             <img className="absolute max-w-[150px]" src={emptyStar} alt="빈별" />
               <div className="absolute overflow-hidden" style={{ width: `${data.ratingAvg * 10 * 2}%` }}>

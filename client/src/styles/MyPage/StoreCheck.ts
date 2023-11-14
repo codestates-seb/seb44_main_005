@@ -6,7 +6,8 @@ export const StoreCheckContainer = tw.div`
     px-[50px]
     py-16
     space-y-5
-    max-h-[800px]
+    w-[902px]
+    h-[800px]
     overflow-y-auto
 `;
 
@@ -19,7 +20,7 @@ export const StoreCheckTitle = tw.span`
 export const StoreCards = tw.div`
     border-[1.5px]
     border-[#4771B7]
-    w-[700px]
+    w-[780px]
     h-[200px]
     rounded-lg
     p-5
@@ -60,6 +61,7 @@ export const StoreInfoContainer = tw.div`
 export const StoreName = tw.span`
     text-[20px]
     font-semibold
+    cursor-pointer
 `;
 
 export const ButtonsContainer = tw.div`
@@ -74,4 +76,14 @@ export const StoreButtonStyle = tw.button`
     bg-[#F3F5F7]
     p-2
     rounded-lg
+`;
+
+export const NoStores = tw.div`
+    flex
+    flex-col
+    justify-center
+    items-center
+    space-y-5
+    p-20
+    h-[600px]
 `;

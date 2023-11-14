@@ -1,9 +1,9 @@
 package actiOn.member.entity;
 
-import actiOn.Img.profileImg.ProfileImg;
 import actiOn.auth.role.MemberRole;
 import actiOn.business.entity.Business;
 import actiOn.helper.audit.BaseEntity;
+import actiOn.payment.entity.Payment;
 import actiOn.reservation.entity.Reservation;
 import actiOn.store.entity.Store;
 import actiOn.wish.entity.Wish;
@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @Setter
 @Entity
 public class Member extends BaseEntity implements Principal {
+    private static final String DEFAULT_LINK = "default image";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -32,14 +34,16 @@ public class Member extends BaseEntity implements Principal {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column
+    @Column(unique = true)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
+    @Column(nullable = false)
+    private String profileImg;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<MemberRole> memberRoles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")
@@ -54,9 +58,8 @@ public class Member extends BaseEntity implements Principal {
     @OneToMany(mappedBy = "member")
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    private ProfileImg profileImg;
+    @OneToMany(mappedBy = "customer")
+    private List<Payment> payments = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -83,12 +86,7 @@ public class Member extends BaseEntity implements Principal {
     }
 
     // 프로필 이미지 링크 반환
-    public String getProfileImgLink() {
-        // 프로필 사진 null인 경우 기본 이미지 링크 리턴
-        if (this.getProfileImg() == null) {
-            return "default image";
-        }
-
-        return this.getProfileImg().getLink();
+    public String getDefaultImageLink() {
+        return DEFAULT_LINK;
     }
 }

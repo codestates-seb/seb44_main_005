@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class PartnerResponseDto {
     private List<StoreDto> stores;
 

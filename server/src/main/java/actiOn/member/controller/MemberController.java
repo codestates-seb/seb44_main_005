@@ -1,5 +1,7 @@
 package actiOn.member.controller;
 
+import actiOn.Img.dto.ProfileImgDto;
+import actiOn.auth.dto.LoginResponseDto;
 import actiOn.auth.utils.AuthUtil;
 import actiOn.business.dto.BusinessDto;
 import actiOn.business.entity.Business;
@@ -41,13 +43,23 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping("/google/login")
+    public ResponseEntity oauth2LoginSuccess() {
+        String email = AuthUtil.getCurrentMemberEmail();
+        Member member = memberService.findMemberByEmail(email);
+
+        LoginResponseDto response = memberMapper.memberGoogleLoginResponseDto(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 회원 프로필 사진 등록
     @PutMapping("/mypage/profile")
     public ResponseEntity uploadProfileImage(@RequestParam("image") MultipartFile profileImage) throws IOException {
         String email = AuthUtil.getCurrentMemberEmail();
-        memberService.registerProfileImage(profileImage, email);
+        Member member = memberService.registerProfileImage(profileImage, email);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        ProfileImgDto response = memberMapper.profileImgResponseDto(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 회원 프로필 사진 삭제
@@ -135,7 +147,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 마이페이지 - 판매 서비스 관리
+    // 마이페이지 - 파트너 판매 서비스 관리
     @GetMapping("/mystores")
     public ResponseEntity getPartnerStores() {
         String email = AuthUtil.getCurrentMemberEmail();

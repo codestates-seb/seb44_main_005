@@ -17,7 +17,7 @@ function AddProduct() {
 
   const productChangeHandler = (e) => {
     const value = e.target.value;
-    const onlyNumbers = value.replace(/[^0-9]/g, "");
+    const onlyNumbers = Number(value.replace(/[^0-9]/g, ""));
     if (e.target.name === "itemName") {
       setProduct({...product, itemName: value});
     }
@@ -31,7 +31,7 @@ function AddProduct() {
 
   const productAddHandler = () => {
     if (product.itemName === '' || !product.price || !product.totalTicket) {
-      return alert('상품 정보들을 제대로 기입해주세요.')
+      return alert('상품 정보들을 제대로 기입해주세요.');
     }
     setForm((prev) => ({...prev, items: [...prev.items, {...product}]}));
     setProduct({

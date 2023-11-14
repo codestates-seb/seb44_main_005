@@ -12,8 +12,13 @@ export const StyledContainer = tw.ul`
   bg-[#D6DFEF] 
 `;
 
-export const Menu = tw.li`s
+export const Menu = tw.li`
   px-[25px]
   py-[10px]
   cursor-pointer
+  hover:text-[#4771B7]
+`;
+
+export const DropDownContainer = tw.div`
+relative
 `;

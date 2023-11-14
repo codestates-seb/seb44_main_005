@@ -26,13 +26,20 @@ public class StoreResponseMapper {
         List<ItemDto> modifiedItems = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         Map<Long, Integer> reservationTicketCountInfo = reservationService.reservationTicketCount(store, currentDate);
+
         for (Item item : findItems) {
             if (item.getStatus().equals(Item.ItemStatus.DELETED)) continue;
+
             long itemId = item.getItemId();
-            int maxCount = item.getTotalTicket();
-            int remainingTicketCount = maxCount;
+            int remainingTicketCount = item.getTotalTicket();
+
             if (reservationTicketCountInfo.size() != 0) {
-                int reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
+                int reservationTicketCount;
+                try{
+                    reservationTicketCount = reservationTicketCountInfo.get(item.getItemId());
+                }catch (Exception e) {
+                    reservationTicketCount = 0;
+                }
                 remainingTicketCount = remainingTicketCount - reservationTicketCount;
             }
             if (remainingTicketCount < 0) {
@@ -43,8 +50,10 @@ public class StoreResponseMapper {
             );
             modifiedItems.add(modifiedItem);
         }
+
         List<StoreImg> findImgs = store.getStoreImgList();
         List<String> modifiedStoreImgs = new ArrayList<>();
+
         for (StoreImg storeImg : findImgs) {
             String link = storeImg.getLink();
             if (storeImg.getIsThumbnail()) {
@@ -53,6 +62,7 @@ public class StoreResponseMapper {
                 modifiedStoreImgs.add(link);
             }
         }
+
         StoreResponseDto storeResponseDto = new StoreResponseDto();
         storeResponseDto.setStoreName(store.getStoreName());
         storeResponseDto.setCategory(store.getCategory());
@@ -65,13 +75,14 @@ public class StoreResponseMapper {
         storeResponseDto.setCreatedAt(store.getCreatedAt());
         storeResponseDto.setItems(modifiedItems);
         storeResponseDto.setStoreImages(modifiedStoreImgs);
+
         try {
-            storeResponseDto.setProfileImg(store.getMember().getProfileImg().getLink());
+            storeResponseDto.setProfileImg(store.getMember().getProfileImg());
         } catch (NullPointerException e) {
             storeResponseDto.setProfileImg(null); // null 자리에 기본 이미지 넣을 수 있음
         }
+
         return storeResponseDto;
-        //
     }
 
 }

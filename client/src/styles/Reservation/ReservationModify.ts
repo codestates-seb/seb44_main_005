@@ -1,11 +1,10 @@
 import tw from 'tailwind-styled-components';
 
 export const ReservationContainer = tw.div`
-  h-[100vh]
   w-[600px]
-  text-start
-  ml-[300px]
   mt-[80px]
+  mr-16
+  mb-[80px]
 `;
 
 export const Title = tw.div`
@@ -36,7 +35,7 @@ export const ReservationTitle = tw.div`
 
 export const ReservationInput = tw.input`
   border-[1px] border-[#CCCCCC] rounded-[5px]
-  w-[240px] h-[38px]
+  w-[260px] h-[38px]
   p-2
 `;
 
@@ -46,10 +45,9 @@ export const InputRequire = tw.div`
 `;
 
 export const PaymentInfoBox = tw.section`
-  sticky top-10
-  w-[300px] h-[500px]
+  w-[300px] h-[530px]
   border-[1px] border-[#4771B7] rounded-[5px]
-  mt-10 ml-20
+  mt-28
   font-medium
 `;
 
@@ -70,7 +68,34 @@ export const RuleBox = tw.div`
 export const PaymentButton = tw.button`
   bg-[#4771B7]
   w-[250px] h-[50px]
-  block mx-auto p-2
+  block mx-auto mb-3 p-2
   text-white
   rounded-[10px]
+`;
+
+export const UseCompleteButton = tw.button`
+  w-[250px] h-[50px]
+  block mx-auto mb-3 p-2
+  text-[#4771B7]
+  border-[1px] border-[#4771B7] rounded-[10px]
+`;
+
+export const InputContainer = tw.div`
+  flex 
+  ml-7 
+  mb-3 
+  items-center
+`;
+
+export const ModifyButton = tw.div`
+  relative 
+  w-[75px]
+  left-[520px] 
+  bottom-[50px] 
+  bg-[#F3F5F7] 
+  rounded-lg 
+  font-semibold 
+  text-[14px] 
+  p-[10px]
+  cursor-pointer
 `;

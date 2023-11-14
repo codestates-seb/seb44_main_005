@@ -1,24 +1,24 @@
 package actiOn.review.dto;
 
-import actiOn.review.entity.Review;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Builder
 public class ReviewResponseDto {
-    private String profileImg;
-    private String nickname;
-    private String content;
-    private Integer rating;
-    private LocalDateTime createdAt;
+    private int reviewCount;
+    private double ratingAvg;
+    private List<ReviewDto> reviews;
 
-    public ReviewResponseDto(String profileImg, String nickname, String content, Integer rating, LocalDateTime createdAt) {
-        this.profileImg = profileImg;
-        this.nickname = nickname;
-        this.content = content;
-        this.rating = rating;
-        this.createdAt = createdAt;
+    @Getter
+    @Builder
+    public static class ReviewDto {
+        private String nickname;
+        private String content;
+        private Integer rating;
+        private LocalDateTime createdAt;
     }
 }

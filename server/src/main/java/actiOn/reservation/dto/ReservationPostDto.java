@@ -3,12 +3,14 @@ package actiOn.reservation.dto;
 import actiOn.helper.validator.NotSpace;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 public class ReservationPostDto {
     @NotSpace(message = "예약자 성함은 필수 값입니다.")
@@ -19,13 +21,14 @@ public class ReservationPostDto {
             message = "휴대폰 번호는 010(혹은 011)만 가능하며, 하이픈 '-'을 포함하여 작성해주세요.")
     private String reservationPhone;
 
-    @NotSpace
     private String reservationEmail;
 
     private String reservationDate;
 
     @Positive
     private int totalPrice;
+
+    private Long storeId;
 
     private List<ReservationItemDto> reservationItems;
 }

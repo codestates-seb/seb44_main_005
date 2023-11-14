@@ -1,5 +1,6 @@
-// import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'aos/dist/aos.css';
 
 import {
   CardContainer,
@@ -32,53 +33,63 @@ function CategoryCard({ data }: CProps) {
   const { storeId, img, title, reviewCount, address, rating, price, isLike } =
     data;
   const url = import.meta.env.VITE_APP_API_URL;
+  const navigate = useNavigate();
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  // const [isHeart, setIsHeart] = useState(isLike);
+  const [isHeart, setIsHeart] = useState(isLike);
   const isLogin = useRecoilValue(isLoginState);
-  // 타이머 변수
-  let clickTimer;
-  console.log(clickTimer);
 
   // 상태코드 보고 UI 변경시키기 ..
-  const onClickHeart = async () => {
+  const onClickHeart = async (e) => {
+    e.stopPropagation();
+    setIsHeartClicked(true);
+    if (isHeartClicked) {
+      return;
+    }
     if (!isLogin) {
       alert(`로그인 상태에서만 등록할 수 있습니다.`);
-    }
-    if (!isHeartClicked) {
-      setIsHeartClicked(true);
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+    } else if (!isHeartClicked) {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'POST',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      // console.log(isLike);
-
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
+      if (res.ok) {
+        setIsHeart(true);
+        toast('❤️ 위시리스트에 추가되었습니다.');
+      }
     }
+
+    setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
 
-  const onClickNonHeart = async () => {
-    if (!isLogin) {
-      alert(`로그인 상태에서만 등록할 수 있습니다.`);
+  const onClickNonHeart = async (e) => {
+    e.stopPropagation();
+    setIsHeartClicked(true);
+    if (isHeartClicked) {
+      return;
     }
     if (!isHeartClicked) {
-      setIsHeartClicked(true);
-
-      await fetch(`${url}/stores/favorites/${storeId}`, {
+      const res = await fetch(`${url}/stores/favorites/${storeId}`, {
         method: 'DELETE',
         headers: { Authorization: sessionStorage.getItem('Authorization') },
       });
-      // console.log(isLike);
-      clickTimer = setTimeout(() => {
-        setIsHeartClicked(false);
-      }, 5000);
+      if (res.ok) {
+        setIsHeart(false);
+        toast('🖤 위시리스트에서 제거되었습니다.');
+      }
     }
+    setTimeout(() => {
+      setIsHeartClicked(false);
+    }, 5000);
   };
-  // console.log(isLike);
   return (
-    <CardContainer>
-      <img className="w-[250px] h-[198px] object-cover" src={img} />
+    <CardContainer onClick={() => navigate(`/category/${storeId}`)}>
+      <img
+        className="w-[250px] h-[198px] object-cover"
+        src={img}
+        loading="lazy"
+      />
       <CardText>
         <Link to={`/category/${storeId}`} className="font-semibold">
           {title}
@@ -87,22 +98,22 @@ function CategoryCard({ data }: CProps) {
           <span className="w-[20px] mr-[5px] mt-[2px]">
             <BsFillStarFill size="18" color="#4771B7" />
           </span>
-          <span className="mr-[2px]">{rating}</span>
+          <span className="mr-[2px]">{rating.toFixed(1)}</span>
           <span className="mr-[12px]">({reviewCount})</span>
           <span>{address}</span>
         </Text>
         <CardPrice>
           <span>{price.toLocaleString('ko-KR')}원 ~</span>
-          {isLike ? (
+          {isHeart ? (
             <PiHeartFill
-              className="cursor-pointer"
+              className="hover:cursor-pointer"
               onClick={onClickNonHeart}
               size="24"
               color="#4771B7"
             />
           ) : (
             <PiHeart
-              className="cursor-pointer"
+              className="hover:cursor-pointer"
               onClick={onClickHeart}
               size="24"
               color="#4771B7"

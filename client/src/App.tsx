@@ -1,53 +1,50 @@
 import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+
 import MainRouter from './router/MainRouter';
 import CategoryRouter from './router/CategoryRouter';
 import MyRouter from './router/MyRouter';
-import { useNavigate } from 'react-router-dom';
-// import { useSetRecoilState } from 'recoil';
-// import { isLoginState } from './store/userInfoAtom';
+import { Role, isLoginState, isProfile } from './store/userInfoAtom';
 
 function App() {
   const navigate = useNavigate();
-  // const url = import.meta.env.VITE_APP_API_URL;
+  const [searchParams] = useSearchParams();
 
-  // const setIsLoginState = useSetRecoilState(isLoginState);
-
-  // const getAccessToken = async (accessToken) => {
-  //   console.log('1');
-  //   try {
-  //     const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  //     console.log('2');
-  //     const accessToken = parsedHash.get('access_token');
-  //     sessionStorage.setItem('access_token', accessToken);
-
-  //     navigate('/home');
-  //     // await fetch(`${url}/oauth2/authorization/google`, {
-  //     //   method: 'POST',
-  //     //   headers: {
-  //     //     'Content-Type': 'application/json',
-  //     //     // eslint-disable-next-line prettier/prettier
-  //     //     Authorization: "Bearer " + accessToken
-  //     //   },
-  //     // });
-  //     // const { accessToken } = result.data;
-
-  //     setIsLoginState(true);
-  //     // setAccessToken(accessToken);
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
+  const setIsLoginState = useSetRecoilState(isLoginState);
+  const setIsProfile = useSetRecoilState(isProfile);
+  const setIsRole = useSetRecoilState(Role);
+  const url = import.meta.env.VITE_APP_API_URL;
 
   const handleAccessToken = async () => {
-    const parsedHash = new URLSearchParams(window.location.href);
-    // console.log('2');
-    const accessToken = parsedHash.get('access_token');
-    // console.log(accessToken);
+    const accessToken = searchParams.get('access_token');
     if (accessToken) {
+      try {
+        const res = await fetch(`${url}/google/login`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const result1 = await res.json();
+        if (res.status !== 200) throw res;
+
+        //헤더에서 멤버아이디와 닉네임을 받아옴
+        const name = result1.nickname;
+        const profile = result1.profileImage;
+        const role = result1.role;
+        setIsProfile(profile);
+        setIsRole(role);
+        // 로컬 스토리지에 memberId,토큰 저장
+        sessionStorage.setItem('Authorization', `Bearer ${accessToken}`);
+        setIsLoginState(true);
+
+        // 헤더에서 데이터를 받았으면 리다이렉트
+        if (name) {
+          alert(`${name}님 반갑습니다 !`);
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('로그인 요청 중 오류가 발생했습니다', error);
+      }
       navigate('/home');
-      // await getAccessToken(accessToken);
-      // console.log(accessToken);
-      // navigate('/home');
     }
   };
 

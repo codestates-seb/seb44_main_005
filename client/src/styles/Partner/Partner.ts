@@ -4,7 +4,7 @@ export const PartnerContainer = tw.div`
     flex
     justify-center
     items-center
-    h-[80%]
+    min-h-[77vh]
 `;
 
 export const RegiContainer =  tw.div`
@@ -65,6 +65,11 @@ export const RegiNumberNoWrite = tw.p`
 export const RegiNumberCorrect = tw.p`
     pt-1
     text-green-500
+`;
+
+export const RegiNumberConfirm = tw.p`
+    pt-1
+    text-amber-600
 `;
 
 export const RegiNumberWrong = tw.p`
@@ -128,6 +133,17 @@ export const FormRegiButton = tw.button`
     py-3
     bg-[#4771B7]
     text-white
+`;
+
+export const DisableFormRegiButton = tw.button`
+    font-semibold
+    text-xl
+    px-14
+    py-3
+    opacity-50
+    bg-[#4771B7]
+    text-white
+    cursor-default
 `;
 
 export const FormRegiContainer = tw.div`

@@ -5,9 +5,9 @@ import lombok.Getter;
 public enum ExceptionCode {
     // MEMBER
     MEMBER_NOT_FOUND(404, "Member not found"),
-    MEMBER_EXISTS(409, "Member exists"),
+    MEMBER_EXISTS(403, "Member exists"),
     NICKNAME_EXISTS(409, "member nickname exists"),
-    PHONE_NUMBER_EXISTS(409, "member phone number exists"),
+    PHONE_NUMBER_EXISTS(422, "member phone number exists"),
     MEMBER_NOT_AUTHORIZED(403, "Member not authorized"),
     PROFILE_IMAGE_NOT_FOUND(404, "Profile image not found"),
 
@@ -18,17 +18,19 @@ public enum ExceptionCode {
     INVALID_MEMBER(400, "Invalid member access"),
 
     // BUSINESS
-    BUSINESS_EXISTS(409, "Registration number exists."),
+    BUSINESS_EXISTS(409, "Registration number exists"),
     INVALID_REGISTRATION_NUMBER(400, "Invalid registration number format"),
 
     // STORE
     STORE_NOT_FOUND(404, "Store not found"),
+    STORE_IMAGE_NOT_FOUND(404, "Store Image Not Found"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_SORT_PARAMETER(400, "Invalid parameter named 'sort'"),
     NULL_STORE_IMAGE(404, "Store image is null"),
     THUMBNAIL_NOT_FOUND(404, "Store thumbnail not found"),
     UNAUTHORIZED(401, "Unauthorized to update store"),
     INVALID_PARAMETER_VALUE(400, "INVALID_PARAMETER_VALUE"),
+    BAD_REQUEST(400, "Bad Request!"),
 
     // RESERVATION
     RESERVATION_NOT_FOUND(404, "Reservation not found"),
@@ -41,13 +43,27 @@ public enum ExceptionCode {
     REQUEST_ITEM_ID_IS_REJECTED(400, "Request itemId is rejected!"),
     REVIEW_CREATE_REJECTED(400, "사용완료 예약건을 초과하여 리뷰를 작성할 수 없습니다."),
     DATE_BAD_REQUEST(400, "날짜형식이 올바르지 않습니다."),
+
     //WISH
     WISH_EXIST(409, "Wish exists"),
     WISH_NOT_FOUND(404, "Wish not found"),
 
     // ITEM
-    ITEM_NOT_FOUND(404, "Item not found");
+    ITEM_NOT_FOUND(404, "Item not found"),
 
+    // PAYMENT
+    INVALID_PAYMENT_AMOUNT(400, "Invalid payment total amount"),
+    PAYMENT_NOT_FOUND(404, "Payment not found"),
+    NOT_FOUND_PAYMENT(404, "존재하지 않는 결제 정보입니다."),
+    PAYMENT_AMOUNT_MISMATCH(422, "Total amounts do not match"),
+
+    // REVIEW
+    BAD_WORD_NOT_ALLOWED(400, "바른말을 사용해야 합니다."),
+    ONLY_RESERVED_MEMBER_REVIEW(404, "Only members using the store can review"),
+    BEFORE_STORE_USE_COMPLETE(422, "이용 완료 전입니다."),
+    ALREADY_WROTE_A_REVIEW(409, "이미 리뷰를 작성하셨습니다."),
+    REJECTED_UPDATE(400, "업데이트 할 수 있는 상태가 아닙니다.")
+    ;
 
     @Getter
     private int status;

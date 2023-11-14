@@ -1,39 +1,43 @@
 package actiOn.review.mapper;
 
-import actiOn.review.dto.ReviewDto;
+import actiOn.review.dto.ReviewPostDto;
 import actiOn.review.dto.ReviewResponseDto;
 import actiOn.review.entity.Review;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Mapper(componentModel = "spring")
 @Component
-public class ReviewMapper {
+public interface ReviewMapper {
 
-    public Review reviewDtoToReview(ReviewDto reviewDto){
-        return new Review(
-                reviewDto.getContent(),
-                reviewDto.getRating()
-        );
-    }
+    Review reviewPostDtoToReview(ReviewPostDto reviewPostDto);
 
-    public ReviewResponseDto reviewToReviewResponseDto(Review review){
-        return new ReviewResponseDto(
-                review.getMember().getProfileImg().getLink(),
-                review.getMember().getNickname(),
-                review.getContent(),
-                review.getRating(),
-                review.getCreatedAt()
-        );
-    }
+    default ReviewResponseDto reviewsToReviewResponseDto(List<Review> reviewList, double storeRating) {
+        List<ReviewResponseDto.ReviewDto> reviewDtos = new ArrayList<>();
 
-    public List<ReviewResponseDto> reviewsToReviewsResponseDto(List<Review> reviews){
-        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>(reviews.size());
-        for (Review review : reviews){
-            reviewResponseDtoList.add(this.reviewToReviewResponseDto(review));
+        for (Review review : reviewList) {
+            reviewDtos.add(reviewToReviewDto(review));
         }
-        return reviewResponseDtoList;
+
+        return ReviewResponseDto.builder()
+                .reviewCount(reviewList.size())
+                .ratingAvg(storeRating)
+                .reviews(reviewDtos)
+                .build();
     }
 
+    default ReviewResponseDto.ReviewDto reviewToReviewDto(Review review) {
+        ReviewResponseDto.ReviewDto.ReviewDtoBuilder builder =
+                ReviewResponseDto.ReviewDto.builder();
+
+        builder.nickname(review.getMember().getNickname());
+        builder.content(review.getContent());
+        builder.rating(review.getRating());
+        builder.createdAt(review.getCreatedAt());
+
+        return builder.build();
+    }
 }

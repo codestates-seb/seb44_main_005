@@ -1,5 +1,7 @@
 package actiOn.auth.provider;
 
+import actiOn.auth.dto.LoginResponseDto;
+import actiOn.helper.util.JsonUtil;
 import actiOn.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -9,14 +11,19 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static actiOn.auth.utils.TokenPrefix.*;
 
 @Component
 public class TokenProvider {
@@ -32,7 +39,7 @@ public class TokenProvider {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    public String encodedBase64SecretKey(String secretKey) {
+    public String encodedBase64SecretKey() {
         return Encoders.BASE64
                 .encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -47,16 +54,16 @@ public class TokenProvider {
         claims.put("roles", member.getRoles());
 
         String subject = member.getEmail();
-        Date expiration = getTokenExpiration(getAccessTokenExpirationMinutes());
-        String base64EncodedSecretKey = encodedBase64SecretKey(getSecretKey());
+        Date expiration = getTokenExpiration(accessTokenExpirationMinutes);
+        String base64EncodedSecretKey = encodedBase64SecretKey();
 
         return generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
     }
 
     public String delegateRefreshToken(Member member) {
         String subject = member.getEmail();
-        Date expiration = getTokenExpiration(getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = encodedBase64SecretKey(getSecretKey());
+        Date expiration = getTokenExpiration(refreshTokenExpirationMinutes);
+        String base64EncodedSecretKey = encodedBase64SecretKey();
 
         return generateRefreshToken(subject, expiration, base64EncodedSecretKey);
     }
@@ -88,6 +95,22 @@ public class TokenProvider {
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
+    }
+
+    // 로그인 response를 Json 형식으로 반환
+    public String getLoginResponseJson(Member member) {
+        String role = member.getRoleName();
+        String nickname = member.getNickname();
+        String profileImage = member.getProfileImg();
+
+        LoginResponseDto responseDto = new LoginResponseDto(role, nickname, profileImage);
+        return JsonUtil.toJson(responseDto, LoginResponseDto.class);
+    }
+
+    // 토큰 만료되었는지 확인
+    public boolean isExpired(Jws<Claims> claims) {
+        Date expiration = claims.getBody().getExpiration();
+        return expiration.before(Calendar.getInstance().getTime());
     }
 
     // 검증 후, Claims를 반환하는 용도

@@ -9,8 +9,10 @@ import actiOn.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "STORE")
+@Where(clause = "deleted_at IS NULL")
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +66,9 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private int lowPrice;
 
+    @Column
+    private LocalDateTime deletedAt;
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -77,4 +84,16 @@ public class Store extends BaseEntity {
 
     @OneToMany(mappedBy = "store", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<StoreImg> storeImgList = new ArrayList<>();
+
+    public void addLikeCount() {
+        this.likeCount++;
+    }
+
+    public void subLikeCount() {
+        this.likeCount--;
+    }
+
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
 }

@@ -10,12 +10,12 @@ import {
   SendFirstImgState
 } from "../../store/storeAddAtom";
 
-function AddImages() {
+function AddImages({ fetchImgsCount }) {
   const API_URL = import.meta.env.VITE_APP_API_URL;
   const [firstImg, setFirstImg] = useRecoilState(FirstImgState);
   const [detailImgs, setDetailImgs] = useRecoilState(DetailImgsState);
   const setSendFirstImg = useSetRecoilState(SendFirstImgState);
-  const setSendDetailImgs = useSetRecoilState(SendDetailImgsState);
+  const [sendDetailImgs, setSendDetailImgs] = useRecoilState(SendDetailImgsState);
   const [searchParams] = useSearchParams();
   const storeId = searchParams.get('store_id');
   const accessToken = sessionStorage.getItem('Authorization');
@@ -36,29 +36,35 @@ function AddImages() {
       return alert('상세 이미지는 최대 9장까지 업로드 할 수 있습니다.');
     }
     for (let i = 0; i < files.length; i++) {
-      console.log(detailImgs);
       const reader = new FileReader();
       reader.readAsDataURL(files[i]);
       reader.onloadend = () => {
         setDetailImgs((prevImgs) => [...prevImgs, reader.result]);
+        setSendDetailImgs((prevImgs) => [...prevImgs, files[i]]);
       }
     }
-    setSendDetailImgs((prevImgs) => [...prevImgs, ...files]);
   }
 
   const detailImgDeleteHandler = (idx: number) => {
+    const path = location.pathname.substring(6);
+    if (path === '/edit') {
+      if (detailImgs.length <= 3) {
+        return alert('상세 이미지는 최소 3장 이상 등록해야합니다.');
+      }
+      if (detailImgs[idx][0] === 'h') {
+        fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': accessToken
+          }
+        });
+      }
+    }
     const result = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
-    const sendResult = [...detailImgs].filter((_, detailIdx) => detailIdx !== idx);
+    const sendResult = [...sendDetailImgs].filter((_, detailIdx) => detailIdx !== idx - fetchImgsCount);
     setDetailImgs(result);
     setSendDetailImgs(sendResult);
-    if (searchParams.get('store_id')) {
-      fetch(`${API_URL}/storeImages/${storeId}?link=${detailImgs[idx]}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': accessToken
-        }
-      });
-    }
+    
   }
 
   return (

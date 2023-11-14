@@ -7,14 +7,23 @@ function ReservationInfo() {
   const [form, setForm] = useRecoilState(ReserFormState);
 
   const reserChangeHandler = (e) => {
-    if (e.target.name === "reservationName") {
-      setForm({...form, reservationName: e.target.value})
-    }
-    else if (e.target.name === "reservationPhone") {
-      setForm({...form, reservationPhone: e.target.value})
-    }
-    else if (e.target.name === "reservationEmail") {
-      setForm({...form, reservationEmail: e.target.value})
+    const name = e.target.name;
+    const value = e.target.value;
+    switch(name) {
+      case 'reservationName':
+        return setForm({...form, reservationName: value})
+      case 'reservationPhone':
+        const phoneNumberPattern = /(\d{3})(\d{3,4})(\d{4})/;
+        let contactVerify = value.replace(/[^0-9]/g, '');
+        if (contactVerify.length >= 11) {
+          contactVerify = contactVerify.replace(phoneNumberPattern, '$1-$2-$3');
+        }
+        if (contactVerify.length >= 14) {
+          return;
+        }
+        return setForm({...form, reservationPhone: contactVerify});
+      case 'reservationEmail':
+        return setForm({...form, reservationEmail: value})
     }
   }
 
@@ -25,9 +34,10 @@ function ReservationInfo() {
         <div className="mr-5 text-lg font-medium">예약자</div>
         <div className="relative">
           <ReservationInput
-            onChange={reserChangeHandler}
             type="text"
             name="reservationName"
+            value={form.reservationName}
+            onChange={reserChangeHandler}
           />
           <InputRequire>필수</InputRequire>
         </div>
@@ -36,10 +46,11 @@ function ReservationInfo() {
         <div className="mr-5 text-lg font-medium">연락처</div>
         <div className="relative">
           <ReservationInput
-            onChange={reserChangeHandler}
             type="text"
-            placeholder="ex) 010-0000-0000"
             name="reservationPhone"
+            value={form.reservationPhone}
+            onChange={reserChangeHandler}
+            placeholder="'-'를 제외하고 입력해주세요"
           />
           <InputRequire>필수</InputRequire>
         </div>
@@ -47,9 +58,10 @@ function ReservationInfo() {
       <div className="flex ml-7 mb-3 items-center">
         <div className="mr-5 text-lg font-medium">이메일</div>
         <ReservationInput
-          onChange={reserChangeHandler}
           type="text"
           name="reservationEmail"
+          value={form.reservationEmail}
+          onChange={reserChangeHandler}
         />
       </div>
     </section>
@@ -66,7 +78,7 @@ const ReservationTitle = tw.div`
 
 const ReservationInput = tw.input`
   border-[1px] border-[#CCCCCC] rounded-[5px]
-  w-[240px] h-[38px]
+  w-[260px] h-[38px]
   p-2
 `;
 
