@@ -7,13 +7,11 @@ import actiOn.exception.ExceptionCode;
 import actiOn.member.entity.Member;
 import actiOn.member.service.MemberService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
-@Transactional
 public class BusinessService {
     private final BusinessRepository businessRepository;
     private final MemberService memberService;

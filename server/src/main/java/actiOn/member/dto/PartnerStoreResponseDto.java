@@ -1,5 +1,6 @@
 package actiOn.member.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class PartnerStoreResponseDto {
     @Builder
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class PartnerStoreDto {
         private Long storeId;
         private String storeImage;
