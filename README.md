@@ -48,7 +48,7 @@
 <p align="center">
   <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/fd3fd2be-c6e7-4c74-bf5d-eaa201305c6c">
   
-Java, Spring Boot, Spring Data JPA, Gradle, MySQL, AWS - EC2, RDS, Redis
+Java, Spring Boot, Spring Data JPA, Spring Security, Gradle, MySQL, AWS(EC2, RDS, S3), Redis
 
 </p>
 
