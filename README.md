@@ -1,4 +1,5 @@
-# 🐋 액티온(ActiOn) 
+# 🐋 액티온(ActiOn)
+제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드립니다
 <p align="center">
 <img width="700" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
 
@@ -21,9 +22,11 @@
 <br>
 <br>
 
-## 🐋 액티온(ActiOn)에서는 어떤 서비스를 이용할 수 있나요 ?
+## 🐋 프로젝트 개요
 
- ### 제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드립니다
+
+
+
 <br>
 
 <p>
@@ -48,7 +51,7 @@
 <p align="center">
   <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/fd3fd2be-c6e7-4c74-bf5d-eaa201305c6c">
   
-Java, Spring Boot, Spring Data JPA, Spring Security, Gradle, MySQL, AWS(EC2, RDS, S3), Redis
+#Java #Spring Boot #Spring Data JPA #Spring Security #Gradle #MySQL #AWS(EC2, RDS, S3) #Redis
 
 </p>
 
@@ -69,24 +72,26 @@ Java, Spring Boot, Spring Data JPA, Spring Security, Gradle, MySQL, AWS(EC2, RDS
  
 
 ## 📂 Documents
-### [✏️  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
-### [✏️  API 명세서](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
+### [🔗  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
+### [🔗  API 명세서](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
 ### [✏️  ERD]()
 <hr>
   <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/a2d7e5bc-261d-4bec-8b04-4e095c1f23a6">
 <br>
 <br>
 
-### [✏️  화면 정의서](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1vjGhkjq29PfthTwTSINtA%2FActiOn---Design%3Ftype%3Ddesign%26node-id%3D0%3A1%26mode%3Ddesign%26t%3DhTD356WXL3mu34Nz-1)
+### [🔗 화면 정의서](https://www.figma.com/file/1vjGhkjq29PfthTwTSINtA/ActiOn---Design?type=design&node-id=0-1&mode=design)
 <hr>
 <img width="1000" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
-
 <br>
 <br>
 <br>
 
 
-## ✨Git Commit & PR Message
+## ✨ Wiki
+### 🔗 [Git 컨벤션](https://rift-tie-a90.notion.site/Git-416e1402a0f14ab1a50453f1a8074454?pvs=4)
+
+### Git Commit & PR Message
 
 | 태그이름 | 설명                                                  |
 | -------- | ----------------------------------------------------- |
