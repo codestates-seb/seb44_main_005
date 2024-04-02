@@ -1,7 +1,7 @@
 # 🐋 액티온(ActiOn)
-제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드립니다
+### 제주도에서 특별한 경험을 만들고 싶으신 분들에게 다양한 레저 예약 서비스를 제공해드립니다!
 <p align="center">
-<img width="700" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
+<img width="500" alt="무제" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/4cc87719-f666-42f6-ac89-321b5da06c77">
 
 </p>
 
@@ -20,7 +20,8 @@
 |FE 팀장|FE 팀원|FE 팀원|BE 부팀장|BE 팀원|
 
 <br>
-<br>
+
+
 
 ## 🐋 프로젝트 개요
 
@@ -72,43 +73,24 @@
  
 
 ## 📂 Documents
-### [🔗  사용자 요구사항 정의서](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
-### [🔗  API 명세서](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
-### [✏️  ERD]()
+### 1. 사용자 요구사항 정의서   [🔗 Link](https://www.notion.so/codestates/db6bf9c5921a4e3ca9ac1c50ada9b733?v=7cf202032177497ab5ca9f8a40470389&pvs=4)
+### 2. API 명세서   [🔗 Link](https://www.notion.so/codestates/API-19b0436b7f1347bfbc37113fe4abcfdf?pvs=4)
+### 3. ERD
 <hr>
-  <img src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/a2d7e5bc-261d-4bec-8b04-4e095c1f23a6">
-
-![ActiOn_final](https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/fae93224-6ad7-4532-9803-214f93133810)
-
+  <img src="https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/fae93224-6ad7-4532-9803-214f93133810">
 
 <br>
-<br>
 
-### [🔗 화면 정의서](https://www.figma.com/file/1vjGhkjq29PfthTwTSINtA/ActiOn---Design?type=design&node-id=0-1&mode=design)
-<hr>
-<img width="1000" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
+### 4. 화면 정의서 [🔗 Link](https://www.figma.com/file/1vjGhkjq29PfthTwTSINtA/ActiOn---Design?type=design&node-id=0-1&mode=design)
 
-![상품 상세페이지](https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/a1d42844-870d-41e0-b11c-01dd5c37e351)
+- 상품 상세 페이지(미리보기)
 
-![업체 수정 페이지](https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/8f594c97-22e9-4226-b60c-7fc546ca5ca6)
+  <img src="https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/a1d42844-870d-41e0-b11c-01dd5c37e351">
 
+- 업체 수정 페이지(미리보기)
 
-<br>
-<br>
-<br>
+  <img src="https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/8f594c97-22e9-4226-b60c-7fc546ca5ca6">
 
 
-## ✨ Wiki
-### 🔗 [Git 컨벤션](https://rift-tie-a90.notion.site/Git-416e1402a0f14ab1a50453f1a8074454?pvs=4)
 
-### Git Commit & PR Message
-
-| 태그이름 | 설명                                                  |
-| -------- | ----------------------------------------------------- |
-| feat     | 새로운 기능 추가                                      |
-| fix      | 버그 수정                                             |
-| design   | CSS 등 UI 수정                                 |
-| style    | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우 |
-| refactor | 코드 리팩토링                                         |
-| docs     | 문서 수정                                  |
-| test     | 테스트 코드를 생성하거나 수정 하는 경우               |
+### 5. Git 컨벤션 [🔗 Link](https://rift-tie-a90.notion.site/Git-416e1402a0f14ab1a50453f1a8074454?pvs=4)
