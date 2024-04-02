@@ -83,6 +83,11 @@
 ### [🔗 화면 정의서](https://www.figma.com/file/1vjGhkjq29PfthTwTSINtA/ActiOn---Design?type=design&node-id=0-1&mode=design)
 <hr>
 <img width="1000" alt="스크린샷 2023-07-24 오후 1 43 52" src="https://github.com/codestates-seb/seb44_main_005/assets/106866926/6bb83ef1-2d1e-451d-ac12-cf655df1bf5e">
+![상품 상세페이지](https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/a1d42844-870d-41e0-b11c-01dd5c37e351)
+
+![업체 수정 페이지](https://github.com/isu-nice/ActiOn-Deploy/assets/111070569/8f594c97-22e9-4226-b60c-7fc546ca5ca6)
+
+
 <br>
 <br>
 <br>
